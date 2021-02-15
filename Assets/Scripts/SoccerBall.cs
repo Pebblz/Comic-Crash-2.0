@@ -20,10 +20,8 @@ public class SoccerBall : MonoBehaviour
     {
         if (col.tag == "Player")
         {
-            Vector3 pushdir = new Vector3(col.GetComponent<Rigidbody>().velocity.x, 0,
-                col.GetComponent<Rigidbody>().velocity.x);
-
-            rb.velocity = pushdir * pushPower;
+            Vector3 direction = (col.transform.position - transform.position).normalized;
+            rb.AddForce(-direction * pushPower, ForceMode.Impulse);
         }
     }
     private void OnTriggerExit(Collider col)

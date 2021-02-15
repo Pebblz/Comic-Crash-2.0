@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed;
+    [SerializeField]
+    int startingSpeed;
+    public float currentSpeed;
+    [SerializeField]
+    float runSpeed;
     Rigidbody RB;
     float distToGround;
     [SerializeField]
@@ -31,6 +35,15 @@ public class PlayerMovement : MonoBehaviour
         Vector3 direction = new Vector3(H, 0, V).normalized;
         if (direction.magnitude >= 0.1f)
         {
+            //running 
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                currentSpeed = runSpeed;
+            } 
+            else
+            {
+                currentSpeed = startingSpeed;
+            }
             //sees how much is needed to rotate to match camera
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + MainCam.localEulerAngles.y;
 
@@ -43,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
             //converts rotation to direction / gives the direction you want to move in taking camera into account
             MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-            RB.MovePosition(transform.position += MoveDir.normalized * speed * Time.deltaTime);
+            RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
         }
         //player Jumps
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
@@ -58,6 +71,6 @@ public class PlayerMovement : MonoBehaviour
     }
     public void setSpeed(float newSpeed)
     {
-        speed = newSpeed;
+        currentSpeed = newSpeed;
     }
 }
