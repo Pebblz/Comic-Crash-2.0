@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.01f);
+        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
     }
     public void setSpeed(float newSpeed)
     {
