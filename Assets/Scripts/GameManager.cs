@@ -9,7 +9,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class GameManager : MonoBehaviour
 {
     const string Gamedata = "GameData.bin";
+    [Tooltip("The amount of coins the player has")]
     public int coinCount;
+    [Tooltip("The amount of the main collectibles the player has")]
     public int CollectibleCount;
     // Start is called before the first frame update
     void Start()

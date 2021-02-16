@@ -1,23 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
-
+    [Tooltip("This is what the camera will be focusing on in game")]
     public Transform target;
+    [Tooltip("The starting distance away from the player")]
     [SerializeField]
     float distance = 5.0f;
+    [Tooltip("How fast the camera can go left to right")]
     [SerializeField]
     float xSpeed = 120.0f;
+    [Tooltip("How fast the camera can go up and down")]
     [SerializeField]
     float ySpeed = 120.0f;
+    [Tooltip("How far the camera can rotate down")]
     [SerializeField]
     float yMinLimit = -20f;
+    [Tooltip("How far the camera can rotate up")]
     [SerializeField]
     float yMaxLimit = 80f;
+    [Tooltip("The min distance for scrolling in")]
     [SerializeField]
     float distanceMin = .5f;
+    [Tooltip("The max distance away for scrolling out")]
     [SerializeField]
     float distanceMax = 15f;
 

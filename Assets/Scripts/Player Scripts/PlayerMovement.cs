@@ -4,21 +4,33 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     [SerializeField]
-    int startingSpeed;
+    private int startingSpeed;
+
     public float currentSpeed;
+
     [SerializeField]
-    float runSpeed;
-    Rigidbody RB;
+    private float runSpeed;
+
+    private Rigidbody RB;
+
     float distToGround;
+
     [SerializeField]
     float jumpSpeed;
-    Vector3 MoveDir;
+
+    private Vector3 MoveDir;
+
     [SerializeField]
     float turnSmoothTime = .1f;
+
     Transform MainCam;
+
     float turnSmoothVelocity;
-    // Start is called before the first frame update
+    [Tooltip("This checks if the players sliding or not")]
+    public bool isSliding;
+
     void Start()
     {
         distToGround = GetComponent<Collider>().bounds.extents.y - .1f;
@@ -33,13 +45,14 @@ public class PlayerMovement : MonoBehaviour
         float V = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = new Vector3(H, 0, V).normalized;
+
         if (direction.magnitude >= 0.1f)
         {
             //running 
-            if(Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift))
             {
                 currentSpeed = runSpeed;
-            } 
+            }
             else
             {
                 currentSpeed = startingSpeed;
@@ -49,17 +62,20 @@ public class PlayerMovement : MonoBehaviour
 
             //used to smooth the angle needed to move to avoid snapping to directions
             float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            if (!isSliding)
+            {
+                //rotate player
+                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-            //rotate player
-            transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+                //converts rotation to direction / gives the direction you want to move in taking camera into account
+                MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-            //converts rotation to direction / gives the direction you want to move in taking camera into account
-            MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-
-            RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+                RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+            }
         }
+
         //player Jumps
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && !isSliding)
         {
             RB.velocity = new Vector3(direction.x, jumpSpeed, direction.z);
         }

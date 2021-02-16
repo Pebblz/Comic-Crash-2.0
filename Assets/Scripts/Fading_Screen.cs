@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Fading_Screen : MonoBehaviour
 {
@@ -8,12 +6,6 @@ public class Fading_Screen : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     public void FadeOut()
     {

@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PlayerSwitcher : MonoBehaviour
 {
+    [Tooltip("This is for the other characters that the player can switch to")]
     public GameObject[] CharactersToSwitchTo = new GameObject[10];
+
     [SerializeField]
     Transform PlayerTransform;
+
     GameObject Camera;
+
     [SerializeField]
     GameObject CurrentPlayer;
+
     private KeyCode[] keyCodes = {
          KeyCode.Alpha1,
          KeyCode.Alpha2,

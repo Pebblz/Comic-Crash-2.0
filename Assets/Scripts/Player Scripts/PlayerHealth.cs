@@ -1,11 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [Tooltip("The max health the player would be able to get to")]
     [SerializeField]
     int maxHealth;
+
+    [Tooltip("The current health of the player")]
     [SerializeField]
     int currentHealth;
     private void Start()

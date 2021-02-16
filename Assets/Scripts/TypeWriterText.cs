@@ -1,20 +1,21 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class TypeWriterText : MonoBehaviour
 {
     Text txt;
     string fullText;
-    public float Delay;
+    [Tooltip("How fast the typewriter produces text")]
     [SerializeField]
     float textspeed = .02f;
+    [Tooltip("This is here to let people know when the typewriter is done")]
     public bool isDone = true;
 
 
 
     public void ChangeText(string _text, float _delay = 0f)
     {
+        isDone = false;
         txt = GetComponent<Text>();
         StopCoroutine(PlayText()); //stop Coroutime if exist
         fullText = _text;

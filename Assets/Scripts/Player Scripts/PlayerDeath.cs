@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class PlayerDeath : MonoBehaviour
 {
+    [Tooltip("When this bool gets set to true it makes everything happen")]
     public bool isdead;
+
+    [Tooltip("This is here for fading the screen when you die")]
     public GameObject Fader;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (isdead)
