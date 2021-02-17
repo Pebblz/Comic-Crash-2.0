@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        respawnPoint = gameObject.transform.position;
+        if(respawnPoint == new Vector3(0,0,0))
+            respawnPoint = gameObject.transform.position;
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
     public void RepoPlayer()

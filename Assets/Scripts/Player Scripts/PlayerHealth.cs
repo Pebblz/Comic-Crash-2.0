@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("The current health of the player")]
     [SerializeField]
     int currentHealth;
-    private void Start()
+    private void Awake()
     {
         //this is for if you forget to set the current health 
         //in the inspector

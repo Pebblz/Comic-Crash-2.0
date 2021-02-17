@@ -52,6 +52,9 @@ public class PlayerSwitcher : MonoBehaviour
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
 
+            Temp.GetComponent<Player>().respawnPoint = 
+                CurrentPlayer.GetComponent<Player>().respawnPoint;
+
             PlayerTransform = Temp.transform;
 
             Camera.GetComponent<Camera>().target = Temp.transform;

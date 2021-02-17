@@ -8,10 +8,14 @@ public class PlayerDeath : MonoBehaviour
     public bool isdead;
 
     [Tooltip("This is here for fading the screen when you die")]
-    public GameObject Fader;
-
+    GameObject Fader;
+    private void Awake()
+    {
+        Fader = GameObject.Find("Fader");
+    }
     void Update()
     {
+
         if (isdead)
         {
             Death();
