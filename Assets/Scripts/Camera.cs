@@ -2,6 +2,7 @@
 
 public class Camera : MonoBehaviour
 {
+    #region Third Person Vars
     [Tooltip("This is what the camera will be focusing on in game")]
     public Transform target;
     [Tooltip("The starting distance away from the player")]
@@ -26,10 +27,20 @@ public class Camera : MonoBehaviour
     [SerializeField]
     float distanceMax = 15f;
 
-    private Rigidbody rigidbody;
-
     float x = 0.0f;
     float y = 0.0f;
+    #endregion
+
+    [Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
+    public bool thirdPersonCamera = true;
+
+    private Rigidbody rigidbody;
+
+    private float rotationOnX;
+
+    [Tooltip("The sensitivity of the camera when the player's in first person mode")]
+    [SerializeField]
+    float MouseSensitivity = 90;
 
     Vector3 startPos;
     // Use this for initialization
@@ -51,6 +62,32 @@ public class Camera : MonoBehaviour
 
     void LateUpdate()
     {
+        if (thirdPersonCamera)
+        {
+            ThirdPersonCamera();
+        } else
+        {
+            FirstPersonCamera();
+        }
+    }
+    public void ResetCamera()
+    {
+        transform.position = startPos;
+    }
+    public static float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360F)
+            angle += 360F;
+        if (angle > 360F)
+            angle -= 360F;
+        return Mathf.Clamp(angle, min, max);
+    }
+    void ThirdPersonCamera()
+    {
+        if(transform.parent != null)
+        {
+            transform.parent = null;
+        }
         if (target)
         {
             if (transform.position.y > -10)
@@ -74,22 +111,28 @@ public class Camera : MonoBehaviour
 
                 transform.rotation = rotation;
                 transform.position = position;
-            } else
+            }
+            else
             {
                 transform.LookAt(target);
             }
         }
     }
-    public void ResetCamera()
+    void FirstPersonCamera()
     {
-        transform.position = startPos;
-    }
-    public static float ClampAngle(float angle, float min, float max)
-    {
-        if (angle < -360F)
-            angle += 360F;
-        if (angle > 360F)
-            angle -= 360F;
-        return Mathf.Clamp(angle, min, max);
+        transform.position = target.position + new Vector3(0, .5f, 0);
+        if (transform.parent == null)
+        {
+            transform.SetParent(target);
+        }
+        
+        float mouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * MouseSensitivity;
+        float mouseX = Input.GetAxis("Mouse X") * Time.deltaTime * MouseSensitivity;
+
+        rotationOnX -= mouseY;
+        rotationOnX = Mathf.Clamp(rotationOnX, -90, 90);
+        transform.localEulerAngles = new Vector3(rotationOnX, 0, 0);
+
+        target.Rotate(Vector3.up * mouseX);
     }
 }

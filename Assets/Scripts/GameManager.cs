@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        lockCursor();
         //this is how you'd load prev game data 
 
         //string Filepath = GetCurDir() + "/" + Gamedata;

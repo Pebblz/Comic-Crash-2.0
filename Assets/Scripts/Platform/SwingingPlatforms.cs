@@ -12,8 +12,6 @@ public class SwingingPlatforms : MonoBehaviour
     [SerializeField]
     float distance = 30;
 
-    private float direction = 1;
-
     private Quaternion startRot;
     private void Start()
     {
@@ -23,7 +21,7 @@ public class SwingingPlatforms : MonoBehaviour
     void FixedUpdate()
     {
         Quaternion a = startRot;
-        a.x += direction * (distance * Mathf.Sin(Time.time * speed));
+        a.x += 1 * (distance * Mathf.Sin(Time.time * speed));
         transform.rotation = a;
     }
 }
