@@ -32,6 +32,10 @@ public class MovingPlatforms : MonoBehaviour
     [SerializeField]
     bool StepOnToActivate;
 
+    [Tooltip("If this is true the moving platforms active and moving")]
+    [SerializeField]
+    public bool active = true;
+
     private float EndPointY, EndPointX, EndPointZ;
 
     private Vector3 StartPoint;
@@ -39,7 +43,7 @@ public class MovingPlatforms : MonoBehaviour
     private bool GoBackY, GoBackX, GoBackZ, GoBackToStart;
 
     private bool isSteppedOn;
-    // Start is called before the first frame update
+
     void Start()
     {
         StartPoint = transform.position;
@@ -53,25 +57,24 @@ public class MovingPlatforms : MonoBehaviour
             EndPointX = StartPoint.x + DistanceToMoveXZ;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (!StepOnToActivate && !GoBackToStart)
+        if (!StepOnToActivate && !GoBackToStart && active)
         {
             Move();
         }
-        if(StepOnToActivate && !GoBackToStart)
+        if (StepOnToActivate && !GoBackToStart && active)
         {
-            if(isSteppedOn)
+            if (isSteppedOn)
             {
                 Move();
-            } 
+            }
             else
             {
                 resetPosition();
             }
         }
-        if (GoBackToStart)
+        if (GoBackToStart && active)
         {
             resetPosition();
         }
