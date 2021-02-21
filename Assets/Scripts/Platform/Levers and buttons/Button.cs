@@ -37,14 +37,21 @@ public class Button : MonoBehaviour
             {
                 active = true;
             }
-            else
+            else if(!HitOnce)
             {
                 active = false;
             }
             DoAction();
-        } else if(waysToActivate == WaysToActivate.Shoot && active)
+        }
+        else if (waysToActivate == WaysToActivate.Shoot)
         {
-            DoAction();
+            if (active)
+            {
+                DoAction();
+            } else
+            {
+                TurnOff();
+            }
         }
     }
 
@@ -54,33 +61,69 @@ public class Button : MonoBehaviour
         {
             if (active)
             {
-                ImpactedGameobject.GetComponent<ConveyerBelt>().active = true;
+                TurnOn();
             }
             else
             {
-                ImpactedGameobject.GetComponent<ConveyerBelt>().active = false;
+                TurnOff();
             }
         }
         else if (action == Action.movingPlatform)
         {
             if (active)
             {
-                ImpactedGameobject.GetComponent<MovingPlatforms>().active = true;
+                TurnOn();
             }
             else
             {
-                ImpactedGameobject.GetComponent<MovingPlatforms>().active = false;
+                TurnOff();
             }
-        } else if (action == Action.rotationPlatform)
+        }
+        else if (action == Action.rotationPlatform)
         {
             if (active)
             {
-                ImpactedGameobject.GetComponent<RotatingPlatform>().active = true;
+                TurnOn();
             }
             else
             {
-                ImpactedGameobject.GetComponent<RotatingPlatform>().active = false;
+                TurnOff();
             }
+        }
+    }
+
+    void TurnOn()
+    {
+        if (action == Action.ConveyerBelt)
+        {
+            ImpactedGameobject.GetComponent<ConveyerBelt>().active = true;
+        }
+        else if (action == Action.movingPlatform)
+        {
+
+            ImpactedGameobject.GetComponent<MovingPlatforms>().active = true;
+
+        }
+        else if (action == Action.rotationPlatform)
+        {
+
+            ImpactedGameobject.GetComponent<RotatingPlatform>().active = true;
+
+        }
+    }
+    void TurnOff()
+    {
+        if (action == Action.ConveyerBelt)
+        {
+            ImpactedGameobject.GetComponent<ConveyerBelt>().active = false;
+        }
+        else if (action == Action.movingPlatform)
+        {
+            ImpactedGameobject.GetComponent<MovingPlatforms>().active = false;
+        }
+        else if (action == Action.rotationPlatform)
+        {
+            ImpactedGameobject.GetComponent<RotatingPlatform>().active = false;
         }
     }
     private void OnCollisionEnter(Collision col)
@@ -94,9 +137,13 @@ public class Button : MonoBehaviour
         }
         if (waysToActivate == WaysToActivate.Shoot)
         {
-            if (col.gameObject.tag == "shot")
+            if (col.gameObject.tag == "Shot" && HitOnce)
             {
                 active = true;
+            }
+            if (col.gameObject.tag == "Shot" && !HitOnce)
+            {
+                active = !active;
             }
         }
     }
