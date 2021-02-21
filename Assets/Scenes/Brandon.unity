@@ -1464,7 +1464,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 50, y: 1, z: 50}
+  m_Size: {x: 200, y: 1, z: 200}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1439782932
 Transform:
@@ -1627,6 +1627,7 @@ GameObject:
   - component: {fileID: 1629010206}
   - component: {fileID: 1629010205}
   - component: {fileID: 1629010204}
+  - component: {fileID: 1629010208}
   - component: {fileID: 1629010203}
   m_Layer: 0
   m_Name: Moving Platform
@@ -1648,8 +1649,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upAndDown: 1
-  DistanceToMove: 3
-  LeftAndRight: 0
+  DistanceToMoveY: 3
+  DistanceToMoveXZ: 2
+  LeftAndRight: 1
+  Both: 1
   speed: 2
 --- !u!65 &1629010204
 BoxCollider:
@@ -1725,6 +1728,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1629010208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629010202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8237ad11980dbe4499d655f40bfceb49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1687390581
 GameObject:
   m_ObjectHideFlags: 0
