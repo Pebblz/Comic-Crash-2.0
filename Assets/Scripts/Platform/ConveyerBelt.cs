@@ -16,12 +16,19 @@ public class ConveyerBelt : MonoBehaviour
     [SerializeField]
     List<GameObject> onBelt;
 
+    [Tooltip("if this is set active the conveyer belt is working")]
+    [SerializeField]
+    public bool active = true;
+
     void Update()
     {
-        //loops throught each of the gameobjects on the belt and moves them
-        for(int i = 0; i <= onBelt.Count - 1; i++ )
+        if (active)
         {
-            onBelt[i].GetComponent<Rigidbody>().velocity = speed * direction * Time.deltaTime;
+            //loops throught each of the gameobjects on the belt and moves them
+            for (int i = 0; i <= onBelt.Count - 1; i++)
+            {
+                onBelt[i].GetComponent<Rigidbody>().velocity = speed * direction * Time.deltaTime;
+            }
         }
     }
     private void OnCollisionEnter(Collision col)

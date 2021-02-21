@@ -59,24 +59,27 @@ public class MovingPlatforms : MonoBehaviour
 
     void Update()
     {
-        if (!StepOnToActivate && !GoBackToStart && active)
+        if (active)
         {
-            Move();
-        }
-        if (StepOnToActivate && !GoBackToStart && active)
-        {
-            if (isSteppedOn)
+            if (!StepOnToActivate && !GoBackToStart)
             {
                 Move();
             }
-            else
+            if (StepOnToActivate && !GoBackToStart)
+            {
+                if (isSteppedOn)
+                {
+                    Move();
+                }
+                else
+                {
+                    resetPosition();
+                }
+            }
+            if (GoBackToStart)
             {
                 resetPosition();
             }
-        }
-        if (GoBackToStart && active)
-        {
-            resetPosition();
         }
     }
     private void Move()

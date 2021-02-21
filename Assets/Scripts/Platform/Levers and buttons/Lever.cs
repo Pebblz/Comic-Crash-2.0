@@ -34,7 +34,8 @@ public class Lever : MonoBehaviour
     enum Action
     {
         ConveyerBelt,
-        movingPlatform
+        movingPlatform,
+        rotatingPlatform
     }
     void DoAction()
     {
@@ -46,6 +47,11 @@ public class Lever : MonoBehaviour
         {
             ImpactedGameobject.GetComponent<MovingPlatforms>().active =
                 !ImpactedGameobject.GetComponent<MovingPlatforms>().active;
+        }
+        else if (action == Action.rotatingPlatform)
+        {
+            ImpactedGameobject.GetComponent<RotatingPlatform>().active =
+                !ImpactedGameobject.GetComponent<RotatingPlatform>().active;
         }
         InputTimer = .5f;
     }
