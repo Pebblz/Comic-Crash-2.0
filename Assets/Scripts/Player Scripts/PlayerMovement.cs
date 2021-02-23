@@ -4,33 +4,41 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    [Header("Movement speeds")]
     [SerializeField]
+    [Range(5f, 20f)]
     private int startingSpeed;
 
+    [HideInInspector]
     public float currentSpeed;
 
+    [Range(10f, 30f)]
     [SerializeField]
     private float runSpeed;
+
+    [Range(1f, 10f)]
+    [SerializeField]
+    float jumpSpeed;
+
+    [Range(.1f, .5f)]
+    [SerializeField]
+    float turnSmoothTime = .1f;
+
 
     private Rigidbody RB;
 
     float distToGround;
 
-    [SerializeField]
-    float jumpSpeed;
-
     private Vector3 MoveDir;
-
-    [SerializeField]
-    float turnSmoothTime = .1f;
 
     Transform MainCam;
 
     float turnSmoothVelocity;
-    [Tooltip("This checks if the players sliding or not")]
+
+    [HideInInspector]
     public bool isSliding;
 
+    #region MonoBehaviours
     void Start()
     {
         distToGround = GetComponent<Collider>().bounds.extents.y - .1f;
@@ -80,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
             RB.velocity = new Vector3(direction.x, jumpSpeed, direction.z);
         }
     }
-
+    #endregion
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);

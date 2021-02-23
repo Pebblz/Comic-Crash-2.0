@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerPause : MonoBehaviour
 {
-    [SerializeField]
+    
     bool IsPaused = false;
     float PauseTimer;
     private GameObject Player;
@@ -38,12 +38,19 @@ public class PlayerPause : MonoBehaviour
     }
     void Paused()
     {
+        //this stops all things that rely on time to do anything
+        Time.timeScale = 0;
+        //this stops the players movement
         Player.GetComponent<PlayerMovement>().enabled = false;
+        //this stops the player from switching characters
         gameManager.GetComponent<PlayerSwitcher>().enabled = false;
+        //and unlocks your cursor so you can use the pause menu
         gameManager.GetComponent<GameManager>().unlockCursor();
     }
     void UnPaused()
     {
+        //this resumes all things that rely on time
+        Time.timeScale = 1;
         Player.GetComponent<PlayerMovement>().enabled = true;
         gameManager.GetComponent<PlayerSwitcher>().enabled = true;
         gameManager.GetComponent<GameManager>().lockCursor();

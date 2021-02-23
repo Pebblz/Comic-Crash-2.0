@@ -5,6 +5,7 @@ using UnityEngine;
 public class Damage : MonoBehaviour
 {
     [Tooltip("How much damage the player would recive if hit")]
+    [Range(1f,10f)]
     [SerializeField]
     int DamageTotal;
 

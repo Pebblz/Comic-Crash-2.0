@@ -1,29 +1,42 @@
 ﻿using UnityEngine;
-
 public class Camera : MonoBehaviour
 {
     #region Third Person Vars
     [Tooltip("This is what the camera will be focusing on in game")]
     public Transform target;
+
     [Tooltip("The starting distance away from the player")]
+    [Range(1f,10f)]
     [SerializeField]
     float distance = 5.0f;
+
     [Tooltip("How fast the camera can go left to right")]
+    [Range(100f, 160f)]
     [SerializeField]
     float xSpeed = 120.0f;
+
     [Tooltip("How fast the camera can go up and down")]
+    [Range(100f, 160f)]
     [SerializeField]
     float ySpeed = 120.0f;
+
     [Tooltip("How far the camera can rotate down")]
+    [Range(-45f, 45f)]
     [SerializeField]
     float yMinLimit = -20f;
+
     [Tooltip("How far the camera can rotate up")]
+    [Range(75f,90f)]
     [SerializeField]
     float yMaxLimit = 80f;
+
     [Tooltip("The min distance for scrolling in")]
+    [Range(.5f,2f)]
     [SerializeField]
     float distanceMin = .5f;
+
     [Tooltip("The max distance away for scrolling out")]
+    [Range(10f,20f)]
     [SerializeField]
     float distanceMax = 15f;
 
@@ -32,6 +45,7 @@ public class Camera : MonoBehaviour
     #endregion
 
     [Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
+    [HideInInspector]
     public bool thirdPersonCamera = true;
 
     private Rigidbody rigidbody;
@@ -39,11 +53,12 @@ public class Camera : MonoBehaviour
     private float rotationOnX;
 
     [Tooltip("The sensitivity of the camera when the player's in first person mode")]
+    [Range(45f,180f)]
     [SerializeField]
     float MouseSensitivity = 90;
 
     Vector3 startPos;
-    // Use this for initialization
+    #region MonoBehaviours
     void Start()
     {
         startPos = transform.position;
@@ -70,10 +85,12 @@ public class Camera : MonoBehaviour
             FirstPersonCamera();
         }
     }
+    #endregion
     public void ResetCamera()
     {
         transform.position = startPos;
     }
+    
     public static float ClampAngle(float angle, float min, float max)
     {
         if (angle < -360F)
@@ -82,6 +99,7 @@ public class Camera : MonoBehaviour
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
     }
+    #region camera styles
     void ThirdPersonCamera()
     {
         if(transform.parent != null)
@@ -135,4 +153,5 @@ public class Camera : MonoBehaviour
 
         target.Rotate(Vector3.up * mouseX);
     }
+    #endregion
 }

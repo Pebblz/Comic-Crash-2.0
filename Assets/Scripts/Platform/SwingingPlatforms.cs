@@ -5,12 +5,14 @@ using UnityEngine;
 public class SwingingPlatforms : MonoBehaviour
 {
     [Tooltip("The speed that the platforms moves")]
+    [Range(.5f,2f)]
     [SerializeField]
-    float speed = 2.0f;
+    float speed;
 
     [Tooltip("The max distance the platform will go")]
+    [Range(.2f,1f)]
     [SerializeField]
-    float distance = 30;
+    float distance;
 
     private Quaternion startRot;
     private void Start()

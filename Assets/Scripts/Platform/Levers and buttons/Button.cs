@@ -54,7 +54,7 @@ public class Button : MonoBehaviour
             }
         }
     }
-
+    #region Main Functions
     void DoAction()
     {
         if (action == Action.ConveyerBelt)
@@ -126,6 +126,8 @@ public class Button : MonoBehaviour
             ImpactedGameobject.GetComponent<RotatingPlatform>().active = false;
         }
     }
+    #endregion
+    #region Collision functions
     private void OnCollisionEnter(Collision col)
     {
         if (waysToActivate == WaysToActivate.WalkOn)
@@ -157,6 +159,8 @@ public class Button : MonoBehaviour
             }
         }
     }
+    #endregion
+    #region enums
     enum WaysToActivate
     {
         WalkOn,
@@ -168,4 +172,5 @@ public class Button : MonoBehaviour
         movingPlatform,
         rotationPlatform
     }
+    #endregion
 }

@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     public int coinCount;
     [Tooltip("The amount of the main collectibles the player has")]
     public int CollectibleCount;
-    // Start is called before the first frame update
+
+    #region MonoBehaviours
     void Start()
     {
         lockCursor();
@@ -32,6 +33,9 @@ public class GameManager : MonoBehaviour
         //call this when you want to save the game 
         //SaveGame();
     }
+    #endregion
+
+    #region Cursor methods
     public void lockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,7 +46,9 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
+    #endregion
 
+    #region Saving and loading
     public void SaveGame()
     {
         Save s = new Save();
@@ -93,4 +99,5 @@ public class GameManager : MonoBehaviour
     {
         return Directory.GetCurrentDirectory();
     }
+    #endregion
 }

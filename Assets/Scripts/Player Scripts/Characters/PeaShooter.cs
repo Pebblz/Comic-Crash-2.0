@@ -11,6 +11,11 @@ public class PeaShooter : MonoBehaviour
     [SerializeField]
     GameObject BulletPrefab;
 
+    [Tooltip("The speed that the bullet goes when being fired")]
+    [Range(1000f,5000f)]
+    [SerializeField]
+    float shotSpeed;
+    #region MonoBehaviours
     void Start()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -36,12 +41,13 @@ public class PeaShooter : MonoBehaviour
 
         NextAttack -= Time.deltaTime;
     }
+    #endregion
     void Attack()
     {
         if (!camera.GetComponent<Camera>().thirdPersonCamera)
         {
             GameObject tempbul = Instantiate(BulletPrefab, camera.transform.position, camera.transform.rotation);
-            tempbul.GetComponent<Rigidbody>().AddForce(tempbul.transform.forward * 3000);
+            tempbul.GetComponent<Rigidbody>().AddForce(tempbul.transform.forward * shotSpeed);
         }
         NextAttack = 1f;
     }

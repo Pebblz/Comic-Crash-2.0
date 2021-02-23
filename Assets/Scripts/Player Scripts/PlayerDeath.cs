@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerDeath : MonoBehaviour
 {
     [Tooltip("When this bool gets set to true it makes everything happen")]
+    [HideInInspector]
     public bool isdead;
 
     [Tooltip("This is here for fading the screen when you die")]

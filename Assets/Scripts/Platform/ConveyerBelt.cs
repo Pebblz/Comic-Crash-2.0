@@ -5,6 +5,7 @@ using UnityEngine;
 public class ConveyerBelt : MonoBehaviour
 {
     [Tooltip("The speed at which the conveyer belt moves things")]
+    [Range(200,1500)]
     [SerializeField]
     float speed;
 
@@ -31,6 +32,7 @@ public class ConveyerBelt : MonoBehaviour
             }
         }
     }
+    #region Collsion methods
     private void OnCollisionEnter(Collision col)
     {
         //adds the objects on the conveyer belt to the belt list
@@ -47,6 +49,7 @@ public class ConveyerBelt : MonoBehaviour
             onBelt.Remove(col.gameObject);
         }
     }
+    #endregion
     //call this to make reverse the conveyer belts direction
     public void SwitchBeltDirection()
     {

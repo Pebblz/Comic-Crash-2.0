@@ -5,11 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Tooltip("This is for where the player would respawn at when he dies")]
+    [HideInInspector]
     public Vector3 respawnPoint;
 
     Quaternion rotation;
     GameObject Camera;
-    // Start is called before the first frame update
+
+    #region MonoBehaviours
     void Start()
     {
         
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour
             transform.rotation = new Quaternion(rotation.x, transform.rotation.y, rotation.z, transform.rotation.w);
         }
     }
+    #endregion
     public void RepoPlayer()
     {
         Camera.GetComponent<Camera>().ResetCamera();

@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class MovingPlatforms : MonoBehaviour
 {
+    [Header("Direction")]
+
     [Tooltip("If set true it'll go up and down, if false it'll move side to side")]
     [SerializeField]
     bool upAndDown;
-
-    [Tooltip("The amount the platform will move up and down")]
-    [SerializeField]
-    float DistanceToMoveY;
-
-    [Tooltip("The amount the platform will move left nad right or striaght and back")]
-    [SerializeField]
-    float DistanceToMoveXZ;
 
     [Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
     [SerializeField]
@@ -23,8 +17,22 @@ public class MovingPlatforms : MonoBehaviour
     [Tooltip("If you want it to go up and down and what ever you put for left and right")]
     [SerializeField]
     bool Both;
+    
 
+    [Header("Distance")]
+    [Tooltip("The amount the platform will move up and down")]
+    [Range(1f, 10f)]
+    [SerializeField]
+    float DistanceToMoveY;
+
+    [Tooltip("The amount the platform will move left nad right or striaght and back")]
+    [Range(1f, 10f)]
+    [SerializeField]
+    float DistanceToMoveXZ;
+
+    [Space(10)]
     [Tooltip("The speed at which the platform moves")]
+    [Range(1f, 10f)]
     [SerializeField]
     float speed = 2;
 
@@ -33,7 +41,6 @@ public class MovingPlatforms : MonoBehaviour
     bool StepOnToActivate;
 
     [Tooltip("If this is true the moving platforms active and moving")]
-    [SerializeField]
     public bool active = true;
 
     private float EndPointY, EndPointX, EndPointZ;
@@ -44,6 +51,7 @@ public class MovingPlatforms : MonoBehaviour
 
     private bool isSteppedOn;
 
+    #region MonoBehaviour functions
     void Start()
     {
         StartPoint = transform.position;
@@ -82,6 +90,8 @@ public class MovingPlatforms : MonoBehaviour
             }
         }
     }
+    #endregion
+    #region Movement functions
     private void Move()
     {
         if (upAndDown)
@@ -178,6 +188,8 @@ public class MovingPlatforms : MonoBehaviour
             GoBackToStart = false;
         }
     }
+    #endregion
+    #region collision functions
     private void OnCollisionEnter(Collision col)
     {
 
@@ -194,4 +206,5 @@ public class MovingPlatforms : MonoBehaviour
             isSteppedOn = false;
         }
     }
+    #endregion
 }

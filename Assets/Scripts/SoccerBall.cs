@@ -3,7 +3,9 @@
 public class SoccerBall : MonoBehaviour
 {
     Rigidbody rb;
+
     [Tooltip("How far the ball gets kicked")]
+    [Range(5f, 100f)]
     [SerializeField]
     float pushPower = 5.0f;
     Vector3 startpos;
@@ -13,6 +15,8 @@ public class SoccerBall : MonoBehaviour
         startpos = this.gameObject.transform.position;
         rb = GetComponent<Rigidbody>();
     }
+
+    #region Triggers
     private void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Player")
@@ -29,4 +33,5 @@ public class SoccerBall : MonoBehaviour
             rb.velocity = new Vector3(0f, 0f, 0f);
         }
     }
+    #endregion
 }
