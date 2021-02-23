@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damage : MonoBehaviour
 {
     [Tooltip("How much damage the player would recive if hit")]
-    [Range(1f,10f)]
+    [Range(1f, 10f)]
     [SerializeField]
     int DamageTotal;
 
@@ -14,7 +14,7 @@ public class Damage : MonoBehaviour
     bool RepoPlayerWhenHit;
     private void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "Player")
+        if (col.tag == "Player")
         {
             col.GetComponent<PlayerHealth>().HurtPlayer(DamageTotal);
             //this here for if the player needs to get reset when he gets hit

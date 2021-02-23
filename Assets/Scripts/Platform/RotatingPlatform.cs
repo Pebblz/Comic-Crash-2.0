@@ -5,7 +5,7 @@ using UnityEngine;
 public class RotatingPlatform : MonoBehaviour
 {
     [Tooltip("How fast the platform rotates")]
-    [Range(25f,100f)]
+    [Range(25f, 100f)]
     [SerializeField]
     float RotationSpeed;
 
@@ -16,7 +16,7 @@ public class RotatingPlatform : MonoBehaviour
     public bool active = true;
     void LateUpdate()
     {
-        if(active)
+        if (active)
             transform.Rotate(direction, RotationSpeed * Time.deltaTime);
     }
 

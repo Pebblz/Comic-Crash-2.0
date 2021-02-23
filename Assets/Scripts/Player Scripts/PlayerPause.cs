@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerPause : MonoBehaviour
 {
-    
-    bool IsPaused = false;
-    float PauseTimer;
+
+    private bool IsPaused = false;
+    private float PauseTimer;
     private GameObject Player;
-    GameObject gameManager;
+    private GameObject gameManager;
     void Awake()
     {
         gameManager = GameObject.Find("GameManager");

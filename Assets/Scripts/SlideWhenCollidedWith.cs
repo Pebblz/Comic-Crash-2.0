@@ -6,7 +6,7 @@ public class SlideWhenCollidedWith : MonoBehaviour
 {
     private void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Player")
         {
             col.gameObject.GetComponent<PlayerMovement>().isSliding = true;
         }

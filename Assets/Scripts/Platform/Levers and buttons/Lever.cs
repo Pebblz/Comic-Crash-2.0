@@ -18,13 +18,13 @@ public class Lever : MonoBehaviour
     void Update()
     {
         //this is here because we switch players
-        if(player == null)
+        if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player");
         }
-        if(Vector3.Distance(transform.position, player.transform.position) < 1)
+        if (Vector3.Distance(transform.position, player.transform.position) < 1)
         {
-            if(Input.GetKeyDown(KeyCode.Q) && InputTimer <= 0)
+            if (Input.GetKeyDown(KeyCode.Q) && InputTimer <= 0)
             {
                 DoAction();
             }

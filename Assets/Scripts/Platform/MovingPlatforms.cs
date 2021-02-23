@@ -17,7 +17,7 @@ public class MovingPlatforms : MonoBehaviour
     [Tooltip("If you want it to go up and down and what ever you put for left and right")]
     [SerializeField]
     bool Both;
-    
+
 
     [Header("Distance")]
     [Tooltip("The amount the platform will move up and down")]

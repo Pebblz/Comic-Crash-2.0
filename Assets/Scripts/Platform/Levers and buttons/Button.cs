@@ -37,7 +37,7 @@ public class Button : MonoBehaviour
             {
                 active = true;
             }
-            else if(!HitOnce)
+            else if (!HitOnce)
             {
                 active = false;
             }
@@ -48,7 +48,8 @@ public class Button : MonoBehaviour
             if (active)
             {
                 DoAction();
-            } else
+            }
+            else
             {
                 TurnOff();
             }

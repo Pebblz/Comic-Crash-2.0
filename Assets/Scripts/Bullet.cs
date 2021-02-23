@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         TimeTillDestroy -= Time.deltaTime;
-        if(TimeTillDestroy <= 0)
+        if (TimeTillDestroy <= 0)
         {
             Destroy(this.gameObject);
         }

@@ -6,7 +6,7 @@ public class Camera : MonoBehaviour
     public Transform target;
 
     [Tooltip("The starting distance away from the player")]
-    [Range(1f,10f)]
+    [Range(1f, 10f)]
     [SerializeField]
     float distance = 5.0f;
 
@@ -26,17 +26,17 @@ public class Camera : MonoBehaviour
     float yMinLimit = -20f;
 
     [Tooltip("How far the camera can rotate up")]
-    [Range(75f,90f)]
+    [Range(75f, 90f)]
     [SerializeField]
     float yMaxLimit = 80f;
 
     [Tooltip("The min distance for scrolling in")]
-    [Range(.5f,2f)]
+    [Range(.5f, 2f)]
     [SerializeField]
     float distanceMin = .5f;
 
     [Tooltip("The max distance away for scrolling out")]
-    [Range(10f,20f)]
+    [Range(10f, 20f)]
     [SerializeField]
     float distanceMax = 15f;
 
@@ -53,7 +53,7 @@ public class Camera : MonoBehaviour
     private float rotationOnX;
 
     [Tooltip("The sensitivity of the camera when the player's in first person mode")]
-    [Range(45f,180f)]
+    [Range(45f, 180f)]
     [SerializeField]
     float MouseSensitivity = 90;
 
@@ -80,7 +80,8 @@ public class Camera : MonoBehaviour
         if (thirdPersonCamera)
         {
             ThirdPersonCamera();
-        } else
+        }
+        else
         {
             FirstPersonCamera();
         }
@@ -90,7 +91,7 @@ public class Camera : MonoBehaviour
     {
         transform.position = startPos;
     }
-    
+
     public static float ClampAngle(float angle, float min, float max)
     {
         if (angle < -360F)
@@ -102,7 +103,7 @@ public class Camera : MonoBehaviour
     #region camera styles
     void ThirdPersonCamera()
     {
-        if(transform.parent != null)
+        if (transform.parent != null)
         {
             transform.parent = null;
         }
@@ -143,7 +144,7 @@ public class Camera : MonoBehaviour
         {
             transform.SetParent(target);
         }
-        
+
         float mouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * MouseSensitivity;
         float mouseX = Input.GetAxis("Mouse X") * Time.deltaTime * MouseSensitivity;
 

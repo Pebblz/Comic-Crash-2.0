@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConveyerBelt : MonoBehaviour
 {
     [Tooltip("The speed at which the conveyer belt moves things")]
-    [Range(200,1500)]
+    [Range(200, 1500)]
     [SerializeField]
     float speed;
 

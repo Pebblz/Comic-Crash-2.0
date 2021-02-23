@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Tooltip("This is for where the player would respawn at when he dies")]
     [HideInInspector]
     public Vector3 respawnPoint;
 
@@ -14,9 +13,8 @@ public class Player : MonoBehaviour
     #region MonoBehaviours
     void Start()
     {
-        
         rotation = transform.rotation;
-        if(respawnPoint == new Vector3(0,0,0))
+        if (respawnPoint == new Vector3(0, 0, 0))
             respawnPoint = gameObject.transform.position;
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
     }

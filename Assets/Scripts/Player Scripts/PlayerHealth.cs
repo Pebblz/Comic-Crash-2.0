@@ -3,7 +3,7 @@
 public class PlayerHealth : MonoBehaviour
 {
     [Tooltip("The max health the player would be able to get to")]
-    [Range(1f,10f)]
+    [Range(1f, 10f)]
     [SerializeField]
     int maxHealth;
 

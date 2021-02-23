@@ -12,9 +12,10 @@ public class PeaShooter : MonoBehaviour
     GameObject BulletPrefab;
 
     [Tooltip("The speed that the bullet goes when being fired")]
-    [Range(1000f,5000f)]
+    [Range(1000f, 5000f)]
     [SerializeField]
     float shotSpeed;
+
     #region MonoBehaviours
     void Start()
     {

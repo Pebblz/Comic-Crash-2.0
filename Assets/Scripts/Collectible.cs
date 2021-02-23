@@ -9,14 +9,15 @@ public class Collectible : MonoBehaviour
     collectible collect;
 
     [Tooltip("This would be here for if we have like a gold coin that would give 5 coins instead of 1")]
+    [Range(1, 5)]
     [SerializeField]
     int numberGivenToPlayer;
     private void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "Player")
+        if (col.tag == "Player")
         {
             GameObject gm = GameObject.Find("GameManager");
-            if(collect == collectible.Coin)
+            if (collect == collectible.Coin)
             {
                 gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
             }
