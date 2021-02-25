@@ -98,7 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e666e474c8ea8ff42ac29f4c609d540d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsPaused: 0
 --- !u!65 &391782641280157928
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -125,7 +124,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isdead: 0
-  Fader: {fileID: 0}
 --- !u!54 &391782641280157929
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -186,4 +184,9 @@ MonoBehaviour:
   runSpeed: 12
   jumpSpeed: 5
   turnSmoothTime: 0.1
+  maxRollSpeed: 0
+  RollAcceleration: 0
+  RollDeceleration: 0
   isSliding: 0
+  Roll: 0
+  GroundedOffset: 0.1

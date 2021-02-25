@@ -139,7 +139,9 @@ public class Camera : MonoBehaviour
     }
     void FirstPersonCamera()
     {
-        transform.position = target.position + new Vector3(0, .5f, 0);
+        //this makes the camera always in front of the player 
+        transform.position = target.position + target.transform.forward + new Vector3(0, .5f, 0);
+
         if (transform.parent == null)
         {
             transform.SetParent(target);

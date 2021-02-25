@@ -8,14 +8,14 @@ public class SlideWhenCollidedWith : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            col.gameObject.GetComponent<PlayerMovement>().isSliding = true;
+            col.gameObject.GetComponent<PlayerMovement>().enabled = false;
         }
     }
     private void OnCollisionExit(Collision col)
     {
         if (col.gameObject.tag == "Player")
         {
-            col.gameObject.GetComponent<PlayerMovement>().isSliding = false;
+            col.gameObject.GetComponent<PlayerMovement>().enabled = true;
         }
     }
 }

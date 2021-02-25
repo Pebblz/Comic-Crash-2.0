@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
         {
             transform.rotation = new Quaternion(rotation.x, transform.rotation.y, rotation.z, transform.rotation.w);
         }
+        transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
     }
     #endregion
     public void RepoPlayer()
