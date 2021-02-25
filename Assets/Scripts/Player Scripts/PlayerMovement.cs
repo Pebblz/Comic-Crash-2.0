@@ -8,13 +8,18 @@ public class PlayerMovement : MonoBehaviour
     #region Speed Vars
     [Header("Movement speeds")]
     [SerializeField]
-    [Range(5f, 20f)]
-    private int startingSpeed;
+    [Range(1f, 20f)]
+    private float startingSpeed;
+
+
+    [SerializeField]
+    [Range(1f, 10f)]
+    private int CrouchSpeed;
 
     [HideInInspector]
     public float currentSpeed;
 
-    [Range(10f, 30f)]
+    [Range(5f, 30f)]
     [SerializeField]
     private float runSpeed;
 
@@ -61,6 +66,9 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool Roll;
 
+    [HideInInspector]
+    public bool LedgeGrabbing;
+
     private Animator anim;
 
     [SerializeField]
@@ -94,22 +102,25 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!Input.GetKey(KeyCode.C))
+        if (!LedgeGrabbing)
         {
-            StopAnimation("Crouching");
-            if (!Roll)
+            if (!Input.GetKey(KeyCode.C))
             {
-                regularMovement();
+                StopAnimation("Crouching");
+                if (!Roll)
+                {
+                    regularMovement();
+                }
+                else
+                {
+                    rolling();
+                }
             }
             else
             {
-                rolling();
+                PlayAnimation("Crouching");
+                Crouch();
             }
-        }
-        else
-        {
-            PlayAnimation("Crouching");
-            Crouch();
         }
         Grounded = IsGrounded();
     }
@@ -245,8 +256,6 @@ public class PlayerMovement : MonoBehaviour
         float H = Input.GetAxisRaw("Horizontal");
         float V = Input.GetAxisRaw("Vertical");
 
-        float CrouchSpeed = startingSpeed / 2;
-
         if (GetComponent<BoxCollider>() != null)
         {
             GetComponent<BoxCollider>().size =
@@ -272,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
                 //converts rotation to direction / gives the direction you want to move in taking camera into account
                 MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-                RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+                RB.MovePosition(transform.position += MoveDir.normalized * CrouchSpeed * Time.deltaTime);
             }
 
         }
@@ -281,15 +290,23 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Walk");
         }
     }
+    public void Ledgegrabbing(GameObject ledge)
+    {
+        
+    }
     #endregion
-    void PlayAnimation(string animName)
+
+    #region Animation
+    public void PlayAnimation(string animName)
     {
         anim.SetBool(animName, true);
     }
-    void StopAnimation(string animName)
+    public void StopAnimation(string animName)
     {
         anim.SetBool(animName, false);
     }
+    #endregion
+
     #region Other Methods
     bool IsGrounded()
     {
