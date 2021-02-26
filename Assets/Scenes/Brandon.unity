@@ -612,7 +612,7 @@ GameObject:
   - component: {fileID: 290524878}
   - component: {fileID: 290524875}
   - component: {fileID: 290524876}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BalancingLedge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,8 +630,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0437088, y: 1, z: 1}
-  m_Center: {x: -0.9460964, y: 0, z: 0}
+  m_Size: {x: 0.019706726, y: 0.86240005, z: 1}
+  m_Center: {x: -0.4176197, y: -0.06879997, z: 0}
 --- !u!114 &290524876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,7 +670,7 @@ GameObject:
   - component: {fileID: 310649809}
   - component: {fileID: 310649808}
   - component: {fileID: 310649807}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BalancingLedge (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -701,8 +701,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0437088, y: 1, z: 1.2}
-  m_Center: {x: -0.9460964, y: 0, z: 0}
+  m_Size: {x: 0.17088504, y: 1, z: 1.2}
+  m_Center: {x: -1.3825085, y: 0, z: 2.2761522e-17}
 --- !u!4 &310649809
 Transform:
   m_ObjectHideFlags: 0
@@ -1304,7 +1304,7 @@ GameObject:
   - component: {fileID: 586600979}
   - component: {fileID: 586600978}
   - component: {fileID: 586600977}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BalancingLedge (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1335,8 +1335,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0437088, y: 1, z: 1}
-  m_Center: {x: -0.9460964, y: 0, z: 0}
+  m_Size: {x: 0.09432602, y: 1, z: 1}
+  m_Center: {x: -1.5096111, y: 0, z: 0}
 --- !u!4 &586600979
 Transform:
   m_ObjectHideFlags: 0
@@ -2269,7 +2269,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 698493c976645124eb84af0687fa2ba1, type: 2}
+  - {fileID: 2100000, guid: 4336f64159aaf5b4dbaa660f2a22ac94, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4072,6 +4072,11 @@ PrefabInstance:
         type: 3}
       propertyPath: CrouchSpeed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 174059567395047067, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: CrouchOffsetY
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 174059567395047067, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}

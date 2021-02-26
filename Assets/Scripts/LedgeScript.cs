@@ -24,13 +24,16 @@ public class LedgeScript : MonoBehaviour
     }
     private void OnTriggerExit(Collider col)
     {
-        if (GrabLedge)
+        if (col.gameObject.tag == "Player")
         {
-            col.gameObject.GetComponent<PlayerMovement>().LedgeGrabbing = false;
-        }
-        else
-        {
-            col.gameObject.GetComponent<PlayerMovement>().StopAnimation("Balancing");
+            if (GrabLedge)
+            {
+                col.gameObject.GetComponent<PlayerMovement>().LedgeGrabbing = false;
+            }
+            else
+            {
+                col.gameObject.GetComponent<PlayerMovement>().StopAnimation("Balancing");
+            }
         }
     }
 }

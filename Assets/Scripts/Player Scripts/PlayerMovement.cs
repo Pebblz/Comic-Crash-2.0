@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
     #region MonoBehaviours
     void Start()
     {
-        distToGround = GetComponent<Collider>().bounds.extents.y - .5f;
+        distToGround = GetComponent<Collider>().bounds.extents.y;
         RB = GetComponent<Rigidbody>();
         MainCam = GameObject.FindGameObjectWithTag("MainCamera").transform;
         anim = GetComponent<Animator>();
@@ -122,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
                 Crouch();
             }
         }
-        Grounded = IsGrounded();
+
     }
     #endregion
 
@@ -176,19 +176,8 @@ public class PlayerMovement : MonoBehaviour
         {
             StopAnimation("Walk");
         }
-        //player Jumps
-        if (Input.GetKey(KeyCode.Space) && Grounded)
-        {
-            RB.velocity = new Vector3(direction.x, jumpSpeed, direction.z);
-        }
-        if (Input.GetKey(KeyCode.Space) && RB.velocity.y > .1f)
-        {
-            PlayAnimation("Jump");
-        }
-        if (IsGrounded())
-        {
-            StopAnimation("Jump");
-        }
+        Jump();
+
     }
     void rolling()
     {
@@ -225,11 +214,7 @@ public class PlayerMovement : MonoBehaviour
                 //converts rotation to direction / gives the direction you want to move in taking camera into account
                 MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-                //player Jumps
-                if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
-                {
-                    RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
-                }
+
 
                 //moves player via velocity
                 RB.AddForce(MoveDir.normalized * curRollSpeed * Time.deltaTime);
@@ -245,6 +230,8 @@ public class PlayerMovement : MonoBehaviour
             //slows the player down 
             RB.velocity -= RollDeceleration * RB.velocity * Time.deltaTime;
         }
+        //player Jumps
+        Jump();
 
     }
     void Crouch()
@@ -290,9 +277,26 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Walk");
         }
     }
+    void Jump()
+    {
+        //player Jumps
+        if (Input.GetKey(KeyCode.Space) && IsGrounded())
+        {
+            RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+        }
+        if (Input.GetKey(KeyCode.Space) && RB.velocity.y > .1f)
+        {
+            PlayAnimation("Jump");
+        }
+        if (IsGrounded())
+        {
+            StopAnimation("Jump");
+        }
+    }
     public void Ledgegrabbing(GameObject ledge)
     {
-        
+        //PlayAnimation("Hanging");
+        //transform.SetParent(ledge.transform);
     }
     #endregion
 
