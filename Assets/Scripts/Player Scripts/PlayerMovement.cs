@@ -71,18 +71,36 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator anim;
 
-    [SerializeField]
-    [Range(.01f, 3f)]
-    float GroundedOffset;
+
 
     private bool Grounded;
 
     private Vector3 ColliderScale;
 
     private Vector3 ColliderCenter;
+
+    [Header("Offsets")]
+
+    [SerializeField]
+    [Range(.01f, 3f)]
+    float GroundedOffset;
+
     [SerializeField]
     [Range(0, .5f)]
     float CrouchOffsetY;
+
+    [HideInInspector]
+    public GameObject Ledge;
+
+
+    [SerializeField]
+    [Range(.01f, 1f)]
+    float LedgeOffset;
+
+    [SerializeField]
+    [Range(.5f, 3f)]
+    float LedgeGetUpOffset;
+
     #endregion
 
     #region MonoBehaviours
@@ -104,6 +122,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!LedgeGrabbing)
         {
+            StopAnimation("Hanging");
+            RB.useGravity = true;
             if (!Input.GetKey(KeyCode.C))
             {
                 StopAnimation("Crouching");
@@ -121,8 +141,10 @@ public class PlayerMovement : MonoBehaviour
                 PlayAnimation("Crouching");
                 Crouch();
             }
+        } else
+        {
+            Ledgegrabbing();
         }
-
     }
     #endregion
 
@@ -293,10 +315,32 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Jump");
         }
     }
-    public void Ledgegrabbing(GameObject ledge)
+    public void Ledgegrabbing()
     {
-        //PlayAnimation("Hanging");
-        //transform.SetParent(ledge.transform);
+        PlayAnimation("Hanging");
+        RB.velocity = Vector3.zero;
+        RB.useGravity = false;
+        transform.LookAt(new Vector3(Ledge.transform.position.x - transform.position.x,transform.position.y, Ledge.transform.position.z - transform.position.z));
+        transform.position = new Vector3(transform.position.x, Ledge.transform.position.y - LedgeOffset, transform.position.z);
+        if(Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
+        {
+            PlayAnimation("Getup");
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("LedgeGetUp") && 
+            anim.GetCurrentAnimatorStateInfo(0).length < anim.GetCurrentAnimatorStateInfo(0).normalizedTime)
+        {
+            StopAnimation("Getup");
+            transform.position = transform.position + new Vector3(0, LedgeGetUpOffset, 0);
+            LedgeGrabbing = false;
+        }
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    transform.Translate(Vector3.left * startingSpeed * Time.deltaTime);
+        //}
+        //if (Input.GetKey(KeyCode.D))
+        //{
+        //    transform.Translate(-Vector3.left * startingSpeed * Time.deltaTime);
+        //}
     }
     #endregion
 
