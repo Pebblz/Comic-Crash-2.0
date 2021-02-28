@@ -59,6 +59,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float DashSpeed;
 
+    [Tooltip("The speed of the Slide")]
+    [Range(1f, 20f)]
+    [SerializeField]
+    float SlideSpeed;
+
     private int jumpsMade;
     #endregion
 
@@ -72,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     Transform MainCam;
 
     float turnSmoothVelocity;
-
+    //sliding down a slope 
     [HideInInspector]
     public bool isSliding;
 
@@ -155,13 +160,13 @@ public class PlayerMovement : MonoBehaviour
                 }
                 Jump();
             }
-            else
+            else if (Input.GetKey(KeyCode.C))
             {
-                PlayAnimation("Crouching");
-                Crouch();
+                    PlayAnimation("Crouching");
+                    Crouch();
             }
         }
-        else
+        else if (LedgeGrabbing)
         {
             Ledgegrabbing();
         }
@@ -325,15 +330,23 @@ public class PlayerMovement : MonoBehaviour
     }
     void Jump()
     {
-        print(jumpsMade);
         //player Jumps
         if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed)
         {
+            StopAnimation("IsLanded");
             RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+            print(jumpsMade);
             jumpsMade += 1;
+            if (jumpsMade == 1)
+            {
+                PlayAnimation("DoubleJump");
+            }
+
         }
         else if (Input.GetKey(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping)
         {
+
+            PlayAnimation("Dive");
             Vector3 DashDir = transform.forward * DashSpeed;
             RB.velocity = new Vector3(DashDir.x, 0, DashDir.z);
             DoneJumping = true;
@@ -345,9 +358,16 @@ public class PlayerMovement : MonoBehaviour
         }
         if (IsGrounded())
         {
+            if(DoneJumping)
+            {
+                PlayAnimation("IsLanded");
+                DoneJumping = false;
+            }
+            StopAnimation("DoubleJump");
             StopAnimation("Jump");
+            StopAnimation("Dive");
             jumpsMade = 0;
-            DoneJumping = false;
+            
         }
     }
     public void Ledgegrabbing()
@@ -368,14 +388,6 @@ public class PlayerMovement : MonoBehaviour
             transform.position = transform.position + new Vector3(0, LedgeGetUpOffset, 0);
             LedgeGrabbing = false;
         }
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    transform.Translate(Vector3.left * startingSpeed * Time.deltaTime);
-        //}
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    transform.Translate(-Vector3.left * startingSpeed * Time.deltaTime);
-        //}
     }
     #endregion
 
