@@ -336,8 +336,8 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("IsLanded");
             RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
             print(jumpsMade);
-            jumpsMade += 1;
-            if (jumpsMade == 1)
+                        jumpsMade += 1;
+            if(jumpsMade == 1)
             {
                 PlayAnimation("DoubleJump");
             }
