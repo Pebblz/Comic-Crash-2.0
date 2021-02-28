@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 24469944}
   - component: {fileID: 24469943}
   - component: {fileID: 24469942}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Teleporter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -956,7 +956,7 @@ GameObject:
   - component: {fileID: 349490341}
   - component: {fileID: 349490340}
   - component: {fileID: 349490339}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Teleporter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2872,7 +2872,8 @@ GameObject:
   - component: {fileID: 1331911712}
   - component: {fileID: 1331911715}
   - component: {fileID: 1331911711}
-  m_Layer: 0
+  - component: {fileID: 1331911716}
+  m_Layer: 2
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2968,7 +2969,19 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 2
+  m_CollisionDetection: 3
+--- !u!114 &1331911716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331911710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb68f0234c1e7fd4eb4fe1255ed47103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1439782930
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,6 +3467,7 @@ MonoBehaviour:
   Ledge: {fileID: 0}
   LedgeOffset: 0
   LedgeGetUpOffset: 0
+  IceFloor: 0
 --- !u!114 &1687390583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4411,7 +4425,7 @@ PrefabInstance:
     - target: {fileID: 174059567395047064, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 174059567395047067, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}
@@ -4442,6 +4456,11 @@ PrefabInstance:
         type: 3}
       propertyPath: LedgeGetUpOffset
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 174059567395047070, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 658003753813105706, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}

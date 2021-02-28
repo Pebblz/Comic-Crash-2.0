@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
 
@@ -101,6 +102,9 @@ public class PlayerMovement : MonoBehaviour
     [Range(.5f, 3f)]
     float LedgeGetUpOffset;
 
+
+    [HideInInspector]
+    public bool IceFloor;
     #endregion
 
     #region MonoBehaviours
@@ -189,8 +193,14 @@ public class PlayerMovement : MonoBehaviour
 
                 //converts rotation to direction / gives the direction you want to move in taking camera into account
                 MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-
-                RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+                if (!IceFloor)
+                {
+                    RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
+                }
             }
 
         }
