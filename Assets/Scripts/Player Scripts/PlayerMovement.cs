@@ -333,11 +333,20 @@ public class PlayerMovement : MonoBehaviour
         //player Jumps
         if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed)
         {
+            StopAnimation("IsLanded");
             RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+            print(jumpsMade);
             jumpsMade += 1;
+            if (jumpsMade == 1)
+            {
+                PlayAnimation("DoubleJump");
+            }
+
         }
         else if (Input.GetKey(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping)
         {
+
+            PlayAnimation("Dive");
             Vector3 DashDir = transform.forward * DashSpeed;
             RB.velocity = new Vector3(DashDir.x, 0, DashDir.z);
             DoneJumping = true;
@@ -349,9 +358,16 @@ public class PlayerMovement : MonoBehaviour
         }
         if (IsGrounded())
         {
+            if(DoneJumping)
+            {
+                PlayAnimation("IsLanded");
+                DoneJumping = false;
+            }
+            StopAnimation("DoubleJump");
             StopAnimation("Jump");
+            StopAnimation("Dive");
             jumpsMade = 0;
-            DoneJumping = false;
+            
         }
     }
     public void Ledgegrabbing()
