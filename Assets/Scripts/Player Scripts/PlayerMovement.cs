@@ -59,6 +59,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float DashSpeed;
 
+    [Tooltip("The speed of the Slide")]
+    [Range(1f, 20f)]
+    [SerializeField]
+    float SlideSpeed;
+
     private int jumpsMade;
     #endregion
 
@@ -72,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     Transform MainCam;
 
     float turnSmoothVelocity;
-
+    //sliding down a slope 
     [HideInInspector]
     public bool isSliding;
 
@@ -155,13 +160,13 @@ public class PlayerMovement : MonoBehaviour
                 }
                 Jump();
             }
-            else
+            else if (Input.GetKey(KeyCode.C))
             {
-                PlayAnimation("Crouching");
-                Crouch();
+                    PlayAnimation("Crouching");
+                    Crouch();
             }
         }
-        else
+        else if (LedgeGrabbing)
         {
             Ledgegrabbing();
         }
@@ -325,7 +330,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void Jump()
     {
-        print(jumpsMade);
         //player Jumps
         if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed)
         {
@@ -368,14 +372,6 @@ public class PlayerMovement : MonoBehaviour
             transform.position = transform.position + new Vector3(0, LedgeGetUpOffset, 0);
             LedgeGrabbing = false;
         }
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    transform.Translate(Vector3.left * startingSpeed * Time.deltaTime);
-        //}
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    transform.Translate(-Vector3.left * startingSpeed * Time.deltaTime);
-        //}
     }
     #endregion
 
