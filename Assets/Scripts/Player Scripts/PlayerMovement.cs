@@ -48,6 +48,18 @@ public class PlayerMovement : MonoBehaviour
     [Range(.1f, 1f)]
     [SerializeField]
     float RollDeceleration;
+
+    [Tooltip("Amount of jumps allowed")]
+    [Range(0, 5)]
+    [SerializeField]
+    int jumpsAllowed;
+
+    [Tooltip("The speed of the dash")]
+    [Range(1f, 20f)]
+    [SerializeField]
+    float DashSpeed;
+
+    private int jumpsMade;
     #endregion
 
     #region Other Vars
@@ -105,6 +117,8 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector]
     public bool IceFloor;
+
+    private bool DoneJumping;
     #endregion
 
     #region MonoBehaviours
@@ -139,13 +153,15 @@ public class PlayerMovement : MonoBehaviour
                 {
                     rolling();
                 }
+                Jump();
             }
             else
             {
                 PlayAnimation("Crouching");
                 Crouch();
             }
-        } else
+        }
+        else
         {
             Ledgegrabbing();
         }
@@ -171,15 +187,10 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayAnimation("Walk");
             //running 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 currentSpeed = runSpeed;
                 PlayAnimation("Run");
-            }
-            else
-            {
-                currentSpeed = startingSpeed;
-                StopAnimation("Run");
             }
             //sees how much is needed to rotate to match camera
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + MainCam.localEulerAngles.y;
@@ -207,8 +218,13 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             StopAnimation("Walk");
+
+            currentSpeed = startingSpeed;
+            StopAnimation("Run");
         }
-        Jump();
+
+
+
 
     }
     void rolling()
@@ -262,8 +278,6 @@ public class PlayerMovement : MonoBehaviour
             //slows the player down 
             RB.velocity -= RollDeceleration * RB.velocity * Time.deltaTime;
         }
-        //player Jumps
-        Jump();
 
     }
     void Crouch()
@@ -311,11 +325,20 @@ public class PlayerMovement : MonoBehaviour
     }
     void Jump()
     {
+        print(jumpsMade);
         //player Jumps
-        if (Input.GetKey(KeyCode.Space) && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed)
         {
             RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+            jumpsMade += 1;
         }
+        else if (Input.GetKey(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping)
+        {
+            Vector3 DashDir = transform.forward * DashSpeed;
+            RB.velocity = new Vector3(DashDir.x, 0, DashDir.z);
+            DoneJumping = true;
+        }
+
         if (Input.GetKey(KeyCode.Space) && RB.velocity.y > .1f)
         {
             PlayAnimation("Jump");
@@ -323,6 +346,8 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded())
         {
             StopAnimation("Jump");
+            jumpsMade = 0;
+            DoneJumping = false;
         }
     }
     public void Ledgegrabbing()
@@ -330,13 +355,13 @@ public class PlayerMovement : MonoBehaviour
         PlayAnimation("Hanging");
         RB.velocity = Vector3.zero;
         RB.useGravity = false;
-        transform.LookAt(new Vector3(Ledge.transform.position.x - transform.position.x,transform.position.y, Ledge.transform.position.z - transform.position.z));
+        transform.LookAt(new Vector3(Ledge.transform.position.x - transform.position.x, transform.position.y, Ledge.transform.position.z - transform.position.z));
         transform.position = new Vector3(transform.position.x, Ledge.transform.position.y - LedgeOffset, transform.position.z);
-        if(Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
         {
             PlayAnimation("Getup");
         }
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("LedgeGetUp") && 
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("LedgeGetUp") &&
             anim.GetCurrentAnimatorStateInfo(0).length < anim.GetCurrentAnimatorStateInfo(0).normalizedTime)
         {
             StopAnimation("Getup");
