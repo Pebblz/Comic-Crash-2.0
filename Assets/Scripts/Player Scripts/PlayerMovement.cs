@@ -229,13 +229,14 @@ public class PlayerMovement : MonoBehaviour
         }
         if (direction.magnitude >= 0.1f)
         {
-            if (currentSpeed == startingSpeed)
-            {
-                PlayAnimation("Walk");
-            }
-            if(currentSpeed == runSpeed)
+
+            if (currentSpeed == runSpeed)
             {
                 PlayAnimation("Run");
+            }
+            else
+            {
+                PlayAnimation("Walk");
             }
             //sees how much is needed to rotate to match camera
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + MainCam.localEulerAngles.y;
