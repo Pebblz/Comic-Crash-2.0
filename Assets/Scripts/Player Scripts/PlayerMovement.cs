@@ -182,7 +182,8 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Ledgegrabbing();
                 }
-            } else
+            }
+            else
             {
                 PlayAnimation("Grapple");
                 GrappleMovement();
@@ -209,19 +210,32 @@ public class PlayerMovement : MonoBehaviour
             GetComponent<BoxCollider>().size = ColliderScale;
             GetComponent<BoxCollider>().center = ColliderCenter;
         }
+        //running 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            currentSpeed = runSpeed;
+            if (direction.magnitude >= 0.1f)
+            {
+                PlayAnimation("Run");
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            currentSpeed = startingSpeed;
+            if (direction.magnitude >= 0.1f)
+            {
+                StopAnimation("Run");
+            }
+        }
         if (direction.magnitude >= 0.1f)
         {
-            PlayAnimation("Walk");
-            //running 
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (currentSpeed == startingSpeed)
             {
-                currentSpeed = runSpeed;
+                PlayAnimation("Walk");
+            }
+            if(currentSpeed == runSpeed)
+            {
                 PlayAnimation("Run");
-            } 
-            if(Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                currentSpeed = startingSpeed;
-                StopAnimation("Run");
             }
             //sees how much is needed to rotate to match camera
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + MainCam.localEulerAngles.y;
@@ -238,7 +252,7 @@ public class PlayerMovement : MonoBehaviour
                 if (!IceFloor)
                 {
                     //RB.AddForce(MoveDir.normalized * (currentSpeed += 2) , ForceMode.VelocityChange);
-                     RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+                    RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
                 }
                 else
                 {
@@ -251,8 +265,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             StopAnimation("Walk");
-
-            currentSpeed = startingSpeed;
             StopAnimation("Run");
         }
 
