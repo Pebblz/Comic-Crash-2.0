@@ -64,6 +64,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float SlideSpeed;
 
+    [Tooltip("The speed of the Grapple")]
+    [Range(1f, 10f)]
+    [SerializeField]
+    float GrappleSpeed;
+
     private int jumpsMade;
     #endregion
 
@@ -122,6 +127,8 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector]
     public bool IceFloor;
+    [HideInInspector]
+    public bool InGrapple;
 
     private bool DoneJumping;
     #endregion
@@ -143,37 +150,51 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!LedgeGrabbing)
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
-            StopAnimation("Hanging");
-            RB.useGravity = true;
-            if (!Input.GetKey(KeyCode.C))
+            if (!InGrapple)
             {
-                StopAnimation("Crouching");
-                if (!Roll)
+                if (!LedgeGrabbing)
                 {
-                    regularMovement();
+                    StopAnimation("Hanging");
+                    StopAnimation("Grapple");
+                    RB.useGravity = true;
+                    if (!Input.GetKey(KeyCode.C))
+                    {
+                        StopAnimation("Crouching");
+                        if (!Roll)
+                        {
+                            regularMovement();
+                        }
+                        else
+                        {
+                            rolling();
+                        }
+                        Jump();
+                    }
+                    else if (Input.GetKey(KeyCode.C))
+                    {
+                        PlayAnimation("Crouching");
+                        Crouch();
+                    }
                 }
-                else
+                else if (LedgeGrabbing)
                 {
-                    rolling();
+                    Ledgegrabbing();
                 }
-                Jump();
-            }
-            else if (Input.GetKey(KeyCode.C))
+            } else
             {
-                    PlayAnimation("Crouching");
-                    Crouch();
+                PlayAnimation("Grapple");
+                GrappleMovement();
             }
-        }
-        else if (LedgeGrabbing)
-        {
-            Ledgegrabbing();
         }
     }
     #endregion
 
     #region Movement
+    /// <summary>
+    /// This function accounts for running walking and ice sliding 
+    /// </summary>
     void regularMovement()
     {
         RB.constraints = RigidbodyConstraints.FreezeRotationX;
@@ -196,6 +217,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentSpeed = runSpeed;
                 PlayAnimation("Run");
+            } 
+            if(Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                currentSpeed = startingSpeed;
+                StopAnimation("Run");
             }
             //sees how much is needed to rotate to match camera
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + MainCam.localEulerAngles.y;
@@ -211,10 +237,12 @@ public class PlayerMovement : MonoBehaviour
                 MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 if (!IceFloor)
                 {
-                    RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+                    //RB.AddForce(MoveDir.normalized * (currentSpeed += 2) , ForceMode.VelocityChange);
+                     RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
                 }
                 else
                 {
+                    currentSpeed = startingSpeed;
                     RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
                 }
             }
@@ -232,6 +260,45 @@ public class PlayerMovement : MonoBehaviour
 
 
     }
+    void GrappleMovement()
+    {
+        RB.constraints = RigidbodyConstraints.FreezeRotationX;
+        RB.constraints = RigidbodyConstraints.FreezeRotationZ;
+
+        float H = Input.GetAxisRaw("Horizontal");
+        float V = Input.GetAxisRaw("Vertical");
+
+        Vector3 direction = new Vector3(H, 0, V).normalized;
+        if (GetComponent<BoxCollider>() != null)
+        {
+            GetComponent<BoxCollider>().size = ColliderScale;
+            GetComponent<BoxCollider>().center = ColliderCenter;
+        }
+        if (direction.magnitude >= 0.1f)
+        {
+            //sees how much is needed to rotate to match camera
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + MainCam.localEulerAngles.y;
+
+            //used to smooth the angle needed to move to avoid snapping to directions
+            float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            if (!isSliding)
+            {
+                //rotate player
+                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+
+                //converts rotation to direction / gives the direction you want to move in taking camera into account
+                MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+                currentSpeed = startingSpeed;
+                RB.AddForce(MoveDir.normalized * GrappleSpeed * Time.deltaTime, ForceMode.VelocityChange);
+
+            }
+
+        }
+    }
+    /// <summary>
+    /// This is here for specifically Jeff
+    /// </summary>
     void rolling()
     {
         RB.constraints = RigidbodyConstraints.None;
@@ -328,6 +395,9 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Walk");
         }
     }
+    /// <summary>
+    /// This is here for when ever the player needs to jump
+    /// </summary>
     void Jump()
     {
         //player Jumps
@@ -335,9 +405,8 @@ public class PlayerMovement : MonoBehaviour
         {
             StopAnimation("IsLanded");
             RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
-            print(jumpsMade);
-                        jumpsMade += 1;
-            if(jumpsMade == 1)
+            jumpsMade += 1;
+            if (jumpsMade == 1)
             {
                 PlayAnimation("DoubleJump");
             }
@@ -358,7 +427,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (IsGrounded())
         {
-            if(DoneJumping)
+            if (DoneJumping)
             {
                 PlayAnimation("IsLanded");
                 DoneJumping = false;
@@ -367,9 +436,12 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Jump");
             StopAnimation("Dive");
             jumpsMade = 0;
-            
+
         }
     }
+    /// <summary>
+    /// This is here for ledgeGrabbing
+    /// </summary>
     public void Ledgegrabbing()
     {
         PlayAnimation("Hanging");
@@ -392,17 +464,29 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Animation
-    public void PlayAnimation(string animName)
+    /// <summary>
+    /// Call this for anytime you need to play an animation 
+    /// </summary>
+    /// <param name="animName"></param>
+    public void PlayAnimation(string BoolName)
     {
-        anim.SetBool(animName, true);
+        anim.SetBool(BoolName, true);
     }
-    public void StopAnimation(string animName)
+    /// <summary>
+    /// Call this for anytime you need to stop an animation
+    /// </summary>
+    /// <param name="BoolName"></param>
+    public void StopAnimation(string BoolName)
     {
-        anim.SetBool(animName, false);
+        anim.SetBool(BoolName, false);
     }
     #endregion
 
     #region Other Methods
+    /// <summary>
+    /// This checks to see if the players grounded or not
+    /// </summary>
+    /// <returns></returns>
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -Vector3.up, distToGround + GroundedOffset);

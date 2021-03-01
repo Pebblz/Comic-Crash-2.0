@@ -15,6 +15,7 @@ public class IceFloor : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
+            //col.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             col.gameObject.GetComponent<PlayerMovement>().IceFloor = false;
         }
     }
