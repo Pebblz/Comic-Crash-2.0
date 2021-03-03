@@ -42,6 +42,10 @@ public class Camera : MonoBehaviour
 
     float x = 0.0f;
     float y = 0.0f;
+
+    [SerializeField]
+    [Range(-100, 10)]
+    float fallLookAtPosition;
     #endregion
 
     [Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
@@ -109,7 +113,7 @@ public class Camera : MonoBehaviour
         }
         if (target)
         {
-            if (transform.position.y > -10)
+            if (transform.position.y > fallLookAtPosition)
             {
                 x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.02f;
                 y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
