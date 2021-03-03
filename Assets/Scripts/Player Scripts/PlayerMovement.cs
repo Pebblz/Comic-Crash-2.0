@@ -218,9 +218,9 @@ public class PlayerMovement : MonoBehaviour
         //running 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            PlayAnimation("Run");
             if (direction.magnitude >= 0.1f)
             {
+                PlayAnimation("Run");
                 if (currentSpeed < runSpeed)
                 {
                     currentSpeed += SpeedAcceleration;
@@ -229,9 +229,9 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!Input.GetKey(KeyCode.LeftShift))
         {
-            StopAnimation("Run");
             if (direction.magnitude >= 0.1f)
             {
+                StopAnimation("Run");
                 if (currentSpeed < WalkSpeed)
                 {
                     currentSpeed += SpeedAcceleration;
@@ -270,25 +270,36 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            if(WalkSpeed < currentSpeed && anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+            {
+                PlayAnimation("Skid");
+            }
+            else
+            {
+                StopAnimation("Walk");
+                StopAnimation("Run");
+                if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Skid"))
+                {
+                    StopAnimation("Skid");
+                }
+            }
+            //this is here just incase it gets set to a negative 
+            if (currentSpeed < 0)
+            {
+                currentSpeed = 0;
+            }
+        }
 
-            StopAnimation("Walk");
-            StopAnimation("Run");
-        }
-        //this is here just incase it gets set to a negative 
-        if (currentSpeed < 0)
-        {
-            currentSpeed = 0;
-        }
 
         if (!IceFloor)
         {
             //this is here so when he walks he just flips backwords when he wants to move backwords
-            if (!Input.GetKey(KeyCode.LeftShift))
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
             {
                 RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
             }
             //this is here so he can do a little loop when he goes from running forward to running backword
-            if (Input.GetKey(KeyCode.LeftShift) && direction.magnitude >= 0.1f)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
             {
                 RB.MovePosition(transform.position += transform.forward * currentSpeed * Time.deltaTime);
             }
