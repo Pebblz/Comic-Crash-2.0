@@ -241,13 +241,7 @@ public class PlayerMovement : MonoBehaviour
                     currentSpeed -= SpeedAcceleration;
                 }
             }
-            else
-            {
-                if (currentSpeed > 0)
-                {
-                    currentSpeed -= SpeedDeceleration;
-                }
-            }
+
         }
         if (direction.magnitude >= 0.1f)
         {
@@ -283,15 +277,18 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("Skid");
                 }
             }
-            //this is here just incase it gets set to a negative 
-            if (currentSpeed < 0)
-            {
-                currentSpeed = 0;
-            }
+
         }
-
-
-        if (!IceFloor)
+        //this is here just incase it gets set to a negative 
+        if (currentSpeed < 0)
+        {
+            currentSpeed = 0;
+        }
+        if (currentSpeed > 0)
+        {
+            currentSpeed -= SpeedDeceleration;
+        }
+        if (!IceFloor && currentSpeed > .01f)
         {
             //this is here so when he walks he just flips backwords when he wants to move backwords
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
@@ -304,7 +301,7 @@ public class PlayerMovement : MonoBehaviour
                 RB.MovePosition(transform.position += transform.forward * currentSpeed * Time.deltaTime);
             }
         }
-        else
+        else if(IceFloor)
         {
             RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
         }
