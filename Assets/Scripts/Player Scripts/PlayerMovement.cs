@@ -181,6 +181,12 @@ public class PlayerMovement : MonoBehaviour
                     {
                         PlayAnimation("Crouching");
                         Crouch();
+                        if (IsGrounded())
+                        {
+                            StopAnimation("Jump");
+                            StopAnimation("DoubleJump");
+                            StopAnimation("Dive");
+                        }
                     }
                 }
                 else if (LedgeGrabbing)

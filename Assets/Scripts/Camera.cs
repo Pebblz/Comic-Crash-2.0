@@ -125,9 +125,12 @@ public class Camera : MonoBehaviour
                 distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
 
                 RaycastHit hit;
+
                 if (Physics.Linecast(target.position, transform.position, out hit))
                 {
+
                     distance -= hit.distance;
+
                 }
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
                 Vector3 position = rotation * negDistance + target.position;
@@ -144,7 +147,7 @@ public class Camera : MonoBehaviour
     void FirstPersonCamera()
     {
         //this makes the camera always in front of the player 
-        transform.position = target.position + target.transform.forward + new Vector3(0, .5f, 0);
+        transform.position = target.position + target.transform.forward + new Vector3(0, .4f, 0);
 
         if (transform.parent == null)
         {

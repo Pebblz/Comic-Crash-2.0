@@ -411,7 +411,7 @@ MonoBehaviour:
   distanceMax: 15
   fallLookAtPosition: -25
   thirdPersonCamera: 1
-  MouseSensitivity: 90
+  MouseSensitivity: 120
 --- !u!20 &1809447978
 Camera:
   m_ObjectHideFlags: 0
@@ -802,9 +802,9 @@ GameObject:
   - component: {fileID: 8548390368631301504}
   - component: {fileID: 689107388490152929}
   - component: {fileID: 689107388490152930}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pPlane1
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1124,6 +1124,26 @@ PrefabInstance:
         type: 3}
       propertyPath: SpeedDeceleration
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893291, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893291, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893291, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893291, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5499321236313893293, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}
