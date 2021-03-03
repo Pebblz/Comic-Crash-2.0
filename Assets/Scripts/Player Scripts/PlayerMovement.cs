@@ -89,9 +89,7 @@ public class PlayerMovement : MonoBehaviour
     Transform MainCam;
 
     float turnSmoothVelocity;
-    //sliding down a slope 
-    [HideInInspector]
-    public bool isSliding;
+
 
     [HideInInspector]
     public bool Roll;
@@ -221,9 +219,12 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             PlayAnimation("Run");
-            if (currentSpeed < runSpeed)
+            if (direction.magnitude >= 0.1f)
             {
-                currentSpeed += SpeedAcceleration;
+                if (currentSpeed < runSpeed)
+                {
+                    currentSpeed += SpeedAcceleration;
+                }
             }
         }
         if (!Input.GetKey(KeyCode.LeftShift))
@@ -257,15 +258,14 @@ public class PlayerMovement : MonoBehaviour
 
             //used to smooth the angle needed to move to avoid snapping to directions
             float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            if (!isSliding)
-            {
-                //rotate player
-                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-                //converts rotation to direction / gives the direction you want to move in taking camera into account
-                MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            //rotate player
+            transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-            }
+            //converts rotation to direction / gives the direction you want to move in taking camera into account
+            MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+
 
         }
         else
@@ -288,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
                 RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
             }
             //this is here so he can do a little loop when he goes from running forward to running backword
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && direction.magnitude >= 0.1f)
             {
                 RB.MovePosition(transform.position += transform.forward * currentSpeed * Time.deltaTime);
             }
@@ -321,17 +321,16 @@ public class PlayerMovement : MonoBehaviour
 
             //used to smooth the angle needed to move to avoid snapping to directions
             float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            if (!isSliding)
-            {
-                //rotate player
-                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-                //converts rotation to direction / gives the direction you want to move in taking camera into account
-                MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            //rotate player
+            transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-                RB.AddForce(MoveDir.normalized * GrappleSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            //converts rotation to direction / gives the direction you want to move in taking camera into account
+            MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-            }
+            RB.AddForce(MoveDir.normalized * GrappleSpeed * Time.deltaTime, ForceMode.VelocityChange);
+
+
 
         }
     }
@@ -365,19 +364,17 @@ public class PlayerMovement : MonoBehaviour
             //used to smooth the angle needed to move to avoid snapping to directions
             float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-            if (!isSliding)
-            {
-                //rotate player
-                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+            //rotate player
+            transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-                //converts rotation to direction / gives the direction you want to move in taking camera into account
-                MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            //converts rotation to direction / gives the direction you want to move in taking camera into account
+            MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
 
 
-                //moves player via velocity
-                RB.AddForce(MoveDir.normalized * curRollSpeed * Time.deltaTime);
-            }
+            //moves player via velocity
+            RB.AddForce(MoveDir.normalized * curRollSpeed * Time.deltaTime);
+
         }
         else
         {
@@ -417,16 +414,15 @@ public class PlayerMovement : MonoBehaviour
 
             //used to smooth the angle needed to move to avoid snapping to directions
             float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            if (!isSliding)
-            {
-                //rotate player
-                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-                //converts rotation to direction / gives the direction you want to move in taking camera into account
-                MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            //rotate player
+            transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
 
-                RB.MovePosition(transform.position += MoveDir.normalized * CrouchSpeed * Time.deltaTime);
-            }
+            //converts rotation to direction / gives the direction you want to move in taking camera into account
+            MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+            RB.MovePosition(transform.position += MoveDir.normalized * CrouchSpeed * Time.deltaTime);
+
 
         }
         else
