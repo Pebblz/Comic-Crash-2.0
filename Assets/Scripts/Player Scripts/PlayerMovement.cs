@@ -223,7 +223,6 @@ public class PlayerMovement : MonoBehaviour
             PlayAnimation("Run");
             if (currentSpeed < runSpeed)
             {
-                print("runspeed");
                 currentSpeed += SpeedAcceleration;
             }
         }
@@ -234,15 +233,14 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (currentSpeed < WalkSpeed)
                 {
-                    print("Walkspeed");
                     currentSpeed += SpeedAcceleration;
                 }
                 else if (currentSpeed > WalkSpeed)
                 {
-                    print("Walkspeeddown");
                     currentSpeed -= SpeedAcceleration;
                 }
-            } else
+            }
+            else
             {
                 if (currentSpeed > 0)
                 {
@@ -277,18 +275,26 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Run");
         }
         //this is here just incase it gets set to a negative 
-        if(currentSpeed < 0)
+        if (currentSpeed < 0)
         {
             currentSpeed = 0;
         }
 
         if (!IceFloor)
         {
-            RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+            //this is here so when he walks he just flips backwords when he wants to move backwords
+            if (!Input.GetKey(KeyCode.LeftShift))
+            {
+                RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+            }
+            //this is here so he can do a little loop when he goes from running forward to running backword
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                RB.MovePosition(transform.position += transform.forward * currentSpeed * Time.deltaTime);
+            }
         }
         else
         {
-            //currentSpeed = WalkSpeed;
             RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
         }
 
