@@ -243,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
-        if (direction.magnitude >= 0.1f)
+        if(direction.magnitude >= 0.1f)
         {
             PlayAnimation("Walk");
 
@@ -258,13 +258,10 @@ public class PlayerMovement : MonoBehaviour
 
             //converts rotation to direction / gives the direction you want to move in taking camera into account
             MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-
-
-
         }
         else
         {
-            if(WalkSpeed < currentSpeed && anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+            if (WalkSpeed < currentSpeed && anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
             {
                 PlayAnimation("Skid");
             }
@@ -272,7 +269,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 StopAnimation("Walk");
                 StopAnimation("Run");
-                if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Skid"))
+                if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Skid"))
                 {
                     StopAnimation("Skid");
                 }
@@ -301,7 +298,7 @@ public class PlayerMovement : MonoBehaviour
                 RB.MovePosition(transform.position += transform.forward * currentSpeed * Time.deltaTime);
             }
         }
-        else if(IceFloor)
+        else if (IceFloor)
         {
             RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
         }
