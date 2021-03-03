@@ -3456,7 +3456,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a76143324b607c478a35cdc8e51b030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingSpeed: 6
+  WalkSpeed: 0
+  SpeedAcceleration: 0
+  SpeedDeceleration: 0
   CrouchSpeed: 0
   currentSpeed: 6
   runSpeed: 12
@@ -4688,8 +4690,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5499321236313893288, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}
+      propertyPath: WalkSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893288, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
       propertyPath: GrappleSpeed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893288, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: turnSmoothTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893288, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: SpeedAcceleration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893288, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: SpeedDeceleration
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48e4a3617cb36d94c8ca29d19c0563b7, type: 3}

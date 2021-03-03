@@ -10,8 +10,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement speeds")]
     [SerializeField]
     [Range(1f, 20f)]
-    private float startingSpeed;
+    private float WalkSpeed;
 
+    [SerializeField]
+    [Range(.001f, 2f)]
+    private float SpeedAcceleration;
+
+    [SerializeField]
+    [Range(.001f, 2f)]
+    private float SpeedDeceleration;
 
     [SerializeField]
     [Range(1f, 10f)]
@@ -211,33 +218,42 @@ public class PlayerMovement : MonoBehaviour
             GetComponent<BoxCollider>().center = ColliderCenter;
         }
         //running 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            currentSpeed = runSpeed;
-            if (direction.magnitude >= 0.1f)
+            PlayAnimation("Run");
+            if (currentSpeed < runSpeed)
             {
-                PlayAnimation("Run");
+                print("runspeed");
+                currentSpeed += SpeedAcceleration;
             }
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (!Input.GetKey(KeyCode.LeftShift))
         {
-            currentSpeed = startingSpeed;
+            StopAnimation("Run");
             if (direction.magnitude >= 0.1f)
             {
-                StopAnimation("Run");
+                if (currentSpeed < WalkSpeed)
+                {
+                    print("Walkspeed");
+                    currentSpeed += SpeedAcceleration;
+                }
+                else if (currentSpeed > WalkSpeed)
+                {
+                    print("Walkspeeddown");
+                    currentSpeed -= SpeedAcceleration;
+                }
+            } else
+            {
+                if (currentSpeed > 0)
+                {
+                    currentSpeed -= SpeedDeceleration;
+                }
             }
         }
         if (direction.magnitude >= 0.1f)
         {
+            PlayAnimation("Walk");
 
-            if (currentSpeed == runSpeed)
-            {
-                PlayAnimation("Run");
-            }
-            else
-            {
-                PlayAnimation("Walk");
-            }
             //sees how much is needed to rotate to match camera
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + MainCam.localEulerAngles.y;
 
@@ -250,26 +266,31 @@ public class PlayerMovement : MonoBehaviour
 
                 //converts rotation to direction / gives the direction you want to move in taking camera into account
                 MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                if (!IceFloor)
-                {
-                    //RB.AddForce(MoveDir.normalized * (currentSpeed += 2) , ForceMode.VelocityChange);
-                    RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
-                }
-                else
-                {
-                    currentSpeed = startingSpeed;
-                    RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
-                }
+
             }
 
         }
         else
         {
+
             StopAnimation("Walk");
             StopAnimation("Run");
         }
+        //this is here just incase it gets set to a negative 
+        if(currentSpeed < 0)
+        {
+            currentSpeed = 0;
+        }
 
-
+        if (!IceFloor)
+        {
+            RB.MovePosition(transform.position += MoveDir.normalized * currentSpeed * Time.deltaTime);
+        }
+        else
+        {
+            //currentSpeed = WalkSpeed;
+            RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
+        }
 
 
     }
@@ -302,7 +323,6 @@ public class PlayerMovement : MonoBehaviour
                 //converts rotation to direction / gives the direction you want to move in taking camera into account
                 MoveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-                currentSpeed = startingSpeed;
                 RB.AddForce(MoveDir.normalized * GrappleSpeed * Time.deltaTime, ForceMode.VelocityChange);
 
             }
@@ -503,10 +523,6 @@ public class PlayerMovement : MonoBehaviour
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -Vector3.up, distToGround + GroundedOffset);
-    }
-    public void setSpeed(float newSpeed)
-    {
-        currentSpeed = newSpeed;
     }
     #endregion
 
