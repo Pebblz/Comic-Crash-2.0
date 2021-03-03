@@ -604,6 +604,7 @@ MonoBehaviour:
   yMaxLimit: 80
   distanceMin: 2.5
   distanceMax: 15
+  fallLookAtPosition: -25
   thirdPersonCamera: 1
   MouseSensitivity: 90
 --- !u!20 &1809447978
@@ -1329,7 +1330,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3393017076302145250}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.43774, y: 5.208458, z: 38.988846}
+  m_LocalPosition: {x: -17.43774, y: 3.58, z: 38.988846}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 4103364944534905879}
@@ -2553,7 +2554,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3393017076302145250}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dee2920aa494ecf4a8df52e69d0999ef, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -5517,7 +5518,7 @@ PrefabInstance:
     - target: {fileID: 9205094277363444592, guid: 516db69eeff003c47861bca5e2c7f799,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -47.2
+      value: -41.6
       objectReference: {fileID: 0}
     - target: {fileID: 9205094277363444592, guid: 516db69eeff003c47861bca5e2c7f799,
         type: 3}
