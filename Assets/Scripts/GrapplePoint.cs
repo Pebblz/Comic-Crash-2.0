@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class GrapplePoint : MonoBehaviour
 {
     [Tooltip("The range that PeaShooter can hit the grapple point from")]

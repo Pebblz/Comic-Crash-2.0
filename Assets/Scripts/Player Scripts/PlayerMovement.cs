@@ -122,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     [SerializeField]
-    [Range(.01f, 1f)]
+    [Range(.01f, 3f)]
     float LedgeOffset;
 
     [SerializeField]
@@ -152,8 +152,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        if (LedgeGrabbing)
+        {
+            Ledgegrabbing();
+        }
+    }
+    void FixedUpdate()
     {
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
@@ -188,10 +194,6 @@ public class PlayerMovement : MonoBehaviour
                             StopAnimation("Dive");
                         }
                     }
-                }
-                else
-                {
-                    Ledgegrabbing();
                 }
             }
             else
@@ -249,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
-        if(direction.magnitude >= 0.1f)
+        if (direction.magnitude >= 0.1f)
         {
             PlayAnimation("Walk");
 
@@ -491,9 +493,11 @@ public class PlayerMovement : MonoBehaviour
     public void Ledgegrabbing()
     {
         PlayAnimation("Hanging");
-        RB.velocity = Vector3.zero;
         RB.useGravity = false;
-        transform.LookAt(new Vector3(Ledge.transform.position.x - transform.position.x, transform.position.y, Ledge.transform.position.z - transform.position.z));
+        RB.velocity = Vector3.zero;
+        currentSpeed = 0;
+
+        transform.rotation = new Quaternion(0, transform.rotation.y - Ledge.transform.position.y, 0, transform.rotation.w);
         transform.position = new Vector3(transform.position.x, Ledge.transform.position.y - LedgeOffset, transform.position.z);
         if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
         {

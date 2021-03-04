@@ -31,7 +31,7 @@ public class Camera : MonoBehaviour
     float yMaxLimit = 80f;
 
     [Tooltip("The min distance for scrolling in")]
-    [Range(.5f, 2f)]
+    [Range(.5f, 5f)]
     [SerializeField]
     float distanceMin = .5f;
 
