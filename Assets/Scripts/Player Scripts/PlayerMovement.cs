@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
                         }
                     }
                 }
-                else if (LedgeGrabbing)
+                else
                 {
                     Ledgegrabbing();
                 }

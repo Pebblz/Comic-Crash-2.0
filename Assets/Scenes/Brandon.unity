@@ -407,7 +407,7 @@ MonoBehaviour:
   ySpeed: 90
   yMinLimit: 20
   yMaxLimit: 80
-  distanceMin: 2.5
+  distanceMin: 2
   distanceMax: 15
   fallLookAtPosition: -25
   thirdPersonCamera: 1
@@ -1099,6 +1099,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PeaShooter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499321236313893288, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: DashSpeed
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5499321236313893288, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}
