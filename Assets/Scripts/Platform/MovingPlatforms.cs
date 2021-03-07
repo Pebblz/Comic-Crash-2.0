@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ParentPlayer))]
 public class MovingPlatforms : MonoBehaviour
 {
     [Header("Direction")]

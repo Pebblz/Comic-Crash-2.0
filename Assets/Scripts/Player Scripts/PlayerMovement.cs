@@ -109,9 +109,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Offsets")]
 
-    [SerializeField]
-    [Range(.01f, 3f)]
-    float GroundedOffset;
 
     [SerializeField]
     [Range(0, .5f)]
@@ -452,15 +449,14 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed)
         {
             StopAnimation("IsLanded");
-            RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
-            jumpsMade += 1;
-            if (jumpsMade == 1)
+            if (jumpsMade == 0)
             {
                 PlayAnimation("DoubleJump");
             }
-
+            RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+            jumpsMade += 1;
         }
-        else if (Input.GetKey(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping)
+        else if (Input.GetKeyDown(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping)
         {
 
             PlayAnimation("Dive");
@@ -497,7 +493,7 @@ public class PlayerMovement : MonoBehaviour
         RB.velocity = Vector3.zero;
         currentSpeed = 0;
 
-        transform.rotation = new Quaternion(0, transform.rotation.y - Ledge.transform.position.y, 0, transform.rotation.w);
+        transform.rotation = new Quaternion(0, -Ledge.transform.rotation.y, 0, transform.rotation.w);
         transform.position = new Vector3(transform.position.x, Ledge.transform.position.y - LedgeOffset, transform.position.z);
         if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W))
         {
@@ -539,7 +535,7 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + GroundedOffset);
+        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
     }
     #endregion
 
