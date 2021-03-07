@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float GrappleSpeed;
 
-    private int jumpsMade;
+    private int jumpsMade = 0;
     #endregion
 
     #region Other Vars
@@ -107,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 ColliderCenter;
 
+    private float jumpTimer;
     [Header("Offsets")]
 
 
@@ -127,6 +128,11 @@ public class PlayerMovement : MonoBehaviour
     float LedgeGetUpOffset;
 
 
+    [SerializeField]
+    [Range(1f, 90f)]
+    float SlopeLimit;
+
+
     [HideInInspector]
     public bool IceFloor;
     [HideInInspector]
@@ -138,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
     #region MonoBehaviours
     void Start()
     {
-        distToGround = GetComponent<Collider>().bounds.extents.y;
+        distToGround = GetComponent<Collider>().bounds.extents.y - .4f;
         RB = GetComponent<Rigidbody>();
         MainCam = GameObject.FindGameObjectWithTag("MainCamera").transform;
         anim = GetComponent<Animator>();
@@ -446,26 +452,28 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         //player Jumps
-        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed)
+        if (Input.GetKey(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <=0)
         {
             StopAnimation("IsLanded");
+            RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
             if (jumpsMade == 0)
             {
                 PlayAnimation("DoubleJump");
             }
-            RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
-            jumpsMade += 1;
+          
+            jumpsMade++;
+            jumpTimer = .3f;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping)
+        else if (Input.GetKeyDown(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping && jumpTimer <= 0)
         {
 
             PlayAnimation("Dive");
             Vector3 DashDir = transform.forward * DashSpeed;
             RB.velocity = new Vector3(DashDir.x, 0, DashDir.z);
             DoneJumping = true;
+            jumpTimer = .3f;
         }
-
-        if (Input.GetKey(KeyCode.Space) && RB.velocity.y > .1f)
+        if(Input.GetKey(KeyCode.Space) && RB.velocity.y >.1f)
         {
             PlayAnimation("Jump");
         }
@@ -482,6 +490,7 @@ public class PlayerMovement : MonoBehaviour
             jumpsMade = 0;
 
         }
+        jumpTimer -= Time.deltaTime;
     }
     /// <summary>
     /// This is here for ledgeGrabbing
@@ -504,6 +513,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StopAnimation("Getup");
             transform.position = transform.position + new Vector3(0, LedgeGetUpOffset, 0);
+            transform.position += transform.forward * 2;
             LedgeGrabbing = false;
         }
     }
