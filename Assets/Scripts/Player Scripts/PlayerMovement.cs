@@ -500,6 +500,7 @@ public class PlayerMovement : MonoBehaviour
         PlayAnimation("Hanging");
         RB.useGravity = false;
         RB.velocity = Vector3.zero;
+        MoveDir = Vector3.zero;
         currentSpeed = 0;
 
         transform.rotation = new Quaternion(0, -Ledge.transform.rotation.y, 0, transform.rotation.w);

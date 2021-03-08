@@ -76,7 +76,8 @@ public class GrapplePoint : MonoBehaviour
         if (InGrapple)
         {
             DrawRope();
-            if (Input.GetKeyDown(KeyCode.Q) && GrappleTimer < 0)
+            if (Input.GetKeyDown(KeyCode.Q) && GrappleTimer < 0 || 
+                Input.GetKeyDown(KeyCode.Space) && GrappleTimer < 0)
             {
                 StopGrapple();
                 InGrapple = false;
