@@ -99,8 +99,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator anim;
 
-
-
+    [SerializeField]
+    float maxGroundAngle;
     private bool Grounded;
 
     private Vector3 ColliderScale;
@@ -164,46 +164,55 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+        float angle = GetGroundAngle();
+        print(angle.ToString());
+        if (angle < maxGroundAngle)
         {
-            if (!InGrapple)
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
             {
-                if (!LedgeGrabbing)
+                if (!InGrapple)
                 {
-                    StopAnimation("Hanging");
-                    StopAnimation("Grapple");
-                    RB.useGravity = true;
-                    if (!Input.GetKey(KeyCode.C))
+                    if (!LedgeGrabbing)
                     {
-                        StopAnimation("Crouching");
-                        if (!Roll)
+                        StopAnimation("Hanging");
+                        StopAnimation("Grapple");
+                        RB.useGravity = true;
+                        if (!Input.GetKey(KeyCode.C))
                         {
-                            regularMovement();
+                            StopAnimation("Crouching");
+                            if (!Roll)
+                            {
+                                regularMovement();
+                            }
+                            else
+                            {
+                                rolling();
+                            }
+                            Jump();
                         }
-                        else
+                        else if (Input.GetKey(KeyCode.C))
                         {
-                            rolling();
-                        }
-                        Jump();
-                    }
-                    else if (Input.GetKey(KeyCode.C))
-                    {
-                        PlayAnimation("Crouching");
-                        Crouch();
-                        if (IsGrounded())
-                        {
-                            StopAnimation("Jump");
-                            StopAnimation("DoubleJump");
-                            StopAnimation("Dive");
+                            PlayAnimation("Crouching");
+                            Crouch();
+                            if (IsGrounded())
+                            {
+                                StopAnimation("Jump");
+                                StopAnimation("DoubleJump");
+                                StopAnimation("Dive");
+                            }
                         }
                     }
                 }
+                else
+                {
+                    PlayAnimation("Grapple");
+                    GrappleMovement();
+                }
             }
-            else
-            {
-                PlayAnimation("Grapple");
-                GrappleMovement();
-            }
+        } else if(angle > maxGroundAngle || angle <= 0.01f)
+        {
+
+            RB.velocity = new Vector3(RB.velocity.x, -Mathf.Lerp(RB.velocity.y, 300, .05f), RB.velocity.z);
         }
     }
     #endregion
@@ -452,7 +461,7 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         //player Jumps
-        if (Input.GetKey(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <=0)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <=0)
         {
             StopAnimation("IsLanded");
             RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
@@ -547,6 +556,15 @@ public class PlayerMovement : MonoBehaviour
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+    }
+    private float GetGroundAngle()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1f))
+        {
+            return Vector3.Angle(Vector3.up, hit.normal);
+        }
+        return 0;
     }
     #endregion
 
