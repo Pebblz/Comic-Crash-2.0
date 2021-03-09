@@ -165,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         float angle = GetGroundAngle();
-        print(angle.ToString());
+
         if (angle < maxGroundAngle)
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
