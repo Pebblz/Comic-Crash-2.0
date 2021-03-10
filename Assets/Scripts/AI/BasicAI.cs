@@ -111,7 +111,7 @@ public class BasicAI : MonoBehaviour
                 body.isKinematic = true;
                 //this resets it so if it sees you again it's suprised
                 JumpOnInteractOnce = false;
-                if (IsGrounded())
+                if (IsGrounded() && jumpTimer <= 0)
                 {
                     //this is here so if the player comes into contact with the agent
                     //it'll go back to where it was going before finding the player 
@@ -136,7 +136,7 @@ public class BasicAI : MonoBehaviour
     {
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
     }
     public void AIHit(int HealthTaken)
     {
