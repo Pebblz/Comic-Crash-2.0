@@ -48,7 +48,7 @@ public class AIDeath : MonoBehaviour
     {
         this.GetComponent<BoxCollider>().enabled = false;
         this.GetComponent<BasicAI>().enabled = false;
-        this.transform.localScale -= new Vector3(0, .6f, 0);
+        this.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y/3,transform.localScale.z);
         this.transform.localPosition -= new Vector3(0, .3f, 0);
         timerStart = true;
     }
