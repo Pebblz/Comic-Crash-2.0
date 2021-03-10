@@ -171,7 +171,6 @@ public class BasicAI : MonoBehaviour
         agent.enabled = false;
         body.isKinematic = false;
         body.velocity = new Vector3(body.velocity.x, body.velocity.y + HopSpeed, body.velocity.z);
-        print("Boom");
         jumpTimer = .8f;
         mark.SetActive(true);
         transform.LookAt(new Vector3(target.position.x,transform.position.y,target.position.z));
