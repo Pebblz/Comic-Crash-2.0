@@ -14,6 +14,9 @@ public class BasicAI : MonoBehaviour
     [Range(1, 10)]
     int Damage;
 
+    [SerializeField]
+    [Range(1, 10)]
+    int HopSpeed;
 
     [SerializeField]
     [Range(.1f, 5f)]
@@ -39,20 +42,28 @@ public class BasicAI : MonoBehaviour
 
     float HitTimer;
 
+    float jumpTimer;
+
     float wanderTimer;
 
     Vector3 wanderposition;
+
+    bool JumpOnInteractOnce;
+    [SerializeField]
+    [Tooltip("The !")]
+    GameObject mark;
+
+    Rigidbody body;
     void Start()
     {
-        //this is here so you can start wandering 
+        body = GetComponent<Rigidbody>();
         wanderposition = transform.position;
-
         agent = GetComponent<NavMeshAgent>();
         target = PlayerManager.instance.Player.transform;
         currentHealth = maxHealth;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if(target == null)
         {
@@ -62,19 +73,28 @@ public class BasicAI : MonoBehaviour
             }
         }else
         {
-            
-
             float distance = Vector3.Distance(target.position, transform.position);
 
             if(distance <= LookRadius)
             {
                 if (distance > agent.stoppingDistance)
                 {
-                    agent.SetDestination(target.position);
+                    if (!JumpOnInteractOnce)
+                    {
+                        FoundPlayer();
+                    }
+                    if (jumpTimer <= 0)
+                    {
+                        body.isKinematic = true;
+                        agent.enabled = true;
+                        agent.SetDestination(target.position);
+                        mark.SetActive(false);
+                    }
                 }
                 if(distance <= agent.stoppingDistance)
                 {
-                    if (HitTimer <= 0)
+                    //it checks to see if the players grounded or not before attacking it 
+                    if (HitTimer <= 0 && target.gameObject.GetComponent<PlayerMovement>().Grounded)
                     {
                         attackPlayer();
                         HitTimer = .3f;
@@ -83,6 +103,9 @@ public class BasicAI : MonoBehaviour
                 }
             } else if(distance > LookRadius && wanderTimer <= 0)
             {
+                body.isKinematic = true;
+                //this resets it so if it sees you again it's suprised
+                JumpOnInteractOnce = false;
                 //this is here so if the player comes into contact with the agent
                 //it'll go back to where it was going before finding the player 
                 if (Vector3.Distance(transform.position, wanderposition) <= agent.stoppingDistance)
@@ -94,11 +117,11 @@ public class BasicAI : MonoBehaviour
                     wanderTimer = Random.Range(minWanderWaitTime, maxWanderWaitTime);
                     agent.SetDestination(wanderposition);
                 }
-                
             }
         }
         wanderTimer -= Time.deltaTime;
         HitTimer -= Time.deltaTime;
+        jumpTimer -= Time.deltaTime;
     }
     void FaceTarget()
     {
@@ -120,8 +143,6 @@ public class BasicAI : MonoBehaviour
     }
     void die()
     {
-        //play Death animation
-
         Destroy(gameObject);
     }
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
@@ -135,5 +156,16 @@ public class BasicAI : MonoBehaviour
         NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
 
         return navHit.position;
+    }
+    void FoundPlayer()
+    {
+        agent.enabled = false;
+        body.isKinematic = false;
+        body.velocity = new Vector3(body.velocity.x,body.velocity.y + HopSpeed, body.velocity.z);
+        print("Boom");
+        jumpTimer = .8f;
+        mark.SetActive(true);
+        transform.LookAt(target);
+        JumpOnInteractOnce = true;
     }
 }

@@ -101,7 +101,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     float maxGroundAngle;
-    private bool Grounded;
+    [HideInInspector]
+    public bool Grounded;
 
     private Vector3 ColliderScale;
 
@@ -165,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         float angle = GetGroundAngle();
-
+        Grounded = IsGrounded();
         if (angle < maxGroundAngle)
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
@@ -500,6 +501,11 @@ public class PlayerMovement : MonoBehaviour
 
         }
         jumpTimer -= Time.deltaTime;
+    }
+    public void jumpOnEnemy()
+    {
+        RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+        jumpsMade = 0;
     }
     /// <summary>
     /// This is here for ledgeGrabbing
