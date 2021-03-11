@@ -5,11 +5,11 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("The max health the player would be able to get to")]
     [Range(1f, 10f)]
     [SerializeField]
-    int maxHealth;
+    public int maxHealth;
 
     [Tooltip("The current health of the player")]
     [SerializeField]
-    int currentHealth;
+    public int currentHealth;
     private void Awake()
     {
         //this is for if you forget to set the current health 

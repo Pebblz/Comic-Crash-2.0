@@ -20,17 +20,50 @@ public class Collectible : MonoBehaviour
             if (collect == collectible.Coin)
             {
                 gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
+                Destroy(this.gameObject);
             }
-            if (collect == collectible.MainCollectible)
+            else if (collect == collectible.MainCollectible)
             {
                 gm.GetComponent<GameManager>().CollectibleCount += numberGivenToPlayer;
+                Destroy(this.gameObject);
             }
-            Destroy(this.gameObject);
+            else if(collect == collectible.HeartOne)
+            {
+                if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
+                {
+                    col.gameObject.GetComponent<PlayerHealth>().currentHealth += 1;
+                    Destroy(this.gameObject);
+                } else
+                {
+                    print("Your at max health dumb dumb");
+                }
+            } else if(collect == collectible.maxHealthUp)
+            {
+                col.gameObject.GetComponent<PlayerHealth>().maxHealth += 1;
+                col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
+                print("new health = " + col.gameObject.GetComponent<PlayerHealth>().maxHealth);
+                Destroy(this.gameObject);
+            } else if( collect == collectible.FullHeal)
+            {
+                if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
+                {
+                    col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                    print("Your at max health dumb dumb");
+                }
+            }
+
         }
     }
     enum collectible
     {
         Coin,
-        MainCollectible
+        MainCollectible,
+        HeartOne,
+        FullHeal,
+        maxHealthUp
     }
 }

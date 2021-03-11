@@ -507,6 +507,11 @@ public class PlayerMovement : MonoBehaviour
         RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
         jumpsMade = 0;
     }
+    public void jumpOnBouncePad(float distance)
+    {
+        RB.velocity = new Vector3(MoveDir.x, distance, MoveDir.z);
+        jumpsMade = 0;
+    }
     /// <summary>
     /// This is here for ledgeGrabbing
     /// </summary>

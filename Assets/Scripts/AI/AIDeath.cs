@@ -56,6 +56,8 @@ public class AIDeath : MonoBehaviour
     {
         Jump,
         Shoot,
-        Crush
+        Crush,
+        attacked,
+        falling
     }
 }
