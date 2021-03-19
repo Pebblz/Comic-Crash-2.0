@@ -9,7 +9,7 @@ public class RotatingPlatform : MonoBehaviour
     [SerializeField]
     float RotationSpeed;
 
-    [Tooltip("The direction platform rotates the number needs to be set to 1 or -1 to work correctly. 1 means it moves forward on the axis and -1 means it moves backwords on the axis")]
+    [Tooltip("The direction the platform rotates the number needs to be set to 1 or -1 to work correctly. 1 means it moves forward on the axis and -1 means it moves backwords on the axis")]
     public Vector3 direction;
 
     [Tooltip("if active is true it'll work")]

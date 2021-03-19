@@ -43,6 +43,10 @@ public class AIDeath : MonoBehaviour
                 }
             }
         }
+        if (list.Contains(DeathList.Shoot))
+        {
+
+        }
     }
     void CrushBot()
     {
