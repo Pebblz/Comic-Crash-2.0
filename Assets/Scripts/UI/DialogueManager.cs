@@ -19,7 +19,7 @@ public class DialogueManager : MonoBehaviour
     {
         sentences = new Queue<string>();
     }
-
+    //this starts the dialogue
     public void StartDialogue(Dialogue dialogue)
     {
         textPanal.SetActive(true);
@@ -43,15 +43,17 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(TypeSentence(sentence));
     }
+    //this slowly writes the text
     IEnumerator TypeSentence(string sentence)
     {
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(.04f);
+            yield return new WaitForSeconds(.02f);
         }
     }
+    //this ends the dialogue
     public void EndDialogue()
     {
         dialogueText.text = "";
