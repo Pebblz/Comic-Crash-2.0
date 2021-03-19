@@ -14,7 +14,8 @@ public class DialogueManager : MonoBehaviour
 
     [HideInInspector]
     public GameObject NPC;
-    public GameObject GM;
+    
+    GameObject GM;
     // Start is called before the first frame update
     void Start()
     {

@@ -10,6 +10,17 @@ public class NPCTalkable : MonoBehaviour
     [Tooltip("This is for the different ways the player can talk to the NPC")]
     WaysToStartConversation ways;
 
+
+    [SerializeField]
+    [Tooltip("These are the possible things that the player can recive if talked to the bot")]
+    ThingsToGivePlayer thingsGivenToPlayer;
+
+    [SerializeField]
+    [Range(1,5)]
+    int amountGiven;
+
+    private bool GavePlayerAlready = false;
+
     GameObject player;
 
     [Tooltip("Set this if Ways == GetClose")]
@@ -46,6 +57,9 @@ public class NPCTalkable : MonoBehaviour
     }
     public void DoneTalking()
     {
+        if (!GavePlayerAlready)
+            GivePlayerItem();
+
         player.GetComponent<PlayerMovement>().enabled = true;
         talking = false;
     }
@@ -61,8 +75,28 @@ public class NPCTalkable : MonoBehaviour
     }
     public void EndDialogue()
     {
+        if(!GavePlayerAlready)
+            GivePlayerItem();
+
         talking = false;
         FindObjectOfType<DialogueManager>().EndDialogue();
+    }
+    void GivePlayerItem()
+    {
+        if (!GavePlayerAlready && thingsGivenToPlayer != ThingsToGivePlayer.None)
+        {
+            if (thingsGivenToPlayer == ThingsToGivePlayer.Coin)
+            {
+                FindObjectOfType<GameManager>().coinCount += amountGiven;
+                print(FindObjectOfType<GameManager>().coinCount);
+            }
+            else if (thingsGivenToPlayer == ThingsToGivePlayer.Collectible)
+            {
+                FindObjectOfType<GameManager>().CollectibleCount += amountGiven;
+                print(FindObjectOfType<GameManager>().CollectibleCount);
+            }
+            GavePlayerAlready = true;
+        }
     }
     //these are the different ways that the player can talk to the npc
     enum WaysToStartConversation
@@ -70,5 +104,11 @@ public class NPCTalkable : MonoBehaviour
         GetClose,
         TriggerBox,
         KillAnEnemy
+    }
+    enum ThingsToGivePlayer
+    {
+        None,
+        Coin,
+        Collectible
     }
 }
