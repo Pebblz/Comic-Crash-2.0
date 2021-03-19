@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     #region MonoBehaviours
     void Start()
     {
-        //lockCursor();
+        lockCursor();
         //this is how you'd load prev game data 
 
         //string Filepath = GetCurDir() + "/" + Gamedata;
