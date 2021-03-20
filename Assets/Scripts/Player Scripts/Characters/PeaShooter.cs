@@ -8,13 +8,10 @@ public class PeaShooter : MonoBehaviour
 
     private float NextAttack;
 
-    [Tooltip("The prefab used for the bullet")]
-    [SerializeField]
+    [SerializeField, Tooltip("The prefab used for the bullet")]
     GameObject BulletPrefab;
 
-    [Tooltip("The speed that the bullet goes when being fired")]
-    [Range(1000f, 5000f)]
-    [SerializeField]
+    [SerializeField, Range(1000f, 5000f), Tooltip("The speed that the bullet goes when being fired")]
     float shotSpeed;
 
 

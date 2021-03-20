@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class ConveyerBelt : MonoBehaviour
 {
-    [Tooltip("The speed at which the conveyer belt moves things")]
-    [Range(200, 1500)]
-    [SerializeField]
+    [SerializeField, Range(200, 1500), Tooltip("The speed at which the conveyer belt moves things")]
     float speed;
 
-    [Tooltip("The direction the conveyer belt moves the number needs to be set to 1 or -1 to work correctly. 1 means it moves forward on the axis and -1 means it moves backwords on the axis")]
-    [SerializeField]
+    [SerializeField, Tooltip("The direction the conveyer belt moves the number needs to be set to 1 or -1 to work correctly. 1 means it moves forward on the axis and -1 means it moves backwords on the axis")]
     public Vector3 direction;
 
-    [Tooltip("The gameobjects on the belt currently")]
-    [SerializeField]
+    [SerializeField, Tooltip("The gameobjects on the belt currently")]
     List<GameObject> onBelt;
 
-    [Tooltip("if this is set active the conveyer belt is working")]
-    [SerializeField]
+    [SerializeField, Tooltip("if this is set active the conveyer belt is working")]
     public bool active = true;
 
     void Update()

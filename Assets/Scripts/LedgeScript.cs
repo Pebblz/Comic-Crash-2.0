@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class LedgeScript : MonoBehaviour
 {
-    [Tooltip("If this is false the player will do his balance on ledge animation, if true he'll grab the ledge")]
-    [SerializeField]
+    [SerializeField, Tooltip("If this is false the player will do his balance on ledge animation, if true he'll grab the ledge")]
     bool GrabLedge;
     private void OnTriggerEnter(Collider col)
     {

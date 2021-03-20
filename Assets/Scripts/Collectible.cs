@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    [Tooltip("This is here for all the diffrent collectibles in the game")]
-    [SerializeField]
+    [SerializeField, Tooltip("This is here for all the diffrent collectibles in the game")]
     collectible collect;
 
-    [Tooltip("This would be here for if we have like a gold coin that would give 5 coins instead of 1")]
-    [Range(1, 5)]
-    [SerializeField]
+    [SerializeField, Range(1, 5), Tooltip("This would be here for if we have like a gold coin that would give 5 coins instead of 1")]
     int numberGivenToPlayer;
     private void OnTriggerEnter(Collider col)
     {

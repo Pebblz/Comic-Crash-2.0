@@ -2,13 +2,10 @@
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Tooltip("The max health the player would be able to get to")]
-    [Range(1f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 10f), Tooltip("The max health the player would be able to get to")]
     public int maxHealth;
 
-    [Tooltip("The current health of the player")]
-    [SerializeField]
+    [SerializeField, Tooltip("The current health of the player")]
     public int currentHealth;
     private void Awake()
     {

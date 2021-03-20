@@ -6,25 +6,21 @@ public class NPCTalkable : MonoBehaviour
 {
     public Dialogue dialogue;
 
-    [SerializeField]
-    [Tooltip("This is for the different ways the player can talk to the NPC")]
+    [SerializeField, Tooltip("This is for the different ways the player can talk to the NPC")]
     WaysToStartConversation ways;
 
 
-    [SerializeField]
-    [Tooltip("These are the possible things that the player can recive if talked to the bot")]
+    [SerializeField, Tooltip("These are the possible things that the player can recive if talked to the bot")]
     ThingsToGivePlayer thingsGivenToPlayer;
 
-    [SerializeField]
-    [Range(1,5)]
+    [SerializeField, Range(1, 5)]
     int amountGiven;
 
     private bool GavePlayerAlready = false;
 
     GameObject player;
 
-    [Tooltip("Set this if Ways == GetClose")]
-    [SerializeField]
+    [SerializeField, Tooltip("Set this if Ways == GetClose")]
     float Talkdistance;
 
     bool talking = false;

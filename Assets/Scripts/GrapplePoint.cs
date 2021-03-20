@@ -5,9 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class GrapplePoint : MonoBehaviour
 {
-    [Tooltip("The range that PeaShooter can hit the grapple point from")]
-    [SerializeField]
-    [Range(1f, 20f)]
+    [SerializeField, Range(1f, 20f), Tooltip("The range that PeaShooter can hit the grapple point from")]
     float Range;
 
 
@@ -19,23 +17,19 @@ public class GrapplePoint : MonoBehaviour
     //[SerializeField]
     //GameObject Q;
 
-    [SerializeField]
-    [Range(.1f, 1f)]
+    [SerializeField, Range(.1f, 1f)]
     float MingrappleDist;
 
-
-    [SerializeField]
-    [Range(.5f, 3f)]
+    [SerializeField, Range(.5f, 3f)]
     float MaxgrappleDist;
 
-    [SerializeField]
-    [Range(1f, 10f)]
+    [SerializeField, Range(1f, 10f)]
     float JointSpring;
-    [SerializeField]
-    [Range(5f, 10f)]
+
+    [SerializeField, Range(5f, 10f)]
     float JointDamper;
-    [SerializeField]
-    [Range(1f, 30f)]
+
+    [SerializeField, Range(1f, 30f)]
     float JointMassScale;
 
     private LineRenderer LR;

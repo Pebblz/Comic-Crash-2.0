@@ -4,25 +4,19 @@ using UnityEngine;
 
 public class Button : MonoBehaviour
 {
-    [Tooltip("If this is true you can only hit the button once and it wont be re-hittable")]
-    [SerializeField]
+    [SerializeField, Tooltip("If this is true you can only hit the button once and it wont be re-hittable")]
     bool HitOnce = true;
 
-    [Tooltip("The Object that'll be getting changed based on the Action enum")]
-    [SerializeField]
+    [SerializeField, Tooltip("The Object that'll be getting changed based on the Action enum")]
     GameObject ImpactedGameobject;
 
-
-    [Tooltip("The Object that'll be getting changed based on the Action enum")]
-    [SerializeField]
+    [SerializeField, Tooltip("The Object that'll be getting changed based on the Action enum")]
     WaysToActivate waysToActivate;
 
-    [Tooltip("Change this to decide what you want to change with the lever switch")]
-    [SerializeField]
+    [SerializeField, Tooltip("Change this to decide what you want to change with the lever switch")]
     Action action;
 
-    [Tooltip("The gameobjects on the belt currently")]
-    [SerializeField]
+    [SerializeField, Tooltip("The gameobjects on the belt currently")]
     List<GameObject> onButton;
 
     private bool active = false;

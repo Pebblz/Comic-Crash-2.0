@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class TelePorter : MonoBehaviour
 {
-    [Tooltip("The TelePorter that this teleporter will send you to")]
-    [SerializeField]
+    [SerializeField, Tooltip("The TelePorter that this teleporter will send you to")]
     GameObject OtherTelePorter;
 
-    [Tooltip("If this is tagged true on one of the teleporters, it'll send you to the teleporter tagged true but wont send you back")]
-    [SerializeField]
+    [SerializeField, Tooltip("If this is tagged true on one of the teleporters, it'll send you to the teleporter tagged true but wont send you back")]
     bool OneWay = false;
 
     private float TeleporterTimer;

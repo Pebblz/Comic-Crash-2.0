@@ -6,36 +6,29 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class BasicAI : MonoBehaviour
 {
-    [SerializeField]
-    [Range(10, 500)]
+    [SerializeField, Range(10, 500)]
     int maxHealth;
 
-    [SerializeField]
-    [Range(1, 10)]
+    [SerializeField, Range(1, 10)]
     int Damage;
 
-    [SerializeField]
-    [Range(1, 10)]
+    [SerializeField, Range(1, 10)]
     int HopSpeed;
 
-    [SerializeField]
-    [Range(.1f, 5f)]
+    [SerializeField, Range(.1f, 5f)]
     float maxWanderWaitTime;
 
-    [SerializeField]
-    [Range(.1f, 10f)]
+    [SerializeField, Range(.1f, 10f)]
     float minWanderWaitTime;
 
     public int currentHealth { get; private set; }
 
     NavMeshAgent agent;
 
-    [SerializeField]
-    [Range(1, 20)]
+    [SerializeField, Range(1, 20)]
     int LookRadius;
 
-    [SerializeField]
-    [Range(1, 20)]
+    [SerializeField, Range(1, 20)]
     int WanderRadius;
 
     Transform target;
@@ -49,8 +42,7 @@ public class BasicAI : MonoBehaviour
     Vector3 wanderposition;
 
     bool JumpOnInteractOnce;
-    [SerializeField]
-    [Tooltip("The !")]
+    [SerializeField, Tooltip("The !")]
     GameObject mark;
 
     Rigidbody body;

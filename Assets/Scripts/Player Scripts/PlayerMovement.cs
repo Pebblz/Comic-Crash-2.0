@@ -8,72 +8,53 @@ public class PlayerMovement : MonoBehaviour
 
     #region Speed Vars
     [Header("Movement speeds")]
-    [SerializeField]
-    [Range(1f, 20f)]
+
+    [SerializeField, Range(1f, 20f)] 
     private float WalkSpeed;
 
-    [SerializeField]
-    [Range(.001f, 2f)]
+    [SerializeField, Range(.001f, 2f)] 
     private float SpeedAcceleration;
 
-    [SerializeField]
-    [Range(.001f, 2f)]
+    [SerializeField, Range(.001f, 2f)]
     private float SpeedDeceleration;
 
-    [SerializeField]
-    [Range(1f, 10f)]
+    [SerializeField, Range(1f, 10f)]
     private int CrouchSpeed;
 
     [HideInInspector]
     public float currentSpeed;
 
-    [Range(5f, 30f)]
-    [SerializeField]
+    [SerializeField, Range(5f, 30f)]
     private float runSpeed;
 
-    [Range(1f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 10f)]
     float jumpSpeed;
 
-    [Range(.1f, .5f)]
-    [SerializeField]
+    [SerializeField, Range(.1f, .5f)]
     float turnSmoothTime = .1f;
 
     [HideInInspector]
     float curRollSpeed = 0;
 
-    [Range(100f, 120f)]
-    [SerializeField]
+    [SerializeField, Range(100f, 120f)]
     float maxRollSpeed;
 
-    [Tooltip("How fast it'll Accelerate")]
-    [Range(20f, 40f)]
-    [SerializeField]
+    [SerializeField, Range(20f, 40f), Tooltip("How fast it'll Accelerate")]
     float RollAcceleration;
 
-    [Tooltip("How fast it'll Decelerate")]
-    [Range(.1f, 1f)]
-    [SerializeField]
+    [SerializeField, Range(.1f, 1f), Tooltip("How fast it'll Decelerate")]
     float RollDeceleration;
 
-    [Tooltip("Amount of jumps allowed")]
-    [Range(0, 5)]
-    [SerializeField]
+    [SerializeField, Range(0, 5), Tooltip("Amount of jumps allowed")]
     int jumpsAllowed;
 
-    [Tooltip("The speed of the dash")]
-    [Range(1f, 20f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 20f), Tooltip("The speed of the dash")]
     float DashSpeed;
 
-    [Tooltip("The speed of the Slide")]
-    [Range(1f, 20f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 20f), Tooltip("The speed of the Slide")]
     float SlideSpeed;
 
-    [Tooltip("The speed of the Grapple")]
-    [Range(1f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 10f), Tooltip("The speed of the Grapple")]
     float GrappleSpeed;
 
     private int jumpsMade = 0;
@@ -111,35 +92,28 @@ public class PlayerMovement : MonoBehaviour
     private float jumpTimer;
     [Header("Offsets")]
 
-
-    [SerializeField]
-    [Range(0, .5f)]
+    [SerializeField, Range(0, .5f)]
     float CrouchOffsetY;
 
-    [HideInInspector]
-    public GameObject Ledge;
-
-
-    [SerializeField]
-    [Range(.01f, 3f)]
+    [SerializeField, Range(.01f, 3f)]
     float LedgeOffset;
 
-    [SerializeField]
-    [Range(.5f, 3f)]
+    [SerializeField, Range(.5f, 3f)]
     float LedgeGetUpOffset;
 
-
-    [SerializeField]
-    [Range(1f, 90f)]
+    [SerializeField, Range(1f, 90f)]
     float SlopeLimit;
-
 
     [HideInInspector]
     public bool IceFloor;
+
     [HideInInspector]
     public bool InGrapple;
 
     private bool DoneJumping;
+
+    [HideInInspector]
+    public GameObject Ledge;
     #endregion
 
     #region MonoBehaviours

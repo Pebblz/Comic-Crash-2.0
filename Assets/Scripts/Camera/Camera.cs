@@ -5,60 +5,42 @@ public class Camera : MonoBehaviour
     [Tooltip("This is what the camera will be focusing on in game")]
     public Transform target;
 
-    [Tooltip("The starting distance away from the player")]
-    [Range(1f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 10f), Tooltip("The starting distance away from the player")]
     float distance = 5.0f;
 
-    [Tooltip("How fast the camera can go left to right")]
-    [Range(100f, 160f)]
-    [SerializeField]
+    [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go left to right")]
     float xSpeed = 120.0f;
 
-    [Tooltip("How fast the camera can go up and down")]
-    [Range(100f, 160f)]
-    [SerializeField]
+    [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go up and down")]
     float ySpeed = 120.0f;
 
-    [Tooltip("How far the camera can rotate down")]
-    [Range(-45f, 45f)]
-    [SerializeField]
+    [SerializeField, Range(-45f, 45f), Tooltip("How far the camera can rotate down")]
     float yMinLimit = -20f;
 
-    [Tooltip("How far the camera can rotate up")]
-    [Range(75f, 90f)]
-    [SerializeField]
+    [SerializeField, Range(75f, 90f), Tooltip("How far the camera can rotate up")]
     float yMaxLimit = 80f;
 
-    [Tooltip("The min distance for scrolling in")]
-    [Range(.5f, 5f)]
-    [SerializeField]
+    [SerializeField, Range(.5f, 5f), Tooltip("The min distance for scrolling in")]
     float distanceMin = .5f;
 
-    [Tooltip("The max distance away for scrolling out")]
-    [Range(10f, 20f)]
-    [SerializeField]
+    [SerializeField, Range(10f, 20f), Tooltip("The max distance away for scrolling out")]
     float distanceMax = 15f;
 
     float x = 0.0f;
     float y = 0.0f;
 
-    [SerializeField]
-    [Range(-100, 10)]
+    [SerializeField, Range(-100, 10)]
     float fallLookAtPosition;
     #endregion
 
-    [Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
-    [HideInInspector]
+    [HideInInspector, Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
     public bool thirdPersonCamera = true;
 
     private Rigidbody rigidbody;
 
     private float rotationOnX;
 
-    [Tooltip("The sensitivity of the camera when the player's in first person mode")]
-    [Range(45f, 180f)]
-    [SerializeField]
+    [SerializeField, Range(45f, 180f), Tooltip("The sensitivity of the camera when the player's in first person mode")]
     float MouseSensitivity = 90;
 
     Vector3 startPos;

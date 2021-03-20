@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
-    [Tooltip("How much damage the player would recive if hit")]
-    [Range(1f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 10f), Tooltip("How much damage the player would recive if hit")]
     int DamageTotal;
 
-    [Tooltip("If player gets hit by this object would he need to get repositioned to a checkpoint")]
-    [SerializeField]
+    [SerializeField, Tooltip("If player gets hit by this object would he need to get repositioned to a checkpoint")]
     bool RepoPlayerWhenHit;
     private void OnTriggerEnter(Collider col)
     {

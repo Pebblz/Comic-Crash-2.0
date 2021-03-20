@@ -7,38 +7,30 @@ public class MovingPlatforms : MonoBehaviour
 {
     [Header("Direction")]
 
-    [Tooltip("If set true it'll go up and down, if false it'll move side to side")]
-    [SerializeField]
+    [SerializeField, Tooltip("If set true it'll go up and down, if false it'll move side to side")]
     bool upAndDown;
 
-    [Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
-    [SerializeField]
+    [SerializeField, Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
     bool LeftAndRight;
 
-    [Tooltip("If you want it to go up and down and what ever you put for left and right")]
-    [SerializeField]
+    [SerializeField, Tooltip("If you want it to go up and down and what ever you put for left and right")]
     bool Both;
 
 
     [Header("Distance")]
-    [Tooltip("The amount the platform will move up and down")]
-    [Range(1f, 10f)]
-    [SerializeField]
+
+    [SerializeField, Range(1f, 10f), Tooltip("The amount the platform will move up and down")]
     float DistanceToMoveY;
 
-    [Tooltip("The amount the platform will move left nad right or striaght and back")]
-    [Range(1f, 10f)]
-    [SerializeField]
+    [SerializeField, Range(1f, 10f), Tooltip("The amount the platform will move left nad right or striaght and back")]
     float DistanceToMoveXZ;
 
     [Space(10)]
-    [Tooltip("The speed at which the platform moves")]
-    [Range(1f, 10f)]
-    [SerializeField]
+
+    [SerializeField, Range(1f, 10f), Tooltip("The speed at which the platform moves")]
     float speed = 2;
 
-    [Tooltip("If you want it to activate when step on")]
-    [SerializeField]
+    [SerializeField, Tooltip("If you want it to activate when step on")]
     bool StepOnToActivate;
 
     [Tooltip("If this is true the moving platforms active and moving")]

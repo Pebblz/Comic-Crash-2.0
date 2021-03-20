@@ -4,9 +4,7 @@ public class SoccerBall : MonoBehaviour
 {
     Rigidbody rb;
 
-    [Tooltip("How far the ball gets kicked")]
-    [Range(5f, 100f)]
-    [SerializeField]
+    [SerializeField, Range(5f, 100f), Tooltip("How far the ball gets kicked")]
     float pushPower = 5.0f;
     Vector3 startpos;
 

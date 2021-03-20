@@ -7,8 +7,7 @@ public class ParentPlayer : MonoBehaviour
     [SerializeField]
     bool onlyOnTop;
 
-    [SerializeField]
-    [Range(.1f,1f)]
+    [SerializeField, Range(.1f, 1f)]
     float CollisionOffset = .2f;
     private void OnCollisionEnter(Collision col)
     {

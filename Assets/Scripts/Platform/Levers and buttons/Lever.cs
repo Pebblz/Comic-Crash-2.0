@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class Lever : MonoBehaviour
 {
-    [Tooltip("The Object that'll be getting changed based on the Action enum")]
-    [SerializeField]
+    [SerializeField, Tooltip("The Object that'll be getting changed based on the Action enum")]
     GameObject ImpactedGameobject;
 
-    [Tooltip("Change this to decide what you want to change with the lever switch")]
-    [SerializeField]
+    [SerializeField, Tooltip("Change this to decide what you want to change with the lever switch")]
     Action action;
 
     private GameObject player;
