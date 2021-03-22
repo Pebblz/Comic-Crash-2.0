@@ -5,6 +5,7 @@ using UnityEngine;
 public class RotateTowardsPlayer : MonoBehaviour
 {
     public GameObject camera;
+    [SerializeField] bool textMesh;
     void Update()
     {
         if (camera == null)
@@ -14,8 +15,16 @@ public class RotateTowardsPlayer : MonoBehaviour
         else
         {
             Vector3 temp = camera.transform.forward;
-            temp.y = 90;
-            transform.rotation = Quaternion.LookRotation(-temp);
+
+            if (!textMesh)
+            {
+                temp.y = 90;
+                transform.rotation = Quaternion.LookRotation(-temp);
+            }
+            else if (textMesh)
+            {
+                transform.rotation = Quaternion.LookRotation(temp);
+            }
         }
     }
 }
