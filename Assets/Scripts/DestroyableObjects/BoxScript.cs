@@ -12,23 +12,32 @@ public class BoxScript : MonoBehaviour
         Instantiate(BrokenBox, transform.position, transform.rotation);
         Destroy(gameObject);
     }
-    //make sure the trigger is set the the side that you want to collide with 
-    private void OnTriggerEnter(Collider col)
-    {
-        if (Ways.Contains(WaysToBreak.JumpOn) || Ways.Contains(WaysToBreak.JumpUnder))
-        {
-            if (col.tag == "Player")
-            {
-                DestroyBox();
-            }
-        }
-    }
+
     private void OnCollisionEnter(Collision col)
     {
         if (Ways.Contains(WaysToBreak.Shoot) || Ways.Contains(WaysToBreak.Punch))
         {
             //this will check if the thing that hit it is a bullet
             if (col.gameObject.GetComponent<Bullet>() != null)
+            {
+                DestroyBox();
+            }
+        }
+        if (Ways.Contains(WaysToBreak.JumpOn))
+        {
+            if (col.gameObject.tag == "Player")
+            {
+                if (!col.gameObject.GetComponent<PlayerMovement>().IsGrounded() &&
+                    col.gameObject.transform.position.y > gameObject.transform.position.y)
+                {
+                    DestroyBox();
+                }
+            }
+        }
+        if (Ways.Contains(WaysToBreak.JumpUnder))
+        {
+            if (!col.gameObject.GetComponent<PlayerMovement>().IsGrounded() &&
+                col.gameObject.transform.position.y < gameObject.transform.position.y)
             {
                 DestroyBox();
             }

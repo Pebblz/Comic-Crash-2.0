@@ -538,7 +538,7 @@ public class PlayerMovement : MonoBehaviour
     /// This checks to see if the players grounded or not
     /// </summary>
     /// <returns></returns>
-    bool IsGrounded()
+    public bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
     }
