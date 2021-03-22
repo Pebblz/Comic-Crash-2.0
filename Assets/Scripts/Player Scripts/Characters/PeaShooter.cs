@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PeaShooter : MonoBehaviour
 {
+    [SerializeField] GameObject CrossHair;
+
     private GameObject camera;
 
     private float NextAttack;
@@ -30,11 +31,13 @@ public class PeaShooter : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             camera.GetComponent<Camera>().thirdPersonCamera = false;
+            CrossHair.SetActive(true);
             PlayAnimation("Aiming");
         }
         if (Input.GetMouseButtonUp(1))
         {
             camera.GetComponent<Camera>().thirdPersonCamera = true;
+            CrossHair.SetActive(false);
             StopAnimation("Aiming");
         }
 
