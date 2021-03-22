@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &355755713 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5467615271329519226, guid: 9892b65238d8b694f82f7ed92a916b5c,
+    type: 3}
+  m_PrefabInstance: {fileID: 6132228494766578465}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1076445036 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2453608913640179747, guid: 65aa06701b06536488f524113a88a318,
@@ -225,6 +237,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1322492236 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3316015244039783381, guid: 9892b65238d8b694f82f7ed92a916b5c,
+    type: 3}
+  m_PrefabInstance: {fileID: 6132228494766578465}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1461450679 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3316015244317280675, guid: 9892b65238d8b694f82f7ed92a916b5c,
+    type: 3}
+  m_PrefabInstance: {fileID: 6132228494766578465}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1481391805
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,17 +793,17 @@ PrefabInstance:
         type: 3}
       propertyPath: LoadingBar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 355755713}
     - target: {fileID: 2453608913640179747, guid: 65aa06701b06536488f524113a88a318,
         type: 3}
       propertyPath: ProgressText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1322492236}
     - target: {fileID: 2453608913640179747, guid: 65aa06701b06536488f524113a88a318,
         type: 3}
       propertyPath: LoadingScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1461450679}
     - target: {fileID: 2453608913640179748, guid: 65aa06701b06536488f524113a88a318,
         type: 3}
       propertyPath: m_Name
