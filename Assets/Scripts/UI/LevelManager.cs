@@ -16,10 +16,14 @@ public class LevelManager : MonoBehaviour
     //this loads the level based on the index it's given
     public void LoadLevel(int sceneIndex)
     {
+        if(Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
     //this quits the game (Only works inside a build)
-    void QuitGame()
+    public void QuitGame()
     {
         Application.Quit();
     }
