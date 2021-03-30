@@ -47,7 +47,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField, Range(0, 5), Tooltip("Amount of jumps allowed")]
     int jumpsAllowed;
-
+    [SerializeField, Tooltip("If true the player can dive, if false he can't")]
+    bool CanDive;
     [SerializeField, Range(1f, 20f), Tooltip("The speed of the dash")]
     float DashSpeed;
 
@@ -448,7 +449,8 @@ public class PlayerMovement : MonoBehaviour
             jumpsMade++;
             jumpTimer = .3f;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && jumpsMade == jumpsAllowed && !DoneJumping && jumpTimer <= 0)
+        else if (Input.GetKeyDown(KeyCode.Space) && jumpsMade == jumpsAllowed &&
+            !DoneJumping && jumpTimer <= 0 && CanDive)
         {
 
             PlayAnimation("Dive");
@@ -470,7 +472,9 @@ public class PlayerMovement : MonoBehaviour
             }
             StopAnimation("DoubleJump");
             StopAnimation("Jump");
-            StopAnimation("Dive");
+            if(CanDive)
+                StopAnimation("Dive");
+
             jumpsMade = 0;
 
         }
