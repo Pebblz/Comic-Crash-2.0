@@ -12,6 +12,7 @@ public class Shop : MonoBehaviour
     private void Start()
     {
         Gm = FindObjectOfType<GameManager>();
+        ShopPage.SetActive(false);
     }
     void Update()
     {
