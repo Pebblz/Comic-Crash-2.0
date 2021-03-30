@@ -8,6 +8,8 @@ public class ShopSections : MonoBehaviour
     public bool IsBought;
     Text text;
     [SerializeField]int cost;
+    [SerializeField] WhatToGive GivenItem;
+    [SerializeField, Range(1, 3)] int amountGiven;
     void Start()
     {
         text = GetComponentInChildren<Text>();
@@ -29,6 +31,11 @@ public class ShopSections : MonoBehaviour
         if(Gm.coinCount >= cost)
         {
             Gm.coinCount -= cost;
+            if (GivenItem == WhatToGive.collectible)
+                Gm.CollectibleCount += amountGiven;
+
+            print(Gm.CollectibleCount);
+
             IsBought = true;
         }
         else
@@ -47,5 +54,10 @@ public class ShopSections : MonoBehaviour
             text.text = "Bought";
         }
         GetComponent<Button>().enabled = false;
+    }
+    //we will add more to here later
+    enum WhatToGive
+    {
+        collectible
     }
 }
