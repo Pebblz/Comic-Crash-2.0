@@ -62,7 +62,7 @@ public class BasicAI : MonoBehaviour
     {
         if (target == null)
         {
-            if (target != PlayerManager.instance.Player)
+            if (target != PlayerManager.instance.Player && PlayerManager.instance.Player != null)
             {
                 target = PlayerManager.instance.Player.transform;
             }
