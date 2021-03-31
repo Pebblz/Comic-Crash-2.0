@@ -15,8 +15,12 @@ public class Pause : MonoBehaviour
     void Start()
     {
         Gm = GetComponent<GameManager>();
-        PausePage = GameObject.FindGameObjectWithTag("Pause_Menu");
-        PausePage.SetActive(false);
+
+        if (PausePage == null)
+        {
+            PausePage = GameObject.FindGameObjectWithTag("Pause_Menu");
+            PausePage.SetActive(false);
+        }
     }
     void Update()
     {
