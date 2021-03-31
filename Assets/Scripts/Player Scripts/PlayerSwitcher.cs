@@ -14,7 +14,7 @@ public class PlayerSwitcher : MonoBehaviour
 
     [SerializeField]
     GameObject CurrentPlayer;
-
+    float timer;
     private KeyCode[] keyCodes = {
          KeyCode.Alpha1,
          KeyCode.Alpha2,
@@ -37,11 +37,13 @@ public class PlayerSwitcher : MonoBehaviour
     {
         for (int i = 0; i < keyCodes.Length; i++)
         {
-            if (Input.GetKeyDown(keyCodes[i]))
+            if (Input.GetKeyDown(keyCodes[i]) && timer <= 0)
             {
                 SwitchCharacter(i);
+                timer = .5f;
             }
         }
+        timer -= Time.deltaTime;
 
     }
     void SwitchCharacter(int i)
@@ -54,6 +56,8 @@ public class PlayerSwitcher : MonoBehaviour
 
             Temp.GetComponent<Player>().respawnPoint =
                 CurrentPlayer.GetComponent<Player>().respawnPoint;
+
+            Temp.GetComponent<PlayerMovement>().jumpsMade = 50;
 
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;

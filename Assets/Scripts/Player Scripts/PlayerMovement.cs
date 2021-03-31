@@ -58,7 +58,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1f, 10f), Tooltip("The speed of the Grapple")]
     float GrappleSpeed;
 
-    private int jumpsMade = 0;
+    [HideInInspector]
+    public int jumpsMade = 0;
     #endregion
 
     #region Other Vars
