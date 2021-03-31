@@ -49,6 +49,8 @@ public class GrapplePoint : MonoBehaviour
         if (PeaShooter == null)
         {
             PeaShooter = FindObjectOfType<PeaShooter>();
+            if(PeaShooter != null)
+                gunTip = GameObject.FindGameObjectWithTag("GunTip").transform;
         }
         if (PeaShooter != null)
         {
