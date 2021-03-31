@@ -9,10 +9,10 @@ public class PlayerMovement : MonoBehaviour
     #region Speed Vars
     [Header("Movement speeds")]
 
-    [SerializeField, Range(1f, 20f)] 
+    [SerializeField, Range(1f, 20f)]
     private float WalkSpeed;
 
-    [SerializeField, Range(.001f, 2f)] 
+    [SerializeField, Range(.001f, 2f)]
     private float SpeedAcceleration;
 
     [SerializeField, Range(.001f, 2f)]
@@ -133,63 +133,69 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        print(IsGrounded());
         if (LedgeGrabbing)
         {
             Ledgegrabbing();
         }
+        if (!Input.GetKey(KeyCode.C) && !anim.GetCurrentAnimatorStateInfo(0).IsName("Death") 
+            && !InGrapple && !LedgeGrabbing)
+        {
+            Jump();
+        }
     }
     void FixedUpdate()
     {
-        float angle = GetGroundAngle();
+        //float angle = GetGroundAngle();
         Grounded = IsGrounded();
-        if (angle < maxGroundAngle)
+        //if (angle < maxGroundAngle)
+        //{
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
-            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+            if (!InGrapple)
             {
-                if (!InGrapple)
+                if (!LedgeGrabbing)
                 {
-                    if (!LedgeGrabbing)
+                    StopAnimation("Hanging");
+                    StopAnimation("Grapple");
+                    RB.useGravity = true;
+                    if (!Input.GetKey(KeyCode.C))
                     {
-                        StopAnimation("Hanging");
-                        StopAnimation("Grapple");
-                        RB.useGravity = true;
-                        if (!Input.GetKey(KeyCode.C))
+                        StopAnimation("Crouching");
+                        if (!Roll)
                         {
-                            StopAnimation("Crouching");
-                            if (!Roll)
-                            {
-                                regularMovement();
-                            }
-                            else
-                            {
-                                rolling();
-                            }
-                            Jump();
+                            regularMovement();
                         }
-                        else if (Input.GetKey(KeyCode.C))
+                        else
                         {
-                            PlayAnimation("Crouching");
-                            Crouch();
-                            if (IsGrounded())
-                            {
-                                StopAnimation("Jump");
-                                StopAnimation("DoubleJump");
-                                StopAnimation("Dive");
-                            }
+                            rolling();
+                        }
+                    }
+                    else if (Input.GetKey(KeyCode.C))
+                    {
+                        PlayAnimation("Crouching");
+                        Crouch();
+                        if (IsGrounded())
+                        {
+                            StopAnimation("Jump");
+                            StopAnimation("DoubleJump");
+                            StopAnimation("Dive");
                         }
                     }
                 }
-                else
-                {
-                    PlayAnimation("Grapple");
-                    GrappleMovement();
-                }
             }
-        } else if(angle > maxGroundAngle || angle <= 0.01f)
-        {
-
-            RB.velocity = new Vector3(RB.velocity.x, -Mathf.Lerp(RB.velocity.y, 300, .05f), RB.velocity.z);
+            else
+            {
+                PlayAnimation("Grapple");
+                GrappleMovement();
+            }
         }
+        //}
+        //else if (angle > maxGroundAngle || angle <= 0.01f)
+        //{
+
+        //    RB.velocity = new Vector3(RB.velocity.x, -Mathf.Lerp(RB.velocity.y, 300, .05f), RB.velocity.z);
+        //}
     }
     #endregion
 
@@ -437,7 +443,7 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         //player Jumps
-        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <=0)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <= 0)
         {
             StopAnimation("IsLanded");
             RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
@@ -445,11 +451,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlayAnimation("DoubleJump");
             }
-          
+
             jumpsMade++;
             jumpTimer = .3f;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && jumpsMade == jumpsAllowed &&
+        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade == jumpsAllowed &&
             !DoneJumping && jumpTimer <= 0 && CanDive)
         {
 
@@ -459,20 +465,25 @@ public class PlayerMovement : MonoBehaviour
             DoneJumping = true;
             jumpTimer = .3f;
         }
-        if(Input.GetKey(KeyCode.Space) && RB.velocity.y >.1f)
+        if (Input.GetKey(KeyCode.Space) && RB.velocity.y > .1f)
         {
             PlayAnimation("Jump");
         }
         if (IsGrounded())
         {
-            if (DoneJumping)
+            if (CanDive && DoneJumping)
             {
                 PlayAnimation("IsLanded");
                 DoneJumping = false;
             }
+            if (!CanDive && jumpsMade == jumpsAllowed)
+            {
+                PlayAnimation("IsLanded");
+            }
+
             StopAnimation("DoubleJump");
             StopAnimation("Jump");
-            if(CanDive)
+            if (CanDive)
                 StopAnimation("Dive");
 
             jumpsMade = 0;
