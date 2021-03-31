@@ -35,7 +35,8 @@ public class LevelTrigger : MonoBehaviour
     {
         AskerPanel.SetActive(true);
         gameManager.unlockCursor();
-        TopText.text = "Would you like to go to level " + LevelNumber + " ?"; 
+        if(TopText.text == "")
+            TopText.text = "Would you like to go to level " + LevelNumber + " ?"; 
     }
     public void CloseAsker()
     {

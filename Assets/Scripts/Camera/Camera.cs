@@ -43,6 +43,8 @@ public class Camera : MonoBehaviour
     [SerializeField, Range(45f, 180f), Tooltip("The sensitivity of the camera when the player's in first person mode")]
     float MouseSensitivity = 90;
 
+    [SerializeField] GameObject CrossHair;
+
     Vector3 startPos;
     #region MonoBehaviours
     void Start()
@@ -89,6 +91,7 @@ public class Camera : MonoBehaviour
     #region camera styles
     void ThirdPersonCamera()
     {
+        CrossHair.SetActive(false);
         if (transform.parent != null)
         {
             transform.parent = null;
@@ -131,7 +134,7 @@ public class Camera : MonoBehaviour
     {
         //this makes the camera always in front of the player 
         transform.position = target.position + target.transform.forward + new Vector3(0, .4f, 0);
-
+        CrossHair.SetActive(true);
         if (transform.parent == null)
         {
             transform.SetParent(target);
