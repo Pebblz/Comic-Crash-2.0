@@ -18,9 +18,13 @@ public class BoxScript : MonoBehaviour
         if (Ways.Contains(WaysToBreak.Shoot) || Ways.Contains(WaysToBreak.Punch))
         {
             //this will check if the thing that hit it is a bullet
-            if (col.gameObject.GetComponent<Bullet>() != null || col.gameObject.tag == "PlayerPunch")
+            if (col.gameObject.GetComponent<Bullet>() != null)
             {
                 DestroyBox();
+            }
+            if(col.gameObject.tag == "PlayerPunch")
+            {
+                Invoke("DestroyBox", .05f);
             }
             //somewhere here we need to have code to launch the pieces
             //from where ever the player punched / shot the crate

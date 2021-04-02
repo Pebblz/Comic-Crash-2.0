@@ -58,7 +58,7 @@ public class PlayerAttack : MonoBehaviour
     void punch(int attackNumber)
     {
         Instantiate(PunchHitBoxes[attackNumber - 1], 
-            transform.position + new Vector3(0,1,0) + transform.forward * 1.1f, Quaternion.identity);
+            transform.position + new Vector3(0,.6f,0) + transform.forward * 1.1f, Quaternion.identity);
 
         PlayAnimation("Attack",attackNumber);
         AttackAgian = false;

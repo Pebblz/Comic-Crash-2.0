@@ -16,4 +16,11 @@ public class BoxPieces : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Player" || col.gameObject.tag == "PlayerPunch")
+        {
+            Physics.IgnoreCollision(this.gameObject.GetComponent<Collider>(), col.gameObject.GetComponent<Collider>());
+        }
+    }
 }
