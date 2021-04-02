@@ -40,7 +40,8 @@ public class PlayerAttack : MonoBehaviour
         {
             GetComponent<PlayerMovement>().enabled = false;
         }
-        if(TimeTillAttackReset <= 0)
+        if(TimeTillAttackReset <= 0 && anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
+            anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
             GetComponent<PlayerMovement>().enabled = true;
             AttacksPreformed = 1;
@@ -56,7 +57,7 @@ public class PlayerAttack : MonoBehaviour
         AttackAgian = false;
         AttacksPreformed++;
         TimeTillnextAttack = .1f;
-        TimeTillAttackReset = .6f;
+        TimeTillAttackReset = .65f;
     }
     #region Animation
     /// <summary>
