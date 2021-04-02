@@ -26,7 +26,7 @@ public class PlayerAttack : MonoBehaviour
             punch(AttacksPreformed);
         }
         //this basically queues up the next attack
-        if(Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C))
+        if(Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
         {
             AttackAgian = true;
         }
@@ -55,7 +55,7 @@ public class PlayerAttack : MonoBehaviour
         PlayAnimation("Attack",attackNumber);
         AttackAgian = false;
         AttacksPreformed++;
-        TimeTillnextAttack = .5f;
+        TimeTillnextAttack = .1f;
         TimeTillAttackReset = .6f;
     }
     #region Animation
