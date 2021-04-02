@@ -20,21 +20,26 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) &&  AttacksPreformed == 1 && TimeTillnextAttack <= 0
-           && !Input.GetKey(KeyCode.C))
+        //this is so if the players in any of
+        //the jump animation you can't attack
+        if (!anim.GetBool("Jump"))
         {
-            punch(AttacksPreformed);
-        }
-        //this basically queues up the next attack for the player
-        if(Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
-        {
-            AttackAgian = true;
-        }
-        //this waits for the animation to be done before going to the next punch
-        if(anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
-            anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f && AttackAgian)
-        {
-            punch(AttacksPreformed);
+            if (Input.GetMouseButtonDown(0) && AttacksPreformed == 1 && TimeTillnextAttack <= 0
+               && !Input.GetKey(KeyCode.C))
+            {
+                punch(AttacksPreformed);
+            }
+            //this basically queues up the next attack for the player
+            if (Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+            {
+                AttackAgian = true;
+            }
+            //this waits for the animation to be done before going to the next punch
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
+                anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f && AttackAgian)
+            {
+                punch(AttacksPreformed);
+            }
         }
         //this is so the player can't swing around like a crazy person and kill everything around him
         if(TimeTillAttackReset > 0 && GetComponent<PlayerMovement>().IsGrounded())
@@ -64,7 +69,7 @@ public class PlayerAttack : MonoBehaviour
             TimeTillAttackReset = .7f;
         } else
         {
-            TimeTillAttackReset = 1.1f;
+            TimeTillAttackReset = .8f;
         }
         //---------------
         AttacksPreformed++;

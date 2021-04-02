@@ -9,13 +9,12 @@ public class PlayerDeath : MonoBehaviour
 
     [Tooltip("This is here for fading the screen when you die")]
     GameObject Fader;
-    private void Awake()
-    {
-        Fader = GameObject.Find("Fader");
-    }
     void Update()
     {
-
+        if(Fader == null)
+        {
+            Fader = GameObject.Find("Fader");
+        }
         if (isdead)
         {
             GetComponent<Animator>().SetBool("Dead", true);
