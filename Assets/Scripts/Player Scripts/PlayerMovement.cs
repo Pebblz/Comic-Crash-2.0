@@ -134,7 +134,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        print(IsGrounded());
         if (LedgeGrabbing)
         {
             Ledgegrabbing();

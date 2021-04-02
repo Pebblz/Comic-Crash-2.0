@@ -30,6 +30,7 @@ public class BoxScript : MonoBehaviour
                 if (!col.gameObject.GetComponent<PlayerMovement>().IsGrounded() &&
                     col.gameObject.transform.position.y > gameObject.transform.position.y)
                 {
+                    col.gameObject.GetComponent<PlayerMovement>().jumpOnEnemy();
                     DestroyBox();
                 }
             }
