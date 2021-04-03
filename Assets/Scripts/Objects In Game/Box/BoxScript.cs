@@ -15,20 +15,24 @@ public class BoxScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        if (Ways.Contains(WaysToBreak.Shoot) || Ways.Contains(WaysToBreak.Punch))
+        if (Ways.Contains(WaysToBreak.Shoot))
         {
             //this will check if the thing that hit it is a bullet
             if (col.gameObject.GetComponent<Bullet>() != null)
             {
                 DestroyBox();
             }
-            if(col.gameObject.tag == "PlayerPunch")
-            {
-                Invoke("DestroyBox", .05f);
-            }
+
             //somewhere here we need to have code to launch the pieces
             //from where ever the player punched / shot the crate
 
+        }
+        if(Ways.Contains(WaysToBreak.Punch))
+        {
+            if (col.gameObject.tag == "PlayerPunch")
+            {
+                Invoke("DestroyBox", .05f);
+            }
         }
         if (Ways.Contains(WaysToBreak.JumpOn))
         {
@@ -49,6 +53,13 @@ public class BoxScript : MonoBehaviour
             {
                 DestroyBox();
             }
+        }
+    }
+    public void CheckPunchToSeeIfItShouldBreak()
+    {
+        if (Ways.Contains(WaysToBreak.Punch))
+        {
+            Invoke("DestroyBox", .15f);
         }
     }
     /// <summary>

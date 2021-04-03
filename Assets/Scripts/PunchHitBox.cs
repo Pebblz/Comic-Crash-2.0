@@ -10,5 +10,13 @@ public class PunchHitBox : MonoBehaviour
         DestroyTimer -= Time.deltaTime;
         if (DestroyTimer <= 0)
             Destroy(gameObject);
-    }       
+    }
+    private void OnTriggerEnter(Collider col)
+    {
+        if(col.gameObject.GetComponent<BoxScript>())
+        {
+            print("Nugget");
+            col.gameObject.GetComponent<BoxScript>().CheckPunchToSeeIfItShouldBreak();
+        }
+    }
 }
