@@ -1524,12 +1524,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WalkSpeed: 3.5
-  SpeedAcceleration: 0.5
+  SpeedAcceleration: 0.73
   SpeedDeceleration: 0.4
   CrouchSpeed: 1
   currentSpeed: 6
   runSpeed: 7
-  jumpSpeed: 6
+  jumpSpeed: 6.71
   turnSmoothTime: 0.2
   maxRollSpeed: 0
   RollAcceleration: 0
@@ -1539,6 +1539,7 @@ MonoBehaviour:
   DashSpeed: 3
   SlideSpeed: 10
   GrappleSpeed: 1
+  jumpsMade: 0
   Roll: 0
   LedgeGrabbing: 0
   maxGroundAngle: 40
