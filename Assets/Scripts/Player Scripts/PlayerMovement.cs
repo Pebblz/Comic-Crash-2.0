@@ -134,7 +134,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        print(IsGrounded());
         if (LedgeGrabbing)
         {
             Ledgegrabbing();
@@ -303,7 +302,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (IceFloor)
         {
-            RB.AddForce(MoveDir.normalized * (currentSpeed += 5) * Time.deltaTime, ForceMode.VelocityChange);
+            RB.AddForce(MoveDir.normalized * (currentSpeed += 2f) * Time.deltaTime, ForceMode.VelocityChange);
         }
 
 
