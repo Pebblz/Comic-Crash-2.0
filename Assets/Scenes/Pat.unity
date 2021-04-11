@@ -2640,7 +2640,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847033358}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 767928ebd18ac6e4ba68079ba492c0c4, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2944,6 +2944,21 @@ PrefabInstance:
       propertyPath: CrossHair
       value: 
       objectReference: {fileID: 546554953}
+    - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
+        type: 3}
+      propertyPath: yMinLimit
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
+        type: 3}
+      propertyPath: distanceMin
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
+        type: 3}
+      propertyPath: collisionZoomSpeed
+      value: 0.015
+      objectReference: {fileID: 0}
     - target: {fileID: 5436509601562066153, guid: ae682066ce3203b4bb1d2510628d3aad,
         type: 3}
       propertyPath: m_Name

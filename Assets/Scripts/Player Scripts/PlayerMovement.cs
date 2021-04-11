@@ -67,7 +67,8 @@ public class PlayerMovement : MonoBehaviour
 
     float distToGround;
 
-    private Vector3 MoveDir;
+    [HideInInspector]
+    public Vector3 MoveDir;
 
     Transform MainCam;
 

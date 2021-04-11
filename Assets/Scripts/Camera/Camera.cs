@@ -31,6 +31,9 @@ public class Camera : MonoBehaviour
 
     [SerializeField, Range(-100, 10)]
     float fallLookAtPosition;
+
+    [SerializeField]
+    float collisionZoomSpeed;
     #endregion
 
     [HideInInspector, Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
@@ -115,11 +118,14 @@ public class Camera : MonoBehaviour
                 {
                     if (hit.transform.gameObject.layer != 9)
                     {
-                        distance -= hit.distance;
+                        if (distance > distanceMin && distance != distanceMin)
+                        {
+                            distance -= hit.distance + collisionZoomSpeed * Time.deltaTime;
+                        }
                     }
                 }
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-                Vector3 position = rotation * negDistance + target.position;
+                Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
 
                 transform.rotation = rotation;
                 transform.position = position;

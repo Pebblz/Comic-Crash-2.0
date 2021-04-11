@@ -33,6 +33,12 @@ public class Trampoline : MonoBehaviour
                 col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * BounceForce,ForceMode.VelocityChange);
                 squishTime = true;
             }
+            else
+            {
+                col.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-col.gameObject.GetComponent<PlayerMovement>().MoveDir.x * (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4), 
+                    col.gameObject.GetComponent<PlayerMovement>().MoveDir.y, -col.gameObject.GetComponent<PlayerMovement>().MoveDir.z * (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4)) 
+                    * BounceForce, ForceMode.VelocityChange);
+            }
         }
     }
     void Squish()
