@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ConveyerBelt : MonoBehaviour
 {
+    [SerializeField, Range(.01f, 1f)]
+    float collsionOffset;
+
     [SerializeField, Range(200, 1500), Tooltip("The speed at which the conveyer belt moves things")]
     float speed;
 
@@ -30,10 +33,24 @@ public class ConveyerBelt : MonoBehaviour
     #region Collsion methods
     private void OnCollisionEnter(Collision col)
     {
-        //adds the objects on the conveyer belt to the belt list
-        if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform")
+        if (col.transform.position.y > transform.position.y + collsionOffset)
         {
-            onBelt.Add(col.gameObject);
+            //adds the objects on the conveyer belt to the belt list
+            if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform" && !onBelt.Contains(col.gameObject))
+            {
+                onBelt.Add(col.gameObject);
+            }
+        }
+    }
+    private void OnCollisionStay(Collision col)
+    {
+        if (col.transform.position.y > transform.position.y + collsionOffset)
+        {
+            //adds the objects on the conveyer belt to the belt list
+            if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform" && !onBelt.Contains(col.gameObject))
+            {
+                onBelt.Add(col.gameObject);
+            }
         }
     }
     private void OnCollisionExit(Collision col)

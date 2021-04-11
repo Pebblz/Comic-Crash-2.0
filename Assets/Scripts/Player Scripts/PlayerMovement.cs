@@ -276,7 +276,7 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("Skid");
                 }
             }
-
+            MoveDir = Vector3.zero;
         }
         //this is here just incase it gets set to a negative 
         if (currentSpeed < 0)
@@ -446,7 +446,14 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <= 0)
         {
             StopAnimation("IsLanded");
-            RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+            if (MoveDir.magnitude > .1f)
+            {
+                RB.velocity = new Vector3(MoveDir.x, jumpSpeed, MoveDir.z);
+            }
+            if(MoveDir.magnitude <= .1f)
+            {
+                RB.velocity = new Vector3(0, jumpSpeed, 0);
+            }
             if (jumpsMade == 0)
             {
                 PlayAnimation("DoubleJump");
