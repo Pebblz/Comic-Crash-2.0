@@ -11,6 +11,7 @@ public class Camera : MonoBehaviour
     private float prevDistance;
     private bool onlyOnce;
     private Vector3 prevHitPoint;
+    private bool DontZoomOut;
 
     [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go left to right")]
     float xSpeed = 120.0f;
@@ -126,28 +127,43 @@ public class Camera : MonoBehaviour
                         //this if statements here so the camera doesn't bug out when colliding with a wall
                         if (distance > distanceMin && distance != distanceMin)
                         {
-                            prevHitPoint = hit.point;
+                            if (hit.point != prevHitPoint)
+                            {
+                                //this records the point that the raycast collided with an object
+                                prevHitPoint = hit.point;
+                                DontZoomOut = false;
+                            } else
+                            {
+                                DontZoomOut = true;
+                            }
                             if (!onlyOnce)
                             {
+                                //this sets the last known distance of the camera 
                                 prevDistance = distance;
                                 onlyOnce = true;
                             }
+                            //this moves the camera closer to the player when the raycast hits an object
                             distance -= hit.distance + collisionZoomSpeed * Time.deltaTime;
                         }
                     }
                 }
                 else
                 {
-                    if (onlyOnce && hit.collider == null)
+                    if (onlyOnce && hit.collider == null && !DontZoomOut && Input.GetAxisRaw("Mouse ScrollWheel") == 0)
                     {
                         if (distance < prevDistance && Vector3.Distance(transform.position,prevHitPoint) > 1.5f)
                         {
+                            //this moves the camera back to it's prev location when it's far enough away from it's last hit point
                             distance += (collisionZoomSpeed + 3) * Time.deltaTime;
                         }
                         if(distance > prevDistance)
                         {
                             onlyOnce = false;
                         }
+                    }
+                    if(Input.GetAxisRaw("Mouse ScrollWheel") != 0)
+                    {
+                        onlyOnce = false;
                     }
                 }
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
