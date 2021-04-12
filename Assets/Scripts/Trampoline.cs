@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Trampoline : MonoBehaviour
 {
@@ -8,13 +6,11 @@ public class Trampoline : MonoBehaviour
     float BounceForce;
     [SerializeField, Range(.1f, 6f)]
     float timeToSquish;
-    private Vector3 originalPos;
     private Vector3 origanalScale;
     private bool squishTime;
     private bool doneSquishing;
     private void Start()
     {
-        originalPos = transform.position;
         origanalScale = transform.localScale;
     }
     private void Update()

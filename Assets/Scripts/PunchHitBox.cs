@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PunchHitBox : MonoBehaviour
 {
@@ -15,7 +13,6 @@ public class PunchHitBox : MonoBehaviour
     {
         if(col.gameObject.GetComponent<BoxScript>())
         {
-            print("Nugget");
             col.gameObject.GetComponent<BoxScript>().CheckPunchToSeeIfItShouldBreak();
         }
     }

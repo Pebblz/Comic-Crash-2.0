@@ -118,6 +118,7 @@ public class Camera : MonoBehaviour
                 {
                     if (hit.transform.gameObject.layer != 9)
                     {
+                        //this if statements here so the camera doesn't bug out when colliding with a wall
                         if (distance > distanceMin && distance != distanceMin)
                         {
                             distance -= hit.distance + collisionZoomSpeed * Time.deltaTime;
