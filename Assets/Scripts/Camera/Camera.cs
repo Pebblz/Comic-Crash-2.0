@@ -8,6 +8,10 @@ public class Camera : MonoBehaviour
     [SerializeField, Range(1f, 10f), Tooltip("The starting distance away from the player")]
     float distance = 5.0f;
 
+    private float prevDistance;
+    private bool onlyOnce;
+    private Vector3 prevHitPoint;
+
     [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go left to right")]
     float xSpeed = 120.0f;
 
@@ -118,10 +122,31 @@ public class Camera : MonoBehaviour
                 {
                     if (hit.transform.gameObject.layer != 9)
                     {
+
                         //this if statements here so the camera doesn't bug out when colliding with a wall
                         if (distance > distanceMin && distance != distanceMin)
                         {
+                            prevHitPoint = hit.point;
+                            if (!onlyOnce)
+                            {
+                                prevDistance = distance;
+                                onlyOnce = true;
+                            }
                             distance -= hit.distance + collisionZoomSpeed * Time.deltaTime;
+                        }
+                    }
+                }
+                else
+                {
+                    if (onlyOnce && hit.collider == null)
+                    {
+                        if (distance < prevDistance && Vector3.Distance(transform.position,prevHitPoint) > 1.5f)
+                        {
+                            distance += (collisionZoomSpeed + 3) * Time.deltaTime;
+                        }
+                        if(distance > prevDistance)
+                        {
+                            onlyOnce = false;
                         }
                     }
                 }
