@@ -22,7 +22,8 @@ public class Trampoline : MonoBehaviour
     }
     private void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.tag == "Player")
+        //blobBert shouldn't be able to jump on the slimeoline
+        if(col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>())
         {
             if (col.gameObject.transform.position.y > gameObject.transform.position.y)
             {
@@ -31,8 +32,10 @@ public class Trampoline : MonoBehaviour
             }
             else
             {
-                col.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-col.gameObject.GetComponent<PlayerMovement>().MoveDir.x * (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4), 
-                    col.gameObject.GetComponent<PlayerMovement>().MoveDir.y, -col.gameObject.GetComponent<PlayerMovement>().MoveDir.z * (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4)) 
+                col.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-col.gameObject.GetComponent<PlayerMovement>().MoveDir.x * 
+                    (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4), 
+                    col.gameObject.GetComponent<PlayerMovement>().MoveDir.y, -col.gameObject.GetComponent<PlayerMovement>().MoveDir.z * 
+                    (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4)) 
                     * BounceForce, ForceMode.VelocityChange);
             }
         }

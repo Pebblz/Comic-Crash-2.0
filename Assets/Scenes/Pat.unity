@@ -1804,12 +1804,12 @@ PrefabInstance:
         type: 3}
       propertyPath: CurrentPlayer
       value: 
-      objectReference: {fileID: 665667247}
+      objectReference: {fileID: 9211553472460940556}
     - target: {fileID: 3190135853201168637, guid: df275108b17da12488e465bc2f88d095,
         type: 3}
       propertyPath: PlayerTransform
       value: 
-      objectReference: {fileID: 1968136949}
+      objectReference: {fileID: 8403105269407334326}
     - target: {fileID: 3190135853201168637, guid: df275108b17da12488e465bc2f88d095,
         type: 3}
       propertyPath: CharactersToSwitchTo.Array.size
@@ -2192,12 +2192,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &665667247 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9211553474393901048, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1968136948}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &734312365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2938,7 +2932,7 @@ PrefabInstance:
         type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 1968136949}
+      objectReference: {fileID: 8403105269407334326}
     - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
         type: 3}
       propertyPath: CrossHair
@@ -4953,12 +4947,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2495882895779585503, guid: 48e4a3617cb36d94c8ca29d19c0563b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 48e4a3617cb36d94c8ca29d19c0563b7, type: 3}
---- !u!4 &1968136949 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8403105270803455298, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1968136948}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2043095593 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a9f6b3fe0a2b0247a4532d163a00a63,
@@ -8901,6 +8889,12 @@ Transform:
   m_Father: {fileID: 543450652755088986}
   m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &8403105269407334326 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8403105270803455298, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1968136948}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8419804382492343836
 GameObject:
   m_ObjectHideFlags: 0
@@ -9125,6 +9119,12 @@ Transform:
   m_Father: {fileID: 543450652755088986}
   m_RootOrder: 58
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9211553472460940556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9211553474393901048, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1968136948}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9217124884720714875
 GameObject:
   m_ObjectHideFlags: 0
