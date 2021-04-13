@@ -79,7 +79,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool LedgeGrabbing;
 
-    private Animator anim;
+    [SerializeField]
+    Animator anim;
 
     [SerializeField]
     float maxGroundAngle;
@@ -141,6 +142,10 @@ public class PlayerMovement : MonoBehaviour
             && !InGrapple && !LedgeGrabbing)
         {
             Jump();
+        }
+        if(IsGrounded())
+        {
+            StopAnimation("Falling");
         }
     }
     void FixedUpdate()
@@ -566,6 +571,10 @@ public class PlayerMovement : MonoBehaviour
             return Vector3.Angle(Vector3.up, hit.normal);
         }
         return 0;
+    }
+    public void PlayFallingAnimation()
+    {
+        PlayAnimation("Falling");
     }
     #endregion
 
