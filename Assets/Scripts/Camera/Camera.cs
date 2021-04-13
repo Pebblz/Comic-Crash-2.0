@@ -154,7 +154,7 @@ public class Camera : MonoBehaviour
                         if (distance < prevDistance && Vector3.Distance(transform.position,prevHitPoint) > 1.5f)
                         {
                             //this moves the camera back to it's prev location when it's far enough away from it's last hit point
-                            distance += (collisionZoomSpeed + 3) * Time.deltaTime;
+                            distance += (collisionZoomSpeed + 4f) * Time.deltaTime;
                         }
                         if(distance > prevDistance)
                         {

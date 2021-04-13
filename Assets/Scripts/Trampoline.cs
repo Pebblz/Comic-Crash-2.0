@@ -27,11 +27,13 @@ public class Trampoline : MonoBehaviour
         {
             if (col.gameObject.transform.position.y > gameObject.transform.position.y)
             {
+                //this shoots the player up
                 col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * BounceForce,ForceMode.VelocityChange);
                 squishTime = true;
             }
             else
             {
+                //this pushes the player away
                 col.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-col.gameObject.GetComponent<PlayerMovement>().MoveDir.x * 
                     (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4), 
                     col.gameObject.GetComponent<PlayerMovement>().MoveDir.y, -col.gameObject.GetComponent<PlayerMovement>().MoveDir.z * 
@@ -52,7 +54,8 @@ public class Trampoline : MonoBehaviour
             {
                 doneSquishing = true;
             }
-        } else
+        } 
+        else
         {
             if (transform.localScale.y < origanalScale.y)
             {
