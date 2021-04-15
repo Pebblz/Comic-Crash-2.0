@@ -6,9 +6,15 @@ public class BoxScript : MonoBehaviour
 {
     [SerializeField] GameObject BrokenBox;
     [SerializeField] List<WaysToBreak> Ways;
+    private Camera cam;
     //this will replace the unbroken box with the broken box
     void DestroyBox()
     {
+        if (Ways.Contains(WaysToBreak.Punch))
+        {
+            cam = FindObjectOfType<Camera>();
+            cam.GetComponent<Camera>().Shake(.1f, .1f);
+        }
         Instantiate(BrokenBox, transform.position, transform.rotation);
         Destroy(gameObject);
     }

@@ -12,6 +12,8 @@ public class Camera : MonoBehaviour
     private bool onlyOnce;
     private Vector3 prevHitPoint;
     private bool DontZoomOut;
+    private bool isShaking;
+    private float shakeTime;
 
     [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go left to right")]
     float xSpeed = 120.0f;
@@ -39,6 +41,9 @@ public class Camera : MonoBehaviour
 
     [SerializeField]
     float collisionZoomSpeed;
+
+    [SerializeField, Range(1f,10f)]
+    float collisionZoomOutSpeed;
     #endregion
 
     [HideInInspector, Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
@@ -73,13 +78,21 @@ public class Camera : MonoBehaviour
 
     void LateUpdate()
     {
-        if (thirdPersonCamera)
+        if (!isShaking)
         {
-            ThirdPersonCamera();
+            if (thirdPersonCamera)
+            {
+                ThirdPersonCamera();
+            }
+            else
+            {
+                FirstPersonCamera();
+            }
         }
-        else
+        shakeTime -= Time.deltaTime;
+        if(shakeTime <= 0)
         {
-            FirstPersonCamera();
+            isShaking = false;
         }
     }
     #endregion
@@ -154,7 +167,7 @@ public class Camera : MonoBehaviour
                         if (distance < prevDistance && Vector3.Distance(transform.position,prevHitPoint) > 1.5f)
                         {
                             //this moves the camera back to it's prev location when it's far enough away from it's last hit point
-                            distance += (collisionZoomSpeed + 4f) * Time.deltaTime;
+                            distance += (collisionZoomSpeed + collisionZoomOutSpeed) * Time.deltaTime;
                         }
                         if(distance > prevDistance)
                         {
@@ -177,6 +190,12 @@ public class Camera : MonoBehaviour
                 transform.LookAt(target);
             }
         }
+    }
+    public void Shake(float duration, float strength)
+    {
+        isShaking = true;
+        shakeTime = duration;
+        CameraShake.Shake(duration, strength);
     }
     void FirstPersonCamera()
     {
