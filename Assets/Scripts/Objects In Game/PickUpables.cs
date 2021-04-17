@@ -37,12 +37,19 @@ public class PickUpables : MonoBehaviour
     }
     public void Drop()
     {
+        if (PlayerTransform != null)
+        {
+            PlayerTransform.GetComponent<HandMan>().PickUp = null;
+            PlayerTransform.GetComponent<HandMan>().isHoldingOBJ = false;
+        }
         IsPickedUp = false;
         transform.parent = null;
+
     }
     private void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.tag != "Player")
+        if(col.gameObject.tag != "Player" && 
+            col.gameObject.transform.position.y > transform.position.y)
         {
             Drop();
         }    
