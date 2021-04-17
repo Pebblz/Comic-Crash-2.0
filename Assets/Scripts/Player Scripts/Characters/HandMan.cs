@@ -7,6 +7,7 @@ public class HandMan : MonoBehaviour
     [HideInInspector] public GameObject PickUp;
     [HideInInspector] public bool isHoldingOBJ = false;
     [SerializeField] int ThrowForce;
+    private Transform Camera;
     Animator Anim;
     float pickUpTimer;
     void Awake()
@@ -73,10 +74,14 @@ public class HandMan : MonoBehaviour
     }
     void ThrowGameObject()
     {
+        if(Camera == null)
+        {
+            Camera = FindObjectOfType<Camera>().gameObject.transform;
+        }
         if (PickUp != null)
         {
-
-            PickUp.GetComponent<Rigidbody>().AddForce(transform.forward * ThrowForce, ForceMode.Impulse);
+            transform.rotation = new Quaternion(transform.rotation.x, Camera.rotation.y, transform.rotation.z, transform.rotation.w);
+            PickUp.GetComponent<Rigidbody>().AddForce(Camera.forward * ThrowForce, ForceMode.Impulse);
             PickUp.GetComponent<PickUpables>().Drop();
             isHoldingOBJ = false;
             PickUp = null;
