@@ -33,7 +33,7 @@ public class PlayerSwitcher : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         for (int i = 0; i < keyCodes.Length; i++)
         {
@@ -51,7 +51,13 @@ public class PlayerSwitcher : MonoBehaviour
 
         if (i + 1 <= CharactersToSwitchTo.Length)
         {
-
+            if(CurrentPlayer.GetComponent<HandMan>())
+            {
+               if( CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
+                {
+                    CurrentPlayer.GetComponent<HandMan>().PickUp.GetComponent<PickUpables>().DropInFront();
+                }
+            }
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
 

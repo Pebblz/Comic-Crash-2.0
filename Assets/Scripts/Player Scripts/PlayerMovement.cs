@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool InGrapple;
 
-    private bool DoneJumping;
+    [HideInInspector] public bool DoneJumping;
 
     [HideInInspector]
     public GameObject Ledge;
@@ -134,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        Grounded = IsGrounded();
         if (LedgeGrabbing)
         {
             Ledgegrabbing();
@@ -151,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         //float angle = GetGroundAngle();
-        Grounded = IsGrounded();
+
         //if (angle < maxGroundAngle)
         //{
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
@@ -447,7 +448,7 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         //player Jumps
-        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpsMade < jumpsAllowed && jumpTimer <= 0 && !DoneJumping)
         {
             StopAnimation("IsLanded");
 
