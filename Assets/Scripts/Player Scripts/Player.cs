@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 
     Quaternion rotation;
     GameObject Camera;
+    Rigidbody rigidbody;
+    [SerializeField] float MaxVelocity;
     #region MonoBehaviours
     void Start()
     {
@@ -17,8 +19,13 @@ public class Player : MonoBehaviour
             respawnPoint = gameObject.transform.position;
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
     private void Update()
     {
+        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, MaxVelocity);
         if (transform.parent != null)
         {
             transform.rotation = new Quaternion(rotation.x, transform.rotation.y, rotation.z, transform.rotation.w);

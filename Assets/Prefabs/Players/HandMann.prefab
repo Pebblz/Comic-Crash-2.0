@@ -3700,7 +3700,7 @@ GameObject:
   - component: {fileID: 9074519495483532363}
   - component: {fileID: 9074519495483532364}
   - component: {fileID: 7786586928363029648}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: HandMann
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3738,6 +3738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ca375ab3736aa94384619c01c7c5cf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PickUp: {fileID: 0}
   isHoldingOBJ: 0
   ThrowForce: 10
 --- !u!54 &9074519495483532361
@@ -3773,6 +3774,7 @@ MonoBehaviour:
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
+  CanAttack: 0
 --- !u!114 &9074519495483532360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3814,6 +3816,7 @@ MonoBehaviour:
   SlopeLimit: 0
   IceFloor: 0
   InGrapple: 0
+  DoneJumping: 0
   Ledge: {fileID: 0}
 --- !u!114 &9074519495483532362
 MonoBehaviour:
@@ -3842,6 +3845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnPoint: {x: 0, y: 0, z: 0}
+  MaxVelocity: 20
 --- !u!65 &9074519495483532364
 BoxCollider:
   m_ObjectHideFlags: 0
