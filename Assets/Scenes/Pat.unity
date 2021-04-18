@@ -1566,6 +1566,7 @@ GameObject:
   - component: {fileID: 323367695}
   - component: {fileID: 323367702}
   - component: {fileID: 323367698}
+  - component: {fileID: 323367703}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Bully
@@ -1727,6 +1728,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 2
+--- !u!136 &323367703
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323367694}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &334441479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6086,6 +6101,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CollisionDetection
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211553474393901042, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
+        type: 3}
+      propertyPath: MaxVelocity
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 9211553474393901042, guid: 48e4a3617cb36d94c8ca29d19c0563b7,
         type: 3}

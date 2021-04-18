@@ -1466,7 +1466,7 @@ GameObject:
   - component: {fileID: 9211553474393901047}
   - component: {fileID: 9211553474393901046}
   - component: {fileID: 9211553474393901040}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: PeaShooter
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1552,6 +1552,7 @@ MonoBehaviour:
   SlopeLimit: 0
   IceFloor: 0
   InGrapple: 0
+  DoneJumping: 0
   Ledge: {fileID: 0}
 --- !u!114 &9211553474393901042
 MonoBehaviour:
@@ -1566,6 +1567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnPoint: {x: 0, y: 0, z: 0}
+  MaxVelocity: 20
 --- !u!114 &9211553474393901045
 MonoBehaviour:
   m_ObjectHideFlags: 0
