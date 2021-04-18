@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
 
     Quaternion rotation;
     GameObject Camera;
-
     #region MonoBehaviours
     void Start()
     {
@@ -32,5 +31,16 @@ public class Player : MonoBehaviour
     {
         Camera.GetComponent<Camera>().ResetCamera();
         transform.position = respawnPoint;
+    }
+    public void PushPlayer(Vector3 direction, float power)
+    {
+        if(!GetComponent<PlayerMovement>().IsGrounded())
+        {
+            GetComponent<Rigidbody>().velocity = direction * (power / 2);
+        }
+        else
+        {
+            GetComponent<Rigidbody>().velocity = direction * power;
+        }
     }
 }

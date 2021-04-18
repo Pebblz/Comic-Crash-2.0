@@ -134,7 +134,7 @@ public class Camera : MonoBehaviour
 
                 if (Physics.Linecast(target.position, transform.position, out hit))
                 {
-                    if (hit.transform.gameObject.layer != 9)
+                    if (!hit.transform.gameObject.GetComponent<Player>())
                     {
 
                         //this if statements here so the camera doesn't bug out when colliding with a wall

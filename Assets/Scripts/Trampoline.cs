@@ -33,12 +33,9 @@ public class Trampoline : MonoBehaviour
             }
             else
             {
-                //this pushes the player away
-                col.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-col.gameObject.GetComponent<PlayerMovement>().MoveDir.x * 
-                    (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4), 
-                    col.gameObject.GetComponent<PlayerMovement>().MoveDir.y, -col.gameObject.GetComponent<PlayerMovement>().MoveDir.z * 
-                    (col.gameObject.GetComponent<PlayerMovement>().currentSpeed / 4)) 
-                    * BounceForce, ForceMode.VelocityChange);
+                Vector3 pushDir = transform.position - col.transform.position;
+
+               col.gameObject.GetComponent<Rigidbody>().velocity = pushDir * 10;
             }
         }
     }
