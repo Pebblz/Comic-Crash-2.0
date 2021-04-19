@@ -31,8 +31,11 @@ public class AIStates : MonoBehaviour
 
     private Vector3 HomePoint;
     [SerializeField] float maxDistanceAwayFromHomePoint;
+
+    Animator anim;
     private void Awake()
     {
+        anim = GetComponent<Animator>();
         HomePoint = transform.position;
         agent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>().transform;
@@ -54,6 +57,8 @@ public class AIStates : MonoBehaviour
                 Patroling();
         } else
         {
+            StopAnimation("IsWalking");
+            StopAnimation("IsCharging");
             idleTimer -= Time.deltaTime;
             if(idleTimer <= 0)
             {
@@ -67,7 +72,9 @@ public class AIStates : MonoBehaviour
     }
     private void Patroling()
     {
-        agent.speed = 5;
+        PlayAnimation("IsWalking");
+        StopAnimation("IsCharging");
+        agent.speed = 3;
         if (!walkPointSet)
             SearchWalkPoint();
         else
@@ -102,6 +109,8 @@ public class AIStates : MonoBehaviour
     }
     private void ChasePlayer()
     {
+        StopAnimation("IsWalking");
+        PlayAnimation("IsCharging");
         inIdle = false;
         agent.SetDestination(player.position);
     }
@@ -126,4 +135,25 @@ public class AIStates : MonoBehaviour
         BullyAI,
         None
     }
+
+
+
+    #region Animation
+    /// <summary>
+    /// Call this for anytime you need to play an animation 
+    /// </summary>
+    /// <param name="animName"></param>
+    public void PlayAnimation(string BoolName)
+    {
+        anim.SetBool(BoolName, true);
+    }
+    /// <summary>
+    /// Call this for anytime you need to stop an animation
+    /// </summary>
+    /// <param name="BoolName"></param>
+    public void StopAnimation(string BoolName)
+    {
+        anim.SetBool(BoolName, false);
+    }
+    #endregion
 }
