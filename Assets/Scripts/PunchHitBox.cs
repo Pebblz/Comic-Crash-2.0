@@ -17,20 +17,21 @@ public class PunchHitBox : MonoBehaviour
         }
         if (col.gameObject.tag == "Bully")
         {
-            col.GetComponent<BullyAI>().Stumble();
-
-            Vector3 pushDir = new Vector3(col.transform.position.x, 0, col.transform.position.z) - 
-                new Vector3(transform.position.x, 0, transform.position.z);
-
-            col.GetComponent<BullyAI>().HitBack(pushDir);
-
             Vector3 direction = transform.position - col.transform.position;
 
             if (Vector3.Dot(-col.gameObject.transform.forward, direction) > 0)
             {
                 col.GetComponent<BullyAI>().StartDeath();
+            } 
+            else
+            {
+                col.GetComponent<BullyAI>().Stumble();
+
+                Vector3 pushDir = new Vector3(col.transform.position.x, 0, col.transform.position.z) -
+                    new Vector3(transform.position.x, 0, transform.position.z);
+
+                col.GetComponent<BullyAI>().HitBack(pushDir);
             }
-;
         }
     }
 }
