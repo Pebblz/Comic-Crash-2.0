@@ -49,6 +49,7 @@ public class BullyAI : MonoBehaviour
 
     public void Attack(Vector3 _playerpos)
     {
+        agent.speed = 10;
         runningAtPlayer = true;
         playerpos = _playerpos;
     }
