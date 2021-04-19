@@ -18,6 +18,7 @@ public class BullyAI : MonoBehaviour
     bool stumble;
     float stumbleTimer;
     [SerializeField] float StumbleTime;
+    [SerializeField] float MaxVelocity;
     private void Awake()
     {
         Brain = GetComponent<AIStates>();
@@ -27,6 +28,7 @@ public class BullyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponent<Rigidbody>().velocity, MaxVelocity);
         if (runningAtPlayer && !stumble)
         {
             if(!atDestination)
