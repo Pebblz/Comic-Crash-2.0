@@ -10,9 +10,14 @@ public class BullyAI : MonoBehaviour
     NavMeshAgent agent;
     public bool runningAtPlayer;
     Vector3 playerpos;
-    public float keepOnRunningTimer;
+    float keepOnRunningTimer;
+    [SerializeField] float RunAfterBumpTimer;
     public bool atDestination;
     [SerializeField] float BullyPushPower;
+    [SerializeField] float KnockBackBullyPower;
+    bool stumble;
+    float stumbleTimer;
+    [SerializeField] float StumbleTime;
     private void Awake()
     {
         Brain = GetComponent<AIStates>();
@@ -22,14 +27,14 @@ public class BullyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (runningAtPlayer)
+        if (runningAtPlayer && !stumble)
         {
             if(!atDestination)
                 agent.SetDestination(playerpos);
 
             if (Vector3.Distance(transform.position, playerpos) < 1.5f && !atDestination)
             {
-                keepOnRunningTimer = 2;
+                keepOnRunningTimer = RunAfterBumpTimer;
                 atDestination = true;
             }
 
@@ -44,6 +49,12 @@ public class BullyAI : MonoBehaviour
                 runningAtPlayer = false;
             }
         }
+        if(stumbleTimer <= 0)
+        {
+            Brain.StopAnimation("BumpBack");
+            stumble = false;
+        }
+        stumbleTimer -= Time.deltaTime;
         keepOnRunningTimer -= Time.deltaTime;
     }
 
@@ -57,14 +68,30 @@ public class BullyAI : MonoBehaviour
     {
         Brain.ResetAttack();
     }
+    public void Stumble()
+    {
+        //stops agent
+        agent.SetDestination(transform.position);
+        stumbleTimer = StumbleTime;
+        stumble = true;
+        Brain.PlayAnimation("BumpBack");
+    }
+    public void HitBack(Vector3 pushDir)
+    {
+        GetComponent<Rigidbody>().velocity = pushDir * KnockBackBullyPower;
+    }
+    //this is for his bumping mechanic
     private void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Player")
         {
+            Stumble();
+
             Vector3 pushDir = new Vector3(col.transform.position.x,0, col.transform.position.z) - 
                 new Vector3( transform.position.x, 0 , transform.position.z);
 
             col.GetComponent<Player>().PushPlayer(pushDir, BullyPushPower);
         }
+
     }
 }

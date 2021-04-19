@@ -617,9 +617,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runningAtPlayer: 0
-  keepOnRunningTimer: 0
+  RunAfterBumpTimer: 2
   atDestination: 0
   BullyPushPower: 30
+  KnockBackBullyPower: 20
+  StumbleTime: 1.5
 --- !u!195 &209766660
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -633,7 +635,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -660,16 +662,16 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 1024
-  walkPointRange: 3.71
-  timeBetweenAttacks: 0.2
+  walkPointRange: 5
+  timeBetweenAttacks: 0.1
   maxIdleTime: 2
   minIdleTime: 4
-  sightRange: 15
-  attackRange: 10
+  sightRange: 10
+  attackRange: 7
   playerInSightRange: 0
   playerInAttackRange: 0
   enemy: 0
-  maxDistanceAwayFromHomePoint: 10
+  maxDistanceAwayFromHomePoint: 5
 --- !u!136 &209766662
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -680,10 +682,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.6
-  m_Height: 1.21
+  m_Radius: 0.3412218
+  m_Height: 1.2099999
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0.0033535645, y: 0.5, z: 0.19164035}
 --- !u!136 &209766663
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -698,6 +700,22 @@ CapsuleCollider:
   m_Height: 1.21
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!54 &209766665
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209766657}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1001 &217379381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2137,6 +2155,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -9064114903961122858, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8983880200633721419, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a8cac5fa489f21540a31a226acd2942a,
         type: 3}
       propertyPath: m_RootOrder
@@ -2207,6 +2235,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7272720422607880462, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -6713132272514120005, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: -6064327390194228152, guid: a8cac5fa489f21540a31a226acd2942a,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2227,10 +2265,100 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[3]
       value: 
       objectReference: {fileID: 2100000, guid: c592b3005f3bc4d43b7e0b446cc1fdb0, type: 2}
+    - target: {fileID: -3470118647226309075, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -3397191917370720937, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -3268793360420048542, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -2702314995724631683, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -1656102610784020101, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -1029530752007307072, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -973894966413367962, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -123922742798951215, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a8cac5fa489f21540a31a226acd2942a,
         type: 3}
       propertyPath: m_Name
       value: bumpermann
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bully
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907672221500734326, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274784481149400840, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5085458179145493234, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613622558201445105, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085036178219441596, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6587095864794410342, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677820821917485711, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7476330626523196306, guid: a8cac5fa489f21540a31a226acd2942a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8cac5fa489f21540a31a226acd2942a, type: 3}
@@ -3842,7 +3970,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1199551138}
   - component: {fileID: 1199551139}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spot Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4085,10 +4213,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5525380005753893801, guid: 0ddaba1a9b1cbe04e9b3f8b3191e0776,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0ddaba1a9b1cbe04e9b3f8b3191e0776,
         type: 3}
       propertyPath: m_Name
       value: face 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0ddaba1a9b1cbe04e9b3f8b3191e0776,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4253280567622488715, guid: 0ddaba1a9b1cbe04e9b3f8b3191e0776,
         type: 3}
@@ -4139,6 +4277,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -7.306
+      objectReference: {fileID: 0}
+    - target: {fileID: 7750397243111347764, guid: 0ddaba1a9b1cbe04e9b3f8b3191e0776,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ddaba1a9b1cbe04e9b3f8b3191e0776, type: 3}
@@ -4865,7 +5008,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1562437265}
   - component: {fileID: 1562437264}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spot Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5389,7 +5532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1887980734}
   - component: {fileID: 1887980735}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spot Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6203,7 +6346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1975959132}
   - component: {fileID: 1975959131}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

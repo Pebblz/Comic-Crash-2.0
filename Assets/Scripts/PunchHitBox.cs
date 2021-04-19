@@ -11,9 +11,19 @@ public class PunchHitBox : MonoBehaviour
     }
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.GetComponent<BoxScript>())
+        if (col.gameObject.GetComponent<BoxScript>())
         {
             col.gameObject.GetComponent<BoxScript>().CheckPunchToSeeIfItShouldBreak();
+        }
+        if (col.gameObject.tag == "Bully")
+        {
+            col.GetComponent<BullyAI>().Stumble();
+
+            Vector3 pushDir = new Vector3(col.transform.position.x, 0, col.transform.position.z) - 
+                new Vector3(transform.position.x, 0, transform.position.z);
+
+            col.GetComponent<BullyAI>().HitBack(pushDir);
+;
         }
     }
 }
