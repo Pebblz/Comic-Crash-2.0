@@ -31,7 +31,7 @@ public class AIStates : MonoBehaviour
 
     private Vector3 HomePoint;
     [SerializeField] float maxDistanceAwayFromHomePoint;
-
+    public bool dead;
     Animator anim;
     private void Awake()
     {
@@ -44,31 +44,35 @@ public class AIStates : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player == null)
+        if (!dead)
         {
-            player = FindObjectOfType<Player>().transform;
-        }
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
-
-        if (!inIdle)
-        {
-            if (!playerInSightRange && !playerInAttackRange)
-                Patroling();
-        } else
-        {
-            StopAnimation("IsWalking");
-            StopAnimation("IsCharging");
-            idleTimer -= Time.deltaTime;
-            if(idleTimer <= 0)
+            if (player == null)
             {
-                inIdle = false;
+                player = FindObjectOfType<Player>().transform;
             }
+            playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+            playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+
+            if (!inIdle)
+            {
+                if (!playerInSightRange && !playerInAttackRange)
+                    Patroling();
+            }
+            else
+            {
+                StopAnimation("IsWalking");
+                StopAnimation("IsCharging");
+                idleTimer -= Time.deltaTime;
+                if (idleTimer <= 0)
+                {
+                    inIdle = false;
+                }
+            }
+            if (playerInSightRange && !playerInAttackRange)
+                ChasePlayer();
+            if (playerInSightRange && playerInAttackRange)
+                AttackPlayer();
         }
-        if (playerInSightRange && !playerInAttackRange)
-            ChasePlayer();
-        if (playerInSightRange && playerInAttackRange)
-            AttackPlayer();
     }
     private void Patroling()
     {

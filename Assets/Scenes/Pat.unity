@@ -9471,6 +9471,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8045955824746108233, guid: 172d0d2be52461449ad9aa342d3c6358,
+        type: 3}
+      propertyPath: m_BaseOffset
+      value: -0.03
+      objectReference: {fileID: 0}
     - target: {fileID: 8045955824746108234, guid: 172d0d2be52461449ad9aa342d3c6358,
         type: 3}
       propertyPath: m_Height
@@ -9490,6 +9495,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.y
       value: 0.46712682
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045955824746108238, guid: 172d0d2be52461449ad9aa342d3c6358,
+        type: 3}
+      propertyPath: StumbleTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045955824746108238, guid: 172d0d2be52461449ad9aa342d3c6358,
+        type: 3}
+      propertyPath: TimeTillDead
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 172d0d2be52461449ad9aa342d3c6358, type: 3}

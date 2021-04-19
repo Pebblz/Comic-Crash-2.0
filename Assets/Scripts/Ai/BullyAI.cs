@@ -15,10 +15,11 @@ public class BullyAI : MonoBehaviour
     public bool atDestination;
     [SerializeField] float BullyPushPower;
     [SerializeField] float KnockBackBullyPower;
-    bool stumble;
+    bool stumble, dead;
     float stumbleTimer;
     [SerializeField] float StumbleTime;
     [SerializeField] float MaxVelocity;
+    [SerializeField] float TimeTillDead;
     private void Awake()
     {
         Brain = GetComponent<AIStates>();
@@ -29,32 +30,38 @@ public class BullyAI : MonoBehaviour
     private void FixedUpdate()
     {
         GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponent<Rigidbody>().velocity, MaxVelocity);
-        if (runningAtPlayer && !stumble)
+        if (!dead)
         {
-            if(!atDestination)
-                agent.SetDestination(playerpos);
+            if (runningAtPlayer && !stumble)
+            {
+                if (!atDestination)
+                    agent.SetDestination(playerpos);
 
-            if (Vector3.Distance(transform.position, playerpos) < 1.5f && !atDestination)
-            {
-                keepOnRunningTimer = RunAfterBumpTimer;
-                atDestination = true;
-            }
+                if (Vector3.Distance(transform.position, playerpos) < 1.5f && !atDestination)
+                {
+                    keepOnRunningTimer = RunAfterBumpTimer;
+                    atDestination = true;
+                }
 
-            if (keepOnRunningTimer > 0 && atDestination)
-            {
-                agent.SetDestination(transform.forward * 2);
+                if (keepOnRunningTimer > 0 && atDestination)
+                {
+                    agent.SetDestination(transform.forward * 2);
+                }
+                if (keepOnRunningTimer <= 0 && atDestination)
+                {
+                    Invoke("CallBrainAttackReset", Brain.timeBetweenAttacks);
+                    atDestination = false;
+                    runningAtPlayer = false;
+                }
             }
-            if (keepOnRunningTimer <= 0 && atDestination)
+            if (stumbleTimer <= 0)
             {
-                Invoke("CallBrainAttackReset", Brain.timeBetweenAttacks);
-                atDestination = false;
-                runningAtPlayer = false;
+                Brain.StopAnimation("BumpBack");
+                stumble = false;
             }
-        }
-        if(stumbleTimer <= 0)
+        } else
         {
-            Brain.StopAnimation("BumpBack");
-            stumble = false;
+            agent.SetDestination(transform.position);
         }
         stumbleTimer -= Time.deltaTime;
         keepOnRunningTimer -= Time.deltaTime;
@@ -82,6 +89,17 @@ public class BullyAI : MonoBehaviour
     {
         GetComponent<Rigidbody>().velocity = pushDir * KnockBackBullyPower;
     }
+    public void StartDeath()
+    {
+        dead = true;
+        Brain.dead = true;
+        Brain.PlayAnimation("IsDead");
+        Invoke("Destroy", TimeTillDead);
+    }
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
     //this is for his bumping mechanic
     private void OnTriggerEnter(Collider col)
     {
@@ -95,5 +113,12 @@ public class BullyAI : MonoBehaviour
             col.GetComponent<Player>().PushPlayer(pushDir, BullyPushPower);
         }
 
+    }
+    private void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "PlayerPunch")
+        {
+
+        }
     }
 }
