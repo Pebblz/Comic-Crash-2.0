@@ -34,13 +34,13 @@ public class ConveyerBelt : MonoBehaviour
                 //i had to add all this extra stuff so you can jump off of the belts
                 if (direction == new Vector3(1, 0, 0) || direction == new Vector3(-1, 0, 0))
                 {
-                    onBelt[i].GetComponent<Rigidbody>().velocity = new Vector3 (speed * direction.x * Time.deltaTime, onBelt[i].GetComponent<Rigidbody>().velocity.y, 
+                    onBelt[i].GetComponent<Rigidbody>().velocity = new Vector3 (speed * direction.x * Time.fixedDeltaTime, onBelt[i].GetComponent<Rigidbody>().velocity.y, 
                         onBelt[i].GetComponent<Rigidbody>().velocity.z);
                 }
                 if(direction == new Vector3(0, 0, 1) || direction == new Vector3(0, 0, -1))
                 {
                     onBelt[i].GetComponent<Rigidbody>().velocity = new Vector3(onBelt[i].GetComponent<Rigidbody>().velocity.x,
-                        onBelt[i].GetComponent<Rigidbody>().velocity.y, speed * direction.z * Time.deltaTime);
+                        onBelt[i].GetComponent<Rigidbody>().velocity.y, speed * direction.z * Time.fixedDeltaTime);
                 }
             }
         }

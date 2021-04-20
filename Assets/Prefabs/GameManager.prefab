@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2200293165321699422}
   - component: {fileID: 2200293165321699393}
+  - component: {fileID: -4337962201287472001}
   - component: {fileID: 2200293165321699423}
   - component: {fileID: 2200293165321699421}
   - component: {fileID: 2200293165321699420}
@@ -49,6 +50,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinCount: 0
   CollectibleCount: 0
+--- !u!114 &-4337962201287472001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200293165321699392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae7bca4bc33bcb341a40597d0fd4e3d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2200293165321699423
 MonoBehaviour:
   m_ObjectHideFlags: 0
