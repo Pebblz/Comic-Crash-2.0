@@ -37,7 +37,7 @@ public class PlayerAttack : MonoBehaviour
             }
             //this waits for the animation to be done before going to the next punch
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
-                anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f && AttackAgian)
+                anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
             {
                 punch(AttacksPreformed);
             }
@@ -67,10 +67,10 @@ public class PlayerAttack : MonoBehaviour
         //---------------
         if(AttacksPreformed == 1)
         {
-            TimeTillAttackReset = .7f;
+            TimeTillAttackReset = .6f;
         } else
         {
-            TimeTillAttackReset = .8f;
+            TimeTillAttackReset = .85f;
         }
         //---------------
         AttacksPreformed++;
