@@ -23,6 +23,7 @@ public class BlobBert : MonoBehaviour
         //if blobert crouches he can pass through the grates 
         if (col.gameObject.tag == "Grate")
         {
+
             Physics.IgnoreCollision(this.gameObject.GetComponent<Collider>(), col.gameObject.GetComponent<Collider>());
         }
     }

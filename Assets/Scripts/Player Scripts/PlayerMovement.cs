@@ -562,7 +562,17 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, -Vector3.up , out hit, distToGround + 0.1f))
+        {
+            if(GetComponent<BlobBert>() && hit.collider.tag == "Grate")
+            {
+                print("Grate");
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
     private float GetGroundAngle()
     {
