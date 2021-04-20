@@ -20,12 +20,12 @@ public class FallingPlatforms : MonoBehaviour
     }
     private void Update()
     {
-        if(Falling)
+        if (Falling)
         {
-            DownSpeed += Time.fixedDeltaTime/20;
+            DownSpeed += Time.fixedDeltaTime / 20;
             transform.position = new Vector3(transform.position.x,
                 transform.position.y - DownSpeed, transform.position.z);
-            if(timer < 0)
+            if (timer < 0)
             {
                 _fallingPlatformManager.GetComponent<FallingPlatformManager>().PlatformFalling(gameObject, OriginalPos, Originalrot);
             }
@@ -34,11 +34,16 @@ public class FallingPlatforms : MonoBehaviour
     }
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Player")
         {
             Falling = true;
         }
-
     }
-
+    private void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            Falling = true;
+        }
+    }
 }
