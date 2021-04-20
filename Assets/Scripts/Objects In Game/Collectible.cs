@@ -13,7 +13,8 @@ public class Collectible : MonoBehaviour
     {
         if (col.tag == "Player")
         {
-            GameObject gm = GameObject.Find("GameManager");
+            GameObject gm = FindObjectOfType<GameManager>().gameObject;
+
             if (collect == collectible.Coin)
             {
                 gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
