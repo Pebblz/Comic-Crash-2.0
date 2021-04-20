@@ -32,6 +32,7 @@ public class AIStates : MonoBehaviour
     private Vector3 HomePoint;
     [SerializeField] float maxDistanceAwayFromHomePoint;
     public bool dead;
+    public bool stunned;
     Animator anim;
     private void Awake()
     {
@@ -44,7 +45,7 @@ public class AIStates : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!dead)
+        if (!dead && !stunned)
         {
             if (player == null)
             {
@@ -133,6 +134,15 @@ public class AIStates : MonoBehaviour
     public void ResetAttack()
     {
         alreadyAttacked = false;
+    }
+    public void StunnedTimer(float Timer)
+    {
+        stunned = true;
+        Invoke("UnStun", Timer);
+    }
+    void UnStun()
+    {
+        stunned = false;
     }
     enum EnemyType
     {

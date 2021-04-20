@@ -14,7 +14,7 @@ public class BullyAI : MonoBehaviour
     [SerializeField] float RunAfterBumpTimer;
     public bool atDestination;
     [SerializeField] float BullyPushPower;
-    [SerializeField] float KnockBackBullyPower;
+    public float KnockBackBullyPower;
     bool stumble, dead;
     float stumbleTimer;
     [SerializeField] float StumbleTime;
@@ -82,12 +82,13 @@ public class BullyAI : MonoBehaviour
         //stops agent
         agent.SetDestination(transform.position);
         stumbleTimer = StumbleTime;
+        Brain.StunnedTimer(stumbleTimer);
         stumble = true;
         Brain.PlayAnimation("BumpBack");
     }
-    public void HitBack(Vector3 pushDir)
+    public void HitBack(Vector3 pushDir, float _KnockBackBullyPower)
     {
-        GetComponent<Rigidbody>().velocity = pushDir * KnockBackBullyPower;
+        GetComponent<Rigidbody>().velocity = pushDir * _KnockBackBullyPower;
     }
     public void StartDeath()
     {
@@ -103,7 +104,7 @@ public class BullyAI : MonoBehaviour
     //this is for his bumping mechanic
     private void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == "Player" && runningAtPlayer)
         {
             Stumble();
 
@@ -112,13 +113,13 @@ public class BullyAI : MonoBehaviour
 
             col.GetComponent<Player>().PushPlayer(pushDir, BullyPushPower);
         }
-
-    }
-    private void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "PlayerPunch")
+        if(col.tag == "Wall" && runningAtPlayer)
         {
+            Stumble();
 
+            Vector3 pushDir = new Vector3(transform.position.x, 0, transform.position.z) -new Vector3(col.transform.position.x, 0, col.transform.position.z);
+            
+            HitBack(pushDir, 1.5f);
         }
     }
 }

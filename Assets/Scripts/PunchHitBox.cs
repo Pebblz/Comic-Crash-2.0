@@ -30,7 +30,7 @@ public class PunchHitBox : MonoBehaviour
                 Vector3 pushDir = new Vector3(col.transform.position.x, 0, col.transform.position.z) -
                     new Vector3(transform.position.x, 0, transform.position.z);
 
-                col.GetComponent<BullyAI>().HitBack(pushDir);
+                col.GetComponent<BullyAI>().HitBack(pushDir, col.GetComponent<BullyAI>().KnockBackBullyPower);
             }
         }
     }
