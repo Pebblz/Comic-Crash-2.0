@@ -9,13 +9,10 @@ public class FallingPlatformManager : MonoBehaviour
 
     public void PlatformFalling(GameObject platform, Vector3 Originalpos, Quaternion Originalrot)
     {
-        GameObject temp;
-
         for(int i = 0; i < _fallingPlatforms.Length; i++)
         {
             if(_fallingPlatforms[i] == platform)
             {
-                temp = platform;
                 ResetPlatform(platform, i, Originalpos, Originalrot);
             }
         }

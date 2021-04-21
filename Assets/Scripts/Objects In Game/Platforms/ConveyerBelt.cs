@@ -16,7 +16,7 @@ public class ConveyerBelt : MonoBehaviour
     [SerializeField, Tooltip("The gameobjects on the belt currently")]
     List<GameObject> onBelt;
 
-    [SerializeField, Tooltip("if this is set active the conveyer belt is working")]
+    [Tooltip("if this is set active the conveyer belt is working")]
     public bool active = true;
 
     void Update()
