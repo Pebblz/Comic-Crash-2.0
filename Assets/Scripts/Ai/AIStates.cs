@@ -114,21 +114,33 @@ public class AIStates : MonoBehaviour
     }
     private void ChasePlayer()
     {
-        StopAnimation("IsWalking");
-        PlayAnimation("IsCharging");
-        inIdle = false;
-        agent.SetDestination(player.position);
+        if (Physics.Raycast(player.position, -transform.up, 4f, whatIsGround))
+        {
+            StopAnimation("IsWalking");
+            PlayAnimation("IsCharging");
+            inIdle = false;
+            agent.SetDestination(player.position);
+        } else
+        {
+            Patroling();
+        }
     }
     private void AttackPlayer()
     {
-        inIdle = false;
-        if (!alreadyAttacked)
+        if (Physics.Raycast(player.position, -transform.up, 4f, whatIsGround))
         {
-            if(enemy == EnemyType.BullyAI)
+            inIdle = false;
+            if (!alreadyAttacked)
             {
-                GetComponent<BullyAI>().Attack(player.position);
+                if (enemy == EnemyType.BullyAI)
+                {
+                    GetComponent<BullyAI>().Attack(player.position);
+                }
+                alreadyAttacked = true;
             }
-            alreadyAttacked = true;
+        } else
+        {
+            Patroling();
         }
     }
     public void ResetAttack()
