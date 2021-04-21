@@ -19,10 +19,10 @@ public class MovingPlatforms : MonoBehaviour
 
     [Header("Distance")]
 
-    [SerializeField, Range(1f, 10f), Tooltip("The amount the platform will move up and down")]
+    [SerializeField, Range(0f, 40f), Tooltip("The amount the platform will move up and down")]
     float DistanceToMoveY;
 
-    [SerializeField, Range(1f, 10f), Tooltip("The amount the platform will move left nad right or striaght and back")]
+    [SerializeField, Range(0f, 40f), Tooltip("The amount the platform will move left nad right or striaght and back")]
     float DistanceToMoveXZ;
 
     [Space(10)]
