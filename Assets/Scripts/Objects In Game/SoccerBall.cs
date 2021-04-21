@@ -22,9 +22,6 @@ public class SoccerBall : MonoBehaviour
             Vector3 direction = (col.transform.position - transform.position).normalized;
             rb.AddForce(-direction * pushPower, ForceMode.Impulse);
         }
-    }
-    private void OnTriggerExit(Collider col)
-    {
         if (col.gameObject.name == "Out_Of_Bounds")
         {
             this.gameObject.transform.position = startpos;
