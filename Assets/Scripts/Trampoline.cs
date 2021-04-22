@@ -9,6 +9,7 @@ public class Trampoline : MonoBehaviour
     private Vector3 origanalScale;
     private bool squishTime;
     private bool doneSquishing;
+
     private void Start()
     {
         origanalScale = transform.localScale;
@@ -27,8 +28,16 @@ public class Trampoline : MonoBehaviour
         {
             if (col.gameObject.transform.position.y > gameObject.transform.position.y)
             {
-                //this shoots the player up
-                col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * BounceForce,ForceMode.VelocityChange);
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    //this shoots the player up
+                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (BounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpSpeed / 2.5f)), ForceMode.VelocityChange);
+                }
+                else
+                {
+                    //this shoots the player up
+                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * BounceForce, ForceMode.VelocityChange);
+                }
                 squishTime = true;
             }
             else
@@ -39,6 +48,7 @@ public class Trampoline : MonoBehaviour
             }
         }
     }
+
     void Squish()
     {
         if(!doneSquishing)

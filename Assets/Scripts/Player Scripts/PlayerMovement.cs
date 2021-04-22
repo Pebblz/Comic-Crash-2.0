@@ -25,8 +25,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(5f, 30f)]
     private float runSpeed;
 
-    [SerializeField, Range(1f, 10f)]
-    float jumpSpeed;
+    [Range(1f, 10f)]
+    public float jumpSpeed;
 
     [SerializeField, Range(.1f, .5f)]
     float turnSmoothTime = .1f;
@@ -45,8 +45,10 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField, Range(0, 5), Tooltip("Amount of jumps allowed")]
     int jumpsAllowed;
+
     [SerializeField, Tooltip("If true the player can dive, if false he can't")]
     bool CanDive;
+
     [SerializeField, Range(1f, 20f), Tooltip("The speed of the dash")]
     float DashSpeed;
 
