@@ -4,18 +4,28 @@ public class Trampoline : MonoBehaviour
 {
     [SerializeField, Range(1f, 20f)]
     float BounceForce;
+    [SerializeField, Range(1f, 20f)]
+    float HighBounceForce;
     [SerializeField, Range(.1f, 6f)]
     float timeToSquish;
     private Vector3 origanalScale;
     private bool squishTime;
     private bool doneSquishing;
-
+    private bool HoldingSpace;
     private void Start()
     {
         origanalScale = transform.localScale;
     }
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            HoldingSpace = true;
+        }
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            HoldingSpace = false;
+        }
         if(squishTime)
         {
             Squish();
@@ -28,10 +38,10 @@ public class Trampoline : MonoBehaviour
         {
             if (col.gameObject.transform.position.y > gameObject.transform.position.y)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (HoldingSpace)
                 {
                     //this shoots the player up
-                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (BounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpSpeed / 2.5f)), ForceMode.VelocityChange);
+                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpSpeed)), ForceMode.VelocityChange);
                 }
                 else
                 {
