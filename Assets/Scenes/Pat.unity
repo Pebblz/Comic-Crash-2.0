@@ -3987,6 +3987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeTillReset: 7
+  timeTillPlatformFalls: 1
 --- !u!65 &441865249
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4915,6 +4916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeTillReset: 7
+  timeTillPlatformFalls: 1
 --- !u!65 &547717237
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8468,6 +8470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeTillReset: 7
+  timeTillPlatformFalls: 0.5
 --- !u!65 &834320472
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10211,6 +10214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeTillReset: 7
+  timeTillPlatformFalls: 0.5
 --- !u!65 &990757722
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23077,6 +23081,11 @@ PrefabInstance:
         type: 3}
       propertyPath: timeTillReset
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5031439279232782714, guid: f434d4b613464be46b120735bb5e1bb0,
+        type: 3}
+      propertyPath: timeTillPlatformFalls
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f434d4b613464be46b120735bb5e1bb0, type: 3}
