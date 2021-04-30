@@ -123,7 +123,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             CurrentSpeed = WalkSpeed;
         }
-        if (playerInput.magnitude < 0.3f)
+        if (playerInput.magnitude < 0.6f)
         {
             body.velocity = new Vector3(0, body.velocity.y, 0);
         }
