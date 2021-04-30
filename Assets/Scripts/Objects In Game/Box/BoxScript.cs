@@ -8,7 +8,12 @@ public class BoxScript : MonoBehaviour
     [SerializeField] List<WaysToBreak> Ways;
     private Camera cam;
     private bool wasPunched;
+    private SoundManager soundManager;
     //this will replace the unbroken box with the broken box
+    private void Awake()
+    {
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+    }
     void DestroyBox()
     {
         if (wasPunched)
@@ -17,6 +22,7 @@ public class BoxScript : MonoBehaviour
             cam.GetComponent<Camera>().Shake(.1f, .1f);
         }
         Instantiate(BrokenBox, transform.position, transform.rotation);
+        soundManager.playBoxBreak();
         Destroy(gameObject);
     }
 

@@ -20,6 +20,7 @@ public class SoundManager : MonoBehaviour
     #region sounds
     [SerializeField] AudioSource boing;
     [SerializeField] AudioSource ocean;
+    [SerializeField] AudioSource box_break;
 
     #endregion
 
@@ -111,6 +112,12 @@ public class SoundManager : MonoBehaviour
         if (boing.isPlaying) return;
 
         this.boing.Play();
+    }
+
+    public void playBoxBreak()
+    {
+        if (box_break.isPlaying) return;
+        this.box_break.Play();
     }
     #endregion
 }
