@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 309079138}
   - component: {fileID: 309079136}
   - component: {fileID: 309079135}
+  - component: {fileID: 309079137}
   m_Layer: 4
   m_Name: water
   m_TagString: Untagged
@@ -170,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d0c4578652901df4e8f978fa289e2272, type: 2}
+  - {fileID: 2100000, guid: 37c1570f21a6db843bacedf6de4d7b0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -191,6 +192,14 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!33 &309079137
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309079134}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &309079138
 Transform:
   m_ObjectHideFlags: 0
@@ -1371,17 +1380,17 @@ MonoBehaviour:
   RunSpeed: 15
   maxClimbSpeed: 2
   maxSwimSpeed: 5
-  slowDownSpeed: 0
-  maxAcceleration: 5
+  slowDownSpeed: 0.2
+  maxAcceleration: 10
   maxAirAcceleration: 1
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
   jumpHeight: 5
-  maxAirJumps: 0
+  maxAirJumps: 1
   maxGroundAngle: 25
   maxStairsAngle: 50
   maxClimbAngle: 140
-  maxSnapSpeed: 100
+  maxSnapSpeed: 25
   probeDistance: 1
   probeMask:
     serializedVersion: 2
@@ -1397,7 +1406,7 @@ MonoBehaviour:
     m_Bits: 16
   playerInputSpace: {fileID: 420484464}
   turnSmoothTime: 0.01
-  submergenceOffset: 0
+  submergenceOffset: 0.67
   submergenceRange: 1
   waterDrag: 1
   buoyancy: 2.2
