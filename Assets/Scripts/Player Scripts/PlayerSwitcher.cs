@@ -73,8 +73,8 @@ public class PlayerSwitcher : MonoBehaviour
 
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;
-            Camera.GetComponent<Camera>().thirdPersonCamera = true;
-            Camera.GetComponent<Camera>().target = Temp.transform;
+            Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
+            Camera.GetComponent<MainCamera>().target = Temp.transform;
             Destroy(CurrentPlayer);
             CurrentPlayer = Temp;
 

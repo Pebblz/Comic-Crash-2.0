@@ -29,12 +29,12 @@ public class PeaShooter : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            camera.GetComponent<Camera>().thirdPersonCamera = false;
+            camera.GetComponent<MainCamera>().thirdPersonCamera = false;
             PlayAnimation("Aiming");
         }
         if (Input.GetMouseButtonUp(1))
         {
-            camera.GetComponent<Camera>().thirdPersonCamera = true;
+            camera.GetComponent<MainCamera>().thirdPersonCamera = true;
             StopAnimation("Aiming");
         }
 
@@ -58,7 +58,7 @@ public class PeaShooter : MonoBehaviour
     }
     void Attack()
     {
-        if (!camera.GetComponent<Camera>().thirdPersonCamera)
+        if (!camera.GetComponent<MainCamera>().thirdPersonCamera)
         {
             GameObject tempbul = Instantiate(BulletPrefab, camera.transform.position, camera.transform.rotation);
             tempbul.GetComponent<Rigidbody>().AddForce(tempbul.transform.forward * shotSpeed);

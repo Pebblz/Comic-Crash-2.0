@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class Camera : MonoBehaviour
+public class MainCamera : MonoBehaviour
 {
     #region Third Person Vars
     [Tooltip("This is what the camera will be focusing on in game")]

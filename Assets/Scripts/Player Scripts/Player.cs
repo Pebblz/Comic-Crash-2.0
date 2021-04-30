@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
     public void RepoPlayer()
     {
-        Camera.GetComponent<Camera>().ResetCamera();
+        Camera.GetComponent<MainCamera>().ResetCamera();
         transform.position = respawnPoint;
     }
     public void PushPlayer(Vector3 direction, float power)
