@@ -12,9 +12,11 @@ public class Trampoline : MonoBehaviour
     private bool squishTime;
     private bool doneSquishing;
     private bool HoldingSpace;
+    private SoundManager soundManager;
     private void Start()
     {
         origanalScale = transform.localScale;
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
     private void Update()
     {
@@ -42,11 +44,13 @@ public class Trampoline : MonoBehaviour
                 {
                     //this shoots the player up
                     col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpSpeed)), ForceMode.VelocityChange);
+                    soundManager.playBoingSound();
                 }
                 else
                 {
                     //this shoots the player up
                     col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * BounceForce, ForceMode.VelocityChange);
+                    soundManager.playBoingSound();
                 }
                 squishTime = true;
             }
