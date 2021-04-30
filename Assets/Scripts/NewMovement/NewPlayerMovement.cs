@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class NewPlayerMovement : MonoBehaviour
 {
-	[SerializeField, Range(0f, 100f)]
+    #region serializedFields
+    [SerializeField, Range(0f, 100f)]
 	float maxSpeed = 10f, maxClimbSpeed = 2f, maxSwimSpeed = 5f;
 	[SerializeField, Range(0f, 100f)]
 	float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
@@ -34,6 +35,12 @@ public class NewPlayerMovement : MonoBehaviour
 	float buoyancy = 1f;
 	[SerializeField, Range(0.01f, 1f)]
 	float swimThreshold = 0.5f;
+	[SerializeField, Range(0f, .5f)]
+	float turnSmoothTime = .1f;
+	[SerializeField]
+	Animator anim;
+	#endregion
+	#region
 	Vector3 playerInput;
 	Vector3 velocity, connectionVelocity;
 	Rigidbody body, connectedBody, previousConnectedBody;
@@ -51,7 +58,10 @@ public class NewPlayerMovement : MonoBehaviour
 	bool OnSteep => steepContactCount > 0;
 	Vector3 upAxis, rightAxis, forwardAxis;
 	Vector3 connectionWorldPosition, connectionLocalPosition;
-	void OnValidate()
+	float turnSmoothVelocity;
+    #endregion
+    #region MonoBehaviors
+    void OnValidate()
 	{
 		minStairsDotProduct = Mathf.Cos(maxStairsAngle * Mathf.Deg2Rad);
 		minGroundDotProduct = Mathf.Cos(maxGroundAngle);
@@ -61,6 +71,7 @@ public class NewPlayerMovement : MonoBehaviour
 	void Awake()
 	{
 		body = GetComponent<Rigidbody>();
+		anim = GetComponent<Animator>();
 		body.useGravity = false;
 		OnValidate();
 	}
@@ -117,8 +128,7 @@ public class NewPlayerMovement : MonoBehaviour
 		}
 		else if (OnGround && velocity.sqrMagnitude < 0.01f)
 		{
-			velocity += contactNormal *
-				(Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
+			velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
 		}
 		else if (InWater)
 		{
@@ -136,7 +146,8 @@ public class NewPlayerMovement : MonoBehaviour
 		body.velocity = velocity;
 		ClearState();
 	}
-	void ClearState()
+    #endregion
+    void ClearState()
 	{
 		groundContactCount = steepContactCount = climbContactCount = 0;
 		contactNormal = steepNormal = climbNormal = Vector3.zero;
@@ -224,7 +235,8 @@ public class NewPlayerMovement : MonoBehaviour
 		connectionWorldPosition = body.position;
 		connectionLocalPosition = connectedBody.transform.InverseTransformPoint(connectionWorldPosition);
 	}
-	void OnTriggerEnter(Collider other)
+    #region Collision && triggers
+    void OnTriggerEnter(Collider other)
 	{
 		if ((waterMask & (1 << other.gameObject.layer)) != 0)
 		{
@@ -248,7 +260,8 @@ public class NewPlayerMovement : MonoBehaviour
 	{
 		EvaluateCollision(collision);
 	}
-	bool CheckSteepContacts()
+    #endregion
+    bool CheckSteepContacts()
 	{
 		if (steepContactCount > 1)
 		{
@@ -360,6 +373,18 @@ public class NewPlayerMovement : MonoBehaviour
 		float newX = Mathf.MoveTowards(currentX, playerInput.x * speed, maxSpeedChange);
 		float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
 
+		//rotation
+		if (!Climbing)
+		{
+			float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
+
+			//used to smooth the angle needed to move to avoid snapping to directions
+			float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+			//rotate player
+			transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+		}
+		//------------------------
 		velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
 		if (Swimming)
 		{
@@ -441,4 +466,26 @@ public class NewPlayerMovement : MonoBehaviour
 	{
 		stepsSinceLastJump = -1;
 	}
+	#region Animation
+	/// <summary>
+	/// Call this for anytime you need to play an animation 
+	/// </summary>
+	/// <param name="animName"></param>
+	public void PlayAnimation(string BoolName)
+	{
+		anim.SetBool(BoolName, true);
+	}
+	/// <summary>
+	/// Call this for anytime you need to stop an animation
+	/// </summary>
+	/// <param name="BoolName"></param>
+	public void StopAnimation(string BoolName)
+	{
+		anim.SetBool(BoolName, false);
+	}
+	public void PlayFallingAnimation()
+	{
+		PlayAnimation("Falling");
+	}
+	#endregion
 }
