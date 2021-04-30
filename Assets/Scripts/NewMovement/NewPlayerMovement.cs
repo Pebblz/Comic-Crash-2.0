@@ -5,10 +5,16 @@ using UnityEngine;
 public class NewPlayerMovement : MonoBehaviour
 {
     #region serializedFields
+	[Header("Speed")]
     [SerializeField, Range(0f, 100f)]
-	float maxSpeed = 10f, maxClimbSpeed = 2f, maxSwimSpeed = 5f;
+	float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f;
+	[SerializeField]
+	float slowDownSpeed;
+	[Space(5)]
+	[Header("Acceleration")]
 	[SerializeField, Range(0f, 100f)]
 	float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
+	[Space(5)]
 	[SerializeField, Range(0f, 10f)]
 	float jumpHeight = 2f;
 	[SerializeField, Range(0, 5)]
@@ -21,10 +27,17 @@ public class NewPlayerMovement : MonoBehaviour
 	float maxSnapSpeed = 100f;
 	[SerializeField, Min(0f)]
 	float probeDistance = 1f;
+	[Space(5)]
+	[Header("Layers")]
 	[SerializeField]
 	LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
+	[Space(5)]
 	[SerializeField]
 	Transform playerInputSpace = default;
+	[SerializeField, Range(0f, .5f)]
+	float turnSmoothTime = .1f;
+	[Space(5)]
+	[Header("For Water")]
 	[SerializeField]
 	float submergenceOffset = 0.5f;
 	[SerializeField, Min(0.1f)]
@@ -35,12 +48,12 @@ public class NewPlayerMovement : MonoBehaviour
 	float buoyancy = 1f;
 	[SerializeField, Range(0.01f, 1f)]
 	float swimThreshold = 0.5f;
-	[SerializeField, Range(0f, .5f)]
-	float turnSmoothTime = .1f;
 	[SerializeField]
 	Animator anim;
 	#endregion
 	#region
+	float CurrentSpeed;
+	bool Isrunning;
 	Vector3 playerInput;
 	Vector3 velocity, connectionVelocity;
 	Rigidbody body, connectedBody, previousConnectedBody;
@@ -102,8 +115,15 @@ public class NewPlayerMovement : MonoBehaviour
 		{
 			desiredJump |= Input.GetButtonDown("Jump");
 			desiresClimbing = Input.GetButton("Climb");
+			Isrunning = Input.GetButton("Run");
 		}
-		print(Climbing);
+		if(Isrunning)
+        {
+			CurrentSpeed = RunSpeed;
+        } else
+        {
+			CurrentSpeed = WalkSpeed;
+        }
 	}
 
 	void FixedUpdate()
@@ -136,8 +156,7 @@ public class NewPlayerMovement : MonoBehaviour
 		}
 		else if (desiresClimbing && OnGround)
 		{
-			velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) *
-				Time.deltaTime;
+			velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
 		}
 		else
 		{
@@ -350,14 +369,14 @@ public class NewPlayerMovement : MonoBehaviour
 		{
 			float swimFactor = Mathf.Min(1f, submergence / swimThreshold);
 			acceleration = Mathf.LerpUnclamped(OnGround ? maxAcceleration : maxAirAcceleration, maxSwimAcceleration, swimFactor);
-			speed = Mathf.LerpUnclamped(maxSpeed, maxSwimSpeed, swimFactor);
+			speed = Mathf.LerpUnclamped(CurrentSpeed, maxSwimSpeed, swimFactor);
 			xAxis = rightAxis;
 			zAxis = forwardAxis;
 		}
 		else
 		{
 			acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
-			speed = OnGround && desiresClimbing ? maxClimbSpeed : maxSpeed;
+			speed = OnGround && desiresClimbing ? maxClimbSpeed : CurrentSpeed;
 			xAxis = rightAxis;
 			zAxis = forwardAxis;
 		}
@@ -386,6 +405,24 @@ public class NewPlayerMovement : MonoBehaviour
 		}
 		//------------------------
 		velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
+		if(velocity.magnitude > 1f)
+        {
+			if(Isrunning)
+            {
+				PlayAnimation("Run");
+				StopAnimation("Walk");
+            }
+            else
+            {
+				PlayAnimation("Walk");
+				StopAnimation("Run");
+			}
+        }
+        else
+        {
+			StopAnimation("Run");
+			StopAnimation("Walk");
+		}
 		if (Swimming)
 		{
 			float currentY = Vector3.Dot(relativeVelocity, upAxis);
