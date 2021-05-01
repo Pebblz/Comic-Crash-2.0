@@ -293,7 +293,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 420484461}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1, z: -0.44}
+  m_LocalPosition: {x: 0, y: 3.6, z: -0.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -308,22 +308,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 420484461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56c18bdfeb14bf49944f72c0e6169bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f4d25a00bf7959449a7d6cf5d7e9713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: {fileID: 543450651997411201}
-  distance: 9
-  focusRadius: 1
-  focusCentering: 0.5
-  rotationSpeed: 90
-  minVerticalAngle: -30
-  maxVerticalAngle: 60
-  alignDelay: 5
-  alignSmoothRange: 45
-  upAlignmentSpeed: 360
+  target: {fileID: 543450651997411201}
+  distance: 5
+  xSpeed: 120
+  ySpeed: 120
+  yMinLimit: -20
+  yMaxLimit: 80
+  distanceMin: 3
+  distanceMax: 15
+  fallLookAtPosition: -50
+  collisionZoomSpeed: 5
+  collisionZoomOutSpeed: 5
+  thirdPersonCamera: 1
+  MouseSensitivity: 90
+  CrossHair: {fileID: 4486104288275710578}
   obstructionMask:
     serializedVersion: 2
-    m_Bits: 22839
+    m_Bits: 22819
 --- !u!114 &420484466
 MonoBehaviour:
   m_ObjectHideFlags: 0

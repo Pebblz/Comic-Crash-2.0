@@ -141,7 +141,7 @@ public class NewPlayerMovement : MonoBehaviour
 
         if (InWater)
         {
-            velocity *= 1f - waterDrag * submergence * Time.deltaTime;
+           velocity *= 1f - waterDrag * submergence * Time.deltaTime;
         }
         AdjustVelocity();
 
@@ -162,7 +162,8 @@ public class NewPlayerMovement : MonoBehaviour
         }
         else if (InWater)
         {
-            velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+            if(!Input.GetKey(KeyCode.Z))
+                velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
         }
         else if (desiresClimbing && OnGround)
         {
@@ -442,6 +443,7 @@ public class NewPlayerMovement : MonoBehaviour
         }
         if (Swimming)
         {
+
             float currentY = Vector3.Dot(relativeVelocity, upAxis);
             float newY = Mathf.MoveTowards(currentY, playerInput.z * speed, maxSpeedChange);
             velocity += upAxis * (newY - currentY);
