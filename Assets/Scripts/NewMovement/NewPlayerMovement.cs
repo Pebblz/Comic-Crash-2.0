@@ -480,10 +480,12 @@ public class NewPlayerMovement : MonoBehaviour
         {
             if (velocity.y < .01f)
             {
+                PlayAnimation("Walk");
                 if (Isrunning)
                 {
                     PlayAnimation("Run");
-                    StopAnimation("Walk");
+                    if(!isCrouching)
+                        StopAnimation("Walk");
                 }
                 else
                 {
