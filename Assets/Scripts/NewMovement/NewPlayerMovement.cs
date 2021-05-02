@@ -51,7 +51,7 @@ public class NewPlayerMovement : MonoBehaviour
     [SerializeField]
     Animator anim;
     #endregion
-    #region
+    #region private fields
     float CurrentSpeed;
     bool Isrunning;
     Vector3 playerInput;
@@ -135,15 +135,19 @@ public class NewPlayerMovement : MonoBehaviour
         }
         else
         {
-            desiredJump |= Input.GetButtonDown("Jump");
-            desiresClimbing = Input.GetButton("Climb");
-            Isrunning = Input.GetButton("Run");
+            if (CheckSteepContacts())
+            {
+                desiredJump |= Input.GetButtonDown("Jump");
+                desiresClimbing = Input.GetButton("Climb");
+            }
+                Isrunning = Input.GetButton("Run");
+
         }
-        if (Isrunning && !Input.GetKey(KeyCode.C) && !InWater && !Climbing)
+        if (Isrunning && !Input.GetKey(KeyCode.C) && !InWater && !Climbing && !CheckSteepContacts())
         {
             CurrentSpeed = RunSpeed;
         }
-        if (!Isrunning || Input.GetKey(KeyCode.C) || InWater || Climbing)
+        if (!Isrunning || Input.GetKey(KeyCode.C) || InWater || Climbing || CheckSteepContacts())
         {
             CurrentSpeed = WalkSpeed;
         }
@@ -454,7 +458,7 @@ public class NewPlayerMovement : MonoBehaviour
         float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
 
         //rotation
-        if (!Climbing)
+        if (!Climbing && !CheckSteepContacts())
         {
             float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
 
@@ -463,6 +467,12 @@ public class NewPlayerMovement : MonoBehaviour
 
             //rotate player
             transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+        }
+        if (CheckSteepContacts())
+        {
+
+            //rotate player
+            transform.rotation = Quaternion.Euler(0f, velocity.y, 0f);
         }
         //------------------------
         velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
