@@ -135,12 +135,10 @@ public class NewPlayerMovement : MonoBehaviour
         }
         else
         {
-            if (!CheckSteepContacts())
-            {
-                desiredJump |= Input.GetButtonDown("Jump");
-                desiresClimbing = Input.GetButton("Climb");
-            }
-                Isrunning = Input.GetButton("Run");
+
+            desiredJump |= Input.GetButtonDown("Jump");
+            desiresClimbing = Input.GetButton("Climb");
+            Isrunning = Input.GetButton("Run");
 
         }
         if (Isrunning && !Input.GetKey(KeyCode.C) && !InWater && !Climbing && !CheckSteepContacts())
@@ -159,7 +157,8 @@ public class NewPlayerMovement : MonoBehaviour
                 new Vector3(ColliderScale.x, ColliderScale.y / 1.2f, ColliderScale.z);
                 GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
             }
-        } else
+        }
+        else
         {
             if (GetComponent<BoxCollider>() != null)
             {
@@ -452,7 +451,7 @@ public class NewPlayerMovement : MonoBehaviour
         float currentX = Vector3.Dot(relativeVelocity, xAxis);
         float currentZ = Vector3.Dot(relativeVelocity, zAxis);
 
-        float maxSpeedChange = acceleration * Time.deltaTime;
+        float maxSpeedChange = acceleration * 20f * Time.deltaTime;
 
         float newX = Mathf.MoveTowards(currentX, playerInput.x * speed, maxSpeedChange);
         float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
@@ -469,8 +468,7 @@ public class NewPlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
         }
         if (CheckSteepContacts())
-        {
-
+        { 
             //rotate player
             transform.rotation = Quaternion.Euler(0f, velocity.y, 0f);
         }
