@@ -1385,11 +1385,12 @@ MonoBehaviour:
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
+  CrouchSpeed: 0
   maxAcceleration: 10
   maxAirAcceleration: 10
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
-  jumpHeight: 5
+  jumpHeight: 7
   maxAirJumps: 1
   maxGroundAngle: 25
   maxStairsAngle: 50
@@ -1416,6 +1417,7 @@ MonoBehaviour:
   buoyancy: 2.2
   swimThreshold: 1
   anim: {fileID: 919132147543100736}
+  CrouchOffsetY: 0.1
 --- !u!54 &919132147543100734
 Rigidbody:
   m_ObjectHideFlags: 0

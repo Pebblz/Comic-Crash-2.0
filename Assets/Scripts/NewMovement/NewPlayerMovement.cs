@@ -7,9 +7,9 @@ public class NewPlayerMovement : MonoBehaviour
     #region serializedFields
     [Header("Speed")]
     [SerializeField, Range(0f, 100f)]
-    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed;
-    [Space(5)]
-    [Header("Acceleration")]
+    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6;
+
+    [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
     [Space(5)]
@@ -25,17 +25,18 @@ public class NewPlayerMovement : MonoBehaviour
     float maxSnapSpeed = 100f;
     [SerializeField, Min(0f)]
     float probeDistance = 1f;
-    [Space(5)]
-    [Header("Layers")]
+    [Header("Layers"), Space(2)]
     [SerializeField]
     LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
-    [Space(5)]
+
+    [Header("Camera"), Space(2)]
     [SerializeField]
     Transform playerInputSpace = default;
+
     [SerializeField, Range(0f, .5f)]
     float turnSmoothTime = .1f;
-    [Space(5)]
-    [Header("For Water")]
+
+    [Header("For Water"), Space(2)]
     [SerializeField]
     float submergenceOffset = 0.5f;
     [SerializeField, Min(0.1f)]
@@ -46,6 +47,7 @@ public class NewPlayerMovement : MonoBehaviour
     float buoyancy = 1f;
     [SerializeField, Range(0.01f, 1f)]
     float swimThreshold = 0.5f;
+    [Header("Animator"), Space(5)]
     [SerializeField]
     Animator anim;
     #endregion
@@ -70,6 +72,14 @@ public class NewPlayerMovement : MonoBehaviour
     Vector3 upAxis, rightAxis, forwardAxis;
     Vector3 connectionWorldPosition, connectionLocalPosition;
     float turnSmoothVelocity;
+
+    //for crouching 
+    private Vector3 ColliderScale;
+    private Vector3 ColliderCenter;
+    [Header("Offsets")]
+    [SerializeField, Range(0, .5f)]
+    float CrouchOffsetY = .1f;
+    bool isCrouching;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -81,20 +91,34 @@ public class NewPlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        if (GetComponent<BoxCollider>() != null)
+        {
+            ColliderScale = GetComponent<BoxCollider>().size;
+            ColliderCenter = GetComponent<BoxCollider>().center;
+        }
         body = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         body.useGravity = false;
         OnValidate();
     }
     void Update()
-    { 
+    {
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
         playerInput.x = Input.GetAxis("Horizontal");
         playerInput.y = Input.GetAxis("Vertical");
         playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
         playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-
+        if (!Input.GetKey(KeyCode.C) || InWater || Climbing || !OnGround)
+        {
+            StopAnimation("Crouching");
+            isCrouching = false;
+        }
+        if (Input.GetKey(KeyCode.C) && !InWater && !Climbing && OnGround)
+        {
+            PlayAnimation("Crouching");
+            isCrouching = true;
+        }
         if (playerInputSpace)
         {
             rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
@@ -115,13 +139,29 @@ public class NewPlayerMovement : MonoBehaviour
             desiresClimbing = Input.GetButton("Climb");
             Isrunning = Input.GetButton("Run");
         }
-        if (Isrunning)
+        if (Isrunning && !Input.GetKey(KeyCode.C) && !InWater && !Climbing)
         {
             CurrentSpeed = RunSpeed;
         }
-        else
+        if (!Isrunning || Input.GetKey(KeyCode.C) || InWater || Climbing)
         {
             CurrentSpeed = WalkSpeed;
+        }
+        if (isCrouching)
+        {
+            if (GetComponent<BoxCollider>() != null)
+            {
+                GetComponent<BoxCollider>().size =
+                new Vector3(ColliderScale.x, ColliderScale.y / 1.2f, ColliderScale.z);
+                GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
+            }
+        } else
+        {
+            if (GetComponent<BoxCollider>() != null)
+            {
+                GetComponent<BoxCollider>().size = ColliderScale;
+                GetComponent<BoxCollider>().center = ColliderCenter;
+            }
         }
         if (playerInput.magnitude < 0.6f)
         {
@@ -141,7 +181,7 @@ public class NewPlayerMovement : MonoBehaviour
 
         if (InWater)
         {
-           velocity *= 1f - waterDrag * submergence * Time.deltaTime;
+            velocity *= 1f - waterDrag * submergence * Time.deltaTime;
         }
         AdjustVelocity();
 
@@ -480,7 +520,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             return;
         }
-        if(jumpPhase == 1)
+        if (jumpPhase == 1)
         {
             PlayAnimation("DoubleJump");
         }
@@ -495,7 +535,10 @@ public class NewPlayerMovement : MonoBehaviour
         float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
         if (alignedSpeed > 0f)
         {
-            jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+            if (jumpPhase == 0)
+                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+            else
+                jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
         }
         velocity += jumpDirection * jumpSpeed;
     }
