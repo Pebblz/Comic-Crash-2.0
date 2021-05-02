@@ -162,8 +162,16 @@ public class NewPlayerMovement : MonoBehaviour
         }
         else if (InWater)
         {
-            if(!Input.GetKey(KeyCode.Z))
+            if (!Input.GetKey(KeyCode.Space))
+            {
+                velocity -= gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.Space))
+            {
                 velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+            }
+            //if(!Input.GetKey(KeyCode.Z))
+            //    velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
         }
         else if (desiresClimbing && OnGround)
         {
@@ -188,7 +196,6 @@ public class NewPlayerMovement : MonoBehaviour
     }
     bool SnapToGround()
     {
-
         if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2)
         {
             return false;

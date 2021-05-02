@@ -1386,7 +1386,7 @@ MonoBehaviour:
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 10
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
   jumpHeight: 5
@@ -1415,7 +1415,7 @@ MonoBehaviour:
   waterDrag: 1
   buoyancy: 2.2
   swimThreshold: 1
-  anim: {fileID: 0}
+  anim: {fileID: 919132147543100736}
 --- !u!54 &919132147543100734
 Rigidbody:
   m_ObjectHideFlags: 0
