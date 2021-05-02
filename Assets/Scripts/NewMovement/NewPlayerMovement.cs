@@ -145,7 +145,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             CurrentSpeed = RunSpeed;
         }
-        if (!Isrunning || Input.GetKey(KeyCode.C) || InWater || Climbing || CheckSteepContacts())
+        if (!Isrunning || !Input.GetKey(KeyCode.C) || InWater || Climbing || CheckSteepContacts())
         {
             CurrentSpeed = WalkSpeed;
         }
