@@ -457,7 +457,7 @@ public class NewPlayerMovement : MonoBehaviour
         float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
 
         //rotation
-        if (!Climbing && !CheckSteepContacts())
+        if (!Climbing && !CheckSteepContacts() && playerInput.magnitude > .1f)
         {
             float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
 
