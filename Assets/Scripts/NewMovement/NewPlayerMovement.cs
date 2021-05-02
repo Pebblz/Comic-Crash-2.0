@@ -109,14 +109,15 @@ public class NewPlayerMovement : MonoBehaviour
         playerInput.y = Input.GetAxis("Vertical");
         playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
         playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-        if (!Input.GetKey(KeyCode.C) || InWater || Climbing || !OnGround)
+        if (!isCrouching || InWater || Climbing || !OnGround)
         {
             StopAnimation("Crouching");
             isCrouching = false;
         }
-        if (Input.GetKey(KeyCode.C) && !InWater && !Climbing && OnGround)
+        if (isCrouching && !InWater && !Climbing && OnGround)
         {
             PlayAnimation("Crouching");
+            CurrentSpeed = CrouchSpeed;
             isCrouching = true;
         }
         if (playerInputSpace)
@@ -135,17 +136,17 @@ public class NewPlayerMovement : MonoBehaviour
         }
         else
         {
-
+            isCrouching = Input.GetKey(KeyCode.C);
             desiredJump |= Input.GetButtonDown("Jump");
             desiresClimbing = Input.GetButton("Climb");
             Isrunning = Input.GetButton("Run");
 
         }
-        if (Isrunning && !Input.GetKey(KeyCode.C) && !InWater && !Climbing && !CheckSteepContacts())
+        if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
         {
             CurrentSpeed = RunSpeed;
         }
-        if (!Isrunning || !Input.GetKey(KeyCode.C) || InWater || Climbing || CheckSteepContacts())
+        if (!Isrunning && !isCrouching|| InWater || Climbing || CheckSteepContacts())
         {
             CurrentSpeed = WalkSpeed;
         }
