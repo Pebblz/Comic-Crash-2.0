@@ -135,7 +135,7 @@ public class NewPlayerMovement : MonoBehaviour
         }
         else
         {
-            if (CheckSteepContacts())
+            if (!CheckSteepContacts())
             {
                 desiredJump |= Input.GetButtonDown("Jump");
                 desiresClimbing = Input.GetButton("Climb");
