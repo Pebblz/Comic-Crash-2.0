@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5886289196129535476}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: left_toe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6217176107308594362}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5143281565381342544}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: eyes1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1893503081209384050}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3258773861096978553}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: teeth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1337695079787542792}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1721103531041566511}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4175360121817621555}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1062998624273552478}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: dangle_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2775271726766103560}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: spine_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8222101014820707534}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,7 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2760264633447593778}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: dangle_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,9 +388,9 @@ GameObject:
   - component: {fileID: 375778916001974253}
   - component: {fileID: 375778916001974252}
   - component: {fileID: 375778916001974255}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: HandMan
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -404,7 +404,7 @@ Transform:
   m_GameObject: {fileID: 375778916001974165}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -8.99, y: -3.86, z: -2.79}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2219861937351884893}
   - {fileID: 2735958649762645485}
@@ -447,17 +447,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e39ea96e8380f40baf73a71cddf117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 10
-  RunSpeed: 15
+  WalkSpeed: 5
+  RunSpeed: 10
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
-  CrouchSpeed: 5
+  CrouchSpeed: 3
   maxAcceleration: 60
   maxAirAcceleration: 8
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
-  jumpHeight: 7
+  jumpHeight: 5
   maxAirJumps: 1
   maxGroundAngle: 45
   maxStairsAngle: 50
@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnPoint: {x: 0, y: 0, z: 0}
-  PushBotForce: 0
+  PushBotForce: 3
 --- !u!1 &515999874058523303
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +603,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7698387830619603332}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 465667772434780489}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: bandana_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +664,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5512656480747521011}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: right_foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -695,7 +695,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6159686566209035483}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: map_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -726,7 +726,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7439725938954763905}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -756,7 +756,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2735958649762645485}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +789,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2219861937351884893}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve33
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -820,7 +820,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7503992824627469896}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: spine_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -853,7 +853,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1922153286424100761}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -884,7 +884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2783631283394920924}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -914,7 +914,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3774740954268781524}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: mouth_left_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -944,7 +944,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7846175415703997634}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: bandana_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -975,7 +975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7710617825452557974}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1006,7 +1006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3754692561035364361}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1036,7 +1036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3183469378529969921}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1068,7 +1068,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6354033727489015780}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1099,7 +1099,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8148985153114494591}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1129,7 +1129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1559717045563616588}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1160,7 +1160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4463760864903196895}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1191,7 +1191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3959312904831000435}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: right_knee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1222,7 +1222,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5891736102030841590}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1253,7 +1253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3330973364791330363}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1284,7 +1284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3623410436953517524}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1314,7 +1314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5442177153724604235}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1344,7 +1344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5530966813862166444}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: left_hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1375,7 +1375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1900909711267612027}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1406,7 +1406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6967867277348108581}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: index_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1437,7 +1437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8846973997206432145}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1467,7 +1467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3691360793528495988}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: bandana_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1498,7 +1498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 752377716012550124}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1529,7 +1529,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8914160133579631870}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: map_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1560,7 +1560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1328150448158354050}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: ring_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1591,7 +1591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7190834985391010029}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: mouth_right_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1621,7 +1621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 849416750779756555}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: right_toe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1651,7 +1651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6626469769891853625}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1682,7 +1682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4950902565460547454}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1712,7 +1712,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3965884892473659304}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1742,7 +1742,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6396958666650399590}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: map_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1772,7 +1772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7439825855122138269}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1803,7 +1803,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4665832711971422982}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: thumb_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1833,7 +1833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5386345277557424818}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: bandana_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1864,7 +1864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7697863554784482669}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: mouth_left_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1894,7 +1894,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6678540581625768090}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1924,7 +1924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1484324737698115868}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1954,7 +1954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 596283694516014034}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1984,7 +1984,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3154325067117611476}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2014,7 +2014,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1351097077622945440}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: right_ankle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2045,7 +2045,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6409484714369507830}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2076,7 +2076,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 988011492546660499}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2107,7 +2107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1041221589678175115}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2137,7 +2137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1015591916781664392}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: spine_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2168,7 +2168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3543094136340252367}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: dangle_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2199,7 +2199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4129108605835864617}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2230,7 +2230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6947629083530052866}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2261,7 +2261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2973184220498050680}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve28
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2295,7 +2295,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786582584727392274}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: right_hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2326,7 +2326,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1492013114025524745}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2356,7 +2356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5310841913695749475}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2387,7 +2387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6782927139402789230}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: thumb_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2418,7 +2418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 131084627481569925}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2448,7 +2448,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1061821744165941614}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2479,7 +2479,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5870378293278015374}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2514,7 +2514,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1901906889890343342}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: mouth_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2544,7 +2544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7258948868786200623}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: map3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2576,7 +2576,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4587488506146704380}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: left_foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2607,7 +2607,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4829241179212772608}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: left_ankle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2638,7 +2638,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4695732362528791119}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2669,7 +2669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 245038655169965492}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2700,7 +2700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8929443677753287596}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2731,7 +2731,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 554034019519882791}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2762,7 +2762,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5905662587479677251}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: map_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2792,7 +2792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1125046193694619733}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: eyes_x
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2822,7 +2822,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 580368621018690962}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: middle_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2853,7 +2853,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6996097678692868829}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: head_top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2883,7 +2883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6239100456988256060}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2914,7 +2914,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8503188213116225249}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2944,7 +2944,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6252858416752901500}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: dangle_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2976,7 +2976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2975181827143592320}
   - component: {fileID: 5953471444027307361}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: pCube60
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3126,7 +3126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5393902628847146421}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3157,7 +3157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6472520983870637523}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: backpack_top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3187,7 +3187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6071661692736080105}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3218,7 +3218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6723984542789513908}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: mouth_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3248,7 +3248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7636899534185143065}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: eyes_closed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3278,7 +3278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5336153821984531412}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3309,7 +3309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4509319042352286412}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: backpack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3342,7 +3342,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4095156799831895978}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: mouth_right_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3372,7 +3372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3102370091943999293}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: thumb_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3403,7 +3403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6504073327213221921}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3434,7 +3434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 208184975744619561}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3465,7 +3465,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2880700315103440089}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3495,7 +3495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7234862999587893934}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: bandana_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3525,7 +3525,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2511520886066731925}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3559,7 +3559,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1874701975007536}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3590,7 +3590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8101810507912012782}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3621,7 +3621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2715995438264628677}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: elbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3652,7 +3652,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7193088840984801913}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: pinky_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3683,7 +3683,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1227697448988133358}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: head_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3724,7 +3724,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2578728841080217345}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3754,7 +3754,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6849565692649456117}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3785,7 +3785,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3742424386439977584}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3816,7 +3816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2451249156892522507}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: nurbsCircle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3852,7 +3852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8740236986957529044}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: dangle_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3883,7 +3883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2630211665253707163}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: joint8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3914,7 +3914,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4938868188466497001}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: curve26
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3945,7 +3945,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7148257978914357737}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: left_knee
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnPoint: {x: 0, y: 0, z: 0}
-  PushBotForce: 0
+  PushBotForce: 3
 --- !u!114 &4595979783101676553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,14 +997,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4595979783101676548}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 5
   m_Drag: 0.1
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!114 &4595979783101676571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1017,17 +1017,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e39ea96e8380f40baf73a71cddf117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 10
-  RunSpeed: 15
+  WalkSpeed: 5
+  RunSpeed: 10
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
-  CrouchSpeed: 5
+  CrouchSpeed: 3
   maxAcceleration: 60
   maxAirAcceleration: 8
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
-  jumpHeight: 7
+  jumpHeight: 3
   maxAirJumps: 1
   maxGroundAngle: 45
   maxStairsAngle: 50

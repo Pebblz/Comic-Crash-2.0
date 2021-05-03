@@ -23,7 +23,7 @@ public class PlayerAttack : MonoBehaviour
     {
         //this is so if the players in any of
         //the jump animation you can't attack
-        if (!anim.GetBool("Jump") && CanAttack)
+        if (!anim.GetBool("Jump"))
         {
             if (Input.GetMouseButtonDown(0) && AttacksPreformed == 1 && TimeTillnextAttack <= 0
                && !Input.GetKey(KeyCode.C))
@@ -46,6 +46,7 @@ public class PlayerAttack : MonoBehaviour
         if(TimeTillAttackReset > 0 && GetComponent<PlayerMovement>().OnGround)
         {
             GetComponent<PlayerMovement>().enabled = false;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
         if(TimeTillAttackReset <= 0)
         {

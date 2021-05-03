@@ -108,133 +108,142 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-
-        playerInput.x = Input.GetAxis("Horizontal");
-        playerInput.y = Input.GetAxis("Vertical");
-        playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
-        playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-        if (!isCrouching || InWater || Climbing || !OnGround)
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
-            StopAnimation("Crouching");
-            isCrouching = false;
-        }
-        if (isCrouching && !InWater && !Climbing && OnGround)
-        {
-            PlayAnimation("Crouching");
-            CurrentSpeed = CrouchSpeed;
-            isCrouching = true;
-        }
-        if (playerInputSpace)
-        {
-            rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
-            forwardAxis = ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
-        }
-        else
-        {
-            rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
-            forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
-        }
-        if (Swimming)
-        {
-            desiresClimbing = false;
-        }
-        else
-        {
-            isCrouching = Input.GetKey(KeyCode.C);
-            desiredJump |= Input.GetButtonDown("Jump");
-            desiresClimbing = Input.GetButton("Climb");
-            Isrunning = Input.GetButton("Run");
-
-        }
-        if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
-        {
-            CurrentSpeed = RunSpeed;
-        }
-        if (!Isrunning && !isCrouching|| InWater || Climbing || CheckSteepContacts())
-        {
-            CurrentSpeed = WalkSpeed;
-        }
-        if (isCrouching)
-        {
-            if (GetComponent<BoxCollider>() != null)
+            if (OnGround)
             {
-                GetComponent<BoxCollider>().size =
-                new Vector3(ColliderScale.x, ColliderScale.y / 1.2f, ColliderScale.z);
-                GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
+                StopAnimation("Falling");
+            }
+            minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
+
+            playerInput.x = Input.GetAxis("Horizontal");
+            playerInput.y = Input.GetAxis("Vertical");
+            playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
+            playerInput = Vector3.ClampMagnitude(playerInput, 1f);
+            if (!isCrouching || InWater || Climbing || !OnGround)
+            {
+                StopAnimation("Crouching");
+                isCrouching = false;
+            }
+            if (isCrouching && !InWater && !Climbing && OnGround)
+            {
+                PlayAnimation("Crouching");
+                CurrentSpeed = CrouchSpeed;
+                isCrouching = true;
+            }
+            if (playerInputSpace)
+            {
+                rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
+                forwardAxis = ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
+            }
+            else
+            {
+                rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
+                forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
+            }
+            if (Swimming)
+            {
+                desiresClimbing = false;
+            }
+            else
+            {
+                isCrouching = Input.GetKey(KeyCode.C);
+                desiredJump |= Input.GetButtonDown("Jump");
+                desiresClimbing = Input.GetButton("Climb");
+                Isrunning = Input.GetButton("Run");
+
+            }
+            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+            {
+                CurrentSpeed = RunSpeed;
+            }
+            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+            {
+                CurrentSpeed = WalkSpeed;
+            }
+            if (isCrouching)
+            {
+                if (GetComponent<BoxCollider>() != null)
+                {
+                    GetComponent<BoxCollider>().size =
+                    new Vector3(ColliderScale.x, ColliderScale.y / 1.2f, ColliderScale.z);
+                    GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
+                }
+            }
+            else
+            {
+                if (GetComponent<BoxCollider>() != null)
+                {
+                    GetComponent<BoxCollider>().size = ColliderScale;
+                    GetComponent<BoxCollider>().center = ColliderCenter;
+                }
+            }
+            if (playerInput.magnitude < 0.6f)
+            {
+                body.velocity = new Vector3(0, body.velocity.y, 0);
             }
         }
         else
         {
-            if (GetComponent<BoxCollider>() != null)
-            {
-                GetComponent<BoxCollider>().size = ColliderScale;
-                GetComponent<BoxCollider>().center = ColliderCenter;
-            }
-        }
-        if (playerInput.magnitude < 0.6f)
-        {
-            body.velocity = new Vector3(0, body.velocity.y, 0);
+            body.velocity = Vector3.zero;
         }
     }
 
     void FixedUpdate()
     {
-        if (OnGround && !desiredJump && velocity.y < 0.1f)
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
-            StopAnimation("Jump");
-            StopAnimation("DoubleJump");
-        }
-        if(OnGround)
-        {
-            StopAnimation("Falling");
-        }
-        Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
-        UpdateState();
-
-        if (InWater)
-        {
-            velocity *= 1f - waterDrag * submergence * Time.deltaTime;
-        }
-        AdjustVelocity();
-
-        if (desiredJump)
-        {
-
-            PlayAnimation("Jump");
-            Jump(gravity);
-            desiredJump = false;
-        }
-        if (Climbing)
-        {
-            velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
-        }
-        else if (OnGround && velocity.sqrMagnitude < 0.01f)
-        {
-            velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
-        }
-        else if (InWater)
-        {
-            if (!Input.GetKey(KeyCode.Space))
+            if (OnGround && !desiredJump && velocity.y < 0.1f)
             {
-                velocity -= gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                StopAnimation("Jump");
+                StopAnimation("DoubleJump");
             }
-            if (Input.GetKey(KeyCode.Space))
+
+            Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
+            UpdateState();
+
+            if (InWater)
             {
-                velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                velocity *= 1f - waterDrag * submergence * Time.deltaTime;
             }
-            //if(!Input.GetKey(KeyCode.Z))
-            //    velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+            AdjustVelocity();
+
+            if (desiredJump)
+            {
+
+                PlayAnimation("Jump");
+                Jump(gravity);
+                desiredJump = false;
+            }
+            if (Climbing)
+            {
+                velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
+            }
+            else if (OnGround && velocity.sqrMagnitude < 0.01f)
+            {
+                velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
+            }
+            else if (InWater)
+            {
+                if (!Input.GetKey(KeyCode.Space))
+                {
+                    velocity -= gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                }
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                }
+            }
+            else if (desiresClimbing && OnGround)
+            {
+                velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
+            }
+            else
+            {
+                velocity += gravity * Time.deltaTime;
+            }
+            body.velocity = velocity;
         }
-        else if (desiresClimbing && OnGround)
-        {
-            velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
-        }
-        else
-        {
-            velocity += gravity * Time.deltaTime;
-        }
-        body.velocity = velocity;
         ClearState();
     }
     #endregion
