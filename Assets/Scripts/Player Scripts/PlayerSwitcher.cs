@@ -61,7 +61,7 @@ public class PlayerSwitcher : MonoBehaviour
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
 
-            if (!Temp.GetComponent<PlayerMovement>().IsGrounded())
+            if (!CurrentPlayer.GetComponent<PlayerMovement>().OnGround)
             {
                 Temp.GetComponent<PlayerMovement>().PlayFallingAnimation();
             }
@@ -69,7 +69,7 @@ public class PlayerSwitcher : MonoBehaviour
             Temp.GetComponent<Player>().respawnPoint =
                 CurrentPlayer.GetComponent<Player>().respawnPoint;
 
-            Temp.GetComponent<PlayerMovement>().jumpsMade = 50;
+            Temp.GetComponent<PlayerMovement>().jumpPhase = 5;
 
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;

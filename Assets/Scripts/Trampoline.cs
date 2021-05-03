@@ -41,7 +41,7 @@ public class Trampoline : MonoBehaviour
                 if (HoldingSpace)
                 {
                     //this shoots the player up
-                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpSpeed)), ForceMode.VelocityChange);
+                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpHeight)), ForceMode.VelocityChange);
                 }
                 else
                 {

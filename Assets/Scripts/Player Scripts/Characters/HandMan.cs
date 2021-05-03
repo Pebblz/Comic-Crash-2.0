@@ -51,12 +51,12 @@ public class HandMan : MonoBehaviour
         if (PickUp == null)
         {
             GetComponent<PlayerAttack>().CanAttack = true;
-            GetComponent<PlayerMovement>().DoneJumping = false;
+            GetComponent<PlayerMovement>().canJump = true;
             isHoldingOBJ = false;
         } else
         {
             GetComponent<PlayerAttack>().CanAttack = false;
-            GetComponent<PlayerMovement>().DoneJumping = true;
+            GetComponent<PlayerMovement>().canJump = false;
             //this is for the throwing / droping logic
             if (Input.GetButtonDown("Fire1") && pickUpTimer < 0)
             {

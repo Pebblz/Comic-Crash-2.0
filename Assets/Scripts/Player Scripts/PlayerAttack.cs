@@ -43,7 +43,7 @@ public class PlayerAttack : MonoBehaviour
             }
         }
         //this is so the player can't swing around like a crazy person and kill everything around him
-        if(TimeTillAttackReset > 0 && GetComponent<PlayerMovement>().IsGrounded())
+        if(TimeTillAttackReset > 0 && GetComponent<PlayerMovement>().OnGround)
         {
             GetComponent<PlayerMovement>().enabled = false;
         }

@@ -45,7 +45,7 @@ public class BoxScript : MonoBehaviour
         {
             if (col.gameObject.tag == "Player")
             {
-                if (!col.gameObject.GetComponent<PlayerMovement>().IsGrounded() &&
+                if (!col.gameObject.GetComponent<PlayerMovement>().OnGround &&
                     col.gameObject.transform.position.y > gameObject.transform.position.y)
                 {
                     col.gameObject.GetComponent<PlayerMovement>().jumpOnEnemy();
@@ -55,7 +55,7 @@ public class BoxScript : MonoBehaviour
         }
         if (Ways.Contains(WaysToBreak.JumpUnder))
         {
-            if (!col.gameObject.GetComponent<PlayerMovement>().IsGrounded() &&
+            if (!col.gameObject.GetComponent<PlayerMovement>().OnGround &&
                 col.gameObject.transform.position.y < gameObject.transform.position.y)
             {
                 DestroyBox();

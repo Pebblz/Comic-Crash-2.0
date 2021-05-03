@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     #region serializedFields
     [Header("Speed")]
@@ -14,7 +14,7 @@ public class NewPlayerMovement : MonoBehaviour
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
     [Space(5)]
     [SerializeField, Range(0f, 10f)]
-    float jumpHeight = 2f;
+    public float jumpHeight = 2f;
     [SerializeField, Range(0, 5)]
     int maxAirJumps = 0;
     [SerializeField, Range(0f, 90f)]
@@ -58,11 +58,15 @@ public class NewPlayerMovement : MonoBehaviour
     Vector3 velocity, connectionVelocity;
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;
-    bool OnGround => groundContactCount > 0;
+    [HideInInspector]
+    public bool OnGround => groundContactCount > 0;
     bool Swimming => submergence >= swimThreshold;
     float submergence;
     bool InWater => submergence > 0f;
-    int jumpPhase;
+    [HideInInspector]
+    public int jumpPhase;
+    [HideInInspector]
+    public bool canJump = true;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
     int groundContactCount, steepContactCount, climbContactCount;
@@ -91,13 +95,14 @@ public class NewPlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        anim = GetComponent<Animator>();
+        playerInputSpace = GameObject.FindGameObjectWithTag("MainCamera").transform;
         if (GetComponent<BoxCollider>() != null)
         {
             ColliderScale = GetComponent<BoxCollider>().size;
             ColliderCenter = GetComponent<BoxCollider>().center;
         }
         body = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
         body.useGravity = false;
         OnValidate();
     }
@@ -179,6 +184,10 @@ public class NewPlayerMovement : MonoBehaviour
         {
             StopAnimation("Jump");
             StopAnimation("DoubleJump");
+        }
+        if(OnGround)
+        {
+            StopAnimation("Falling");
         }
         Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
         UpdateState();
@@ -484,12 +493,9 @@ public class NewPlayerMovement : MonoBehaviour
                 if (Isrunning)
                 {
                     PlayAnimation("Run");
-                    if(!isCrouching)
-                        StopAnimation("Walk");
                 }
                 else
                 {
-                    PlayAnimation("Walk");
                     StopAnimation("Run");
                 }
             }
@@ -509,49 +515,52 @@ public class NewPlayerMovement : MonoBehaviour
     }
     void Jump(Vector3 gravity)
     {
-        Vector3 jumpDirection;
-        if (OnGround)
+        if (canJump == true)
         {
-            jumpDirection = contactNormal;
-        }
-        else if (OnSteep)
-        {
-            jumpDirection = steepNormal;
-            jumpPhase = 0;
-        }
-        else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
-        {
-            if (jumpPhase == 0)
+            Vector3 jumpDirection;
+            if (OnGround)
             {
-                jumpPhase = 1;
+                jumpDirection = contactNormal;
             }
-            jumpDirection = contactNormal;
-        }
-        else
-        {
-            return;
-        }
-        if (jumpPhase == 1)
-        {
-            PlayAnimation("DoubleJump");
-        }
-        stepsSinceLastJump = 0;
-        jumpPhase += 1;
-        float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-        if (InWater)
-        {
-            jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-        }
-        jumpDirection = (jumpDirection + upAxis).normalized;
-        float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
-        if (alignedSpeed > 0f)
-        {
-            if (jumpPhase == 0)
-                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+            else if (OnSteep)
+            {
+                jumpDirection = steepNormal;
+                jumpPhase = 0;
+            }
+            else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
+            {
+                if (jumpPhase == 0)
+                {
+                    jumpPhase = 1;
+                }
+                jumpDirection = contactNormal;
+            }
             else
-                jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+            {
+                return;
+            }
+            if (jumpPhase == 1)
+            {
+                PlayAnimation("DoubleJump");
+            }
+            stepsSinceLastJump = 0;
+            jumpPhase += 1;
+            float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+            if (InWater)
+            {
+                jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+            }
+            jumpDirection = (jumpDirection + upAxis).normalized;
+            float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+            if (alignedSpeed > 0f)
+            {
+                if (jumpPhase == 0)
+                    jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                else
+                    jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+            }
+            velocity += jumpDirection * jumpSpeed;
         }
-        velocity += jumpDirection * jumpSpeed;
     }
     bool CheckClimbing()
     {
@@ -585,6 +594,16 @@ public class NewPlayerMovement : MonoBehaviour
     public void PreventSnapToGround()
     {
         stepsSinceLastJump = -1;
+    }
+    public void jumpOnEnemy()
+    {
+        body.velocity = new Vector3(playerInput.x, jumpHeight, playerInput.z);
+        jumpPhase = 0;
+    }
+    public void jumpOnBouncePad(float distance)
+    {
+        body.velocity = new Vector3(playerInput.x, distance, playerInput.z);
+        jumpPhase = 0;
     }
     #region Animation
     /// <summary>

@@ -87,7 +87,7 @@ public class GrapplePoint : MonoBehaviour
     /// </summary>
     void StartGrapple()
     {
-        this.PeaShooter.gameObject.GetComponent<PlayerMovement>().InGrapple = true;
+        //this.PeaShooter.gameObject.GetComponent<PlayerMovement>().InGrapple = true;
         joint = PeaShooter.gameObject.AddComponent<SpringJoint>();
 
         joint.autoConfigureConnectedAnchor = false;
@@ -112,7 +112,7 @@ public class GrapplePoint : MonoBehaviour
     /// </summary>
     void StopGrapple()
     {
-        this.PeaShooter.gameObject.GetComponent<PlayerMovement>().InGrapple = false;
+        //this.PeaShooter.gameObject.GetComponent<PlayerMovement>().InGrapple = false;
         Destroy(joint);
         LR.positionCount = 0;
     }

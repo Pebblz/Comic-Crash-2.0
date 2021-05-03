@@ -19,10 +19,10 @@ public class Jeff : MonoBehaviour
 
     void Roll()
     {
-        GetComponent<PlayerMovement>().Roll = true;
+       // GetComponent<PlayerMovement>().Roll = true;
     }
     void BackToNormal()
     {
-        GetComponent<PlayerMovement>().Roll = false;
+        //GetComponent<PlayerMovement>().Roll = false;
     }
 }
