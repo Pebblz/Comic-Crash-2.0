@@ -2,10 +2,8 @@
 
 public class Trampoline : MonoBehaviour
 {
-    [SerializeField, Range(1f, 20f)]
-    float BounceForce;
-    [SerializeField, Range(1f, 20f)]
-    float HighBounceForce;
+    [SerializeField, Min(0f)]
+    float acceleration = 10f, speed = 10f;
     [SerializeField, Range(.1f, 6f)]
     float timeToSquish;
     private Vector3 origanalScale;
@@ -34,19 +32,21 @@ public class Trampoline : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
         //blobBert shouldn't be able to jump on the slimeoline
-        if(col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>())
+        if (col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>())
         {
             if (col.gameObject.transform.position.y > gameObject.transform.position.y)
             {
                 if (HoldingSpace)
                 {
                     //this shoots the player up
-                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpHeight)), ForceMode.VelocityChange);
+                    //col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpHeight)), ForceMode.VelocityChange);
+                    //col.gameObject.GetComponent<PlayerMovement>().jumpOnBouncePad(HighBounceForce);
                 }
                 else
                 {
                     //this shoots the player up
-                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * BounceForce, ForceMode.VelocityChange);
+                    //col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (BounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpHeight)), ForceMode.VelocityChange);
+                    //col.gameObject.GetComponent<PlayerMovement>().jumpOnBouncePad(BounceForce);
                 }
                 squishTime = true;
             }
@@ -54,11 +54,38 @@ public class Trampoline : MonoBehaviour
             {
                 Vector3 pushDir = transform.position - col.transform.position;
 
-               col.gameObject.GetComponent<Rigidbody>().velocity = pushDir * 10;
+                col.gameObject.GetComponent<Rigidbody>().velocity = pushDir * 10;
             }
         }
     }
+    void OnTriggerStay(Collider other)
+    {
+        Rigidbody body = other.attachedRigidbody;
+        if (body)
+        {
+            Accelerate(body);
+        }
+    }
 
+    void Accelerate(Rigidbody body)
+    {
+        Vector3 velocity = transform.InverseTransformDirection(body.velocity); ;
+
+
+        if (acceleration > 0f)
+        {
+            velocity.y = Mathf.MoveTowards(velocity.y, speed, acceleration * Time.deltaTime);
+        }
+        else
+        {
+            velocity.y = speed;
+        }
+        body.velocity = transform.TransformDirection(velocity);
+        if (body.TryGetComponent(out PlayerMovement player))
+        {
+            player.PreventSnapToGround();
+        }
+    }
     void Squish()
     {
         if(!doneSquishing)

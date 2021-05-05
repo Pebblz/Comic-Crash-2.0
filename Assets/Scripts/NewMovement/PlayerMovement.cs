@@ -113,6 +113,11 @@ public class PlayerMovement : MonoBehaviour
             if (OnGround)
             {
                 StopAnimation("Falling");
+                if (!desiredJump && velocity.y < 0.1f)
+                {
+                    StopAnimation("Jump");
+                    StopAnimation("DoubleJump");
+                }
             }
             minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
@@ -153,11 +158,11 @@ public class PlayerMovement : MonoBehaviour
                 Isrunning = Input.GetButton("Run");
 
             }
-            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts() && OnGround)
             {
                 CurrentSpeed = RunSpeed;
             }
-            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts() || !OnGround)
             {
                 CurrentSpeed = WalkSpeed;
             }
@@ -193,11 +198,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
-            if (OnGround && !desiredJump && velocity.y < 0.1f)
-            {
-                StopAnimation("Jump");
-                StopAnimation("DoubleJump");
-            }
+            //if (OnGround && !desiredJump && velocity.y < 0.1f)
+            //{
+            //    StopAnimation("Jump");
+            //    StopAnimation("DoubleJump");
+            //}
 
             Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
             UpdateState();
@@ -524,7 +529,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Jump(Vector3 gravity)
     {
-        if (canJump == true)
+        if (canJump)
         {
             Vector3 jumpDirection;
             if (OnGround)
@@ -606,12 +611,12 @@ public class PlayerMovement : MonoBehaviour
     }
     public void jumpOnEnemy()
     {
-        body.velocity = new Vector3(playerInput.x, jumpHeight, playerInput.z);
+        body.velocity = new Vector3(body.velocity.x, body.velocity.y + 4, body.velocity.z);
         jumpPhase = 0;
     }
     public void jumpOnBouncePad(float distance)
     {
-        body.velocity = new Vector3(playerInput.x, distance, playerInput.z);
+        body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
     }
     #region Animation

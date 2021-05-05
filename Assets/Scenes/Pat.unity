@@ -3385,9 +3385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16149fd1a966d9d47b41b2363d1b0277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BounceForce: 10.7
-  HighBounceForce: 10.7
-  timeToSquish: 5.5
+  acceleration: 250
+  speed: 400
+  timeToSquish: 2.83
 --- !u!65 &269527763
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3396,7 +3396,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 269527760}
   m_Material: {fileID: 13400000, guid: 767928ebd18ac6e4ba68079ba492c0c4, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -3456,7 +3456,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 269527760}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.302345, y: 3.7851944, z: 5.8126526}
+  m_LocalPosition: {x: -10.302345, y: 3.75, z: 5.8126526}
   m_LocalScale: {x: 2.8879, y: 1, z: 1.0808}
   m_Children: []
   m_Father: {fileID: 227317907}
@@ -4557,8 +4557,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16149fd1a966d9d47b41b2363d1b0277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BounceForce: 10.7
-  HighBounceForce: 10.7
+  acceleration: 10
+  speed: 10
   timeToSquish: 5.5
 --- !u!65 &513535191
 BoxCollider:
@@ -8592,8 +8592,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16149fd1a966d9d47b41b2363d1b0277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BounceForce: 6
-  HighBounceForce: 8
+  acceleration: 10
+  speed: 10
   timeToSquish: 5.5
 --- !u!65 &832491261
 BoxCollider:
@@ -10693,8 +10693,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16149fd1a966d9d47b41b2363d1b0277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BounceForce: 8
-  HighBounceForce: 5
+  acceleration: 10
+  speed: 10
   timeToSquish: 5.5
 --- !u!65 &1042828599
 BoxCollider:
