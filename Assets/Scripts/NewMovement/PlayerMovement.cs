@@ -158,11 +158,11 @@ public class PlayerMovement : MonoBehaviour
                 Isrunning = Input.GetButton("Run");
 
             }
-            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts() && OnGround)
+            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
             {
                 CurrentSpeed = RunSpeed;
             }
-            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts() || !OnGround)
+            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
             {
                 CurrentSpeed = WalkSpeed;
             }
