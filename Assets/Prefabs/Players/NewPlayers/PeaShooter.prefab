@@ -873,6 +873,7 @@ GameObject:
   - component: {fileID: 4595979783101676552}
   - component: {fileID: 4595979783101676555}
   - component: {fileID: 4595979783101676554}
+  - component: {fileID: 3755230206544045657}
   - component: {fileID: 4595979783101676556}
   - component: {fileID: 4595979783101676571}
   m_Layer: 10
@@ -989,6 +990,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.72, y: 1.1, z: 0.69}
   m_Center: {x: 0, y: 0.55, z: 0.06}
+--- !u!114 &3755230206544045657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595979783101676548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8636b861b7c7db948a766cf39c567bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatToSleep: 0
+  submergenceOffset: 0.5
+  submergenceRange: 1
+  buoyancy: 1
+  waterDrag: 1
+  waterMask:
+    serializedVersion: 2
+    m_Bits: 16
+  buoyancyOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &4595979783101676556
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -997,9 +1019,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4595979783101676548}
   serializedVersion: 2
-  m_Mass: 5
+  m_Mass: 10
   m_Drag: 1
-  m_AngularDrag: 5
+  m_AngularDrag: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -1024,10 +1046,10 @@ MonoBehaviour:
   slowDownSpeed: 0.2
   CrouchSpeed: 3
   maxAcceleration: 60
-  maxAirAcceleration: 8
+  maxAirAcceleration: 12
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
-  jumpHeight: 3
+  jumpHeight: 7
   maxAirJumps: 1
   maxGroundAngle: 80
   maxStairsAngle: 50

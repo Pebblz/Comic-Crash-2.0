@@ -9994,6 +9994,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blobert
       objectReference: {fileID: 0}
+    - target: {fileID: 5207744844237746734, guid: d47f42fb64fb4fd42a4bc3cb86ac51bf,
+        type: 3}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207744844237746734, guid: d47f42fb64fb4fd42a4bc3cb86ac51bf,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 5750842896101222253, guid: d47f42fb64fb4fd42a4bc3cb86ac51bf,
         type: 3}
       propertyPath: m_RootOrder
@@ -18198,7 +18208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d8e62e297d4024a970841fd1b0a404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 9.8
+  gravity: 9.81
   range: 1000
 --- !u!1 &1908711449
 GameObject:
