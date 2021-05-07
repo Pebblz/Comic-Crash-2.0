@@ -407,6 +407,10 @@ public class PlayerMovement : MonoBehaviour
         float minDot = GetMinDot(layer);
         for (int i = 0; i < collision.contactCount; i++)
         {
+            if (collision.gameObject.tag == "Grate" && GetComponent<BlobBert>())
+            {
+                return;
+            }
             Vector3 normal = collision.GetContact(i).normal;
             float upDot = Vector3.Dot(upAxis, normal);
             if (upDot >= minDot)
@@ -434,6 +438,7 @@ public class PlayerMovement : MonoBehaviour
                     connectedBody = collision.rigidbody;
                 }
             }
+
         }
     }
     Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
@@ -492,7 +497,7 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
         }
         if (CheckSteepContacts())
-        { 
+        {
             //rotate player
             transform.rotation = Quaternion.Euler(0f, velocity.y, 0f);
         }

@@ -61,7 +61,7 @@ public class Trampoline : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         Rigidbody body = other.attachedRigidbody;
-        if (body)
+        if (body && !other.gameObject.GetComponent<BlobBert>())
         {
             Accelerate(body);
         }
