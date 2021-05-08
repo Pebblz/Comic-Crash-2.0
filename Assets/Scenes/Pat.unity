@@ -4830,6 +4830,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5031439279232782694, guid: f434d4b613464be46b120735bb5e1bb0,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 0337dd38c3bb7b14d816e88974fe7732,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f434d4b613464be46b120735bb5e1bb0, type: 3}
 --- !u!1 &523379748
@@ -12728,7 +12734,7 @@ GameObject:
   - component: {fileID: 1303197544}
   - component: {fileID: 1303197543}
   - component: {fileID: 1303197542}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube (17)
   m_TagString: CantJump
   m_Icon: {fileID: 0}
@@ -13353,7 +13359,7 @@ GameObject:
   - component: {fileID: 1375761204}
   - component: {fileID: 1375761203}
   - component: {fileID: 1375761202}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20812,9 +20818,9 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 13400000, guid: 0337dd38c3bb7b14d816e88974fe7732,
-        type: 2}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7575382013377158718, guid: ceb00e7b01efb0f4a95a51be6961032c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ceb00e7b01efb0f4a95a51be6961032c, type: 3}
 --- !u!1 &2094983330
 GameObject:
