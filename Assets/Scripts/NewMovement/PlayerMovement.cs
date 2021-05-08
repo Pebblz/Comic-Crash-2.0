@@ -198,12 +198,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
-            //if (OnGround && !desiredJump && velocity.y < 0.1f)
-            //{
-            //    StopAnimation("Jump");
-            //    StopAnimation("DoubleJump");
-            //}
-
             Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
             UpdateState();
 
@@ -407,7 +401,7 @@ public class PlayerMovement : MonoBehaviour
         float minDot = GetMinDot(layer);
         for (int i = 0; i < collision.contactCount; i++)
         {
-            if (collision.gameObject.tag == "Grate" && GetComponent<BlobBert>())
+            if (collision.gameObject.tag == "Grate" && GetComponent<BlobBert>() || collision.gameObject.tag == "CantJump")
             {
                 return;
             }
