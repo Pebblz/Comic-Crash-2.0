@@ -44,6 +44,7 @@ public class MovingPlatforms : MonoBehaviour
 
     private bool isSteppedOn;
 
+    Vector3 lastPosition, lastMove;
     #region MonoBehaviour functions
     void Start()
     {
@@ -58,7 +59,7 @@ public class MovingPlatforms : MonoBehaviour
             EndPointX = StartPoint.x + DistanceToMoveXZ;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (active)
         {
@@ -81,6 +82,7 @@ public class MovingPlatforms : MonoBehaviour
             {
                 resetPosition();
             }
+
         }
     }
     #endregion
