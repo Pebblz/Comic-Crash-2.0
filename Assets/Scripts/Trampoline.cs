@@ -54,7 +54,7 @@ public class Trampoline : MonoBehaviour
 
     void Accelerate(Rigidbody body)
     {
-        Vector3 velocity = transform.InverseTransformDirection(body.velocity); ;
+        Vector3 velocity = transform.InverseTransformDirection(body.velocity);
 
 
         if (acceleration > 0f)
