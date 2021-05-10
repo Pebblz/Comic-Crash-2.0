@@ -7,7 +7,7 @@ public class MovingPlatforms : MonoBehaviour
 {
     [Header("Direction")]
 
-    [SerializeField, Tooltip("If set true it'll go up and down, if false it'll move side to side")]
+    [SerializeField, Tooltip("If set true it'll go up and down, if false it'll move side to side. Also don't forget to add the parent player script only for up and down")]
     bool upAndDown;
 
     [SerializeField, Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
