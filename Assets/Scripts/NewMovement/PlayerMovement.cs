@@ -353,6 +353,15 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         EvaluateCollision(collision);
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            if (!OnGround && contact.normal.y < 0.1f)
+            {
+               // Vector3 _velocity = transform.InverseTransformDirection(body.velocity);
+                Debug.DrawRay(contact.point, contact.normal, Color.blue, 3f);
+                //body.velocity = transform.TransformDirection(_velocity);
+            }
+        }
     }
 
     void OnCollisionStay(Collision collision)
@@ -391,6 +400,7 @@ public class PlayerMovement : MonoBehaviour
             connectedBody = collider.attachedRigidbody;
         }
     }
+
     void EvaluateCollision(Collision collision)
     {
         if (Swimming)
@@ -435,6 +445,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
+
     Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
     {
         return (direction - normal * Vector3.Dot(direction, normal)).normalized;

@@ -32,30 +32,15 @@ public class Trampoline : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
         //blobBert shouldn't be able to jump on the slimeoline
-        if (col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>())
+        if (col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>()
+            && col.gameObject.transform.position.y > gameObject.transform.position.y)
         {
-            if (col.gameObject.transform.position.y > gameObject.transform.position.y)
+            Rigidbody body = col.gameObject.GetComponent<Rigidbody>();
+            if (body)
             {
-                if (HoldingSpace)
-                {
-                    //this shoots the player up
-                    //col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpHeight)), ForceMode.VelocityChange);
-                    //col.gameObject.GetComponent<PlayerMovement>().jumpOnBouncePad(HighBounceForce);
-                }
-                else
-                {
-                    //this shoots the player up
-                    //col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (BounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpHeight)), ForceMode.VelocityChange);
-                    //col.gameObject.GetComponent<PlayerMovement>().jumpOnBouncePad(BounceForce);
-                }
-                squishTime = true;
+                Accelerate(body);
             }
-            else
-            {
-                Vector3 pushDir = transform.position - col.transform.position;
-
-                col.gameObject.GetComponent<Rigidbody>().velocity = pushDir * 10;
-            }
+            squishTime = true;
         }
     }
     void OnTriggerStay(Collider other)

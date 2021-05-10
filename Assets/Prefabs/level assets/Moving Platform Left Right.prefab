@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5643774586306295341}
   - component: {fileID: 5643774586306295342}
   - component: {fileID: 5643774586306295336}
+  - component: {fileID: 5601698751058828380}
   m_Layer: 0
   m_Name: Moving Platform Left Right
   m_TagString: Untagged
@@ -114,3 +115,17 @@ MonoBehaviour:
   speed: 4
   StepOnToActivate: 0
   active: 1
+--- !u!114 &5601698751058828380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5643774586306295337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8237ad11980dbe4499d655f40bfceb49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onlyOnTop: 0
+  CollisionOffset: 0.2
