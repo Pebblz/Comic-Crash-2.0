@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     float maxSnapSpeed = 100f;
     [SerializeField, Min(0f)]
     float probeDistance = 1f;
+    [SerializeField, Min(1.1f)]
+    float wallJumpSpeed;
     [Header("Layers"), Space(2)]
     [SerializeField]
     LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
@@ -84,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0, .5f)]
     float CrouchOffsetY = .1f;
     bool isCrouching;
+    GameObject LastWallJumpedOn;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -118,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("Jump");
                     StopAnimation("DoubleJump");
                 }
+                LastWallJumpedOn = null;
             }
             minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
@@ -192,6 +196,7 @@ public class PlayerMovement : MonoBehaviour
         {
             body.velocity = Vector3.zero;
         }
+        
     }
 
     void FixedUpdate()
@@ -355,11 +360,18 @@ public class PlayerMovement : MonoBehaviour
         EvaluateCollision(collision);
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f)
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space))
             {
-               // Vector3 _velocity = transform.InverseTransformDirection(body.velocity);
+                Vector3 _velocity = contact.normal;
+
+                _velocity.y = jumpHeight * 2;
+
+                body.velocity =  new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed), 
+                    _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
+
+                PreventSnapToGround();
                 Debug.DrawRay(contact.point, contact.normal, Color.blue, 3f);
-                //body.velocity = transform.TransformDirection(_velocity);
+                LastWallJumpedOn = collision.gameObject;
             }
         }
     }
