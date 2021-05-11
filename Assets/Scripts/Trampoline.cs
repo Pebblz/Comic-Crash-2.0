@@ -10,9 +10,11 @@ public class Trampoline : MonoBehaviour
     private bool squishTime;
     private bool doneSquishing;
     private bool HoldingSpace;
+    private SoundManager soundManager;
     private void Start()
     {
         origanalScale = transform.localScale;
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
     private void Update()
     {
