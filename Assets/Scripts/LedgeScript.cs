@@ -12,8 +12,8 @@ public class LedgeScript : MonoBehaviour
         {
             if(GrabLedge)
             {
-                col.gameObject.GetComponent<PlayerMovement>().Ledge = this.gameObject;
-                col.gameObject.GetComponent<PlayerMovement>().LedgeGrabbing = true;
+                //col.gameObject.GetComponent<PlayerMovement>().Ledge = this.gameObject;
+                //col.gameObject.GetComponent<PlayerMovement>().LedgeGrabbing = true;
 
             }
             else
@@ -28,8 +28,8 @@ public class LedgeScript : MonoBehaviour
         {
             if (GrabLedge)
             {
-                col.gameObject.GetComponent<PlayerMovement>().LedgeGrabbing = false;
-                col.gameObject.GetComponent<PlayerMovement>().Ledge = null;
+                //col.gameObject.GetComponent<PlayerMovement>().LedgeGrabbing = false;
+                //col.gameObject.GetComponent<PlayerMovement>().Ledge = null;
             }
             else
             {

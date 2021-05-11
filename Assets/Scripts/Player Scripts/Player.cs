@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     Quaternion rotation;
     GameObject Camera;
     Rigidbody rigidbody;
-    [SerializeField] float MaxVelocity;
+    [SerializeField] float PushBotForce;
     #region MonoBehaviours
     void Start()
     {
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, MaxVelocity);
+        //rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, PushBotForce);
         if (transform.parent != null)
         {
             transform.rotation = new Quaternion(rotation.x, transform.rotation.y, rotation.z, transform.rotation.w);
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     }
     public void PushPlayer(Vector3 direction, float power)
     {
-        if(!GetComponent<PlayerMovement>().IsGrounded())
+        if(!GetComponent<PlayerMovement>().OnGround)
         {
             GetComponent<Rigidbody>().velocity = direction * (power / 2);
         }

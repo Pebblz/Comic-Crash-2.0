@@ -2,10 +2,8 @@
 
 public class Trampoline : MonoBehaviour
 {
-    [SerializeField, Range(1f, 20f)]
-    float BounceForce;
-    [SerializeField, Range(1f, 20f)]
-    float HighBounceForce;
+    [SerializeField, Min(0f)]
+    float acceleration = 10f, speed = 10f;
     [SerializeField, Range(.1f, 6f)]
     float timeToSquish;
     private Vector3 origanalScale;
@@ -36,33 +34,45 @@ public class Trampoline : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
         //blobBert shouldn't be able to jump on the slimeoline
-        if(col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>())
+        if (col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>()
+            && col.gameObject.transform.position.y > gameObject.transform.position.y)
         {
-            if (col.gameObject.transform.position.y > gameObject.transform.position.y)
+            Rigidbody body = col.gameObject.GetComponent<Rigidbody>();
+            if (body)
             {
-                if (HoldingSpace)
-                {
-                    //this shoots the player up
-                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * (HighBounceForce + (col.gameObject.GetComponent<PlayerMovement>().jumpSpeed)), ForceMode.VelocityChange);
-                    soundManager.playBoingSound();
-                }
-                else
-                {
-                    //this shoots the player up
-                    col.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * BounceForce, ForceMode.VelocityChange);
-                    soundManager.playBoingSound();
-                }
-                squishTime = true;
+                Accelerate(body);
             }
-            else
-            {
-                Vector3 pushDir = transform.position - col.transform.position;
-
-               col.gameObject.GetComponent<Rigidbody>().velocity = pushDir * 10;
-            }
+            squishTime = true;
+        }
+    }
+    void OnTriggerStay(Collider other)
+    {
+        Rigidbody body = other.attachedRigidbody;
+        if (body && !other.gameObject.GetComponent<BlobBert>())
+        {
+            Accelerate(body);
         }
     }
 
+    void Accelerate(Rigidbody body)
+    {
+        Vector3 velocity = transform.InverseTransformDirection(body.velocity);
+
+
+        if (acceleration > 0f)
+        {
+            velocity.y = Mathf.MoveTowards(velocity.y, speed, acceleration * Time.deltaTime);
+        }
+        else
+        {
+            velocity.y = speed;
+        }
+        body.velocity = transform.TransformDirection(velocity);
+        if (body.TryGetComponent(out PlayerMovement player))
+        {
+            player.PreventSnapToGround();
+        }
+    }
     void Squish()
     {
         if(!doneSquishing)

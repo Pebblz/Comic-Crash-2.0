@@ -41,7 +41,7 @@ public class SpeedZone : MonoBehaviour
 			velocity.y = speed;
 		}
 		body.velocity = transform.TransformDirection(velocity);
-		if (body.TryGetComponent(out NewPlayerMovement sphere))
+		if (body.TryGetComponent(out PlayerMovement sphere))
 		{
 			sphere.PreventSnapToGround();
 		}

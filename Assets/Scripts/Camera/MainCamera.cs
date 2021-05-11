@@ -42,7 +42,7 @@ public class MainCamera : MonoBehaviour
     [SerializeField]
     float collisionZoomSpeed;
 
-    [SerializeField, Range(1f,10f)]
+    [SerializeField, Range(1f, 10f)]
     float collisionZoomOutSpeed;
     #endregion
 
@@ -59,6 +59,9 @@ public class MainCamera : MonoBehaviour
     [SerializeField] GameObject CrossHair;
 
     Vector3 startPos;
+
+    [SerializeField]
+    LayerMask obstructionMask = -1;
     #region MonoBehaviours
     void Start()
     {
@@ -90,7 +93,7 @@ public class MainCamera : MonoBehaviour
             }
         }
         shakeTime -= Time.deltaTime;
-        if(shakeTime <= 0)
+        if (shakeTime <= 0)
         {
             isShaking = false;
         }
@@ -132,58 +135,57 @@ public class MainCamera : MonoBehaviour
 
                 RaycastHit hit;
 
-                if (Physics.Linecast(target.position, transform.position, out hit))
+                if (Physics.Linecast(target.position, transform.position, out hit, obstructionMask))
                 {
-                    if (!hit.transform.gameObject.GetComponent<Player>() && hit.transform.gameObject.layer != 9)
-                    {
 
-                        //this if statements here so the camera doesn't bug out when colliding with a wall
-                        if (distance > distanceMin && distance != distanceMin)
+                    //this if statements here so the camera doesn't bug out when colliding with a wall
+                    if (distance > distanceMin)
+                    {
+                        if (hit.point != prevHitPoint)
                         {
-                            if (hit.point != prevHitPoint)
-                            {
-                                //this records the point that the raycast collided with an object
-                                prevHitPoint = hit.point;
-                                DontZoomOut = false;
-                            } else
-                            {
-                                DontZoomOut = true;
-                            }
-                            if (!onlyOnce)
-                            {
-                                //this sets the last known distance of the camera 
-                                prevDistance = distance;
-                                onlyOnce = true;
-                            }
-                            //this moves the camera closer to the player when the raycast hits an object
-                            distance -= hit.distance + collisionZoomSpeed * Time.deltaTime;
+                            //this records the point that the raycast collided with an object
+                            prevHitPoint = hit.point;
+                            DontZoomOut = false;
                         }
+                        else
+                        {
+                            DontZoomOut = true;
+                        }
+                        if (!onlyOnce)
+                        {
+                            //this sets the last known distance of the camera 
+                            prevDistance = distance;
+                            onlyOnce = true;
+                        }
+                        //this moves the camera closer to the player when the raycast hits an object
+                        distance -= hit.distance * Time.deltaTime;
                     }
+
                 }
                 else
                 {
                     if (onlyOnce && hit.collider == null && !DontZoomOut && Input.GetAxisRaw("Mouse ScrollWheel") == 0)
                     {
-                        if (distance < prevDistance && Vector3.Distance(transform.position,prevHitPoint) > 1.5f)
+                        if (distance < prevDistance && Vector3.Distance(transform.position, prevHitPoint) > 1.5f)
                         {
                             //this moves the camera back to it's prev location when it's far enough away from it's last hit point
                             distance += (collisionZoomSpeed + collisionZoomOutSpeed) * Time.deltaTime;
                         }
-                        if(distance > prevDistance)
+                        if (distance > prevDistance)
                         {
                             onlyOnce = false;
                         }
                     }
-                    if(Input.GetAxisRaw("Mouse ScrollWheel") != 0)
+                    if (Input.GetAxisRaw("Mouse ScrollWheel") != 0)
                     {
                         onlyOnce = false;
                     }
                 }
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
                 Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
-
-                transform.rotation = rotation;
-                transform.position = position;
+                transform.SetPositionAndRotation(position, rotation);
+                //transform.rotation = rotation;
+                //transform.position = position;
             }
             else
             {

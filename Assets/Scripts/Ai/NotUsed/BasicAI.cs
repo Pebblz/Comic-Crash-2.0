@@ -90,7 +90,7 @@ public class BasicAI : MonoBehaviour
                 if (distance <= agent.stoppingDistance)
                 {
                     //it checks to see if the players grounded or not before attacking it 
-                    if (HitTimer <= 0 && target.gameObject.GetComponent<PlayerMovement>().Grounded)
+                    if (HitTimer <= 0 && target.gameObject.GetComponent<PlayerMovement>().OnGround)
                     {
                         attackPlayer();
                         HitTimer = .3f;
