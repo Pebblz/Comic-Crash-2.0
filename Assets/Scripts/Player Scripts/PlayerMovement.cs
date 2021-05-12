@@ -196,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
         {
             body.velocity = Vector3.zero;
         }
-        
+
     }
 
     void FixedUpdate()
@@ -366,7 +366,7 @@ public class PlayerMovement : MonoBehaviour
 
                 _velocity.y = jumpHeight * 2;
 
-                body.velocity =  new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed), 
+                body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
                     _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
 
                 PreventSnapToGround();
