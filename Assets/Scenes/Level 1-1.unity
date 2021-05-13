@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5282,12 +5282,12 @@ PrefabInstance:
     - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
         type: 3}
       propertyPath: collisionZoomSpeed
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
         type: 3}
       propertyPath: collisionZoomOutSpeed
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
         type: 3}
