@@ -46,6 +46,7 @@ AnimatorState:
   - {fileID: 4917361986660659040}
   - {fileID: -1784439548930282084}
   - {fileID: 5829738469345826524}
+  - {fileID: -3560112364764231975}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -973,6 +974,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: Run
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: IsLanded
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7474773301142369259}
@@ -2254,6 +2258,31 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.765625
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
+--- !u!1101 &-3560112364764231975
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: IsLanded
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 6975123076778288045}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0.6808511
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 0
@@ -4867,7 +4896,7 @@ AnimatorStateMachine:
     m_Position: {x: -180, y: 950, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9055261117179111891}
-    m_Position: {x: -1010, y: 1350, z: 0}
+    m_Position: {x: -1440, y: 1310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4454243314089766941}
     m_Position: {x: -1070, y: 740, z: 0}
@@ -4891,7 +4920,7 @@ AnimatorStateMachine:
     m_Position: {x: 690, y: 1370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1044374882447497003}
-    m_Position: {x: -1270, y: 950, z: 0}
+    m_Position: {x: -1720, y: 750, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6975123076778288045}
     m_Position: {x: -1160, y: 430, z: 0}

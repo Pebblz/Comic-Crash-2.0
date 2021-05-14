@@ -115,6 +115,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (OnGround)
             {
+                if(jumpPhase > 0)
+                {
+                    PlayAnimation("IsLanded");
+                }
                 StopAnimation("Falling");
                 if (!desiredJump && velocity.y < 0.1f)
                 {
@@ -122,6 +126,10 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("DoubleJump");
                 }
                 LastWallJumpedOn = null;
+            }
+            if(!OnGround || jumpPhase == 0)
+            {
+                StopAnimation("IsLanded");
             }
             minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
