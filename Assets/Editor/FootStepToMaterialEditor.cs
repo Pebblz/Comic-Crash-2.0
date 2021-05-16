@@ -23,9 +23,9 @@ public class FootStepToMaterialEditor : EditorWindow
             string name = AssetDatabase.GUIDToAssetPath(guid);
             int idxBeforeFName = name.LastIndexOf("/");
             string fileName = name.Substring(idxBeforeFName + 1, name.Length - idxBeforeFName - 1);
-            string[] parts = name.Split('.');
+            string[] parts = fileName.Split('.');
             if (parts[1] == "mat")
-                assets.Add(fileName);
+                assets.Add(parts[0]);
         }
         return assets;
     }

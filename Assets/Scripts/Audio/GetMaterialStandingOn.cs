@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 public class GetMaterialStandingOn : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class GetMaterialStandingOn : MonoBehaviour
     [SerializeField]
     [Range(0.5f, 1.5f)]
     [Tooltip("Distance to raycast for foot step detection")]
-    float footStepCheckDistance;
+    float footStepCheckDistance = 0.5f;
+    
+    
+    public Material current_mat;
     private GameObject player;
     private void Update()
     {   
@@ -37,8 +41,7 @@ public class GetMaterialStandingOn : MonoBehaviour
                 }
 
                 Material mat = hit.collider.gameObject.GetComponent<Renderer>().material;
-    
-                Debug.Log($"Material Standing on: {mat.name}");
+                current_mat = mat;
                 
 
             
