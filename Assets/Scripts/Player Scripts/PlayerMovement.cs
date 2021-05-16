@@ -164,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                isCrouching = Input.GetKey(KeyCode.C);
+                isCrouching = Input.GetButton("Crouch");
                 desiredJump |= Input.GetButtonDown("Jump");
                 desiresClimbing = Input.GetButton("Climb");
                 Isrunning = Input.GetButton("Run");

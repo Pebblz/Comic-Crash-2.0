@@ -26,12 +26,14 @@ public class PlayerAttack : MonoBehaviour
         if (!anim.GetBool("Jump"))
         {
             if (Input.GetMouseButtonDown(0) && AttacksPreformed == 1 && TimeTillnextAttack <= 0
+               && !Input.GetKey(KeyCode.C) || Input.GetButtonDown("Punch") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
                && !Input.GetKey(KeyCode.C))
             {
                 punch(AttacksPreformed);
             }
             //this basically queues up the next attack for the player
-            if (Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+            if (Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0 
+                || Input.GetButtonDown("Punch") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
             {
                 AttackAgian = true;
             }
