@@ -368,7 +368,7 @@ public class PlayerMovement : MonoBehaviour
         EvaluateCollision(collision);
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space))
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space) && collision.gameObject.layer != 9)
             {
                 Vector3 _velocity = contact.normal;
 
