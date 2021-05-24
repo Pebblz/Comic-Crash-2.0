@@ -603,6 +603,11 @@ public class PlayerMovement : MonoBehaviour
                 else
                     jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
             }
+            if (jumpSpeed < 10)
+            {
+                jumpDirection.z = 0;
+                jumpSpeed = 16;
+            }
             velocity += jumpDirection * jumpSpeed;
         }
     }
