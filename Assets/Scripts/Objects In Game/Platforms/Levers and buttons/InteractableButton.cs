@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Button : MonoBehaviour
+public class InteractableButton : MonoBehaviour
 {
     [SerializeField, Tooltip("If this is true you can only hit the button once and it wont be re-hittable")]
     bool HitOnce = true;
