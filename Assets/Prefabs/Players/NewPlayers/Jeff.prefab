@@ -1841,6 +1841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnPoint: {x: 0, y: 0, z: 0}
   PushBotForce: 3
+  block: {fileID: 2988588666485164874, guid: c1cca9422aa2b2842a61d83f5e8caf6d, type: 3}
 --- !u!114 &7093078686324562491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1898,7 +1899,7 @@ MonoBehaviour:
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
-  CrouchSpeed: 1
+  CrouchSpeed: 2
   maxAcceleration: 60
   maxAirAcceleration: 8
   maxClimbAcceleration: 40

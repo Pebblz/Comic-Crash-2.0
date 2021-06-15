@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     GameObject Camera;
     Rigidbody rigidbody;
     [SerializeField] float PushBotForce;
+    [SerializeField] GameObject block;
+    float blocktimer;
     #region MonoBehaviours
     void Start()
     {
@@ -25,12 +27,21 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        //rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, PushBotForce);
+        if(Input.GetKey(KeyCode.V) && blocktimer <= 0)
+        {
+            Instantiate(block, transform.position + (transform.forward * 2), transform.rotation);
+            blocktimer = .5f;
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            CharacterTree.exp += 1;
+        }
         if (transform.parent != null)
         {
             transform.rotation = new Quaternion(rotation.x, transform.rotation.y, rotation.z, transform.rotation.w);
         }
         transform.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+        blocktimer -= Time.deltaTime;
     }
     #endregion
 

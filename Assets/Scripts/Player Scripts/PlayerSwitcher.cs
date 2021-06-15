@@ -14,6 +14,8 @@ public class PlayerSwitcher : MonoBehaviour
 
     [SerializeField]
     GameObject CurrentPlayer;
+    private float dpadX;
+    private float dpady;
     float timer;
     private KeyCode[] keyCodes = {
          KeyCode.Alpha1,
@@ -35,13 +37,32 @@ public class PlayerSwitcher : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        for (int i = 0; i < keyCodes.Length; i++)
+        dpadX = Input.GetAxis("Dpad Horizontal");
+        dpady = Input.GetAxis("DPad Vertical");
+        //for (int i = 0; i < keyCodes.Length; i++)
+        //{
+        //    if (Input.GetKeyDown(keyCodes[i]) && timer <= 0)
+        //    {
+        //        SwitchCharacter(i);
+        //        timer = .5f;
+        //    }
+        //}
+        //arrays start at zero so i have to make it one less 
+        if(Input.GetButtonDown("1") || dpadX == -1)
         {
-            if (Input.GetKeyDown(keyCodes[i]) && timer <= 0)
-            {
-                SwitchCharacter(i);
-                timer = .5f;
-            }
+            SwitchCharacter(0);
+        }
+        if (Input.GetButtonDown("2") || dpady == 1 )
+        {
+            SwitchCharacter(1);
+        }
+        if (Input.GetButtonDown("3") || dpadX == 1)
+        {
+            SwitchCharacter(2);
+        }
+        if (Input.GetButtonDown("4") || dpady == -1)
+        {
+            SwitchCharacter(3);
         }
         timer -= Time.deltaTime;
 

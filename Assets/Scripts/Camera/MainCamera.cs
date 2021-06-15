@@ -158,7 +158,7 @@ public class MainCamera : MonoBehaviour
                             onlyOnce = true;
                         }
                         //this moves the camera closer to the player when the raycast hits an object
-                        distance -= hit.distance * Time.deltaTime;
+                        distance -= hit.distance * collisionZoomSpeed * Time.deltaTime;
                     }
 
                 }

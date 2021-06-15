@@ -115,6 +115,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (OnGround)
             {
+                if(jumpPhase > 0)
+                {
+                    PlayAnimation("IsLanded");
+                }
                 StopAnimation("Falling");
                 if (!desiredJump && velocity.y < 0.1f)
                 {
@@ -122,6 +126,10 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("DoubleJump");
                 }
                 LastWallJumpedOn = null;
+            }
+            if(!OnGround || jumpPhase == 0)
+            {
+                StopAnimation("IsLanded");
             }
             minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
@@ -156,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                isCrouching = Input.GetKey(KeyCode.C);
+                isCrouching = Input.GetButton("Crouch");
                 desiredJump |= Input.GetButtonDown("Jump");
                 desiresClimbing = Input.GetButton("Climb");
                 Isrunning = Input.GetButton("Run");
@@ -196,7 +204,7 @@ public class PlayerMovement : MonoBehaviour
         {
             body.velocity = Vector3.zero;
         }
-        
+
     }
 
     void FixedUpdate()
@@ -360,17 +368,17 @@ public class PlayerMovement : MonoBehaviour
         EvaluateCollision(collision);
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space))
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space) && collision.gameObject.layer != 9)
             {
                 Vector3 _velocity = contact.normal;
 
-                _velocity.y = jumpHeight * 2;
+                _velocity.y = jumpHeight * 1.7f;
 
-                body.velocity =  new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed), 
+                body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
                     _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
 
                 PreventSnapToGround();
-                Debug.DrawRay(contact.point, contact.normal, Color.blue, 3f);
+                //Debug.DrawRay(contact.point, contact.normal, Color.blue, 3f);
                 LastWallJumpedOn = collision.gameObject;
             }
         }
@@ -594,6 +602,11 @@ public class PlayerMovement : MonoBehaviour
                     jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
                 else
                     jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+            }
+            if (jumpSpeed < 10)
+            {
+                jumpDirection.z = 0;
+                jumpSpeed = 16;
             }
             velocity += jumpDirection * jumpSpeed;
         }
