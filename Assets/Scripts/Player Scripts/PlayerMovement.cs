@@ -52,12 +52,14 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animator"), Space(5)]
     [SerializeField]
     Animator anim;
+    [HideInInspector]
+    public Vector3 velocity;
     #endregion
     #region private fields
     float CurrentSpeed;
     bool Isrunning;
     Vector3 playerInput;
-    Vector3 velocity, connectionVelocity;
+    Vector3 connectionVelocity;
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;
     [HideInInspector]

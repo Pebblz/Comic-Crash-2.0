@@ -48,21 +48,24 @@ public class PlayerSwitcher : MonoBehaviour
         //    }
         //}
         //arrays start at zero so i have to make it one less 
-        if(Input.GetButtonDown("1") || dpadX == -1)
+        if (timer < 0)
         {
-            SwitchCharacter(0);
-        }
-        if (Input.GetButtonDown("2") || dpady == 1 )
-        {
-            SwitchCharacter(1);
-        }
-        if (Input.GetButtonDown("3") || dpadX == 1)
-        {
-            SwitchCharacter(2);
-        }
-        if (Input.GetButtonDown("4") || dpady == -1)
-        {
-            SwitchCharacter(3);
+            if (Input.GetButtonDown("1") || dpadX == -1)
+            {
+                SwitchCharacter(0);
+            }
+            if (Input.GetButtonDown("2") || dpady == 1)
+            {
+                SwitchCharacter(1);
+            }
+            if (Input.GetButtonDown("3") || dpadX == 1)
+            {
+                SwitchCharacter(2);
+            }
+            if (Input.GetButtonDown("4") || dpady == -1)
+            {
+                SwitchCharacter(3);
+            }
         }
         timer -= Time.deltaTime;
 
@@ -92,13 +95,15 @@ public class PlayerSwitcher : MonoBehaviour
 
             Temp.GetComponent<PlayerMovement>().jumpPhase = 5;
 
+            Temp.GetComponent<PlayerMovement>().velocity = CurrentPlayer.GetComponent<PlayerMovement>().velocity;
+
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;
             Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
             Camera.GetComponent<MainCamera>().target = Temp.transform;
             Destroy(CurrentPlayer);
             CurrentPlayer = Temp;
-
+            timer = .5f;
         }
     }
 }

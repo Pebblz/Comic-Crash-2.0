@@ -62,9 +62,13 @@ public class MainCamera : MonoBehaviour
 
     [SerializeField]
     LayerMask obstructionMask = -1;
+
+    Pause pause;
+
     #region MonoBehaviours
     void Start()
     {
+        pause = FindObjectOfType<Pause>();
         startPos = transform.position;
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
@@ -81,7 +85,7 @@ public class MainCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isShaking)
+        if (!isShaking && !pause.isPaused)
         {
             if (thirdPersonCamera)
             {

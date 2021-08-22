@@ -32,10 +32,10 @@ public class Player : MonoBehaviour
             Instantiate(block, transform.position + (transform.forward * 2), transform.rotation);
             blocktimer = .5f;
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            CharacterTree.exp += 1;
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    CharacterTree.exp += 1;
+        //}
         if (transform.parent != null)
         {
             transform.rotation = new Quaternion(rotation.x, transform.rotation.y, rotation.z, transform.rotation.w);

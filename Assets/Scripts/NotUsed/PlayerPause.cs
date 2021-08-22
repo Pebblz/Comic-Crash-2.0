@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerPause : MonoBehaviour
 {
 
-    private bool IsPaused = false;
+    public bool IsPaused = false;
     private float PauseTimer;
     private GameObject Player;
     private GameObject gameManager;

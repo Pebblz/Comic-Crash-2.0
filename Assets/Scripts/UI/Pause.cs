@@ -11,7 +11,7 @@ public class Pause : MonoBehaviour
 
     float pauseTimer;
 
-    bool isPaused;
+    public bool isPaused;
     void Start()
     {
         Gm = GetComponent<GameManager>();
