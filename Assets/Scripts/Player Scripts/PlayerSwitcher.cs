@@ -103,7 +103,7 @@ public class PlayerSwitcher : MonoBehaviour
             Camera.GetComponent<MainCamera>().target = Temp.transform;
             Destroy(CurrentPlayer);
             CurrentPlayer = Temp;
-            timer = .5f;
+            timer = .1f;
         }
     }
 }
