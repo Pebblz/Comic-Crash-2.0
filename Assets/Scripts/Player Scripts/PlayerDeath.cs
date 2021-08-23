@@ -11,10 +11,7 @@ public class PlayerDeath : MonoBehaviour
     GameObject Fader;
     void Update()
     {
-        if(Fader == null)
-        {
-            Fader = GameObject.Find("Fader");
-        }
+
         if (isdead)
         {
             GetComponent<Animator>().SetBool("Dead", true);
@@ -24,7 +21,10 @@ public class PlayerDeath : MonoBehaviour
     public void Death()
     {
         GetComponent<Player>().RepoPlayer();
-
+        if (Fader == null)
+        {
+            Fader = GameObject.Find("Fader");
+        }
         Fader.GetComponent<Fading_Screen>().FadeOut();
         if (Fader.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Fade_Out"))
         {
