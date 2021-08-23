@@ -659,7 +659,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void GroundPound()
     {
-        body.velocity = new Vector3(0, -40, 0);
+        body.velocity = new Vector3(0, -20, 0);
         //this is here to ensure you wont double jump
         jumpPhase = 20;
     }

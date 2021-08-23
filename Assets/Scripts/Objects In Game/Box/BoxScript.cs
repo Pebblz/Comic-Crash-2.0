@@ -67,6 +67,16 @@ public class BoxScript : MonoBehaviour
                 DestroyBox();
             }
         }
+        if(Ways.Contains(WaysToBreak.GroundPound))
+        {
+            if(col.gameObject.GetComponent<PlayerGroundPound>())
+            {
+                if (col.gameObject.GetComponent<Animator>().GetBool("GroundPound"))
+                {
+                    DestroyBox();
+                }
+            }
+        }
     }
     public void CheckPunchToSeeIfItShouldBreak()
     {
@@ -84,6 +94,7 @@ public class BoxScript : MonoBehaviour
         JumpOn,
         JumpUnder,
         Shoot,
-        Punch
+        Punch,
+        GroundPound
     }
 }
