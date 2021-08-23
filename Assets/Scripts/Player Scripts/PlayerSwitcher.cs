@@ -95,7 +95,7 @@ public class PlayerSwitcher : MonoBehaviour
 
             Temp.GetComponent<PlayerMovement>().jumpPhase = 5;
 
-            Temp.GetComponent<PlayerMovement>().velocity = CurrentPlayer.GetComponent<PlayerMovement>().velocity;
+            Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
 
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;

@@ -52,8 +52,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animator"), Space(5)]
     [SerializeField]
     Animator anim;
-    [HideInInspector]
-    public Vector3 velocity;
+
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -84,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
+    private Vector3 velocity;
     [Header("Offsets")]
     [SerializeField, Range(0, .5f)]
     float CrouchOffsetY = .1f;
@@ -655,6 +655,13 @@ public class PlayerMovement : MonoBehaviour
     {
         body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
+    }
+    
+    public void GroundPound()
+    {
+        body.velocity = new Vector3(0, -40, 0);
+        //this is here to ensure you wont double jump
+        jumpPhase = 20;
     }
     #region Animation
     /// <summary>
