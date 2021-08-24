@@ -24,25 +24,23 @@ public class ConveyerBelt : MonoBehaviour
         if (active)
         {
             //loops throught each of the gameobjects on the belt and moves them
-            for (int i = 0; i < onBelt.Count; i++)
+            for (int i = 0; i <= onBelt.Count - 1; i++)
             {
                 if(onBelt[i] == null)
                 {
                     onBelt.Remove(onBelt[i]);
-                    if (onBelt[i].GetComponent<PlayerMovement>())
-                        onBelt[i].GetComponent<PlayerMovement>().onBelt = false;
                     return;
                 }
                 //i had to add all this extra stuff so you can jump off of the belts
                 if (direction == new Vector3(1, 0, 0) || direction == new Vector3(-1, 0, 0))
                 {
-                    onBelt[i].GetComponent<Rigidbody>().velocity = new Vector3 (speed * direction.x * Time.deltaTime + onBelt[i].GetComponent<Rigidbody>().velocity.x,
-                        onBelt[i].GetComponent<Rigidbody>().velocity.y, onBelt[i].GetComponent<Rigidbody>().velocity.z);
+                    onBelt[i].GetComponent<Rigidbody>().velocity = new Vector3 (speed * direction.x * Time.fixedDeltaTime, onBelt[i].GetComponent<Rigidbody>().velocity.y, 
+                        onBelt[i].GetComponent<Rigidbody>().velocity.z);
                 }
                 if(direction == new Vector3(0, 0, 1) || direction == new Vector3(0, 0, -1))
                 {
                     onBelt[i].GetComponent<Rigidbody>().velocity = new Vector3(onBelt[i].GetComponent<Rigidbody>().velocity.x,
-                        onBelt[i].GetComponent<Rigidbody>().velocity.y, speed * direction.z * Time.deltaTime + onBelt[i].GetComponent<Rigidbody>().velocity.z);
+                        onBelt[i].GetComponent<Rigidbody>().velocity.y, speed * direction.z * Time.fixedDeltaTime);
                 }
             }
         }
@@ -56,8 +54,6 @@ public class ConveyerBelt : MonoBehaviour
             if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform" && !onBelt.Contains(col.gameObject))
             {
                 onBelt.Add(col.gameObject);
-                if (col.gameObject.GetComponent<PlayerMovement>())
-                    col.gameObject.GetComponent<PlayerMovement>().onBelt = true;
             }
         }
     }
@@ -69,8 +65,6 @@ public class ConveyerBelt : MonoBehaviour
             if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform" && !onBelt.Contains(col.gameObject))
             {
                 onBelt.Add(col.gameObject);
-                if (col.gameObject.GetComponent<PlayerMovement>())
-                    col.gameObject.GetComponent<PlayerMovement>().onBelt = true;
             }
         }
     }
@@ -80,8 +74,6 @@ public class ConveyerBelt : MonoBehaviour
         if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform")
         {
             onBelt.Remove(col.gameObject);
-            if (col.gameObject.GetComponent<PlayerMovement>())
-                col.gameObject.GetComponent<PlayerMovement>().onBelt = false;
         }
     }
     #endregion
