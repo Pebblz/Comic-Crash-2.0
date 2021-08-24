@@ -257,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
-            velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
+
             body.velocity = velocity;
         }
         ClearState();
@@ -613,6 +613,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpSpeed = 16;
             }
             velocity += jumpDirection * jumpSpeed;
+            velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
         }
     }
     bool CheckClimbing()
@@ -655,7 +656,6 @@ public class PlayerMovement : MonoBehaviour
     }
     public void jumpOnBouncePad(float distance)
     {
-        body.velocity = Vector3.ClampMagnitude(body.velocity, 50);
         body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
     }
