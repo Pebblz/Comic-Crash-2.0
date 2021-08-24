@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     #region serializedFields
     [Header("Speed")]
     [SerializeField, Range(0f, 100f)]
-    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6;
+    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15;
     public bool onBelt;
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
@@ -52,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animator"), Space(5)]
     [SerializeField]
     Animator anim;
-
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -113,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
+
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             if (OnGround)
@@ -211,6 +211,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
@@ -256,6 +257,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
+            velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
             body.velocity = velocity;
         }
         ClearState();
@@ -653,6 +655,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void jumpOnBouncePad(float distance)
     {
+        body.velocity = Vector3.ClampMagnitude(body.velocity, 50);
         body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
     }
