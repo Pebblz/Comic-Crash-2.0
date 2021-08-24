@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Speed")]
     [SerializeField, Range(0f, 100f)]
     float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6;
-
+    public bool onBelt;
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
@@ -197,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
                     GetComponent<BoxCollider>().center = ColliderCenter;
                 }
             }
-            if (playerInput.magnitude < 0.6f)
+            if (playerInput.magnitude < 0.6f && !onBelt)
             {
                 body.velocity = new Vector3(0, body.velocity.y, 0);
             }
