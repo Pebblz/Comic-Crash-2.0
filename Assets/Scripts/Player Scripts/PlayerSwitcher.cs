@@ -97,13 +97,21 @@ public class PlayerSwitcher : MonoBehaviour
 
             Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
 
+            if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+            {
+                Temp.GetComponent<Animator>().SetBool("Walk", true);
+            }
+            if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Run"))
+            {
+                Temp.GetComponent<Animator>().SetBool("Run", true);
+            }
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;
             Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
             Camera.GetComponent<MainCamera>().target = Temp.transform;
             Destroy(CurrentPlayer);
             CurrentPlayer = Temp;
-            timer = .1f;
+            timer = .2f;
         }
     }
 }
