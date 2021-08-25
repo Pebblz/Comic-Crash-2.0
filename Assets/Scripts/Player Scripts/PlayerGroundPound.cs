@@ -11,6 +11,7 @@ public class PlayerGroundPound : MonoBehaviour
     private Vector3 origanalScale;
     private bool squishTime;
     private bool doneSquishing;
+    public bool GroundPounding;
     void Start()
     {
         origanalScale = transform.localScale;
@@ -24,6 +25,7 @@ public class PlayerGroundPound : MonoBehaviour
         if (!pm.OnGround && Input.GetButtonDown("Punch") 
             || Input.GetMouseButtonDown(0) && !pm.OnGround)
         {
+            GroundPounding = true;
             GroundPound();
         }
         if (squishTime && pm.OnGround)
@@ -62,6 +64,7 @@ public class PlayerGroundPound : MonoBehaviour
             }
             else
             {
+                GroundPounding = false;
                 doneSquishing = false;
                 squishTime = false;
             }
