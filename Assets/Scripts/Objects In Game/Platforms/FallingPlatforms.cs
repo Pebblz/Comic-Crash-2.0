@@ -6,14 +6,17 @@ public class FallingPlatforms : MonoBehaviour
 {
     bool Falling;
     [SerializeField] float timeTillReset;
-    [SerializeField] float timeTillPlatformFalls;
+    [SerializeField] public float timeTillPlatformFalls;
     private float timer;
     private float DownSpeed;
     private GameObject _fallingPlatformManager;
     private Vector3 OriginalPos;
     private Quaternion Originalrot;
-    private void Awake()
+    private void Start()
     {
+        if(timeTillPlatformFalls < 0)
+            timeTillPlatformFalls = Random.Range(.5f, 3f);
+
         timer = timeTillReset;
         _fallingPlatformManager = FindObjectOfType<FallingPlatformManager>().gameObject;
         OriginalPos = transform.position;
