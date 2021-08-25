@@ -649,6 +649,7 @@ public class PlayerMovement : MonoBehaviour
     {
         stepsSinceLastJump = -1;
     }
+    #region Bounce Functions
     public void jumpOnEnemy()
     {
         body.velocity = new Vector3(body.velocity.x, body.velocity.y + 4, body.velocity.z);
@@ -666,6 +667,7 @@ public class PlayerMovement : MonoBehaviour
         //this is here to ensure you wont double jump
         jumpPhase = 20;
     }
+    #endregion
     #region Animation
     /// <summary>
     /// Call this for anytime you need to play an animation 

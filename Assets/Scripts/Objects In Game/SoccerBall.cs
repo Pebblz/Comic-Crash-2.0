@@ -7,13 +7,17 @@ public class SoccerBall : MonoBehaviour
     [SerializeField, Range(5f, 100f), Tooltip("How far the ball gets kicked")]
     float pushPower = 5.0f;
     Vector3 startpos;
-
+    [SerializeField, Range(.7f,.99f)] float SlowdownSpeed;
     void Start()
     {
         startpos = this.gameObject.transform.position;
         rb = GetComponent<Rigidbody>();
     }
-
+    void LateUpdate()
+    {
+        if (rb.velocity.magnitude > 0)
+            rb.velocity *= SlowdownSpeed;
+    }
     #region Triggers
     private void OnTriggerEnter(Collider col)
     {
