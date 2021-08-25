@@ -15,6 +15,7 @@ public class PlayerSquish : MonoBehaviour
     private bool squishTime;
     private bool doneSquishing;
     PlayerGroundPound gp;
+    bool DoingSquish;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,10 +39,14 @@ public class PlayerSquish : MonoBehaviour
         {
             Squish();
         }
+        if(DoingSquish && !pm.OnGround)
+        {
+            Squish();
+        }
     }
     void Squish()
     {
-
+        DoingSquish = true;
         if (!doneSquishing)
         {
             if (transform.localScale.y > origanalScale.y / SquishHeight)
@@ -61,6 +66,7 @@ public class PlayerSquish : MonoBehaviour
             }
             else
             {
+                DoingSquish = false;
                 doneSquishing = false;
                 squishTime = false;
             }

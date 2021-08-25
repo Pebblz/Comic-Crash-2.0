@@ -12,6 +12,7 @@ public class PlayerGroundPound : MonoBehaviour
     private bool squishTime;
     private bool doneSquishing;
     public bool GroundPounding;
+    bool doingSquish;
     void Start()
     {
         origanalScale = transform.localScale;
@@ -34,6 +35,10 @@ public class PlayerGroundPound : MonoBehaviour
             PlayAnimation("GroundPoundImpact");
             Squish();
         }
+        if (doingSquish && !pm.OnGround)
+        {
+            Squish();
+        }
     }
     void GroundPound()
     {
@@ -43,7 +48,7 @@ public class PlayerGroundPound : MonoBehaviour
     }
     void Squish()
     {
-        
+        doingSquish = true;
         if (!doneSquishing)
         {
             if (transform.localScale.y > origanalScale.y / 2f)
@@ -64,6 +69,7 @@ public class PlayerGroundPound : MonoBehaviour
             }
             else
             {
+                doingSquish = false;
                 GroundPounding = false;
                 doneSquishing = false;
                 squishTime = false;
