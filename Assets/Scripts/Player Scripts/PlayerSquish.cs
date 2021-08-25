@@ -32,6 +32,8 @@ public class PlayerSquish : MonoBehaviour
     {
         if(!gp.GroundPounding && !pm.OnGround)
         {
+            //this is so if jeff falls 1 inch he shouldn't squish
+            //but if he falls a few feet he will
             TimeInAir += Time.deltaTime;
             if(TimeInAir > TimeInAirToSquish)
                 squishTime = true;
@@ -47,6 +49,9 @@ public class PlayerSquish : MonoBehaviour
         {
             Squish();
         }
+        //this is here to make sure he unSquishes
+        //because if he jumps when he is unSquishing
+        //he wont fully unSquish until he gets grounded again
         if(DoingSquish && !pm.OnGround)
         {
             Squish();

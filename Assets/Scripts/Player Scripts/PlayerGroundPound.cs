@@ -35,6 +35,9 @@ public class PlayerGroundPound : MonoBehaviour
             PlayAnimation("GroundPoundImpact");
             Squish();
         }
+        //this is here to make sure he unSquishes
+        //because if he jumps when he is unSquishing
+        //he wont fully unSquish until he gets grounded again
         if (doingSquish && !pm.OnGround)
         {
             Squish();

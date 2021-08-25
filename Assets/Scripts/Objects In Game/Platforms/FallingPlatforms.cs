@@ -14,6 +14,7 @@ public class FallingPlatforms : MonoBehaviour
     private Quaternion Originalrot;
     private void Start()
     {
+        //this is here so when the platform respawns it'll not instently fall
         if(timeTillPlatformFalls < 0)
             timeTillPlatformFalls = Random.Range(.5f, 3f);
 
