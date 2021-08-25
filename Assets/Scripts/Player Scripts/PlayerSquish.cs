@@ -11,11 +11,14 @@ public class PlayerSquish : MonoBehaviour
     PlayerMovement pm;
     [SerializeField, Range(.1f, 6f)]
     float timeToSquish;
+    [SerializeField, Range(.01f, 1f)]
+    float TimeInAirToSquish;
     private Vector3 origanalScale;
     private bool squishTime;
     private bool doneSquishing;
     PlayerGroundPound gp;
     bool DoingSquish;
+    float TimeInAir;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,9 +32,14 @@ public class PlayerSquish : MonoBehaviour
     {
         if(!gp.GroundPounding && !pm.OnGround)
         {
-            squishTime = true;
+            TimeInAir += Time.deltaTime;
+            if(TimeInAir > TimeInAirToSquish)
+                squishTime = true;
         }
-        if(gp.GroundPounding)
+        if(pm.OnGround)
+            TimeInAir = 0f;
+
+        if (gp.GroundPounding)
         {
             squishTime = false;
         }
