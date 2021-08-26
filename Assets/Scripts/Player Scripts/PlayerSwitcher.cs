@@ -105,6 +105,7 @@ public class PlayerSwitcher : MonoBehaviour
             {
                 Temp.GetComponent<Animator>().SetBool("Run", true);
             }
+            Temp.GetComponent<PlayerMovement>().CanWallJump = false;
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;
             Camera.GetComponent<MainCamera>().thirdPersonCamera = true;

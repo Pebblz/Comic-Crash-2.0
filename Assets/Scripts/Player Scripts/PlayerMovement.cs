@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animator"), Space(5)]
     [SerializeField]
     Animator anim;
+    [HideInInspector]
+    public bool CanWallJump;
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -88,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
     float CrouchOffsetY = .1f;
     bool isCrouching;
     GameObject LastWallJumpedOn;
+
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -117,6 +120,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (OnGround)
             {
+                CanWallJump = true;
                 if(jumpPhase > 0)
                 {
                     PlayAnimation("IsLanded");
@@ -372,7 +376,7 @@ public class PlayerMovement : MonoBehaviour
         EvaluateCollision(collision);
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space) && collision.gameObject.layer != 9)
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space) && collision.gameObject.layer != 9 && CanWallJump)
             {
                 Vector3 _velocity = contact.normal;
 
