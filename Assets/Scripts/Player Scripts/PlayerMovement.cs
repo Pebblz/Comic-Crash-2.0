@@ -54,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     [HideInInspector]
     public bool CanWallJump;
+    [HideInInspector]
+    public bool CantMove;
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -116,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
             if (OnGround)
             {
@@ -216,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
             Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
             UpdateState();

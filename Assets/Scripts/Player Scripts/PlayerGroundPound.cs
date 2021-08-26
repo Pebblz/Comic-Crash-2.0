@@ -33,6 +33,7 @@ public class PlayerGroundPound : MonoBehaviour
         {
             StopAnimation("GroundPound");
             PlayAnimation("GroundPoundImpact");
+            pm.CantMove = true;
             Squish();
         }
         //this is here to make sure he unSquishes
@@ -72,6 +73,7 @@ public class PlayerGroundPound : MonoBehaviour
             }
             else
             {
+                pm.CantMove = false;
                 doingSquish = false;
                 GroundPounding = false;
                 doneSquishing = false;
