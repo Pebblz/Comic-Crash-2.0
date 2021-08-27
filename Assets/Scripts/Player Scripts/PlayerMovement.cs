@@ -210,7 +210,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            body.velocity = Vector3.zero;
+            if (!CantMove)
+                body.velocity = Vector3.zero;
+            else
+                body.velocity = new Vector3(0, body.velocity.y, 0);
         }
 
     }

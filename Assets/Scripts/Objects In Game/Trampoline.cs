@@ -38,7 +38,7 @@ public class Trampoline : MonoBehaviour
             && col.gameObject.transform.position.y > gameObject.transform.position.y)
         {
             Rigidbody body = col.gameObject.GetComponent<Rigidbody>();
-            if (body)
+            if (body )
             {
                 Accelerate(body);
             }
@@ -58,14 +58,26 @@ public class Trampoline : MonoBehaviour
     {
         Vector3 velocity = transform.InverseTransformDirection(body.velocity);
 
-
-        if (acceleration > 0f)
+        if (!body.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
         {
-            velocity.y = Mathf.MoveTowards(velocity.y, speed, acceleration * Time.deltaTime);
-        }
-        else
+            if (acceleration > 0f)
+            {
+                velocity.y = Mathf.MoveTowards(velocity.y, speed, acceleration * Time.deltaTime);
+            }
+            else
+            {
+                velocity.y = speed;
+            }
+        } else
         {
-            velocity.y = speed;
+            if (acceleration > 0f)
+            {
+                velocity.y = Mathf.MoveTowards(velocity.y, speed, acceleration * Time.deltaTime);
+            }
+            else
+            {
+                velocity.y = speed + (speed / 2);
+            }
         }
         body.velocity = transform.TransformDirection(velocity);
         if (body.TryGetComponent(out PlayerMovement player))
