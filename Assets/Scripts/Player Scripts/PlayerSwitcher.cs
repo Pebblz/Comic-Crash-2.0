@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerSwitcher : MonoBehaviour
 {
     [Tooltip("This is for the other characters that the player can switch to")]
-    public GameObject[] CharactersToSwitchTo = new GameObject[10];
+    public GameObject[] CharactersToSwitchTo = new GameObject[4];
 
     [SerializeField]
     Transform PlayerTransform;
@@ -17,6 +17,8 @@ public class PlayerSwitcher : MonoBehaviour
     private float dpadX;
     private float dpady;
     float timer;
+
+    public GameObject[] AllCharactersInGame = new GameObject[10];
     private KeyCode[] keyCodes = {
          KeyCode.Alpha1,
          KeyCode.Alpha2,
@@ -69,6 +71,10 @@ public class PlayerSwitcher : MonoBehaviour
         }
         timer -= Time.deltaTime;
 
+    }
+    public void ChangeSelectedCharacters(int index, GameObject Character)
+    {
+        CharactersToSwitchTo[index] = Character;
     }
     void SwitchCharacter(int i)
     {

@@ -39,13 +39,13 @@ public class Pause : MonoBehaviour
     {
         if (pause)
         {
-            Time.timeScale = 0;
+            //Time.timeScale = 0;
             Gm.unlockCursor();
             PausePage.SetActive(true);
         }
         else
         {
-            Time.timeScale = 1;
+            //Time.timeScale = 1;
             Gm.lockCursor();
             PausePage.SetActive(false);
         }

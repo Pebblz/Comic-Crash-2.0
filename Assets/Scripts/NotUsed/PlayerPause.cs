@@ -39,7 +39,7 @@ public class PlayerPause : MonoBehaviour
     void Paused()
     {
         //this stops all things that rely on time to do anything
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
         //this stops the players movement
         Player.GetComponent<PlayerMovement>().enabled = false;
         //this stops the player from switching characters
@@ -50,7 +50,7 @@ public class PlayerPause : MonoBehaviour
     void UnPaused()
     {
         //this resumes all things that rely on time
-        Time.timeScale = 1;
+        //Time.timeScale = 1;
         Player.GetComponent<PlayerMovement>().enabled = true;
         gameManager.GetComponent<PlayerSwitcher>().enabled = true;
         gameManager.GetComponent<GameManager>().lockCursor();
