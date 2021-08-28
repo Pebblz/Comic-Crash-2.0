@@ -65,6 +65,8 @@ public class MainCamera : MonoBehaviour
 
     Pause pause;
 
+    public bool StopCamera;
+
     #region MonoBehaviours
     void Start()
     {
@@ -85,7 +87,7 @@ public class MainCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isShaking && !pause.isPaused)
+        if (!isShaking && !pause.isPaused && !StopCamera)
         {
             if (thirdPersonCamera)
             {

@@ -79,7 +79,7 @@ public class PlayerSwitcher : MonoBehaviour
     void SwitchCharacter(int i)
     {
 
-        if (i + 1 <= CharactersToSwitchTo.Length)
+        if (i + 1 <= CharactersToSwitchTo.Length && CharactersToSwitchTo[i] != null)
         {
             if(CurrentPlayer.GetComponent<HandMan>())
             {
