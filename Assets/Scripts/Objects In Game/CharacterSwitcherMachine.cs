@@ -10,7 +10,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
     [SerializeField]
     GameObject EText;
 
-    GameObject Player;
+    GameObject player;
 
     [SerializeField, Range(.1f, 20f)]
     float Range;
@@ -22,13 +22,13 @@ public class CharacterSwitcherMachine : MonoBehaviour
     }
     private void Update()
     {
-        if (Player == null)
-            Player = FindObjectOfType<PlayerMovement>().gameObject;
+        if (player == null)
+            player = FindObjectOfType<PlayerMovement>().gameObject;
         else
         {
             if (InRadius())
             {
-                if(!CharacterSwitcherUI.activeSelf)
+                if (!CharacterSwitcherUI.activeSelf)
                 {
                     EText.SetActive(true);
                 }
@@ -42,12 +42,14 @@ public class CharacterSwitcherMachine : MonoBehaviour
 
                     if (CharacterSwitcherUI.activeSelf)
                     {
+                        player.GetComponent<PlayerMovement>().CantMove = true;
                         camera.GetComponent<MainCamera>().StopCamera = true;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
                     }
                     else
                     {
+                        player.GetComponent<PlayerMovement>().CantMove = false;
                         camera.GetComponent<MainCamera>().StopCamera = false;
                         Cursor.lockState = CursorLockMode.Locked;
                         Cursor.visible = false;
@@ -56,6 +58,8 @@ public class CharacterSwitcherMachine : MonoBehaviour
             }
             else
             {
+                //this is here just incase the player finds a way to die while in the switcher menu
+                player.GetComponent<PlayerMovement>().CantMove = false;
                 camera.GetComponent<MainCamera>().StopCamera = false;
                 CharacterSwitcherUI.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
@@ -67,11 +71,14 @@ public class CharacterSwitcherMachine : MonoBehaviour
     public void CloseSwitcher()
     {
         CharacterSwitcherUI.SetActive(false);
+        player.GetComponent<PlayerMovement>().CantMove = false;
+        camera.GetComponent<MainCamera>().StopCamera = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
-
     bool InRadius()
     {
-        if (Vector3.Distance(gameObject.transform.position, Player.transform.position) < Range)
+        if (Vector3.Distance(gameObject.transform.position, player.transform.position) < Range)
         {
             return true;
         }
