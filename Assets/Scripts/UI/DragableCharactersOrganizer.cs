@@ -18,7 +18,7 @@ public class DragableCharactersOrganizer : MonoBehaviour
         }
     }
 
-
+    #region Helper Functions
     //this here is to make everything nice and neat
     public void ReOrderList()
     {
@@ -47,4 +47,5 @@ public class DragableCharactersOrganizer : MonoBehaviour
         else
             return false;
     }
+    #endregion
 }

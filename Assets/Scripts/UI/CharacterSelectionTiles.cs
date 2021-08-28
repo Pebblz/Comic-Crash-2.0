@@ -20,6 +20,8 @@ public class CharacterSelectionTiles : MonoBehaviour
         }
         
     }
+
+    #region 2D collision
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.GetComponent<DraggableUI>())
@@ -45,6 +47,8 @@ public class CharacterSelectionTiles : MonoBehaviour
             }
         }
     }
+    #endregion
+
     public void ChangeCharacters()
     {
         if (CharacterOnTile != HoveringCharacter)

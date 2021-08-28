@@ -23,6 +23,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
+    #region Pointer Methods
     public void OnPointerDown(PointerEventData eventData)
     {
         dragging = true;
@@ -46,4 +47,5 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
         }
     }
+    #endregion
 }

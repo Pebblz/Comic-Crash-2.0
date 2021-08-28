@@ -19,18 +19,7 @@ public class PlayerSwitcher : MonoBehaviour
     float timer;
 
     public GameObject[] AllCharactersInGame = new GameObject[10];
-    private KeyCode[] keyCodes = {
-         KeyCode.Alpha1,
-         KeyCode.Alpha2,
-         KeyCode.Alpha3,
-         KeyCode.Alpha4,
-         KeyCode.Alpha5,
-         KeyCode.Alpha6,
-         KeyCode.Alpha7,
-         KeyCode.Alpha8,
-         KeyCode.Alpha9,
-     };
-    // Start is called before the first frame update
+
     void Awake()
     {
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -41,14 +30,7 @@ public class PlayerSwitcher : MonoBehaviour
     {
         dpadX = Input.GetAxis("Dpad Horizontal");
         dpady = Input.GetAxis("DPad Vertical");
-        //for (int i = 0; i < keyCodes.Length; i++)
-        //{
-        //    if (Input.GetKeyDown(keyCodes[i]) && timer <= 0)
-        //    {
-        //        SwitchCharacter(i);
-        //        timer = .5f;
-        //    }
-        //}
+
         //arrays start at zero so i have to make it one less 
         if (timer < 0)
         {
