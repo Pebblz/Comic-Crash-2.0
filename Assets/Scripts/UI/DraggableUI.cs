@@ -9,11 +9,11 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool dragging;
     public bool Ontile;
     private Vector2 offset;
-    public Vector2 StartPos;
     public GameObject Character;
+    DragableCharactersOrganizer Dorg;
     private void Start()
     {
-        StartPos = transform.position;
+        Dorg = FindObjectOfType<DragableCharactersOrganizer>();
     }
     public void Update()
     {
@@ -33,7 +33,17 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         dragging = false;
 
-        if(!Ontile)
-            transform.position = StartPos;
+        if (!Ontile)
+        {
+            if(Dorg.CheckIfObjectIsInList(gameObject))
+            {
+                Dorg.ReOrderList();
+            } else 
+            {
+
+                Dorg.AddToList(gameObject);
+                Dorg.ReOrderList();
+            }
+        }
     }
 }

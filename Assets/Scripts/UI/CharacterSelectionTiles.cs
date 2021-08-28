@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class CharacterSelectionTiles : MonoBehaviour
 {
+    [SerializeField]
+    DragableCharactersOrganizer dOrg;
     public bool OnThisTile;
     public DraggableUI CharacterOnTile;
     public DraggableUI HoveringCharacter;
@@ -49,22 +51,24 @@ public class CharacterSelectionTiles : MonoBehaviour
         {
             if (OnThisTile)
             {
-
                 if (CharacterOnTile == null)
                 {
+                    dOrg.GetRidOfUIFromList(HoveringCharacter.gameObject);
                     CharacterOnTile = HoveringCharacter;
                 }
                 else
                 {
+                    dOrg.GetRidOfUIFromList(HoveringCharacter.gameObject);
+                    dOrg.AddToList(CharacterOnTile.gameObject);
+                    dOrg.ReOrderList();
                     CharacterOnTile.Ontile = false;
-                    CharacterOnTile.StartPos = HoveringCharacter.StartPos;
-                    CharacterOnTile.transform.position = CharacterOnTile.StartPos;
                     CharacterOnTile = HoveringCharacter;
                 }
                 CharacterOnTile.transform.position = this.transform.position;
                 HoveringCharacter.Ontile = true;
                 HoveringCharacter = null;
                 OnThisTile = false;
+
                 foreach (CharacterSelectionTiles t in otherTiles)
                 {
                     if (t.CharacterOnTile == CharacterOnTile)
