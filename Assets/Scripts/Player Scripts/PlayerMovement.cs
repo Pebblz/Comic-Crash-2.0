@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     bool Swimming => submergence >= swimThreshold;
     float submergence;
     bool InWater => submergence > 0f;
-    [HideInInspector]
+    //[HideInInspector]
     public int jumpPhase;
     [HideInInspector]
     public bool canJump = true;
@@ -122,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (OnGround)
             {
+                canJump = true;
                 CanWallJump = true;
                 if(jumpPhase > 0)
                 {
@@ -379,6 +380,8 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         EvaluateCollision(collision);
+        if (LastWallJumpedOn == collision.gameObject)
+            return;
         foreach (ContactPoint contact in collision.contacts)
         {
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space) && collision.gameObject.layer != 9 && CanWallJump)
@@ -572,6 +575,10 @@ public class PlayerMovement : MonoBehaviour
     }
     void Jump(Vector3 gravity)
     {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
+        {
+            canJump = false;
+        }
         if (canJump)
         {
             Vector3 jumpDirection;
@@ -582,7 +589,7 @@ public class PlayerMovement : MonoBehaviour
             else if (OnSteep)
             {
                 jumpDirection = steepNormal;
-                jumpPhase = 0;
+                jumpPhase = 1;
             }
             else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
             {
@@ -600,6 +607,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlayAnimation("DoubleJump");
             }
+
             stepsSinceLastJump = 0;
             jumpPhase += 1;
             float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
