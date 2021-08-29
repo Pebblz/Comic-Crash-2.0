@@ -198,6 +198,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: rock pillars
       objectReference: {fileID: 0}
+    - target: {fileID: 8346339535076744316, guid: 568318a3166feed46a5fe794c8e82208,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8346339535076744316, guid: 568318a3166feed46a5fe794c8e82208,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8346339535076744316, guid: 568318a3166feed46a5fe794c8e82208,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 568318a3166feed46a5fe794c8e82208, type: 3}
 --- !u!1001 &15190269
@@ -3221,7 +3236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ontile: 0
-  StartPos: {x: 0, y: 0}
   Character: {fileID: 4937292684294454743, guid: d47f42fb64fb4fd42a4bc3cb86ac51bf,
     type: 3}
 --- !u!222 &406694743
@@ -3616,7 +3630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ontile: 0
-  StartPos: {x: 0, y: 0}
   Character: {fileID: 7093078686324562486, guid: ea4df7cb51be50b4e8042e416b0ddad1,
     type: 3}
 --- !u!61 &431978278
@@ -4903,7 +4916,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: -329315503265546255, guid: 568318a3166feed46a5fe794c8e82208, type: 3}
 --- !u!1001 &584255153
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6207,7 +6220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ontile: 0
-  StartPos: {x: 0, y: 0}
   Character: {fileID: 4595979783101676548, guid: a7a2a57b6e68ead459e886f9ab45f758,
     type: 3}
 --- !u!222 &783858884
@@ -12810,7 +12822,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ontile: 0
-  StartPos: {x: 0, y: 0}
   Character: {fileID: 375778916001974165, guid: 96d62c2a0b1d65440838badf3ef5e73a,
     type: 3}
 --- !u!222 &1495152569
