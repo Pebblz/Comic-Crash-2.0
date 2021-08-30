@@ -14,11 +14,14 @@ public class CharacterSelectionTiles : MonoBehaviour
     CharacterSelectionTiles[] otherTiles = new CharacterSelectionTiles[3];
     void Update()
     {
-        if(Input.GetMouseButtonUp(0) && OnThisTile)
+        if(Input.GetMouseButtonUp(0) && OnThisTile )
         {
             ChangeCharacters();
         }
-        
+        if(Input.GetMouseButtonUp(0) && CharacterOnTile != null)
+        {
+            CharacterOnTile.transform.position = this.transform.position;
+        }
     }
 
     #region 2D collision
@@ -59,6 +62,7 @@ public class CharacterSelectionTiles : MonoBehaviour
                 {
                     dOrg.GetRidOfUIFromList(HoveringCharacter.gameObject);
                     CharacterOnTile = HoveringCharacter;
+                    CharacterOnTile.GetComponent<DraggableUI>().TileOn = gameObject;
                 }
                 else
                 {
@@ -67,6 +71,7 @@ public class CharacterSelectionTiles : MonoBehaviour
                     dOrg.ReOrderList();
                     CharacterOnTile.Ontile = false;
                     CharacterOnTile = HoveringCharacter;
+                    CharacterOnTile.GetComponent<DraggableUI>().TileOn = gameObject;
                 }
                 CharacterOnTile.transform.position = this.transform.position;
                 HoveringCharacter.Ontile = true;
@@ -82,6 +87,16 @@ public class CharacterSelectionTiles : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            CharacterOnTile.transform.position = this.transform.position;
+            OnThisTile = false;
 
+            if (HoveringCharacter != null)
+            {
+                HoveringCharacter.Ontile = true;
+                HoveringCharacter = null;
+            }
+        }
     }
 }

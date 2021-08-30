@@ -10,6 +10,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public bool Ontile;
     private Vector2 offset;
     public GameObject Character;
+    public GameObject TileOn;
     DragableCharactersOrganizer Dorg;
     private void Start()
     {
@@ -36,7 +37,10 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (!Ontile)
         {
-            if(Dorg.CheckIfObjectIsInList(gameObject))
+            if (TileOn.GetComponent<CharacterSelectionTiles>().CharacterOnTile == gameObject.GetComponent<DraggableUI>())
+                TileOn.GetComponent<CharacterSelectionTiles>().CharacterOnTile = null;
+
+            if (Dorg.CheckIfObjectIsInList(gameObject))
             {
                 Dorg.ReOrderList();
             } else 
