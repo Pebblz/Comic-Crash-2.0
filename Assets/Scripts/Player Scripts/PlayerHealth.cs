@@ -7,6 +7,9 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField, Tooltip("The current health of the player")]
     public int currentHealth;
+
+    [SerializeField, Tooltip("The current IFrames of the player")]
+    public float IFrameTimer;
     private void Awake()
     {
         //this is for if you forget to set the current health 
@@ -14,13 +17,21 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth == 0)
             currentHealth = maxHealth;
     }
+    private void Update()
+    {
+        IFrameTimer -= Time.deltaTime;
+    }
     public void HurtPlayer(int amount)
     {
-        currentHealth -= amount;
-
-        if (currentHealth <= 0)
+        if (IFrameTimer <= 0)
         {
-            GetComponent<PlayerDeath>().isdead = true;
+            currentHealth -= amount;
+
+            if (currentHealth <= 0)
+            {
+                GetComponent<PlayerDeath>().isdead = true;
+            }
+            IFrameTimer = 2;
         }
     }
     public void ResetHealth()

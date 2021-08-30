@@ -487,6 +487,8 @@ MonoBehaviour:
   buoyancy: 2.2
   swimThreshold: 1
   anim: {fileID: 375778916001974254}
+  CanWallJump: 0
+  CantMove: 0
   jumpPhase: 0
   canJump: 1
   CrouchOffsetY: 0.1
@@ -552,6 +554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   currentHealth: 5
+  IFrameTimer: 1.5
 --- !u!114 &375778916001974253
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,27 +24,41 @@ public class PlayerSquish : MonoBehaviour
     {
         origanalScale = transform.localScale;
         pm = GetComponent<PlayerMovement>();
-        gp = GetComponent<PlayerGroundPound>();
+
+        if(GetComponent<PlayerGroundPound>())
+            gp = GetComponent<PlayerGroundPound>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!gp.GroundPounding && !pm.OnGround)
+        if (GetComponent<PlayerGroundPound>())
+        {
+            if (!gp.GroundPounding && !pm.OnGround)
+            {
+                //this is so if jeff falls 1 inch he shouldn't squish
+                //but if he falls a few feet he will
+                TimeInAir += Time.deltaTime;
+                if (TimeInAir > TimeInAirToSquish)
+                    squishTime = true;
+            }
+            if (gp.GroundPounding)
+            {
+                squishTime = false;
+            }
+        }
+        if(!pm.OnGround)
         {
             //this is so if jeff falls 1 inch he shouldn't squish
             //but if he falls a few feet he will
             TimeInAir += Time.deltaTime;
-            if(TimeInAir > TimeInAirToSquish)
+            if (TimeInAir > TimeInAirToSquish)
                 squishTime = true;
         }
-        if(pm.OnGround)
+        if (pm.OnGround)
             TimeInAir = 0f;
 
-        if (gp.GroundPounding)
-        {
-            squishTime = false;
-        }
+
         if (squishTime && pm.OnGround)
         {
             Squish();
