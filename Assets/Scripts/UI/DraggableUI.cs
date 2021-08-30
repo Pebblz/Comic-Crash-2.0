@@ -37,9 +37,11 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (!Ontile)
         {
-            if (TileOn.GetComponent<CharacterSelectionTiles>().CharacterOnTile == gameObject.GetComponent<DraggableUI>())
-                TileOn.GetComponent<CharacterSelectionTiles>().CharacterOnTile = null;
-
+            if (TileOn != null)
+            {
+                if (TileOn.GetComponent<CharacterSelectionTiles>().CharacterOnTile == gameObject.GetComponent<DraggableUI>())
+                    TileOn.GetComponent<CharacterSelectionTiles>().CharacterOnTile = null;
+            }
             if (Dorg.CheckIfObjectIsInList(gameObject))
             {
                 Dorg.ReOrderList();
