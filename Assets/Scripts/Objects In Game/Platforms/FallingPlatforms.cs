@@ -55,4 +55,14 @@ public class FallingPlatforms : MonoBehaviour
             Falling = true;
         }
     }
+    private void OnCollisionEnter(Collision col)
+    {
+        if(Falling && col.gameObject.tag == "Player" && col.gameObject.transform.position.y < transform.position.y)
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(),col.gameObject.GetComponent<Collider>(), true);
+        } else
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), col.gameObject.GetComponent<Collider>(), false);
+        }
+    }
 }
