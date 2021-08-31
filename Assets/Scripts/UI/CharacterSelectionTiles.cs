@@ -51,7 +51,18 @@ public class CharacterSelectionTiles : MonoBehaviour
         }
     }
     #endregion
-
+    public void GetRidOfCharacterTile()
+    {
+        if (CharacterOnTile != null)
+        {
+            dOrg.AddToList(CharacterOnTile.gameObject);
+            dOrg.ReOrderList();
+            CharacterOnTile.GetComponent<DraggableUI>().TileOn = null;
+            HoveringCharacter = null;
+            OnThisTile = false;
+            CharacterOnTile = null;
+        }
+    }
     public void ChangeCharacters()
     {
         if (CharacterOnTile != HoveringCharacter)
@@ -70,6 +81,7 @@ public class CharacterSelectionTiles : MonoBehaviour
                     dOrg.AddToList(CharacterOnTile.gameObject);
                     dOrg.ReOrderList();
                     CharacterOnTile.Ontile = false;
+                    CharacterOnTile.GetComponent<DraggableUI>().TileOn = null;
                     CharacterOnTile = HoveringCharacter;
                     CharacterOnTile.GetComponent<DraggableUI>().TileOn = gameObject;
                 }

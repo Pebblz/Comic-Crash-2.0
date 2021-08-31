@@ -58,6 +58,11 @@ public class PlayerSwitcher : MonoBehaviour
     {
         CharactersToSwitchTo[index] = Character;
     }
+    public void SwitchToFirstCharacter()
+    {
+        if(CharactersToSwitchTo[0] != null)
+            SwitchCharacter(0);
+    }
     void SwitchCharacter(int i)
     {
 
