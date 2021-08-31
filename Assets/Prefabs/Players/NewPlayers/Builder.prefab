@@ -1185,7 +1185,7 @@ Transform:
   m_GameObject: {fileID: 2126054934864030735}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -16.447508, y: 14.918033, z: 35.846973}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.38586, y: 0.38586, z: 0.38586}
   m_Children:
   - {fileID: 4417565837711044215}
   - {fileID: 5408449027961395027}
@@ -1207,13 +1207,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e39ea96e8380f40baf73a71cddf117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 4
-  RunSpeed: 8
+  WalkSpeed: 3
+  RunSpeed: 6
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
   CrouchSpeed: 2
-  maxJumpSpeed: 15
+  maxJumpSpeed: 13
   onBelt: 0
   maxAcceleration: 60
   maxAirAcceleration: 20
@@ -1721,9 +1721,9 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 6034957751646507721, guid: 601b67c9de873ee4c8be8fa10e3f085d, type: 3}
-  - {fileID: -4612162990109294230, guid: 601b67c9de873ee4c8be8fa10e3f085d, type: 3}
-  - {fileID: 8368722655750445499, guid: 601b67c9de873ee4c8be8fa10e3f085d, type: 3}
-  - {fileID: 8748892135801146194, guid: 601b67c9de873ee4c8be8fa10e3f085d, type: 3}
+  - {fileID: 2100000, guid: c6facdd61b276994c8337dbe0783ae89, type: 2}
+  - {fileID: 2100000, guid: 0df5562e4adb0a34a8725ef450575304, type: 2}
+  - {fileID: 2100000, guid: 0e1f67865e4a2694999d281ba374c2d6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2110,7 +2110,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6034957751646507721, guid: 601b67c9de873ee4c8be8fa10e3f085d, type: 3}
+  - {fileID: 2100000, guid: d06610a1c8ffc6c499c6ca556126aeec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
