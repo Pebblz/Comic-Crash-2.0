@@ -140,6 +140,10 @@ public class PlayerMovement : MonoBehaviour
                 }
                 LastWallJumpedOn = null;
             }
+            if(anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce)
+            {
+                PlayFallingAnimation();
+            }
             if(!OnGround || jumpPhase == 0)
             {
                 StopAnimation("IsLanded");
