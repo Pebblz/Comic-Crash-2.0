@@ -40,6 +40,8 @@ public class Trampoline : MonoBehaviour
             Rigidbody body = col.gameObject.GetComponent<Rigidbody>();
             if (body )
             {
+                col.gameObject.GetComponent<PlayerMovement>().Bounce = true;
+                col.gameObject.GetComponent<PlayerMovement>().PlayJumpAnimation();
                 Accelerate(body);
             }
             squishTime = true;
@@ -51,6 +53,7 @@ public class Trampoline : MonoBehaviour
         if (body && !other.gameObject.GetComponent<BlobBert>())
         {
             Accelerate(body);
+            other.gameObject.GetComponent<PlayerMovement>().PlayJumpAnimation();
         }
     }
 

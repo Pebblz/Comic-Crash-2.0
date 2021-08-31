@@ -73,6 +73,10 @@ public class PlayerMovement : MonoBehaviour
     public int jumpPhase;
     [HideInInspector]
     public bool canJump = true;
+
+    [HideInInspector]
+    public bool Bounce = false;
+
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
     int groundContactCount, steepContactCount, climbContactCount;
@@ -120,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
-            if (OnGround)
+            if (OnGround && !Bounce)
             {
                 canJump = true;
                 CanWallJump = true;
@@ -267,7 +271,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
-
+            if(OnGround)
+                body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
             body.velocity = velocity;
         }
         ClearState();
@@ -705,6 +710,10 @@ public class PlayerMovement : MonoBehaviour
     public void PlayFallingAnimation()
     {
         PlayAnimation("Falling");
+    }
+    public void PlayJumpAnimation()
+    {
+        PlayAnimation("Jump");
     }
     #endregion
 }
