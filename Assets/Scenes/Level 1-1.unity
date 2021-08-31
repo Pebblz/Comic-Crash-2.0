@@ -18394,6 +18394,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5436509601562066146, guid: ae682066ce3203b4bb1d2510628d3aad,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5436509601562066149, guid: ae682066ce3203b4bb1d2510628d3aad,
         type: 3}
       propertyPath: m_RootOrder
@@ -18464,6 +18469,11 @@ PrefabInstance:
         type: 3}
       propertyPath: yMinLimit
       value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
+        type: 3}
+      propertyPath: distanceMin
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5436509601562066151, guid: ae682066ce3203b4bb1d2510628d3aad,
         type: 3}
