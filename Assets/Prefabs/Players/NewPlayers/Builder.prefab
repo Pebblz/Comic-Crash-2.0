@@ -1161,6 +1161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1642286773188507317}
+  - component: {fileID: 8870819710647815494}
   - component: {fileID: 2126054934864030732}
   - component: {fileID: 2126054934864030730}
   - component: {fileID: 2126054934864030733}
@@ -1195,6 +1196,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8870819710647815494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126054934864030735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ced43d42b2f7864fb2e0fb028f49991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  block: {fileID: 2988588666485164874, guid: c1cca9422aa2b2842a61d83f5e8caf6d, type: 3}
+  MaxSpawnableBlocks: 2
+  BlockPlacementYOffset: 0.45
 --- !u!114 &2126054934864030732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1221,7 +1237,7 @@ MonoBehaviour:
   maxSwimAcceleration: 5
   jumpHeight: 10
   maxAirJumps: 1
-  maxGroundAngle: 80
+  maxGroundAngle: 90
   maxStairsAngle: 50
   maxClimbAngle: 140
   maxSnapSpeed: 100
@@ -1251,6 +1267,7 @@ MonoBehaviour:
   CantMove: 0
   jumpPhase: 0
   canJump: 1
+  Bounce: 0
   CrouchOffsetY: 0.1
 --- !u!54 &2126054934864030730
 Rigidbody:
@@ -1363,7 +1380,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnPoint: {x: 0, y: 0, z: 0}
   PushBotForce: 3
-  block: {fileID: 2988588666485164874, guid: c1cca9422aa2b2842a61d83f5e8caf6d, type: 3}
 --- !u!1 &2134496588598036862
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
     Vector3 connectionVelocity;
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;
-    [HideInInspector]
     public bool OnGround => groundContactCount > 0;
     bool Swimming => submergence >= swimThreshold;
     float submergence;
@@ -556,7 +555,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (velocity.magnitude > 1f && !InWater && OnGround)
         {
-            if (velocity.y < .01f)
+            if (velocity.y < .1f)
             {
                 PlayAnimation("Walk");
                 if (Isrunning)
