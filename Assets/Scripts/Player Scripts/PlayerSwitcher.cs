@@ -78,11 +78,6 @@ public class PlayerSwitcher : MonoBehaviour
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
 
-            if (!CurrentPlayer.GetComponent<PlayerMovement>().OnGround)
-            {
-                Temp.GetComponent<PlayerMovement>().PlayFallingAnimation();
-            }
-
             Temp.GetComponent<Player>().respawnPoint =
                 CurrentPlayer.GetComponent<Player>().respawnPoint;
 
