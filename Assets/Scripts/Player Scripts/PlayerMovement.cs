@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0, .5f)]
     float CrouchOffsetY = .1f;
     bool isCrouching;
-    GameObject LastWallJumpedOn;
+    public GameObject LastWallJumpedOn;
 
     #endregion
     #region MonoBehaviors
@@ -388,8 +388,8 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         EvaluateCollision(collision);
-        if (LastWallJumpedOn == collision.gameObject)
-            return;
+        //if (LastWallJumpedOn == collision.gameObject)
+        //    return;
         foreach (ContactPoint contact in collision.contacts)
         {
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetKey(KeyCode.Space) && collision.gameObject.layer != 9 && CanWallJump)
@@ -402,7 +402,6 @@ public class PlayerMovement : MonoBehaviour
                     _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
 
                 PreventSnapToGround();
-                //Debug.DrawRay(contact.point, contact.normal, Color.blue, 3f);
                 LastWallJumpedOn = collision.gameObject;
             }
         }

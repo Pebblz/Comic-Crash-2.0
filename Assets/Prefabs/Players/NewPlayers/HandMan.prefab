@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 375778916001974253}
   - component: {fileID: 375778916001974252}
   - component: {fileID: 375778916001974255}
+  - component: {fileID: 350743112873666551}
   m_Layer: 10
   m_Name: HandMan
   m_TagString: Player
@@ -461,7 +462,7 @@ MonoBehaviour:
   maxSwimAcceleration: 5
   jumpHeight: 10
   maxAirJumps: 1
-  maxGroundAngle: 90
+  maxGroundAngle: 70
   maxStairsAngle: 50
   maxClimbAngle: 140
   maxSnapSpeed: 100
@@ -493,6 +494,7 @@ MonoBehaviour:
   canJump: 1
   Bounce: 0
   CrouchOffsetY: 0.1
+  LastWallJumpedOn: {fileID: 0}
 --- !u!54 &375778916001974160
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -601,7 +603,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnPoint: {x: 0, y: 0, z: 0}
   PushBotForce: 3
-  block: {fileID: 2988588666485164874, guid: c1cca9422aa2b2842a61d83f5e8caf6d, type: 3}
+--- !u!114 &350743112873666551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375778916001974165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14b372ff8e85b5459db14f730cf54fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SquishWidth: 1.3
+  SquishHeight: 1.3
+  timeToSquish: 2
+  TimeInAirToSquish: 0.24
 --- !u!1 &515999874058523303
 GameObject:
   m_ObjectHideFlags: 0
