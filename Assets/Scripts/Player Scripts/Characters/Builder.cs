@@ -23,7 +23,7 @@ public class Builder : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKey(KeyCode.V) && blocktimer <= 0  && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
+        if (Input.GetMouseButtonDown(1) && blocktimer <= 0  && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
         {
             if (GetComponent<PlayerMovement>().OnGround)
             {
@@ -47,11 +47,9 @@ public class Builder : MonoBehaviour
         if(buildingOnGround && BuildingAnimTimer > 0)
         {
             BuildingAnimTimer -= Time.deltaTime;
-            movement.CantMove = true;
         }
         if(buildingOnGround && BuildingAnimTimer < 0)
         {
-            movement.CantMove = false;
             buildingOnGround = false;
             StopAnimation("Building");
         }
@@ -67,7 +65,7 @@ public class Builder : MonoBehaviour
         if(digging && movement.OnGround && CurrentBlockStorage < MaxSpawnableBlocks)
         {
             PlayAnimation("Digging");
-            print("Fuck bees");
+            movement.CantMove = true;
             if (digTimer < 0)
             {
                 CurrentBlockStorage += 1;
@@ -77,13 +75,13 @@ public class Builder : MonoBehaviour
         if (Input.GetMouseButtonUp(0) || CurrentBlockStorage >= MaxSpawnableBlocks)
         {
             StopAnimation("Digging");
+            movement.CantMove = false;
             digging = false;
             digTimer = MaxDigTimer;
         }
         if (digging)
         {
             digTimer -= Time.deltaTime;
-            //print(digTimer);
         }
         blocktimer -= Time.deltaTime;
     }
