@@ -65,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;
     public bool OnGround => groundContactCount > 0;
+    public bool onBlock;
     bool Swimming => submergence >= swimThreshold;
     float submergence;
     bool InWater => submergence > 0f;
@@ -410,6 +411,10 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionStay(Collision collision)
     {
         EvaluateCollision(collision);
+        if (collision.gameObject.tag == "BuilderBlock")
+            onBlock = true;
+        else
+            onBlock = false;
     }
     #endregion
     bool CheckSteepContacts()

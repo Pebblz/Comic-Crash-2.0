@@ -62,7 +62,7 @@ public class Builder : MonoBehaviour
             digTimer = MaxDigTimer;
             digging = true;
         }
-        if(digging && movement.OnGround && CurrentBlockStorage < MaxSpawnableBlocks)
+        if(digging && movement.OnGround && CurrentBlockStorage < MaxSpawnableBlocks && !movement.onBlock)
         {
             PlayAnimation("Digging");
             movement.CantMove = true;
