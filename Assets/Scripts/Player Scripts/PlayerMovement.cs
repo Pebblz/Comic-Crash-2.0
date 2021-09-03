@@ -89,7 +89,8 @@ public class PlayerMovement : MonoBehaviour
     Vector3 upAxis, rightAxis, forwardAxis;
     Vector3 connectionWorldPosition, connectionLocalPosition;
     float turnSmoothVelocity;
-
+    //this will be for judging if you should play fall animation
+    private float FallTimer = 2;
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
@@ -127,6 +128,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
+            if(OnGround)
+            {
+                FallTimer = 2;
+            }
+            else
+            {
+                FallTimer -= Time.deltaTime;
+            }
             if (OnGround && !Bounce)
             {
                 canJump = true;
@@ -143,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 LastWallJumpedOn = null;
             }
-            if(anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce)
+            if(anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0)
             {
                 PlayFallingAnimation();
             }
