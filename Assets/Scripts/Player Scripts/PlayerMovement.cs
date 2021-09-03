@@ -397,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Vector3 _velocity = contact.normal;
 
-                _velocity.y = jumpHeight * 1.7f;
+                _velocity.y = jumpHeight * 2.4f;
 
                 body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
                     _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
