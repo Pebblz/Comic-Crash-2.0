@@ -31,7 +31,7 @@ public class Builder : MonoBehaviour
                 blocksSpawned.Add(temp.GetComponent<DestroyBlock>());
                 PlayAnimation("Building");
                 CurrentBlockStorage--;
-                BuildingAnimTimer = 1;
+                BuildingAnimTimer = .4f;
                 buildingOnGround = true;
                 blocktimer = .5f;
             }
