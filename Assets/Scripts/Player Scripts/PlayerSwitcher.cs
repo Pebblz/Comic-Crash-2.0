@@ -75,9 +75,13 @@ public class PlayerSwitcher : MonoBehaviour
                     CurrentPlayer.GetComponent<HandMan>().PickUp.GetComponent<PickUpables>().DropInFront();
                 }
             }
+
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
-
+            if (!CurrentPlayer.GetComponent<PlayerMovement>().OnGround)
+            {
+                Temp.GetComponent<PlayerMovement>().PlayFallingAnimation();
+            }
             Temp.GetComponent<Player>().respawnPoint =
                 CurrentPlayer.GetComponent<Player>().respawnPoint;
 
