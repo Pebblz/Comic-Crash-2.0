@@ -91,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
     float turnSmoothVelocity;
     //this will be for judging if you should play fall animation
     private float FallTimer = 2;
+    private bool HoldingSpace;
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
@@ -534,9 +535,19 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
+            //this right here is causing a big problem for holding space when walking
             speed = OnGround && desiresClimbing ? maxClimbSpeed : CurrentSpeed;
             xAxis = rightAxis;
             zAxis = forwardAxis;
+        }
+        //this is temp code 
+        if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+        {
+            maxClimbSpeed = RunSpeed;
+        }
+        if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+        {
+            maxClimbSpeed = WalkSpeed;
         }
         xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
         zAxis = ProjectDirectionOnPlane(zAxis, contactNormal);
