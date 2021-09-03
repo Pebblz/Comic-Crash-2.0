@@ -9,13 +9,15 @@ public class Pause : MonoBehaviour
 
     GameManager Gm;
 
+    GameObject player;
+
     float pauseTimer;
 
     public bool isPaused;
     void Start()
     {
         Gm = GetComponent<GameManager>();
-
+        player = FindObjectOfType<PlayerMovement>().gameObject;
         if (PausePage == null)
         {
             PausePage = GameObject.FindGameObjectWithTag("Pause_Menu");
@@ -32,6 +34,10 @@ public class Pause : MonoBehaviour
                 pause(isPaused);
                 pauseTimer = .2f;
             }
+            if(player == null)
+            {
+                player = FindObjectOfType<PlayerMovement>().gameObject;
+            }
         }
         pauseTimer -= Time.unscaledDeltaTime;
     }
@@ -40,12 +46,14 @@ public class Pause : MonoBehaviour
         if (pause)
         {
             //Time.timeScale = 0;
+            player.GetComponent<PlayerMovement>().enabled = false;
             Gm.unlockCursor();
             PausePage.SetActive(true);
         }
         else
         {
             //Time.timeScale = 1;
+            player.GetComponent<PlayerMovement>().enabled = true;
             Gm.lockCursor();
             PausePage.SetActive(false);
         }
