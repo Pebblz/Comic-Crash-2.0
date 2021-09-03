@@ -580,10 +580,10 @@ public class PlayerMovement : MonoBehaviour
         //------------------------
         velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
 
-        if (velocity.magnitude > 1f && !InWater && OnGround)
+        if (velocity.magnitude > 1f && !InWater)
         {
-            if (velocity.y < .1f)
-            {
+            //if (velocity.y < .1f)
+            //{
                 PlayAnimation("Walk");
                 if (Isrunning)
                 {
@@ -593,7 +593,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     StopAnimation("Run");
                 }
-            }
+            //}
         }
         if (InWater || velocity.magnitude < 1f)
         {
@@ -616,8 +616,6 @@ public class PlayerMovement : MonoBehaviour
         }
         if (canJump)
         {
-            //StopAnimation("Run");
-            //StopAnimation("Walk");
             Vector3 jumpDirection;
             if (OnGround)
             {
