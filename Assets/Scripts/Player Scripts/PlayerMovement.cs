@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
     float probeDistance = 1f;
     [SerializeField, Min(1.1f)]
     float wallJumpSpeed;
+    [SerializeField, Range(1.5f, 5f)]
+    float WallJumpIntensifire = 2f;
     [Header("Layers"), Space(2)]
     [SerializeField]
     LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
@@ -56,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     public bool CanWallJump;
     [HideInInspector]
     public bool CantMove;
+
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -397,7 +400,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Vector3 _velocity = contact.normal;
 
-                _velocity.y = jumpHeight * 2.4f;
+                _velocity.y = jumpHeight * WallJumpIntensifire;
 
                 body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
                     _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
