@@ -595,7 +595,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        if (InWater || velocity.magnitude < 1f || !OnGround)
+        if (InWater || velocity.magnitude < 1f)
         {
             StopAnimation("Run");
             StopAnimation("Walk");
@@ -616,6 +616,8 @@ public class PlayerMovement : MonoBehaviour
         }
         if (canJump)
         {
+            StopAnimation("Run");
+            StopAnimation("Walk");
             Vector3 jumpDirection;
             if (OnGround)
             {
