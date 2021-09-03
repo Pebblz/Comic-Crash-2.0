@@ -616,8 +616,8 @@ public class PlayerMovement : MonoBehaviour
         }
         if (canJump)
         {
-            StopAnimation("Run");
-            StopAnimation("Walk");
+            //StopAnimation("Run");
+            //StopAnimation("Walk");
             Vector3 jumpDirection;
             if (OnGround)
             {
