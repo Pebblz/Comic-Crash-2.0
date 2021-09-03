@@ -14,10 +14,13 @@ public class Pause : MonoBehaviour
     float pauseTimer;
 
     public bool isPaused;
+
+    PlayerSwitcher Ps;
     void Start()
     {
         Gm = GetComponent<GameManager>();
         player = FindObjectOfType<PlayerMovement>().gameObject;
+        Ps = GetComponent<PlayerSwitcher>();
         if (PausePage == null)
         {
             PausePage = GameObject.FindGameObjectWithTag("Pause_Menu");
@@ -28,7 +31,7 @@ public class Pause : MonoBehaviour
     {
         if (PausePage != null)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && pauseTimer <= 0)
+            if (Input.GetButtonDown("Pause") && pauseTimer <= 0)
             {
                 isPaused = !isPaused;
                 pause(isPaused);
@@ -43,16 +46,15 @@ public class Pause : MonoBehaviour
     }
     public void pause(bool pause)
     {
+        Ps.CanSwitch = !pause;
         if (pause)
         {
-            //Time.timeScale = 0;
             player.GetComponent<PlayerMovement>().enabled = false;
             Gm.unlockCursor();
             PausePage.SetActive(true);
         }
         else
         {
-            //Time.timeScale = 1;
             player.GetComponent<PlayerMovement>().enabled = true;
             Gm.lockCursor();
             PausePage.SetActive(false);

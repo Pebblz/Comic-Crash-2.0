@@ -15663,7 +15663,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press E dumbass
+  m_Text: Press E or Y on controller
 --- !u!222 &1780271624
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23104,6 +23104,7 @@ MonoBehaviour:
   - {fileID: 4937292684294454743, guid: d47f42fb64fb4fd42a4bc3cb86ac51bf, type: 3}
   PlayerTransform: {fileID: 1921468327}
   CurrentPlayer: {fileID: 1921468328}
+  CanSwitch: 0
   AllCharactersInGame: []
 --- !u!114 &3190135853294231471
 MonoBehaviour:

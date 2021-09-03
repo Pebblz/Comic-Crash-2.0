@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 375778916001974254}
   - component: {fileID: 375778916001974250}
   - component: {fileID: 375778916001974253}
+  - component: {fileID: -7128637376864548726}
   - component: {fileID: 375778916001974252}
   - component: {fileID: 375778916001974255}
   - component: {fileID: 350743112873666551}
@@ -578,6 +579,21 @@ MonoBehaviour:
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   CanAttack: 0
+--- !u!114 &-7128637376864548726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375778916001974165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ca375ab3736aa94384619c01c7c5cf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PickUp: {fileID: 0}
+  isHoldingOBJ: 0
+  ThrowForce: 20
 --- !u!114 &375778916001974252
 MonoBehaviour:
   m_ObjectHideFlags: 0

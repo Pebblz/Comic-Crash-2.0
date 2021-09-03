@@ -16,9 +16,12 @@ public class CharacterSwitcherMachine : MonoBehaviour
     float Range;
 
     GameObject camera;
+
+    PlayerSwitcher Ps;
     private void Start()
     {
         camera = FindObjectOfType<MainCamera>().gameObject;
+        Ps = FindObjectOfType<PlayerSwitcher>();
     }
     private void Update()
     {
@@ -36,12 +39,13 @@ public class CharacterSwitcherMachine : MonoBehaviour
                 {
                     EText.SetActive(false);
                 }
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetButtonDown("Interact"))
                 {
                     CharacterSwitcherUI.SetActive(!CharacterSwitcherUI.activeSelf);
 
                     if (CharacterSwitcherUI.activeSelf)
                     {
+                        Ps.CanSwitch = false;
                         player.GetComponent<PlayerMovement>().CantMove = true;
                         camera.GetComponent<MainCamera>().StopCamera = true;
                         Cursor.lockState = CursorLockMode.None;
@@ -49,6 +53,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
                     }
                     else
                     {
+                        Ps.CanSwitch = true;
                         player.GetComponent<PlayerMovement>().CantMove = false;
                         camera.GetComponent<MainCamera>().StopCamera = false;
                         Cursor.lockState = CursorLockMode.Locked;
@@ -58,6 +63,10 @@ public class CharacterSwitcherMachine : MonoBehaviour
             }
             else
             {
+                if(CharacterSwitcherUI.activeSelf)
+                {
+                    Ps.CanSwitch = true;
+                }
                 //this is here just incase the player finds a way to die while in the switcher menu
                 player.GetComponent<PlayerMovement>().CantMove = false;
                 camera.GetComponent<MainCamera>().StopCamera = false;
@@ -70,6 +79,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
     }
     public void CloseSwitcher()
     {
+        Ps.CanSwitch = true;
         CharacterSwitcherUI.SetActive(false);
         player.GetComponent<PlayerMovement>().CantMove = false;
         camera.GetComponent<MainCamera>().StopCamera = false;

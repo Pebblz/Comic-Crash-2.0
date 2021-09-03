@@ -23,7 +23,7 @@ public class Builder : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && blocktimer <= 0  && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
+        if (Input.GetButtonDown("Fire2") && blocktimer <= 0  && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
         {
             if (GetComponent<PlayerMovement>().OnGround)
             {
@@ -57,7 +57,7 @@ public class Builder : MonoBehaviour
         {
             StopAnimation("BuildingAir");
         }
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetButtonDown("Fire1"))
         {
             digTimer = MaxDigTimer;
             digging = true;

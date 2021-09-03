@@ -17,12 +17,14 @@ public class PlayerSwitcher : MonoBehaviour
     private float dpadX;
     private float dpady;
     float timer;
-
+    public bool CanSwitch;
     public GameObject[] AllCharactersInGame = new GameObject[10];
-
+    Pause pause;
     void Awake()
     {
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
+        pause = GetComponent<Pause>();
+        CanSwitch = true;
     }
 
     // Update is called once per frame
@@ -66,7 +68,7 @@ public class PlayerSwitcher : MonoBehaviour
     void SwitchCharacter(int i)
     {
 
-        if (i + 1 <= CharactersToSwitchTo.Length && CharactersToSwitchTo[i] != null)
+        if (i + 1 <= CharactersToSwitchTo.Length && CharactersToSwitchTo[i] != null && CanSwitch)
         {
             if(CurrentPlayer.GetComponent<HandMan>())
             {
