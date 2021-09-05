@@ -1975,6 +1975,7 @@ MonoBehaviour:
   canJump: 1
   Bounce: 0
   CrouchOffsetY: 0.1
+  isCrouching: 0
   LastWallJumpedOn: {fileID: 0}
 --- !u!114 &5080344757181437105
 MonoBehaviour:
@@ -2126,6 +2127,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c6ef6364-fd45-448d-ac0a-d8552b155333
     m_ActionName: Switcher/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b881a412-3830-4814-a21d-03e4b11f12d6
+    m_ActionName: PlayerController/RightMouse[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerController

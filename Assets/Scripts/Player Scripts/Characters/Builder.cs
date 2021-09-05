@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class Builder : MonoBehaviour
 {
     [SerializeField] GameObject block;
@@ -23,27 +23,7 @@ public class Builder : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetButtonDown("Fire2") && blocktimer <= 0  && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
-        {
-            if (GetComponent<PlayerMovement>().OnGround)
-            {
-                GameObject temp = Instantiate(block, transform.position + (transform.forward * 2f) + new Vector3(0, BlockPlacementYOffset, 0), transform.rotation);
-                blocksSpawned.Add(temp.GetComponent<DestroyBlock>());
-                PlayAnimation("Building");
-                CurrentBlockStorage--;
-                BuildingAnimTimer = .4f;
-                buildingOnGround = true;
-                blocktimer = .5f;
-            }
-            else
-            {
-                GameObject temp = Instantiate(block, transform.position + (-transform.up * 1.2f), transform.rotation);
-                blocksSpawned.Add(temp.GetComponent<DestroyBlock>());
-                PlayAnimation("BuildingAir");
-                CurrentBlockStorage--;
-                blocktimer = .5f;
-            }
-        }
+
         if(buildingOnGround && BuildingAnimTimer > 0)
         {
             BuildingAnimTimer -= Time.deltaTime;
@@ -72,18 +52,45 @@ public class Builder : MonoBehaviour
                 digTimer = MaxDigTimer;
             }
         }
-        if (Input.GetMouseButtonUp(0) || CurrentBlockStorage >= MaxSpawnableBlocks)
+
+        if (digging)
+        {
+            digTimer -= Time.deltaTime;
+        }
+        blocktimer -= Time.deltaTime;
+    }
+    public void LeftMouse(InputAction.CallbackContext context) {
+        if (CurrentBlockStorage >= MaxSpawnableBlocks)
         {
             StopAnimation("Digging");
             movement.CantMove = false;
             digging = false;
             digTimer = MaxDigTimer;
         }
-        if (digging)
+    }
+    public void RightMouse(InputAction.CallbackContext context)
+    {
+        if (blocktimer <= 0 && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
         {
-            digTimer -= Time.deltaTime;
+            if (GetComponent<PlayerMovement>().OnGround)
+            {
+                GameObject temp = Instantiate(block, transform.position + (transform.forward * 2f) + new Vector3(0, BlockPlacementYOffset, 0), transform.rotation);
+                blocksSpawned.Add(temp.GetComponent<DestroyBlock>());
+                PlayAnimation("Building");
+                CurrentBlockStorage--;
+                BuildingAnimTimer = .4f;
+                buildingOnGround = true;
+                blocktimer = .5f;
+            }
+            else
+            {
+                GameObject temp = Instantiate(block, transform.position + (-transform.up * 1.2f), transform.rotation);
+                blocksSpawned.Add(temp.GetComponent<DestroyBlock>());
+                PlayAnimation("BuildingAir");
+                CurrentBlockStorage--;
+                blocktimer = .5f;
+            }
         }
-        blocktimer -= Time.deltaTime;
     }
     public void RemoveFromList(DestroyBlock temp)
     {
