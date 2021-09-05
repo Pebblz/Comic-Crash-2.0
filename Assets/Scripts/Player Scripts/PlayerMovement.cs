@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Offsets")]
     [SerializeField, Range(0, .5f)]
     float CrouchOffsetY = .1f;
-    bool isCrouching;
+    public bool isCrouching;
     public GameObject LastWallJumpedOn;
 
     #endregion

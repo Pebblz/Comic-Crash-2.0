@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HandMan : MonoBehaviour
 {
@@ -19,62 +20,64 @@ public class HandMan : MonoBehaviour
     void Update()
     {
         pickUpTimer -= Time.deltaTime;
-        if (Input.GetButtonDown("Fire2") && pickUpTimer < 0)
-        {
-            //this checks to see if the players picking up an obj
-            if (PickUp == null)
-            {
-                isHoldingOBJ = true;
-                Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
-                RaycastHit hit;
-                for (float x = -.5f; x <= .5f; x += .5f)
-                {
-                    for (float y = -4; y <= 4; y += .6f)
-                    {
+    }
+    public void Attack(InputAction.CallbackContext context)
+    {
 
-                        if (Physics.Raycast(start, transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f) && PickUp == null)
-                        {
-                            //this checks if any of the rays hit an object with pickupables script
-                            if (hit.collider.gameObject.GetComponent<PickUpables>() != null)
-                            {
-                                isHoldingOBJ = true;
-                                hit.collider.gameObject.GetComponent<PickUpables>().PickedUp(transform);
-                                PickUp = hit.collider.gameObject;
-                                pickUpTimer = 1;
-                            }
-                        }
-                    }
-                }
-            }         
-
-        }
         if (PickUp == null)
         {
             GetComponent<PlayerAttack>().CanAttack = true;
             GetComponent<PlayerMovement>().canJump = true;
             isHoldingOBJ = false;
-        } else
+        }
+        else
         {
             GetComponent<PlayerAttack>().CanAttack = false;
             GetComponent<PlayerMovement>().canJump = false;
             //this is for the throwing / droping logic
-            if (Input.GetButtonDown("Fire1") && pickUpTimer < 0)
+            if (pickUpTimer < 0)
             {
                 PickUp.GetComponent<PickUpables>().DropInFront();
                 PickUp = null;
                 isHoldingOBJ = false;
             }
-            if (Input.GetButtonDown("Fire2") && pickUpTimer <= 0)
+        }
+    }
+    public void PickUP(InputAction.CallbackContext context)
+    {
+        //this checks to see if the players picking up an obj
+        if (PickUp == null && pickUpTimer < 0)
+        {
+            isHoldingOBJ = true;
+            Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
+            RaycastHit hit;
+            for (float x = -.5f; x <= .5f; x += .5f)
             {
-                ThrowGameObject();
+                for (float y = -4; y <= 4; y += .6f)
+                {
+
+                    if (Physics.Raycast(start, transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f) && PickUp == null)
+                    {
+                        //this checks if any of the rays hit an object with pickupables script
+                        if (hit.collider.gameObject.GetComponent<PickUpables>() != null)
+                        {
+                            isHoldingOBJ = true;
+                            hit.collider.gameObject.GetComponent<PickUpables>().PickedUp(transform);
+                            PickUp = hit.collider.gameObject;
+                            pickUpTimer = 1;
+                        }
+                    }
+                }
             }
         }
-
-
+        else
+        {
+            ThrowGameObject();
+        }
     }
     void ThrowGameObject()
     {
-        if(Camera == null)
+        if (Camera == null)
         {
             Camera = FindObjectOfType<Camera>().gameObject.transform;
         }

@@ -1,0 +1,52 @@
+{
+    "name": "DragableImages",
+    "maps": [
+        {
+            "name": "Mouse",
+            "id": "50a513b6-ccd7-40c1-8108-f71b41939cbc",
+            "actions": [
+                {
+                    "name": "Mouse X",
+                    "type": "Value",
+                    "id": "ab4f1126-0beb-42ce-a903-b335b566f276",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Mouse Y",
+                    "type": "Value",
+                    "id": "eb897f43-8486-494f-a5b0-c60a2b9e31e0",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b1a3f3c8-40ae-4583-9025-e8a3497fc254",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ffbfd73b-1b32-47f5-b7eb-75522f0ac606",
+                    "path": "<Mouse>/delta/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -12,15 +13,17 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public GameObject Character;
     public GameObject TileOn;
     DragableCharactersOrganizer Dorg;
+    Camera mainCam;
     private void Start()
     {
         Dorg = FindObjectOfType<DragableCharactersOrganizer>();
+        mainCam = Camera.main;
     }
     public void Update()
     {
         if (dragging)
         {
-            transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - offset;
+            transform.position = Mouse.current.position.ReadValue();
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] int AmountOfAttacks;
@@ -12,28 +12,48 @@ public class PlayerAttack : MonoBehaviour
     private float TimeTillAttackReset;
     private bool AttackAgian;
     [HideInInspector] public bool CanAttack;
+    PlayerMovement Pm;
+    Rigidbody Rb;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        Pm = GetComponent<PlayerMovement>();
+        Rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //this is so the player can't swing around like a crazy person and kill everything around him
+        if(TimeTillAttackReset > 0 && Pm.OnGround)
+        {
+            Pm.enabled = false;
+            Rb.velocity = Vector3.zero;
+        }
+        if(TimeTillAttackReset <= 0)
+        {
+            StopAnimation("Attack");
+            Pm.enabled = true;
+            AttacksPreformed = 1;
+        }
+        TimeTillAttackReset -= Time.deltaTime;
+        TimeTillnextAttack -= Time.deltaTime;
+    }
+    public void AttackPressed(InputAction.CallbackContext context)
+    {
         //this is so if the players in any of
         //the jump animation you can't attack
         if (!anim.GetBool("Jump"))
         {
-            if (Input.GetMouseButtonDown(0) && AttacksPreformed == 1 && TimeTillnextAttack <= 0
-               && !Input.GetKey(KeyCode.C) || Input.GetButtonDown("Punch") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
-               && !Input.GetKey(KeyCode.C))
+            if (AttacksPreformed == 1 && TimeTillnextAttack <= 0 && !Pm.isCrouching ||  
+                AttacksPreformed == 1 && TimeTillnextAttack <= 0&& !Pm.isCrouching)
             {
                 punch(AttacksPreformed);
             }
             //this basically queues up the next attack for the player
-            if (Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0 
-                || Input.GetButtonDown("Punch") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+            if (AmountOfAttacks >= AttacksPreformed &&  TimeTillnextAttack <= 0|| 
+                 AmountOfAttacks >= AttacksPreformed  && TimeTillnextAttack <= 0)
             {
                 AttackAgian = true;
             }
@@ -44,20 +64,6 @@ public class PlayerAttack : MonoBehaviour
                 punch(AttacksPreformed);
             }
         }
-        //this is so the player can't swing around like a crazy person and kill everything around him
-        if(TimeTillAttackReset > 0 && GetComponent<PlayerMovement>().OnGround)
-        {
-            GetComponent<PlayerMovement>().enabled = false;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-        }
-        if(TimeTillAttackReset <= 0)
-        {
-            StopAnimation("Attack");
-            GetComponent<PlayerMovement>().enabled = true;
-            AttacksPreformed = 1;
-        }
-        TimeTillAttackReset -= Time.deltaTime;
-        TimeTillnextAttack -= Time.deltaTime;
     }
     void punch(int attackNumber)
     {

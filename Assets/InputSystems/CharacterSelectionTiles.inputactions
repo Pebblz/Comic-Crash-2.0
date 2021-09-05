@@ -27,6 +27,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "DragOnPanels",
+            "id": "991ebefe-b76f-4b0a-aeda-27eaaddd7dbc",
+            "actions": [
+                {
+                    "name": "MouseUp",
+                    "type": "Button",
+                    "id": "aa4a9eda-73f9-4c32-a1d8-9268088493f7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "db965b3c-1dbc-4adc-a30a-2dd8cc71ec85",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

@@ -168,24 +168,24 @@ public class MainCamera : MonoBehaviour
                         //this moves the camera closer to the player when the raycast hits an object
                         distance -= hit.distance * collisionZoomSpeed * Time.deltaTime;
                     }
-                    else
+                }
+                else
+                {
+                    if (onlyOnce && hit.collider == null && !DontZoomOut && Scrolling == 0)
                     {
-                        if (onlyOnce && hit.collider == null && !DontZoomOut && Scrolling == 0)
+                        if (distance < prevDistance && Vector3.Distance(transform.position, prevHitPoint) > 1.5f)
                         {
-                            if (distance < prevDistance && Vector3.Distance(transform.position, prevHitPoint) > 1.5f)
-                            {
-                                //this moves the camera back to it's prev location when it's far enough away from it's last hit point
-                                distance += (collisionZoomSpeed + collisionZoomOutSpeed) * Time.deltaTime;
-                            }
-                            if (distance > prevDistance)
-                            {
-                                onlyOnce = false;
-                            }
+                            //this moves the camera back to it's prev location when it's far enough away from it's last hit point
+                            distance += (collisionZoomSpeed + collisionZoomOutSpeed) * Time.deltaTime;
                         }
-                        if (Scrolling != 0)
+                        if (distance > prevDistance)
                         {
                             onlyOnce = false;
                         }
+                    }
+                    if (Scrolling != 0)
+                    {
+                        onlyOnce = false;
                     }
                 }
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
