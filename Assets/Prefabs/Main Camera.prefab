@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8760908088732707312}
   - component: {fileID: 8760908088732707308}
   - component: {fileID: 8760908088732707311}
+  - component: {fileID: 7131494016217573973}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -143,8 +144,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   distance: 5
-  xSpeed: 120
-  ySpeed: 120
+  xSpeed: 0.01
+  ySpeed: 0.01
   yMinLimit: -20
   yMaxLimit: 80
   distanceMin: 3
@@ -153,8 +154,85 @@ MonoBehaviour:
   collisionZoomSpeed: 5
   collisionZoomOutSpeed: 5
   thirdPersonCamera: 1
-  MouseSensitivity: 90
+  MouseSensitivity: 5
   CrossHair: {fileID: 0}
   obstructionMask:
     serializedVersion: 2
     m_Bits: 22819
+  StopCamera: 0
+--- !u!114 &7131494016217573973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8760908088732707315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 40476ded0441b4d45b8c25bde3360345,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8760908088732707311}
+        m_MethodName: MouseX
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 95a4fcec-f8f0-4460-9c2c-e2be8981af53
+    m_ActionName: Mouse/Mouse X[/Mouse/delta/x]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8760908088732707311}
+        m_MethodName: MouseY
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a246a011-6708-4938-bc59-6f0f9a82a042
+    m_ActionName: Mouse/Mouse Y[/Mouse/position/y]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8760908088732707311}
+        m_MethodName: Scroll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cedbdd14-be84-4d5a-88df-a60b0bf70f75
+    m_ActionName: Mouse/Scroll Y[/Mouse/radius/y]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Mouse
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class Pause : MonoBehaviour
 {
     [SerializeField]
@@ -18,9 +18,9 @@ public class Pause : MonoBehaviour
     PlayerSwitcher Ps;
     void Start()
     {
-        Gm = GetComponent<GameManager>();
+        Gm = FindObjectOfType<GameManager>();
         player = FindObjectOfType<PlayerMovement>().gameObject;
-        Ps = GetComponent<PlayerSwitcher>();
+        Ps = FindObjectOfType<PlayerSwitcher>();
         if (PausePage == null)
         {
             PausePage = GameObject.FindGameObjectWithTag("Pause_Menu");
@@ -29,35 +29,40 @@ public class Pause : MonoBehaviour
     }
     void Update()
     {
-        if (PausePage != null)
+        if (player == null)
         {
-            if (Input.GetButtonDown("Pause") && pauseTimer <= 0)
-            {
-                isPaused = !isPaused;
-                pause(isPaused);
-                pauseTimer = .2f;
-            }
-            if(player == null)
-            {
-                player = FindObjectOfType<PlayerMovement>().gameObject;
-            }
+            player = FindObjectOfType<PlayerMovement>().gameObject;
         }
         pauseTimer -= Time.unscaledDeltaTime;
     }
-    public void pause(bool pause)
+    public void pause(InputAction.CallbackContext context)
     {
-        Ps.CanSwitch = !pause;
-        if (pause)
+        if (pauseTimer < 0 && context.ReadValue<float>() > 0)
         {
-            player.GetComponent<PlayerMovement>().enabled = false;
-            Gm.unlockCursor();
-            PausePage.SetActive(true);
+            isPaused = !isPaused;
+            Ps.CanSwitch = !isPaused;
+            if (isPaused)
+            {
+                player.GetComponent<PlayerMovement>().enabled = false;
+                Gm.unlockCursor();
+                PausePage.SetActive(true);
+            }
+            else
+            {
+                player.GetComponent<PlayerMovement>().enabled = true;
+                Gm.lockCursor();
+                PausePage.SetActive(false);
+            }
+            pauseTimer = .2f;
         }
-        else
-        {
-            player.GetComponent<PlayerMovement>().enabled = true;
-            Gm.lockCursor();
-            PausePage.SetActive(false);
-        }
+    }
+    public void UnPause()
+    {
+        player.GetComponent<PlayerMovement>().enabled = true;
+        Gm.lockCursor();
+        PausePage.SetActive(false);
+        pauseTimer = 0;
+        isPaused = false;
+        Ps.CanSwitch = true;
     }
 }

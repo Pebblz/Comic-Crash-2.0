@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -163,9 +164,9 @@ public class PlayerMovement : MonoBehaviour
             }
             minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
-            playerInput.x = Input.GetAxis("Horizontal");
-            playerInput.y = Input.GetAxis("Vertical");
-            playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
+            //playerInput.x = Input.GetAxis("Horizontal");
+            //playerInput.y = Input.GetAxis("Vertical");
+            //playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
             playerInput = Vector3.ClampMagnitude(playerInput, 1f);
             if (!isCrouching || InWater || Climbing || !OnGround)
             {
@@ -194,10 +195,10 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                isCrouching = Input.GetButton("Crouch");
-                desiredJump |= Input.GetButtonDown("Jump");
-                desiresClimbing = Input.GetButton("Climb");
-                Isrunning = Input.GetButton("Run");
+                //isCrouching = Input.GetButton("Crouch");
+                //desiredJump |= Input.GetButtonDown("Jump");
+                //desiresClimbing = Input.GetButton("Climb");
+                //Isrunning = Input.GetButton("Run");
 
             }
             if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
@@ -239,7 +240,49 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
+    public void W(InputAction.CallbackContext context)
+    {
+        if(!Swimming && !CantMove)
+            playerInput.y = context.ReadValue<float>();
+    }
+    public void A(InputAction.CallbackContext context)
+    {
+        if (!Swimming && !CantMove)
+            playerInput.x = -context.ReadValue<float>();
+    }
+    public void S(InputAction.CallbackContext context)
+    {
+        if (!Swimming && !CantMove)
+            playerInput.y = -context.ReadValue<float>();
+    }
+    public void D(InputAction.CallbackContext context)
+    {
+        if (!Swimming && !CantMove)
+            playerInput.x = context.ReadValue<float>();
+    }
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
+            Isrunning = true;
+        else
+            Isrunning = false;
+    }
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
+        {
+            isCrouching = true;
+        }
+        else
+        {
+            isCrouching = false;
+        }
+    }
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
+            desiredJump |= true;
+    }
     void FixedUpdate()
     {
 
@@ -406,7 +449,7 @@ public class PlayerMovement : MonoBehaviour
         //    return;
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetButton("Jump") && collision.gameObject.layer != 9 && CanWallJump)
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && desiredJump && collision.gameObject.layer != 9 && CanWallJump)
             {
                 Vector3 _velocity = contact.normal;
 

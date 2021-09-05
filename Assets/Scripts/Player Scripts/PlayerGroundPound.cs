@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerGroundPound : MonoBehaviour
 {
     private Animator anim;
@@ -23,12 +23,6 @@ public class PlayerGroundPound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!pm.OnGround && Input.GetButtonDown("Punch") 
-            || Input.GetMouseButtonDown(0) && !pm.OnGround)
-        {
-            GroundPounding = true;
-            GroundPound();
-        }
         if (squishTime && pm.OnGround)
         {
             StopAnimation("GroundPound");
@@ -44,11 +38,16 @@ public class PlayerGroundPound : MonoBehaviour
             Squish();
         }
     }
-    void GroundPound()
+    public void GroundPound(InputAction.CallbackContext context)
     {
-        pm.GroundPound();
-        squishTime = true;
-        PlayAnimation("GroundPound");
+        if (!pm.OnGround)
+        {
+            GroundPounding = true; 
+            pm.CantMove = true;
+            pm.GroundPound();
+            squishTime = true;
+            PlayAnimation("GroundPound");
+        }
     }
     void Squish()
     {

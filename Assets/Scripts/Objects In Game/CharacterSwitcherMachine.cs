@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class CharacterSwitcherMachine : MonoBehaviour
 {
     [SerializeField]
@@ -39,27 +39,6 @@ public class CharacterSwitcherMachine : MonoBehaviour
                 {
                     EText.SetActive(false);
                 }
-                if (Input.GetButtonDown("Interact"))
-                {
-                    CharacterSwitcherUI.SetActive(!CharacterSwitcherUI.activeSelf);
-
-                    if (CharacterSwitcherUI.activeSelf)
-                    {
-                        Ps.CanSwitch = false;
-                        player.GetComponent<PlayerMovement>().CantMove = true;
-                        camera.GetComponent<MainCamera>().StopCamera = true;
-                        Cursor.lockState = CursorLockMode.None;
-                        Cursor.visible = true;
-                    }
-                    else
-                    {
-                        Ps.CanSwitch = true;
-                        player.GetComponent<PlayerMovement>().CantMove = false;
-                        camera.GetComponent<MainCamera>().StopCamera = false;
-                        Cursor.lockState = CursorLockMode.Locked;
-                        Cursor.visible = false;
-                    }
-                }
             }
             else
             {
@@ -74,6 +53,30 @@ public class CharacterSwitcherMachine : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 EText.SetActive(false);
+            }
+        }
+    }
+    public void Interact(InputAction.CallbackContext context)
+    {
+        if (InRadius())
+        {
+            CharacterSwitcherUI.SetActive(!CharacterSwitcherUI.activeSelf);
+
+            if (CharacterSwitcherUI.activeSelf)
+            {
+                Ps.CanSwitch = false;
+                player.GetComponent<PlayerMovement>().CantMove = true;
+                camera.GetComponent<MainCamera>().StopCamera = true;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Ps.CanSwitch = true;
+                player.GetComponent<PlayerMovement>().CantMove = false;
+                camera.GetComponent<MainCamera>().StopCamera = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
         }
     }

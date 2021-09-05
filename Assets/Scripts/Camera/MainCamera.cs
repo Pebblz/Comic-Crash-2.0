@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem;
 public class MainCamera : MonoBehaviour
 {
     #region Third Person Vars
@@ -15,10 +17,10 @@ public class MainCamera : MonoBehaviour
     private bool isShaking;
     private float shakeTime;
 
-    [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go left to right")]
+    [SerializeField, Range(.000001f, 160f), Tooltip("How fast the camera can go left to right")]
     float xSpeed = 120.0f;
 
-    [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go up and down")]
+    [SerializeField, Range(.000001f, 160f), Tooltip("How fast the camera can go up and down")]
     float ySpeed = 120.0f;
 
     [SerializeField, Range(-45f, 45f), Tooltip("How far the camera can rotate down")]
@@ -53,7 +55,7 @@ public class MainCamera : MonoBehaviour
 
     private float rotationOnX;
 
-    [SerializeField, Range(45f, 180f), Tooltip("The sensitivity of the camera when the player's in first person mode")]
+    [SerializeField, Range(5f, 180f), Tooltip("The sensitivity of the camera when the player's in first person mode")]
     float MouseSensitivity = 90;
 
     [SerializeField] GameObject CrossHair;
@@ -66,6 +68,10 @@ public class MainCamera : MonoBehaviour
     Pause pause;
 
     public bool StopCamera;
+
+    float Scrolling;
+
+
 
     #region MonoBehaviours
     void Start()
@@ -89,6 +95,7 @@ public class MainCamera : MonoBehaviour
     {
         if (!isShaking && !pause.isPaused && !StopCamera)
         {
+            Scrolling = 0;
             if (thirdPersonCamera)
             {
                 ThirdPersonCamera();
@@ -130,14 +137,9 @@ public class MainCamera : MonoBehaviour
         {
             if (transform.position.y > fallLookAtPosition)
             {
-                x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.02f;
-                y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-
                 y = ClampAngle(y, yMinLimit, yMaxLimit);
 
                 Quaternion rotation = Quaternion.Euler(y, x, 0);
-
-                distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
 
                 RaycastHit hit;
 
@@ -166,25 +168,24 @@ public class MainCamera : MonoBehaviour
                         //this moves the camera closer to the player when the raycast hits an object
                         distance -= hit.distance * collisionZoomSpeed * Time.deltaTime;
                     }
-
-                }
-                else
-                {
-                    if (onlyOnce && hit.collider == null && !DontZoomOut && Input.GetAxisRaw("Mouse ScrollWheel") == 0)
+                    else
                     {
-                        if (distance < prevDistance && Vector3.Distance(transform.position, prevHitPoint) > 1.5f)
+                        if (onlyOnce && hit.collider == null && !DontZoomOut && Scrolling == 0)
                         {
-                            //this moves the camera back to it's prev location when it's far enough away from it's last hit point
-                            distance += (collisionZoomSpeed + collisionZoomOutSpeed) * Time.deltaTime;
+                            if (distance < prevDistance && Vector3.Distance(transform.position, prevHitPoint) > 1.5f)
+                            {
+                                //this moves the camera back to it's prev location when it's far enough away from it's last hit point
+                                distance += (collisionZoomSpeed + collisionZoomOutSpeed) * Time.deltaTime;
+                            }
+                            if (distance > prevDistance)
+                            {
+                                onlyOnce = false;
+                            }
                         }
-                        if (distance > prevDistance)
+                        if (Scrolling != 0)
                         {
                             onlyOnce = false;
                         }
-                    }
-                    if (Input.GetAxisRaw("Mouse ScrollWheel") != 0)
-                    {
-                        onlyOnce = false;
                     }
                 }
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
@@ -197,6 +198,23 @@ public class MainCamera : MonoBehaviour
             {
                 transform.LookAt(target);
             }
+        }
+    }
+    public void MouseX(InputAction.CallbackContext context)
+    {
+        x += context.ReadValue<float>() * xSpeed * distance * 0.0002f;
+    }
+    public void MouseY(InputAction.CallbackContext context)
+    {
+        y -= context.ReadValue<float>() * ySpeed * 0.0002f;
+    }
+    public void Scroll(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<float>() != 0)
+        {
+            distance = Mathf.Clamp(distance - context.ReadValue<float>() * .002f, distanceMin, distanceMax);
+
+            Scrolling = context.ReadValue<float>();
         }
     }
     public void Shake(float duration, float strength)
@@ -215,8 +233,8 @@ public class MainCamera : MonoBehaviour
             transform.SetParent(target);
         }
 
-        float mouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * MouseSensitivity;
-        float mouseX = Input.GetAxis("Mouse X") * Time.deltaTime * MouseSensitivity;
+        float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * MouseSensitivity;
+        float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * MouseSensitivity;
 
         rotationOnX -= mouseY;
         rotationOnX = Mathf.Clamp(rotationOnX, -90, 90);

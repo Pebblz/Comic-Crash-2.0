@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 public class CharacterSelectionTiles : MonoBehaviour
 {
     [SerializeField]
@@ -12,13 +13,13 @@ public class CharacterSelectionTiles : MonoBehaviour
     public DraggableUI HoveringCharacter;
     [SerializeField]
     CharacterSelectionTiles[] otherTiles = new CharacterSelectionTiles[3];
-    void Update()
+    public void MouseClick(InputAction.CallbackContext context)
     {
-        if(Input.GetMouseButtonUp(0) && OnThisTile )
+        if(OnThisTile)
         {
             ChangeCharacters();
         }
-        if(Input.GetMouseButtonUp(0) && CharacterOnTile != null)
+        if(CharacterOnTile != null)
         {
             CharacterOnTile.transform.position = this.transform.position;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerSwitcher : MonoBehaviour
 {
@@ -14,8 +15,6 @@ public class PlayerSwitcher : MonoBehaviour
 
     [SerializeField]
     GameObject CurrentPlayer;
-    private float dpadX;
-    private float dpady;
     float timer;
     public bool CanSwitch;
     public GameObject[] AllCharactersInGame = new GameObject[10];
@@ -30,31 +29,35 @@ public class PlayerSwitcher : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        dpadX = Input.GetAxis("Dpad Horizontal");
-        dpady = Input.GetAxis("DPad Vertical");
-
-        //arrays start at zero so i have to make it one less 
+        timer -= Time.deltaTime;
+    }
+    public void One(InputAction.CallbackContext context)
+    {
         if (timer < 0)
         {
-            if (Input.GetButtonDown("1") || dpadX == -1)
-            {
-                SwitchCharacter(0);
-            }
-            if (Input.GetButtonDown("2") || dpady == 1)
-            {
-                SwitchCharacter(1);
-            }
-            if (Input.GetButtonDown("3") || dpadX == 1)
-            {
-                SwitchCharacter(2);
-            }
-            if (Input.GetButtonDown("4") || dpady == -1)
-            {
-                SwitchCharacter(3);
-            }
+            SwitchCharacter(0);
         }
-        timer -= Time.deltaTime;
-
+    }
+    public void Two(InputAction.CallbackContext context)
+    {
+        if (timer < 0)
+        {
+            SwitchCharacter(1);
+        }
+    }
+    public void Three(InputAction.CallbackContext context)
+    {
+        if (timer < 0)
+        {
+            SwitchCharacter(2);
+        }
+    }
+    public void Four(InputAction.CallbackContext context)
+    {
+        if (timer < 0)
+        {
+            SwitchCharacter(3);
+        }
     }
     public void ChangeSelectedCharacters(int index, GameObject Character)
     {

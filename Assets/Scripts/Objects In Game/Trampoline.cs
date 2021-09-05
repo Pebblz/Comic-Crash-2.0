@@ -18,14 +18,6 @@ public class Trampoline : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            HoldingSpace = true;
-        }
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
-            HoldingSpace = false;
-        }
         if(squishTime)
         {
             Squish();

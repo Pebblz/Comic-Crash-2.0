@@ -11,6 +11,6 @@ public class ExitMenuBTN : MonoBehaviour
     }
     public void unPause()
     {
-        Gm.GetComponent<Pause>().pause(false);
+        Gm.GetComponent<Pause>().UnPause();
     }
 }

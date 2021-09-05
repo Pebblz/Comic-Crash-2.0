@@ -1,0 +1,71 @@
+{
+    "name": "Mouse",
+    "maps": [
+        {
+            "name": "Mouse",
+            "id": "213a4158-fa05-423b-bc9b-3e9e1a133e09",
+            "actions": [
+                {
+                    "name": "Mouse X",
+                    "type": "Value",
+                    "id": "95a4fcec-f8f0-4460-9c2c-e2be8981af53",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Mouse Y",
+                    "type": "Value",
+                    "id": "a246a011-6708-4938-bc59-6f0f9a82a042",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Scroll Y",
+                    "type": "Value",
+                    "id": "cedbdd14-be84-4d5a-88df-a60b0bf70f75",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cfaaa116-c6fc-4b73-88d8-b544aeaf82ac",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a080109e-b026-495a-876e-d664e9a5ce12",
+                    "path": "<Mouse>/delta/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dfa422ca-5c5f-4551-b9c9-7928a9cabddc",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
