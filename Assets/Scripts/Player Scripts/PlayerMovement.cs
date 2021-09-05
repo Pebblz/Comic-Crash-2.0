@@ -101,7 +101,8 @@ public class PlayerMovement : MonoBehaviour
     float CrouchOffsetY = .1f;
     bool isCrouching;
     public GameObject LastWallJumpedOn;
-
+    [HideInInspector]
+    public bool OnMovingPlatform;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -404,6 +405,9 @@ public class PlayerMovement : MonoBehaviour
         EvaluateCollision(collision);
         //if (LastWallJumpedOn == collision.gameObject)
         //    return;
+        if (collision.gameObject.tag == "MovingPlatForm")
+            OnMovingPlatform = true;
+
         foreach (ContactPoint contact in collision.contacts)
         {
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetButton("Jump") && collision.gameObject.layer != 9 && CanWallJump)
@@ -420,7 +424,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "MovingPlatForm")
+            OnMovingPlatform = false;
+    }
     void OnCollisionStay(Collision collision)
     {
         EvaluateCollision(collision);
@@ -428,6 +436,11 @@ public class PlayerMovement : MonoBehaviour
             onBlock = true;
         else
             onBlock = false;
+
+        if (collision.gameObject.tag == "MovingPlatForm")
+            OnMovingPlatform = true;
+        else
+            OnMovingPlatform = false;
     }
     #endregion
     bool CheckSteepContacts()

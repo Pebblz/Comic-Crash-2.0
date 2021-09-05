@@ -29,17 +29,18 @@ public class PlayerGroundPound : MonoBehaviour
             GroundPounding = true;
             GroundPound();
         }
-        if (squishTime && pm.OnGround)
+        if (squishTime && pm.OnGround && pm.OnMovingPlatform)
         {
             StopAnimation("GroundPound");
             PlayAnimation("GroundPoundImpact");
             pm.CantMove = true;
-            Squish();
+            if(!pm.OnMovingPlatform)
+                Squish();
         }
         //this is here to make sure he unSquishes
         //because if he jumps when he is unSquishing
         //he wont fully unSquish until he gets grounded again
-        if (doingSquish && !pm.OnGround)
+        if (doingSquish && !pm.OnGround && !pm.OnMovingPlatform)
         {
             Squish();
         }
