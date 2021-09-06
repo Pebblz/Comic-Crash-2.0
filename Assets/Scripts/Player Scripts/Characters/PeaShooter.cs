@@ -51,17 +51,6 @@ public class PeaShooter : MonoBehaviour
     #endregion
     public void LeftMouse(InputAction.CallbackContext context)
     {
-        if(context.started)
-        {
-            AimDown = true;
-        }
-        if(context.canceled)
-        {
-            AimDown = false;
-        }
-    }
-    public void RightMouse(InputAction.CallbackContext context)
-    {
         if (context.started)
         {
             Shoot = true;
@@ -70,6 +59,18 @@ public class PeaShooter : MonoBehaviour
         {
             Shoot = false;
         }
+    }
+    public void RightMouse(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AimDown = true;
+        }
+        if (context.canceled)
+        {
+            AimDown = false;
+        }
+
     }
 
     void PlayAnimation(string animName)

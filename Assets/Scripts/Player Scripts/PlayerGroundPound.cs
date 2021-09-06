@@ -40,16 +40,13 @@ public class PlayerGroundPound : MonoBehaviour
     }
     public void GroundPound(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (!pm.OnGround)
         {
-            if (!pm.OnGround)
-            {
-                GroundPounding = true;
-                pm.CantMove = true;
-                pm.GroundPound();
-                squishTime = true;
-                PlayAnimation("GroundPound");
-            }
+            GroundPounding = true;
+            pm.CantMove = true;
+            pm.GroundPound();
+            squishTime = true;
+            PlayAnimation("GroundPound");
         }
     }
     void Squish()
