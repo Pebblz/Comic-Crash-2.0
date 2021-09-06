@@ -48,7 +48,10 @@ public class Builder : MonoBehaviour
                 digTimer = MaxDigTimer;
             }
         }
-
+        if(CurrentBlockStorage >= MaxSpawnableBlocks)
+        {
+            StopAnimation("Digging");
+        }
         if (digging)
         {
             digTimer -= Time.deltaTime;
