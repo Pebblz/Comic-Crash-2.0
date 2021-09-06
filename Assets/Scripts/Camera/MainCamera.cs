@@ -226,15 +226,15 @@ public class MainCamera : MonoBehaviour
     void FirstPersonCamera()
     {
         //this makes the camera always in front of the player 
-        transform.position = target.position + target.transform.forward + new Vector3(0, .4f, 0);
+        transform.position = target.position + target.transform.forward + new Vector3(0, .6f, 0);
         CrossHair.SetActive(true);
         if (transform.parent == null)
         {
             transform.SetParent(target);
         }
 
-        float mouseY = Mouse.current.delta.y.ReadValue() * Time.deltaTime * MouseSensitivity;
-        float mouseX = Mouse.current.delta.x.ReadValue() * Time.deltaTime * MouseSensitivity;
+        float mouseY = Mouse.current.delta.y.ReadValue() * .1f * Time.deltaTime * MouseSensitivity;
+        float mouseX = Mouse.current.delta.x.ReadValue() * .1f * Time.deltaTime * MouseSensitivity;
 
         rotationOnX -= mouseY;
         rotationOnX = Mathf.Clamp(rotationOnX, -90, 90);
