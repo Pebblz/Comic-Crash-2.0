@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 public class PeaShooter : MonoBehaviour
 {
 
@@ -14,9 +15,11 @@ public class PeaShooter : MonoBehaviour
     [SerializeField, Range(1000f, 5000f), Tooltip("The speed that the bullet goes when being fired")]
     float shotSpeed;
 
-
     private Animator anim;
 
+    bool AimDown;
+
+    bool Shoot;
     #region MonoBehaviours
     void Start()
     {
@@ -27,18 +30,18 @@ public class PeaShooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (AimDown)
         {
             camera.GetComponent<MainCamera>().thirdPersonCamera = false;
             PlayAnimation("Aiming");
         }
-        if (Input.GetMouseButtonUp(1))
+        if (!AimDown)
         {
             camera.GetComponent<MainCamera>().thirdPersonCamera = true;
             StopAnimation("Aiming");
         }
 
-        if (Input.GetMouseButtonDown(0) && NextAttack <= 0)
+        if (Shoot && NextAttack <= 0)
         {
             Attack();
         }
@@ -46,7 +49,28 @@ public class PeaShooter : MonoBehaviour
         NextAttack -= Time.deltaTime;
     }
     #endregion
-
+    public void LeftMouse(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            AimDown = true;
+        }
+        if(context.canceled)
+        {
+            AimDown = false;
+        }
+    }
+    public void RightMouse(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Shoot = true;
+        }
+        if (context.canceled)
+        {
+            Shoot = false;
+        }
+    }
 
     void PlayAnimation(string animName)
     {
