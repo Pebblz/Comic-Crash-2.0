@@ -22,10 +22,10 @@
                     "interactions": ""
                 },
                 {
-                    "name": "GroundPound",
-                    "type": "PassThrough",
+                    "name": "LeftMouse",
+                    "type": "Value",
                     "id": "50f3f602-41c8-4f4f-a2c7-d378b116b61a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press(behavior=1)"
                 },
@@ -71,8 +71,16 @@
                 },
                 {
                     "name": "RightMouse",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b881a412-3830-4814-a21d-03e4b11f12d6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "GroundPound",
+                    "type": "Button",
+                    "id": "e7710e69-8076-4f88-a689-baad04fb4e19",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -130,7 +138,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "GroundPound",
+                    "action": "LeftMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -252,6 +260,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RightMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3f70a86-c344-449f-80be-ce3f1e6dc1d7",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GroundPound",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

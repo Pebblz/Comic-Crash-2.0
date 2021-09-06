@@ -13,6 +13,7 @@ public class PlayerGroundPound : MonoBehaviour
     private bool doneSquishing;
     public bool GroundPounding;
     bool doingSquish;
+    bool StartGroundPounding;
     void Start()
     {
         origanalScale = transform.localScale;
@@ -23,11 +24,21 @@ public class PlayerGroundPound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(StartGroundPounding && !pm.OnGround)
+        {
+            GroundPounding = true;
+            Pound();
+        }
+        if(pm.OnGround)
+        {
+            StartGroundPounding = false;
+        }
         if (squishTime && pm.OnGround)
         {
             StopAnimation("GroundPound");
             PlayAnimation("GroundPoundImpact");
             pm.CantMove = true;
+            StartGroundPounding = false;
             Squish();
         }
         //this is here to make sure he unSquishes
@@ -38,19 +49,22 @@ public class PlayerGroundPound : MonoBehaviour
             Squish();
         }
     }
-    public void GroundPound(InputAction.CallbackContext context)
+    public void GoundPound(InputAction.CallbackContext context)
     {
-        if (!pm.OnGround)
+        if (context.started)
         {
-            GroundPounding = true;
-            pm.CantMove = true;
-            pm.GroundPound();
-            squishTime = true;
-            PlayAnimation("GroundPound");
+            StartGroundPounding = true;
         }
+    }
+    void Pound()
+    {
+        pm.GroundPound();
+        squishTime = true;
+        PlayAnimation("GroundPound");
     }
     void Squish()
     {
+
         doingSquish = true;
         if (!doneSquishing)
         {
