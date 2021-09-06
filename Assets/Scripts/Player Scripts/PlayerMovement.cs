@@ -102,7 +102,9 @@ public class PlayerMovement : MonoBehaviour
     float CrouchOffsetY = .1f;
     public bool isCrouching;
     public GameObject LastWallJumpedOn;
-
+    bool OnWall;
+    Collision col;
+    ContactPoint Point;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -130,9 +132,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
-            if(OnGround)
+            if (OnGround)
             {
                 FallTimer = 2;
+                OnWall = false;
             }
             else
             {
@@ -142,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = true;
                 CanWallJump = true;
-                if(jumpPhase > 0 && !desiredJump)
+                if (jumpPhase > 0 && !desiredJump)
                 {
                     PlayAnimation("IsLanded");
                 }
@@ -154,11 +157,11 @@ public class PlayerMovement : MonoBehaviour
                 }
                 LastWallJumpedOn = null;
             }
-            if(anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0)
             {
                 PlayFallingAnimation();
             }
-            if(!OnGround || jumpPhase == 0)
+            if (!OnGround || jumpPhase == 0)
             {
                 StopAnimation("IsLanded");
             }
@@ -240,49 +243,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    public void W(InputAction.CallbackContext context)
-    {
-        if(!Swimming && !CantMove)
-            playerInput.y = context.ReadValue<float>();
-    }
-    public void A(InputAction.CallbackContext context)
-    {
-        if (!Swimming && !CantMove)
-            playerInput.x = -context.ReadValue<float>();
-    }
-    public void S(InputAction.CallbackContext context)
-    {
-        if (!Swimming && !CantMove)
-            playerInput.y = -context.ReadValue<float>();
-    }
-    public void D(InputAction.CallbackContext context)
-    {
-        if (!Swimming && !CantMove)
-            playerInput.x = context.ReadValue<float>();
-    }
-    public void OnSprint(InputAction.CallbackContext context)
-    {
-        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
-            Isrunning = true;
-        else
-            Isrunning = false;
-    }
-    public void OnCrouch(InputAction.CallbackContext context)
-    {
-        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
-        {
-            isCrouching = true;
-        }
-        else
-        {
-            isCrouching = false;
-        }
-    }
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
-            desiredJump |= true;
-    }
+
     void FixedUpdate()
     {
 
@@ -331,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
-            if(OnGround)
+            if (OnGround)
                 body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
             body.velocity = velocity;
         }
@@ -449,21 +410,28 @@ public class PlayerMovement : MonoBehaviour
         //    return;
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && desiredJump && collision.gameObject.layer != 9 && CanWallJump)
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject  && collision.gameObject.layer != 9 && CanWallJump)
             {
-                Vector3 _velocity = contact.normal;
-
-                _velocity.y = jumpHeight * WallJumpIntensifire;
-
-                body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
-
-                PreventSnapToGround();
-                LastWallJumpedOn = collision.gameObject;
+                col = collision;
+                Point = contact;
+                OnWall = true;
+            }
+            else
+            { 
+                OnWall = false;
             }
         }
     }
-
+    private void OnCollisionExit(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && collision.gameObject.layer != 9 && CanWallJump)
+            {
+                OnWall = false;
+            }
+        }
+    }
     void OnCollisionStay(Collision collision)
     {
         EvaluateCollision(collision);
@@ -471,6 +439,65 @@ public class PlayerMovement : MonoBehaviour
             onBlock = true;
         else
             onBlock = false;
+    }
+    #endregion
+
+    #region New Input methods
+    public void W(InputAction.CallbackContext context)
+    {
+        if (!Swimming && !CantMove)
+            playerInput.y = context.ReadValue<float>();
+    }
+    public void A(InputAction.CallbackContext context)
+    {
+        if (!Swimming && !CantMove)
+            playerInput.x = -context.ReadValue<float>();
+    }
+    public void S(InputAction.CallbackContext context)
+    {
+        if (!Swimming && !CantMove)
+            playerInput.y = -context.ReadValue<float>();
+    }
+    public void D(InputAction.CallbackContext context)
+    {
+        if (!Swimming && !CantMove)
+            playerInput.x = context.ReadValue<float>();
+    }
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
+            Isrunning = true;
+        else
+            Isrunning = false;
+    }
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
+        {
+            isCrouching = true;
+        }
+        else
+        {
+            isCrouching = false;
+        }
+    }
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (!Swimming && context.ReadValue<float>() > 0 && !CantMove)
+            desiredJump |= true;
+        if(OnWall)
+        {
+            Vector3 _velocity = Point.normal;
+
+            _velocity.y = jumpHeight * WallJumpIntensifire;
+
+            body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
+                _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
+
+            PreventSnapToGround();
+            LastWallJumpedOn = col.gameObject;
+            OnWall = false;
+        }
     }
     #endregion
     bool CheckSteepContacts()
@@ -627,15 +654,15 @@ public class PlayerMovement : MonoBehaviour
         {
             //if (velocity.y < .1f)
             //{
-                PlayAnimation("Walk");
-                if (Isrunning)
-                {
-                    PlayAnimation("Run");
-                }
-                else
-                {
-                    StopAnimation("Run");
-                }
+            PlayAnimation("Walk");
+            if (Isrunning)
+            {
+                PlayAnimation("Run");
+            }
+            else
+            {
+                StopAnimation("Run");
+            }
             //}
         }
         if (InWater || velocity.magnitude < 1f)
@@ -755,7 +782,7 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
     }
-    
+
     public void GroundPound()
     {
         body.velocity = new Vector3(0, -20, 0);

@@ -9,7 +9,7 @@ public class Builder : MonoBehaviour
     float blocktimer, digTimer, BuildingAnimTimer;
     [SerializeField] int CurrentBlockStorage;
     [SerializeField] int MaxSpawnableBlocks = 2;
-    [SerializeField, Range(.01f,1f)] float BlockPlacementYOffset;
+    [SerializeField, Range(.01f, 1f)] float BlockPlacementYOffset;
     List<DestroyBlock> blocksSpawned = new List<DestroyBlock>(2);
     Animator anim;
     bool buildingOnGround, digging;
@@ -18,31 +18,27 @@ public class Builder : MonoBehaviour
     {
         movement = GetComponent<PlayerMovement>();
         anim = GetComponent<Animator>();
-        for(int i = 0; i < blocksSpawned.Count;i++)
+        for (int i = 0; i < blocksSpawned.Count; i++)
             blocksSpawned.Add(FindObjectOfType<DestroyBlock>());
     }
     void Update()
     {
 
-        if(buildingOnGround && BuildingAnimTimer > 0)
+        if (buildingOnGround && BuildingAnimTimer > 0)
         {
             BuildingAnimTimer -= Time.deltaTime;
         }
-        if(buildingOnGround && BuildingAnimTimer < 0)
+        if (buildingOnGround && BuildingAnimTimer < 0)
         {
             buildingOnGround = false;
             StopAnimation("Building");
         }
-        if(GetComponent<PlayerMovement>().OnGround)
+        if (GetComponent<PlayerMovement>().OnGround)
         {
             StopAnimation("BuildingAir");
         }
-        if(Input.GetButtonDown("Fire1"))
-        {
-            digTimer = MaxDigTimer;
-            digging = true;
-        }
-        if(digging && movement.OnGround && CurrentBlockStorage < MaxSpawnableBlocks && !movement.onBlock)
+
+        if (digging && movement.OnGround && CurrentBlockStorage < MaxSpawnableBlocks && !movement.onBlock)
         {
             PlayAnimation("Digging");
             movement.CantMove = true;
@@ -59,13 +55,19 @@ public class Builder : MonoBehaviour
         }
         blocktimer -= Time.deltaTime;
     }
-    public void LeftMouse(InputAction.CallbackContext context) {
+    public void LeftMouse(InputAction.CallbackContext context)
+    {
         if (CurrentBlockStorage >= MaxSpawnableBlocks)
         {
             StopAnimation("Digging");
             movement.CantMove = false;
             digging = false;
             digTimer = MaxDigTimer;
+        }
+        else
+        {
+            digTimer = MaxDigTimer;
+            digging = true;
         }
     }
     public void RightMouse(InputAction.CallbackContext context)
