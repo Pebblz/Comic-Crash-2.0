@@ -1049,7 +1049,9 @@ MonoBehaviour:
   slowDownSpeed: 0.2
   CrouchSpeed: 3
   maxJumpSpeed: 17
-  onBelt: 0
+  SwimUpSpeed: 10
+  SlowlyFloatDownSpeed: 10
+  SwimmingCouchSpeed: 20
   maxAcceleration: 60
   maxAirAcceleration: 12
   maxClimbAcceleration: 40
@@ -1083,15 +1085,16 @@ MonoBehaviour:
   buoyancy: 2.2
   swimThreshold: 1
   anim: {fileID: 4595979783101676549}
+  CrouchOffsetY: 0.1
+  onBelt: 0
   CanWallJump: 0
   CantMove: 0
+  LastWallJumpedOn: {fileID: 0}
+  OnMovingPlatform: 0
   onBlock: 0
   jumpPhase: 0
   canJump: 1
   Bounce: 0
-  CrouchOffsetY: 0.1
-  LastWallJumpedOn: {fileID: 0}
-  OnMovingPlatform: 0
   walkingPartical1: {fileID: 477770468372329194}
   walkingPartical2: {fileID: 477770469193209972}
   walkingPartical3: {fileID: 477770468284548009}

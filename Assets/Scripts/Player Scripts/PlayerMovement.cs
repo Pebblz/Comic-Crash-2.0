@@ -5,9 +5,19 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     #region serializedFields
-    [Header("Speed")]
+    [Header("Speed / Pat varibles")]
     [SerializeField, Range(0f, 100f)]
     float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15;
+
+    [SerializeField, Range(1f, 20f), Tooltip("How fast you swim up when holding jump button")]
+    float SwimUpSpeed = 4f;
+
+    [SerializeField, Range(1f, 20f), Tooltip("How fast you float down when holding no button")]
+    float SlowlyFloatDownSpeed = 4f;
+
+    [SerializeField, Range(1f, 20f), Tooltip("How fast you go down when Crouching")]
+    float SwimmingCouchSpeed = 4f;
+
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
@@ -28,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     float wallJumpSpeed;
     [SerializeField, Range(1.5f, 5f)]
     float WallJumpIntensifire = 2f;
+
     [Header("Layers"), Space(2)]
     [SerializeField]
     LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
@@ -305,13 +316,17 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (InWater)
             {
-                if (!Input.GetKey(KeyCode.Space))
+                if (!Input.GetButton("Jump") && !Input.GetButton("Crouch"))
                 {
-                    velocity -= gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                    velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
-                if (Input.GetKey(KeyCode.Space))
+                if(Input.GetButton("Crouch") && !Input.GetButton("Jump"))
                 {
-                    velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                    velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
+                }
+                if (Input.GetButtonDown("Jump") && !Input.GetButton("Crouch"))
+                {
+                    velocity += gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
             }
             else if (desiresClimbing && OnGround)
