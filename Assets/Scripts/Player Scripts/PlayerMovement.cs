@@ -161,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
-            if(OnGround)
+            if (OnGround)
             {
                 FallTimer = 2;
                 if (walkingPartical1 != null && walkingPartical1.isStopped)
@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = true;
                 CanWallJump = true;
-                if(jumpPhase > 0 && !desiredJump)
+                if (jumpPhase > 0 && !desiredJump)
                 {
                     PlayAnimation("IsLanded");
                 }
@@ -201,11 +201,11 @@ public class PlayerMovement : MonoBehaviour
                 }
                 LastWallJumpedOn = null;
             }
-            if(anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !Swimming)
             {
                 PlayFallingAnimation();
             }
-            if(!OnGround || jumpPhase == 0)
+            if (!OnGround || jumpPhase == 0)
             {
                 StopAnimation("IsLanded");
             }
@@ -304,7 +304,6 @@ public class PlayerMovement : MonoBehaviour
 
             if (desiredJump)
             {
-
                 PlayAnimation("Jump");
                 Jump(gravity);
                 desiredJump = false;
@@ -323,7 +322,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
-                if(Input.GetButton("Crouch") && !Input.GetButton("Jump"))
+                if (Input.GetButton("Crouch") && !Input.GetButton("Jump"))
                 {
                     velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
@@ -340,7 +339,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
-            if(OnGround)
+            if (OnGround)
                 body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
             body.velocity = velocity;
         }
@@ -454,15 +453,15 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         EvaluateCollision(collision);
-        //if (LastWallJumpedOn == collision.gameObject)
-        //    return;
+        if (LastWallJumpedOn == collision.gameObject)
+            return;
         if (collision.gameObject.tag == "MovingPlatForm")
             OnMovingPlatform = true;
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && 
-                Input.GetButton("Jump") && collision.gameObject.layer != 9 &&  
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
+                Input.GetButton("Jump") && collision.gameObject.layer != 9 &&
                 collision.gameObject.layer != 10 && CanWallJump)
             {
                 Vector3 _velocity = contact.normal;
@@ -648,18 +647,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (velocity.magnitude > 1f && !InWater)
         {
-            //if (velocity.y < .1f)
-            //{
-                PlayAnimation("Walk");
-                if (Isrunning)
-                {
-                    PlayAnimation("Run");
-                }
-                else
-                {
-                    StopAnimation("Run");
-                }
-            //}
+            PlayAnimation("Walk");
+            if (Isrunning)
+            {
+                PlayAnimation("Run");
+            }
+            else
+            {
+                StopAnimation("Run");
+            }
         }
         if (InWater || velocity.magnitude < 1f)
         {
@@ -680,11 +676,12 @@ public class PlayerMovement : MonoBehaviour
         {
             canJump = false;
         }
-        if (jumpPhase > maxAirJumps && CanDive)
+        if (jumpPhase == maxAirJumps + 1 && CanDive)
         {
             PlayAnimation("Dive");
             Vector3 DiveDir = transform.forward * DiveSpeed;
             velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
+            jumpPhase = 5;
         }
 
         if (canJump)
@@ -787,7 +784,7 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
     }
-    
+
     public void GroundPound()
     {
         body.velocity = new Vector3(0, -20, 0);
