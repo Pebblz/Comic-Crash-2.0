@@ -10,9 +10,15 @@ public class HandMan : MonoBehaviour
     private Transform Camera;
     Animator Anim;
     float pickUpTimer;
+    PlayerSquish squish;
+    PlayerMovement movement;
+    PlayerAttack pAttack;
     void Awake()
     {
         Anim = GetComponent<Animator>();
+        movement = GetComponent<PlayerMovement>();
+        squish = GetComponent<PlayerSquish>();
+        pAttack = GetComponent<PlayerAttack>();
     }
 
     // Update is called once per frame
@@ -50,13 +56,15 @@ public class HandMan : MonoBehaviour
         }
         if (PickUp == null)
         {
-            GetComponent<PlayerAttack>().CanAttack = true;
-            GetComponent<PlayerMovement>().canJump = true;
+            squish.enabled = true;
+            pAttack.CanAttack = true;
+            movement.CanWallJump = true;
             isHoldingOBJ = false;
         } else
         {
-            GetComponent<PlayerAttack>().CanAttack = false;
-            GetComponent<PlayerMovement>().canJump = false;
+            squish.enabled = false;
+            pAttack.CanAttack = false;
+            movement.CanWallJump = false;
             //this is for the throwing / droping logic
             if (Input.GetButtonDown("Fire1") && pickUpTimer < 0)
             {

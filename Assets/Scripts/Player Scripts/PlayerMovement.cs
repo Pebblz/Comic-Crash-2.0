@@ -103,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject LastWallJumpedOn;
     [HideInInspector]
     public bool OnMovingPlatform;
+    [SerializeField] GameObject walkingParticals;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -133,10 +134,14 @@ public class PlayerMovement : MonoBehaviour
             if(OnGround)
             {
                 FallTimer = 2;
+                if (walkingParticals != null)
+                    walkingParticals.SetActive(true);
             }
             else
             {
                 FallTimer -= Time.deltaTime;
+                if (walkingParticals != null)
+                    walkingParticals.SetActive(false);
             }
             if (OnGround && !Bounce)
             {

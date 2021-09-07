@@ -1976,6 +1976,8 @@ MonoBehaviour:
   Bounce: 0
   CrouchOffsetY: 0.1
   LastWallJumpedOn: {fileID: 0}
+  OnMovingPlatform: 0
+  walkingParticals: {fileID: 1569390576896125029}
 --- !u!1 &7099164988006128948
 GameObject:
   m_ObjectHideFlags: 0
@@ -2908,6 +2910,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b1342aa52b91ac40b422de484c92cac, type: 3}
+--- !u!1 &1569390576896125029 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8432600094113097600, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 6971859684243558373}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1569390576896125030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8432600094113097603, guid: 8b1342aa52b91ac40b422de484c92cac,
