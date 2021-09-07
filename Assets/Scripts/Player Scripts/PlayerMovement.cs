@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1f, 20f), Tooltip("How fast you go down when Crouching")]
     float SwimmingCouchSpeed = 4f;
 
+    [SerializeField, Range(10f, 50f), Tooltip("How fast you shoot forward when diving")]
+    float DiveSpeed = 10f;
+
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
@@ -90,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool Bounce = false;
 
-
+    public bool CanDive = false;
 
     #endregion
     #region private fields
@@ -677,8 +680,16 @@ public class PlayerMovement : MonoBehaviour
         {
             canJump = false;
         }
+        if (jumpPhase > maxAirJumps && CanDive)
+        {
+            PlayAnimation("Dive");
+            Vector3 DiveDir = transform.forward * DiveSpeed;
+            velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
+        }
+
         if (canJump)
         {
+            StopAnimation("Dive");
             Vector3 jumpDirection;
             if (OnGround)
             {
@@ -708,6 +719,7 @@ public class PlayerMovement : MonoBehaviour
 
             stepsSinceLastJump = 0;
             jumpPhase += 1;
+
             float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
             if (InWater)
             {
