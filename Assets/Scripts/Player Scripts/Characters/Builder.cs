@@ -72,7 +72,7 @@ public class Builder : MonoBehaviour
                 digTimer = MaxDigTimer;
             }
         }
-        if (Input.GetMouseButtonUp(0) || CurrentBlockStorage >= MaxSpawnableBlocks)
+        if (Input.GetMouseButtonUp(0)  || Input.GetButtonUp("Fire1") || CurrentBlockStorage >= MaxSpawnableBlocks)
         {
             StopAnimation("Digging");
             movement.CantMove = false;
