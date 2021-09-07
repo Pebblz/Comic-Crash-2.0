@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Speed")]
     [SerializeField, Range(0f, 100f)]
     float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15;
-    public bool onBelt;
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
@@ -51,13 +50,36 @@ public class PlayerMovement : MonoBehaviour
     float buoyancy = 1f;
     [SerializeField, Range(0.01f, 1f)]
     float swimThreshold = 0.5f;
+
     [Header("Animator"), Space(5)]
     [SerializeField]
     Animator anim;
+
+
+    [Header("Offsets")]
+    [SerializeField, Range(0, .5f)]
+    float CrouchOffsetY = .1f;
+
+    [HideInInspector]
+    public bool onBelt;
     [HideInInspector]
     public bool CanWallJump;
     [HideInInspector]
     public bool CantMove;
+    [HideInInspector]
+    public GameObject LastWallJumpedOn;
+    [HideInInspector]
+    public bool OnMovingPlatform;
+    [HideInInspector]
+    public bool onBlock;
+    [HideInInspector]
+    public int jumpPhase;
+    [HideInInspector]
+    public bool canJump = true;
+    [HideInInspector]
+    public bool Bounce = false;
+
+
 
     #endregion
     #region private fields
@@ -68,17 +90,11 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;
     public bool OnGround => groundContactCount > 0;
-    public bool onBlock;
+
     bool Swimming => submergence >= swimThreshold;
     float submergence;
     bool InWater => submergence > 0f;
-    //[HideInInspector]
-    public int jumpPhase;
-    [HideInInspector]
-    public bool canJump = true;
 
-    [HideInInspector]
-    public bool Bounce = false;
 
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
@@ -96,14 +112,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
     private Vector3 velocity;
-    [Header("Offsets")]
-    [SerializeField, Range(0, .5f)]
-    float CrouchOffsetY = .1f;
+
     bool isCrouching;
-    public GameObject LastWallJumpedOn;
-    [HideInInspector]
-    public bool OnMovingPlatform;
-    [SerializeField] GameObject walkingParticals;
+
+    [Header("Particles")]
+    [SerializeField] ParticleSystem walkingPartical1;
+    [SerializeField] ParticleSystem walkingPartical2;
+    [SerializeField] ParticleSystem walkingPartical3;
+    [SerializeField] ParticleSystem walkingPartical4;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -134,14 +150,26 @@ public class PlayerMovement : MonoBehaviour
             if(OnGround)
             {
                 FallTimer = 2;
-                if (walkingParticals != null)
-                    walkingParticals.SetActive(true);
+                if (walkingPartical1 != null && walkingPartical1.isStopped)
+                    walkingPartical1.Play();
+                if (walkingPartical2 != null && walkingPartical2.isStopped)
+                    walkingPartical2.Play();
+                if (walkingPartical3 != null && walkingPartical3.isStopped)
+                    walkingPartical3.Play();
+                if (walkingPartical4 != null && walkingPartical4.isStopped)
+                    walkingPartical4.Play();
             }
             else
             {
                 FallTimer -= Time.deltaTime;
-                if (walkingParticals != null)
-                    walkingParticals.SetActive(false);
+                if (walkingPartical1 != null && walkingPartical1.isPlaying)
+                    walkingPartical1.Stop();
+                if (walkingPartical2 != null && walkingPartical2.isPlaying)
+                    walkingPartical2.Stop();
+                if (walkingPartical3 != null && walkingPartical3.isPlaying)
+                    walkingPartical3.Stop();
+                if (walkingPartical4 != null && walkingPartical4.isPlaying)
+                    walkingPartical4.Stop();
             }
             if (OnGround && !Bounce)
             {
@@ -415,14 +443,16 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetButton("Jump") && collision.gameObject.layer != 9 && CanWallJump)
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && 
+                Input.GetButton("Jump") && collision.gameObject.layer != 9 &&  
+                collision.gameObject.layer != 10 && CanWallJump)
             {
                 Vector3 _velocity = contact.normal;
 
                 _velocity.y = jumpHeight * WallJumpIntensifire;
 
-                body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
+                body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
+                    _velocity.y, _velocity.z * (4 * wallJumpSpeed));
 
                 PreventSnapToGround();
                 LastWallJumpedOn = collision.gameObject;
