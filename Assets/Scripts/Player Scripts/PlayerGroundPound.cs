@@ -27,13 +27,13 @@ public class PlayerGroundPound : MonoBehaviour
             || Input.GetMouseButtonDown(0) && !pm.OnGround)
         {
             GroundPounding = true;
+            pm.CantMove = true;
             GroundPound();
         }
         if (squishTime && pm.OnGround || squishTime && pm.OnGround && pm.OnMovingPlatform)
         {
             StopAnimation("GroundPound");
             PlayAnimation("GroundPoundImpact");
-            pm.CantMove = true;
             if(!pm.OnMovingPlatform)
                 Squish();
         }

@@ -63,16 +63,17 @@ public class CharacterSwitcherMachine : MonoBehaviour
             }
             else
             {
-                if(CharacterSwitcherUI.activeSelf)
+
+                if (CharacterSwitcherUI.activeSelf)
                 {
                     Ps.CanSwitch = true;
+                    //this is here just incase the player finds a way to die while in the switcher menu
+                    player.GetComponent<PlayerMovement>().CantMove = false;
+                    camera.GetComponent<MainCamera>().StopCamera = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                    CharacterSwitcherUI.SetActive(false);
                 }
-                //this is here just incase the player finds a way to die while in the switcher menu
-                player.GetComponent<PlayerMovement>().CantMove = false;
-                camera.GetComponent<MainCamera>().StopCamera = false;
-                CharacterSwitcherUI.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
                 EText.SetActive(false);
             }
         }
