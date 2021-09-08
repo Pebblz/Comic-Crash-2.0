@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
     bool desiredJump, desiresClimbing;
     public bool OnGround => groundContactCount > 0;
 
-    bool Swimming => submergence >= swimThreshold;
+    public bool Swimming => submergence >= swimThreshold;
     float submergence;
     bool InWater => submergence > 0f;
 
@@ -326,7 +326,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
-                if (Input.GetButtonDown("Jump") && !Input.GetButton("Crouch"))
+                if (Input.GetButton("Jump") && !Input.GetButton("Crouch"))
                 {
                     velocity += gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                 }

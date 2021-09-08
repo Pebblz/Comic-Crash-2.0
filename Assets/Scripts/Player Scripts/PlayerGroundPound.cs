@@ -24,7 +24,7 @@ public class PlayerGroundPound : MonoBehaviour
     void Update()
     {
         if (!pm.OnGround && Input.GetButtonDown("Punch") 
-            || Input.GetMouseButtonDown(0) && !pm.OnGround)
+            || Input.GetMouseButtonDown(0) && !pm.OnGround && !pm.Swimming)
         {
             GroundPounding = true;
             pm.CantMove = true;
@@ -45,12 +45,24 @@ public class PlayerGroundPound : MonoBehaviour
         {
             Squish();
         }
+        if(pm.Swimming)
+        {
+            StopAnimation("GroundPound");
+            StopAnimation("GroundPoundImpact");
+            pm.CantMove = false;
+            doingSquish = false;
+            GroundPounding = false;
+            doneSquishing = false;
+            squishTime = false;
+            transform.localScale = origanalScale;
+        }
     }
     void GroundPound()
     {
         pm.GroundPound();
         squishTime = true;
         PlayAnimation("GroundPound");
+        StopAnimation("GroundPoundImpact");
     }
     void Squish()
     {
