@@ -26,7 +26,7 @@ public class Builder : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetButtonDown("Fire2") && blocktimer <= 0  && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
+        if (Input.GetButtonDown("Fire2") && blocktimer <= 0 && CurrentBlockStorage > 0)
         {
             if (GetComponent<PlayerMovement>().OnGround)
             {

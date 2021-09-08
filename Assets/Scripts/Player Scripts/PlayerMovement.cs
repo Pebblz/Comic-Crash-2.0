@@ -293,6 +293,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
+
             Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
             UpdateState();
 
@@ -318,16 +319,21 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (InWater)
             {
+
                 if (!Input.GetButton("Jump") && !Input.GetButton("Crouch"))
                 {
+                    print("Going down");
                     velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
                 if (Input.GetButton("Crouch") && !Input.GetButton("Jump"))
                 {
+                    print("Crouching");
+
                     velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
-                if (Input.GetButton("Jump") && !Input.GetButton("Crouch"))
+                if (Input.GetButtonDown("Jump") && !Input.GetButton("Crouch"))
                 {
+                    print("Going up");
                     velocity += gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
             }
@@ -672,6 +678,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Jump(Vector3 gravity)
     {
+        if(!Swimming || InWater)
+        { 
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
         {
             canJump = false;
@@ -684,60 +692,61 @@ public class PlayerMovement : MonoBehaviour
             jumpPhase = 5;
         }
 
-        if (canJump)
-        {
-            StopAnimation("Dive");
-            Vector3 jumpDirection;
-            if (OnGround)
+            if (canJump)
             {
-                jumpDirection = contactNormal;
-            }
-            else if (OnSteep)
-            {
-                jumpDirection = steepNormal;
-                jumpPhase = 1;
-            }
-            else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
-            {
-                if (jumpPhase == 0)
+                StopAnimation("Dive");
+                Vector3 jumpDirection;
+                if (OnGround)
                 {
+                    jumpDirection = contactNormal;
+                }
+                else if (OnSteep)
+                {
+                    jumpDirection = steepNormal;
                     jumpPhase = 1;
                 }
-                jumpDirection = contactNormal;
-            }
-            else
-            {
-                return;
-            }
-            if (jumpPhase == 1)
-            {
-                PlayAnimation("DoubleJump");
-            }
-
-            stepsSinceLastJump = 0;
-            jumpPhase += 1;
-
-            float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-            if (InWater)
-            {
-                jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-            }
-            jumpDirection = (jumpDirection + upAxis).normalized;
-            float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
-            if (alignedSpeed > 0f)
-            {
-                if (jumpPhase == 0)
-                    jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
+                {
+                    if (jumpPhase == 0)
+                    {
+                        jumpPhase = 1;
+                    }
+                    jumpDirection = contactNormal;
+                }
                 else
-                    jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+                {
+                    return;
+                }
+                if (jumpPhase == 1)
+                {
+                    PlayAnimation("DoubleJump");
+                }
+
+                stepsSinceLastJump = 0;
+                jumpPhase += 1;
+
+                float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+                if (InWater)
+                {
+                    jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+                }
+                jumpDirection = (jumpDirection + upAxis).normalized;
+                float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+                if (alignedSpeed > 0f)
+                {
+                    if (jumpPhase == 0)
+                        jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                    else
+                        jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+                }
+                if (jumpSpeed < 10)
+                {
+                    jumpDirection.z = 0;
+                    jumpSpeed = 16;
+                }
+                velocity += jumpDirection * jumpSpeed;
+                velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
             }
-            if (jumpSpeed < 10)
-            {
-                jumpDirection.z = 0;
-                jumpSpeed = 16;
-            }
-            velocity += jumpDirection * jumpSpeed;
-            velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
         }
     }
     bool CheckClimbing()

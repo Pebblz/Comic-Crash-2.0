@@ -49,13 +49,13 @@ public class Pause : MonoBehaviour
         Ps.CanSwitch = !pause;
         if (pause)
         {
-            player.GetComponent<PlayerMovement>().CantMove = false;
+            player.GetComponent<PlayerMovement>().CantMove = true;
             Gm.unlockCursor();
             PausePage.SetActive(true);
         }
         else
         {
-            player.GetComponent<PlayerMovement>().CantMove = true;
+            player.GetComponent<PlayerMovement>().CantMove = false;
             Gm.lockCursor();
             PausePage.SetActive(false);
         }
