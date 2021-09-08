@@ -31,15 +31,13 @@ public class PlayerAttack : MonoBehaviour
         {
             if (handman == null)
             {
-                if (Input.GetMouseButtonDown(0) && AttacksPreformed == 1 && TimeTillnextAttack <= 0
-                   && !Input.GetKey(KeyCode.C) || Input.GetButtonDown("Punch") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
+                if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
                    && !Input.GetKey(KeyCode.C))
                 {
                     punch(AttacksPreformed);
                 }
                 //this basically queues up the next attack for the player
-                if (Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0
-                    || Input.GetButtonDown("Punch") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                if (Input.GetButtonDown("Fire1") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
                 {
                     AttackAgian = true;
                 }
@@ -54,15 +52,13 @@ public class PlayerAttack : MonoBehaviour
             {
                 if (!handman.isHoldingOBJ)
                 {
-                    if (Input.GetMouseButtonDown(0) && AttacksPreformed == 1 && TimeTillnextAttack <= 0 &&
-                        !Input.GetKey(KeyCode.C) || Input.GetButtonDown("Punch") && AttacksPreformed == 1 &&
+                    if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 &&
                         TimeTillnextAttack <= 0 && !Input.GetKey(KeyCode.C))
                     {
                         punch(AttacksPreformed);
                     }
                     //this basically queues up the next attack for the player
-                    if (Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0
-                        || Input.GetButtonDown("Punch") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                    if (Input.GetButtonDown("Fire1") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
                     {
                         AttackAgian = true;
                     }
