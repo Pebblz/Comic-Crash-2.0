@@ -341,6 +341,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Input.GetButton("Jump") && !Input.GetButton("Crouch"))
                 {
+                    print("works");
                     PlayAnimation("SwimmingUp");
                     StopAnimation("Sinking");
                     StopAnimation("SwimmingDown");
