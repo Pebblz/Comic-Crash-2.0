@@ -23,8 +23,7 @@ public class PlayerGroundPound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!pm.OnGround && Input.GetButtonDown("Punch") 
-            || Input.GetMouseButtonDown(0) && !pm.OnGround && !pm.Swimming)
+        if (Input.GetButtonDown("Fire1")  && !pm.OnGround && !pm.Swimming)
         {
             GroundPounding = true;
             pm.CantMove = true;
