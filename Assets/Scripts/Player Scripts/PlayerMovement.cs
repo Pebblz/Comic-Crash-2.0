@@ -339,7 +339,7 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("Sinking");
                     velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
-                if (Input.GetButton("Jump") && !Input.GetButton("Crouch"))
+                if (Input.GetButtonDown("Jump") && !Input.GetButton("Crouch"))
                 {
                     print("works");
                     PlayAnimation("SwimmingUp");
