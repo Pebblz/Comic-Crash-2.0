@@ -20,7 +20,7 @@ public class WaterDamage : MonoBehaviour
     {
         if (startTimer)
             timer -= Time.deltaTime;
-        if(timer < 0)
+        if (timer < 0)
         {
             Player.GetComponent<PlayerHealth>().HurtPlayer(damage);
             startTimer = false;
@@ -39,32 +39,38 @@ public class WaterDamage : MonoBehaviour
         }
         else
         {
-            Player = col.gameObject;
-            startTimer = true;
+            if (col.gameObject.GetComponent<BlobBert>())
+            {
+                Player = col.gameObject;
+                startTimer = true;
+            }
         }
     }
-    private void OnTriggerStay(Collider col)
-    {
-        if (damageOnHit)
+        private void OnTriggerStay(Collider col)
+        {
+            if (damageOnHit)
+            {
+                if (col.gameObject.GetComponent<BlobBert>())
+                {
+                    col.GetComponent<PlayerHealth>().HurtPlayer(damage);
+                }
+            }
+            else
+            {
+                if (col.gameObject.GetComponent<BlobBert>())
+                {
+                    Player = col.gameObject;
+                    startTimer = true;
+                }
+            }
+        }
+        private void OnTriggerExit(Collider col)
         {
             if (col.gameObject.GetComponent<BlobBert>())
             {
-                col.GetComponent<PlayerHealth>().HurtPlayer(damage);
+                startTimer = false;
+                timer = 3;
+                Player = null;
             }
         }
-        else
-        {
-            Player = col.gameObject;
-            startTimer = true;
-        }
     }
-    private void OnTriggerExit(Collider col)
-    {
-        if (col.gameObject.GetComponent<BlobBert>())
-        {
-            startTimer = false;
-            timer = 3;
-            Player = null;
-        }
-    }
-}
