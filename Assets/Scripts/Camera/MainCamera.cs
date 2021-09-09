@@ -36,7 +36,7 @@ public class MainCamera : MonoBehaviour
     float x = 0.0f;
     float y = 0.0f;
 
-    [SerializeField, Range(-100, 10)]
+    [SerializeField, Range(-300, 10), Tooltip("The Y position that the camera will stop falling you and just stare at you")]
     float fallLookAtPosition;
 
     [SerializeField]
