@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
 
     bool isCrouching;
-
+    bool blobert;
     [Header("Particles")]
     [SerializeField] ParticleSystem walkingPartical1;
     [SerializeField] ParticleSystem walkingPartical2;
@@ -154,6 +154,11 @@ public class PlayerMovement : MonoBehaviour
         }
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
+        if (GetComponent<BlobBert>())
+        {
+            blobert = true;
+        }
+
         OnValidate();
     }
     void Update()
@@ -201,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 LastWallJumpedOn = null;
             }
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !Swimming)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !Swimming && !InWater)
             {
                 PlayFallingAnimation();
             }
@@ -239,6 +244,7 @@ public class PlayerMovement : MonoBehaviour
             if (Swimming)
             {
                 desiresClimbing = false;
+
             }
             else
             {
@@ -247,6 +253,7 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("Sinking");
                     StopAnimation("SwimmingDown");
                     StopAnimation("SwimmingUp");
+                    StopAnimation("Drowning");
                 }
                 isCrouching = Input.GetButton("Crouch");
                 desiredJump |= Input.GetButtonDown("Jump");
@@ -325,27 +332,36 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (InWater)
             {
-                if (!Input.GetButton("Jump") && !Input.GetButton("Crouch"))
+                StopAnimation("Falling");
+                if (!blobert)
                 {
-                    PlayAnimation("Sinking");
-                    StopAnimation("SwimmingDown");
-                    StopAnimation("SwimmingUp");
-                    velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                    if (!Input.GetButton("Jump") && !Input.GetButton("Crouch"))
+                    {
+                        PlayAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
+                        velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
+                    if (Input.GetButton("Crouch") && !Input.GetButtonDown("Jump"))
+                    {
+                        PlayAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
+                        StopAnimation("Sinking");
+                        velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
+                    if (Input.GetButtonDown("Jump") && !Input.GetButtonDown("Crouch"))
+                    {
+                        PlayAnimation("SwimmingUp");
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        velocity += gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
                 }
-                if (Input.GetButton("Crouch") && !Input.GetButtonDown("Jump"))
+                else
                 {
-                    PlayAnimation("SwimmingDown");
-                    StopAnimation("SwimmingUp");
-                    StopAnimation("Sinking");
-                    velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
-                }
-                if (Input.GetButtonDown("Jump") && !Input.GetButtonDown("Crouch"))
-                {
-                    print("works");
-                    PlayAnimation("SwimmingUp");
-                    StopAnimation("Sinking");
-                    StopAnimation("SwimmingDown");
-                    velocity += gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                    PlayAnimation("Drowning");
+                    if (Swimming)
+                        velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
             }
             else if (desiresClimbing && OnGround)
@@ -689,19 +705,19 @@ public class PlayerMovement : MonoBehaviour
     }
     void Jump(Vector3 gravity)
     {
-        if(!Swimming || InWater)
-        { 
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
+        if (!Swimming || InWater)
         {
-            canJump = false;
-        }
-        if (jumpPhase == maxAirJumps + 1 && CanDive)
-        {
-            PlayAnimation("Dive");
-            Vector3 DiveDir = transform.forward * DiveSpeed;
-            velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
-            jumpPhase = 5;
-        }
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
+            {
+                canJump = false;
+            }
+            if (jumpPhase == maxAirJumps + 1 && CanDive)
+            {
+                PlayAnimation("Dive");
+                Vector3 DiveDir = transform.forward * DiveSpeed;
+                velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
+                jumpPhase = 5;
+            }
 
             if (canJump)
             {
