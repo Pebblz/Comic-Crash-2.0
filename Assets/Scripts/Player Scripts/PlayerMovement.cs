@@ -359,6 +359,12 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("SwimmingDown");
                         velocity += gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
+                    if(playerInput.magnitude > 0 && !Input.GetButtonDown("Crouch"))
+                    {
+                        PlayAnimation("SwimmingUp");
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                    }
                 }
                 else
                 {

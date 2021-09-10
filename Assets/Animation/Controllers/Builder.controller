@@ -1341,7 +1341,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsFalling
+    m_ConditionEvent: Falling
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4454243314089766941}
@@ -1590,7 +1590,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsFalling
+    m_ConditionEvent: Falling
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4454243314089766941}
@@ -2592,8 +2592,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: Hanging
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: IsFalling
+  - m_ConditionMode: 1
+    m_ConditionEvent: Falling
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7474773301142369259}
@@ -2996,8 +2996,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: Run
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: IsFalling
+  - m_ConditionMode: 1
+    m_ConditionEvent: Falling
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: Jump
@@ -4133,12 +4133,6 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: DoubleJump
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: IsFalling
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -5761,7 +5755,7 @@ AnimatorStateMachine:
     m_Position: {x: -520, y: 1940, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4290052826584114303}
-    m_Position: {x: 320, y: 1800, z: 0}
+    m_Position: {x: 330, y: 1800, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3976967918830868468}
     m_Position: {x: 580, y: 1590, z: 0}
@@ -6130,9 +6124,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: Hanging
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: IsFalling
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7474773301142369259}
   m_Solo: 0
@@ -6242,8 +6233,8 @@ AnimatorState:
   - {fileID: -8985974906824179384}
   - {fileID: 4743634440848993442}
   - {fileID: 8625531841753668556}
-  - {fileID: 6147851349583296261}
   - {fileID: -4670567758997622112}
+  - {fileID: 6147851349583296261}
   - {fileID: -2694140933710139362}
   - {fileID: -5545853108764820533}
   - {fileID: 8664745511871953167}
@@ -7125,8 +7116,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: Hanging
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: IsFalling
+  - m_ConditionMode: 1
+    m_ConditionEvent: Falling
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7474773301142369259}
