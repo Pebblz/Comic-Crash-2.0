@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     float SlowlyFloatDownSpeed = 4f;
 
     [SerializeField, Range(1f, 20f), Tooltip("How fast you go down when Crouching")]
-    float SwimmingCouchSpeed = 4f;
+    float SwimmingDownSpeed = 4f;
 
     [SerializeField, Range(10f, 50f), Tooltip("How fast you shoot forward when diving")]
     float DiveSpeed = 10f;
@@ -350,7 +350,7 @@ public class PlayerMovement : MonoBehaviour
                         PlayAnimation("SwimmingDown");
                         StopAnimation("SwimmingUp");
                         StopAnimation("Sinking");
-                        velocity -= gravity * ((-SwimmingCouchSpeed - buoyancy * submergence) * Time.deltaTime);
+                        velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
                     if (Input.GetButtonDown("Jump") && !Input.GetButtonDown("Crouch"))
                     {
