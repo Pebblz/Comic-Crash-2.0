@@ -194,6 +194,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = true;
                 CanWallJump = true;
+                if(CanDive)
+                    StopAnimation("Dive");
+
                 if (jumpPhase > 0 && !desiredJump)
                 {
                     PlayAnimation("IsLanded");
