@@ -1052,9 +1052,9 @@ MonoBehaviour:
   SwimUpSpeed: 8
   SlowlyFloatDownSpeed: 2
   SwimmingCouchSpeed: 20
-  DiveSpeed: 40
+  DiveSpeed: 30
   maxAcceleration: 60
-  maxAirAcceleration: 12
+  maxAirAcceleration: 3
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
   jumpHeight: 10
@@ -1064,8 +1064,8 @@ MonoBehaviour:
   maxClimbAngle: 140
   maxSnapSpeed: 100
   probeDistance: 1
-  wallJumpSpeed: 3
-  WallJumpIntensifire: 2
+  wallJumpSpeed: 6
+  WallJumpIntensifire: 1.7
   probeMask:
     serializedVersion: 2
     m_Bits: 35
