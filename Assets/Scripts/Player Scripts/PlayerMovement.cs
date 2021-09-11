@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
     float submergenceOffset = 0.5f;
     [SerializeField, Min(0.1f)]
     float submergenceRange = 1f;
-    [SerializeField, Range(0f, 10f)]
+    [SerializeField, Range(0f, 20f)]
     float waterDrag = 1f;
     [SerializeField, Min(0f)]
     float buoyancy = 1f;
@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
     float submergence;
     bool InWater => submergence > 0f;
 
-
+    Collider water;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
     int groundContactCount, steepContactCount, climbContactCount;
@@ -194,7 +194,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = true;
                 CanWallJump = true;
-                if(CanDive)
+                if (CanDive)
                     StopAnimation("Dive");
 
                 if (jumpPhase > 0 && !desiredJump)
@@ -339,7 +339,7 @@ public class PlayerMovement : MonoBehaviour
                 if (!blobert)
                 {
                     //If your not holding space or crouch
-                    if (playerInput.z == 0)
+                    if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
                     {
                         PlayAnimation("Sinking");
                         StopAnimation("SwimmingDown");
@@ -354,21 +354,22 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("Sinking");
                         velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
-                        //If your holding space 
-                        if (playerInput.z > 0)
-                        {
-                            PlayAnimation("SwimmingUp");
-                            StopAnimation("Sinking");
-                            StopAnimation("SwimmingDown");
-                            velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
-                        }
-                        //If your moving left or right
-                        if (playerInput.x != 0 || playerInput.y != 0)
-                        {
-                            PlayAnimation("SwimmingUp");
-                            StopAnimation("Sinking");
-                            StopAnimation("SwimmingDown");
-                        }
+                    //(water.GetComponent<Transform>().position.y * 2 - submergenceOffset - 7) > transform.position.y
+                    //If your holding space 
+                    if (playerInput.z > 0 && Swimming)
+                    {
+                        PlayAnimation("SwimmingUp");
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
+                    //If your moving left or right
+                    if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)
+                    {
+                        PlayAnimation("SwimmingUp");
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                    }
                 }
                 else
                 {
@@ -486,6 +487,7 @@ public class PlayerMovement : MonoBehaviour
         if ((waterMask & (1 << other.gameObject.layer)) != 0)
         {
             EvaluateSubmergence(other);
+            water = other;
         }
     }
 
@@ -494,6 +496,7 @@ public class PlayerMovement : MonoBehaviour
         if ((waterMask & (1 << other.gameObject.layer)) != 0)
         {
             EvaluateSubmergence(other);
+            water = other;
         }
     }
     void OnCollisionEnter(Collision collision)

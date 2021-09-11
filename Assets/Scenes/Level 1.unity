@@ -8088,8 +8088,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 943492112}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 92, y: -13, z: 63}
-  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_LocalPosition: {x: 92, y: 11, z: 63}
+  m_LocalScale: {x: 50, y: 10, z: 50}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 62
@@ -17295,12 +17295,12 @@ PrefabInstance:
     - target: {fileID: 7093078686324562494, guid: ea4df7cb51be50b4e8042e416b0ddad1,
         type: 3}
       propertyPath: buoyancy
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7093078686324562494, guid: ea4df7cb51be50b4e8042e416b0ddad1,
         type: 3}
       propertyPath: waterDrag
-      value: 2
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7093078686324562494, guid: ea4df7cb51be50b4e8042e416b0ddad1,
         type: 3}
@@ -17311,6 +17311,16 @@ PrefabInstance:
         type: 3}
       propertyPath: maxJumpSpeed
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7093078686324562494, guid: ea4df7cb51be50b4e8042e416b0ddad1,
+        type: 3}
+      propertyPath: swimThreshold
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7093078686324562494, guid: ea4df7cb51be50b4e8042e416b0ddad1,
+        type: 3}
+      propertyPath: submergenceRange
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7093078686324562494, guid: ea4df7cb51be50b4e8042e416b0ddad1,
         type: 3}
@@ -17521,6 +17531,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1921468326}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1921468329
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921468328}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.84562683, y: 0.9, z: 0.64834976}
+  m_Center: {x: 0.016925812, y: 0.45, z: 0.07807541}
 --- !u!1001 &1921899718
 PrefabInstance:
   m_ObjectHideFlags: 0
