@@ -1936,7 +1936,7 @@ MonoBehaviour:
   maxJumpSpeed: 14.4
   SwimUpSpeed: 10
   SlowlyFloatDownSpeed: 2
-  SwimmingCouchSpeed: 5
+  SwimmingDownSpeed: 4
   DiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
@@ -1965,10 +1965,10 @@ MonoBehaviour:
     m_Bits: 16
   playerInputSpace: {fileID: 0}
   turnSmoothTime: 0.01
-  submergenceOffset: 1
-  submergenceRange: 1
-  waterDrag: 1
-  buoyancy: 1.2
+  submergenceOffset: 0.8
+  submergenceRange: 0.8
+  waterDrag: 2
+  buoyancy: 1.5
   swimThreshold: 1
   anim: {fileID: 0}
   CrouchOffsetY: 0.1
@@ -1982,6 +1982,7 @@ MonoBehaviour:
   canJump: 1
   Bounce: 0
   CanDive: 0
+  velocity: {x: 0, y: 0, z: 0}
   walkingPartical1: {fileID: 1569390576350669840}
   walkingPartical2: {fileID: 1569390578323801742}
   walkingPartical3: {fileID: 1569390576279674195}

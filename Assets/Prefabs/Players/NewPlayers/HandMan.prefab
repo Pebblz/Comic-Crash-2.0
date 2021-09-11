@@ -459,7 +459,7 @@ MonoBehaviour:
   maxJumpSpeed: 15
   SwimUpSpeed: 8
   SlowlyFloatDownSpeed: 2
-  SwimmingCouchSpeed: 4
+  SwimmingDownSpeed: 4
   DiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
@@ -505,6 +505,7 @@ MonoBehaviour:
   canJump: 1
   Bounce: 0
   CanDive: 0
+  velocity: {x: 0, y: 0, z: 0}
   walkingPartical1: {fileID: 6044490633680549245}
   walkingPartical2: {fileID: 6044490633389514723}
   walkingPartical3: {fileID: 6044490633491547198}

@@ -22,11 +22,12 @@ public class WaterDamage : MonoBehaviour
             timer -= Time.deltaTime;
         if (timer < 0)
         {
-            Player.GetComponent<PlayerHealth>().HurtPlayer(damage);
+            if (Player != null)
+                Player.GetComponent<PlayerHealth>().HurtPlayer(damage);
+
             startTimer = false;
             timer = 3;
-        }
-
+        }   
     }
     private void OnTriggerEnter(Collider col)
     {

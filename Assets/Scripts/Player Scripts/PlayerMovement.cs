@@ -92,9 +92,9 @@ public class PlayerMovement : MonoBehaviour
     public bool canJump = true;
     [HideInInspector]
     public bool Bounce = false;
-
     public bool CanDive = false;
-
+    [HideInInspector]
+    public Vector3 velocity;
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -125,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-    private Vector3 velocity;
+
 
     bool isCrouching;
     bool blobert;
@@ -338,33 +338,37 @@ public class PlayerMovement : MonoBehaviour
                 StopAnimation("Falling");
                 if (!blobert)
                 {
-                    if (!Input.GetButton("Jump") && !Input.GetButton("Crouch"))
+                    //If your not holding space or crouch
+                    if (playerInput.z == 0)
                     {
                         PlayAnimation("Sinking");
                         StopAnimation("SwimmingDown");
                         StopAnimation("SwimmingUp");
                         velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
-                    if (Input.GetButton("Crouch") && !Input.GetButtonDown("Jump"))
+                    //If your holding crouch
+                    if (playerInput.z < 0)
                     {
                         PlayAnimation("SwimmingDown");
                         StopAnimation("SwimmingUp");
                         StopAnimation("Sinking");
                         velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
-                    if (Input.GetButtonDown("Jump") && !Input.GetButtonDown("Crouch"))
-                    {
-                        PlayAnimation("SwimmingUp");
-                        StopAnimation("Sinking");
-                        StopAnimation("SwimmingDown");
-                        velocity += gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
-                    }
-                    if(playerInput.magnitude > 0 && !Input.GetButtonDown("Crouch"))
-                    {
-                        PlayAnimation("SwimmingUp");
-                        StopAnimation("Sinking");
-                        StopAnimation("SwimmingDown");
-                    }
+                        //If your holding space 
+                        if (playerInput.z > 0)
+                        {
+                            PlayAnimation("SwimmingUp");
+                            StopAnimation("Sinking");
+                            StopAnimation("SwimmingDown");
+                            velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                        }
+                        //If your moving left or right
+                        if (playerInput.x != 0 || playerInput.y != 0)
+                        {
+                            PlayAnimation("SwimmingUp");
+                            StopAnimation("Sinking");
+                            StopAnimation("SwimmingDown");
+                        }
                 }
                 else
                 {

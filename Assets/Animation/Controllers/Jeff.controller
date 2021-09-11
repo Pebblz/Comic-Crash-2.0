@@ -2383,18 +2383,6 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: Walk
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Jump
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Crouching
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Falling
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
     m_ConditionEvent: Sinking
     m_EventTreshold: 0
   - m_ConditionMode: 2
@@ -6282,9 +6270,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.39676565
   m_TransitionOffset: 0
-  m_ExitTime: 0.6875
+  m_ExitTime: 0.22391619
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 0
@@ -6608,7 +6596,7 @@ AnimatorStateMachine:
     m_Position: {x: -400, y: 1140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3955115639487137715}
-    m_Position: {x: -180, y: 950, z: 0}
+    m_Position: {x: -190, y: 950, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9055261117179111891}
     m_Position: {x: -1360, y: 1410, z: 0}
@@ -8199,7 +8187,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.053363733
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.000000018435895
   m_HasExitTime: 0
@@ -8939,8 +8927,8 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: 6236675008387607795}
   - {fileID: -2838901907129705323}
+  - {fileID: 6236675008387607795}
   - {fileID: 3144140593358280002}
   - {fileID: 2439849864091090871}
   - {fileID: -5387121415752856603}
@@ -9955,7 +9943,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.94949496
   m_HasExitTime: 0
