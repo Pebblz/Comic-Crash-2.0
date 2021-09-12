@@ -23,28 +23,27 @@ public class PlayerGroundPound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1")  && !pm.OnGround && !pm.Swimming)
+        if (Input.GetButtonDown("Fire1") && !pm.OnGround && !pm.Swimming)
         {
             GroundPounding = true;
             pm.CantMove = true;
             GroundPound();
         }
-        if (squishTime && pm.OnGround || squishTime && pm.OnGround && pm.OnMovingPlatform)
+        if (squishTime && pm.OnGround || squishTime && pm.OnGround)
         {
             StopAnimation("GroundPound");
             PlayAnimation("GroundPoundImpact");
-            if(!pm.OnMovingPlatform)
-                Squish();
+            Squish();
         }
-        
+
         //this is here to make sure he unSquishes
         //because if he jumps when he is unSquishing
         //he wont fully unSquish until he gets grounded again
-        if (doingSquish && !pm.OnGround && !pm.OnMovingPlatform)
+        if (doingSquish && !pm.OnGround)
         {
             Squish();
         }
-        if(pm.Swimming)
+        if (pm.Swimming)
         {
             StopAnimation("GroundPound");
             StopAnimation("GroundPoundImpact");

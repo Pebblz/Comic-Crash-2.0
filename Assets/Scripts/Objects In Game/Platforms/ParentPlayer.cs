@@ -9,18 +9,21 @@ public class ParentPlayer : MonoBehaviour
 
     [SerializeField, Range(.1f, 1f)]
     float CollisionOffset = .2f;
+
+    [SerializeField]
+    GameObject objectToParentTo;
     private void OnCollisionEnter(Collision col)
     {
 
         if (col.gameObject.tag == "Player" && !onlyOnTop)
         {
-            col.transform.parent = transform;
+            col.transform.parent = objectToParentTo.transform;
         }
         if(col.gameObject.tag == "Player" && onlyOnTop)
         {
            if( col.transform.position.y > transform.position.y + CollisionOffset)
             {
-                col.transform.parent = transform;
+                col.transform.parent = objectToParentTo.transform;
             }
             else if(col.transform.position.y < transform.position.y + CollisionOffset)
             {

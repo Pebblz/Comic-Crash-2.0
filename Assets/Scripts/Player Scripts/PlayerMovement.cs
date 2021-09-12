@@ -83,8 +83,6 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public GameObject LastWallJumpedOn;
     [HideInInspector]
-    public bool OnMovingPlatform;
-    [HideInInspector]
     public bool onBlock;
     [HideInInspector]
     public int jumpPhase;
@@ -128,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     bool isCrouching;
-    bool blobert;
+    bool blobert, handman;
     [Header("Particles")]
     [SerializeField] ParticleSystem walkingPartical1;
     [SerializeField] ParticleSystem walkingPartical2;
@@ -158,7 +156,10 @@ public class PlayerMovement : MonoBehaviour
         {
             blobert = true;
         }
-
+        if(GetComponent<HandMan>())
+        {
+            handman = true;
+        }
         OnValidate();
     }
     void Update()
@@ -503,8 +504,6 @@ public class PlayerMovement : MonoBehaviour
         EvaluateCollision(collision);
         if (LastWallJumpedOn == collision.gameObject)
             return;
-        if (collision.gameObject.tag == "MovingPlatForm")
-            OnMovingPlatform = true;
 
         foreach (ContactPoint contact in collision.contacts)
         {
@@ -524,11 +523,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "MovingPlatForm")
-            OnMovingPlatform = false;
-    }
     void OnCollisionStay(Collision collision)
     {
         EvaluateCollision(collision);
@@ -536,11 +530,6 @@ public class PlayerMovement : MonoBehaviour
             onBlock = true;
         else
             onBlock = false;
-
-        if (collision.gameObject.tag == "MovingPlatForm")
-            OnMovingPlatform = true;
-        else
-            OnMovingPlatform = false;
     }
     #endregion
     bool CheckSteepContacts()
@@ -759,19 +748,26 @@ public class PlayerMovement : MonoBehaviour
                 {
                     return;
                 }
-                if (jumpPhase == 1)
+                if (jumpPhase == 1 && !handman)
                 {
                     PlayAnimation("DoubleJump");
                 }
-
+                if(jumpPhase == 1 && handman)
+                {
+                    if(GetComponent<HandMan>().isHoldingOBJ)
+                    {
+                        return;
+                    }
+                    PlayAnimation("DoubleJump");
+                }
                 stepsSinceLastJump = 0;
                 jumpPhase += 1;
 
                 float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-                //if (InWater)
-                //{
-                //    jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-                //}
+                if (InWater)
+                {
+                    jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+                }
                 jumpDirection = (jumpDirection + upAxis).normalized;
                 float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
                 if (alignedSpeed > 0f)
