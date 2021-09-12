@@ -354,9 +354,8 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("Sinking");
                         velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
-                    //(water.GetComponent<Transform>().position.y * 2 - submergenceOffset - 7) > transform.position.y
                     //If your holding space 
-                    if (playerInput.z > 0 && Swimming)
+                    if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y) > transform.position.y)
                     {
                         PlayAnimation("SwimmingUp");
                         StopAnimation("Sinking");
@@ -676,7 +675,7 @@ public class PlayerMovement : MonoBehaviour
         float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
 
         //rotation
-        if (!Climbing && !CheckSteepContacts() && playerInput.magnitude > .1f)
+        if (!Climbing && !CheckSteepContacts() && playerInput.x != 0f || !Climbing && !CheckSteepContacts() && playerInput.y != 0f)
         {
             float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
 
@@ -711,17 +710,17 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Run");
             StopAnimation("Walk");
         }
-        if (Swimming)
-        {
+        //if (Swimming)
+        //{
 
-            float currentY = Vector3.Dot(relativeVelocity, upAxis);
-            float newY = Mathf.MoveTowards(currentY, playerInput.z * speed, maxSpeedChange);
-            velocity += upAxis * (newY - currentY);
-        }
+        //    float currentY = Vector3.Dot(relativeVelocity, upAxis);
+        //    float newY = Mathf.MoveTowards(currentY, playerInput.z * speed, maxSpeedChange);
+        //    velocity += upAxis * (newY - currentY);
+        //}
     }
     void Jump(Vector3 gravity)
     {
-        if (!Swimming || InWater)
+        if (!Swimming || !InWater)
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
             {
@@ -769,10 +768,10 @@ public class PlayerMovement : MonoBehaviour
                 jumpPhase += 1;
 
                 float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-                if (InWater)
-                {
-                    jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-                }
+                //if (InWater)
+                //{
+                //    jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+                //}
                 jumpDirection = (jumpDirection + upAxis).normalized;
                 float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
                 if (alignedSpeed > 0f)
