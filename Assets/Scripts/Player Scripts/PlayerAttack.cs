@@ -13,10 +13,14 @@ public class PlayerAttack : MonoBehaviour
     private bool AttackAgian;
     [HideInInspector] public bool CanAttack;
     HandMan handman;
+    Rigidbody body;
+    PlayerMovement movement;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        body = GetComponent<Rigidbody>();
+        movement = GetComponent<PlayerMovement>();
         if (GetComponent<HandMan>())
             handman = GetComponent<HandMan>();
     }
@@ -28,7 +32,7 @@ public class PlayerAttack : MonoBehaviour
         //this is so if the players in any of
         //the jump animation you can't attack
         if (!anim.GetBool("Jump"))
-        {
+        { // Ground Punch
             if (handman == null)
             {
                 if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
@@ -71,21 +75,65 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") || !anim.GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
+            {
+                // Air Punch
+                if (handman == null)
+                {
+                    if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                    {
+                        PunchAir();
+                    }
+                }
+                else
+                {
+                    if (!handman.isHoldingOBJ)
+                    {
+                        if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                        {
+                            PunchAir();
+                        }
+                    }
+                }
+            }
+        }
         #endregion
         //this is so the player can't swing around like a crazy person and kill everything around him
-        if (TimeTillAttackReset > 0 && GetComponent<PlayerMovement>().OnGround)
+        if (TimeTillAttackReset > 0 && movement.OnGround)
         {
-            GetComponent<PlayerMovement>().enabled = false;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            movement.enabled = false;
+            body.velocity = Vector3.zero;
         }
-        if (TimeTillAttackReset <= 0)
+
+        if (TimeTillAttackReset > 0 && !movement.OnGround)
         {
-            StopAnimation("Attack");
-            GetComponent<PlayerMovement>().enabled = true;
+            body.velocity = Vector3.zero;
+        }
+
+        if (TimeTillAttackReset <= 0 && movement.OnGround)
+        {
+            StopAnimationInt("Attack");
+            StopAnimationBool("AirAttack");
+            movement.enabled = true;
             AttacksPreformed = 1;
+        }
+        if (TimeTillAttackReset <= 0 && !movement.OnGround)
+        {
+            StopAnimationBool("AirAttack");
+            movement.PlayFallingAnimation();
         }
         TimeTillAttackReset -= Time.deltaTime;
         TimeTillnextAttack -= Time.deltaTime;
+    }
+    void PunchAir()
+    {
+        Instantiate(PunchHitBoxes[0], transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
+        PlayAnimation("AirAttack");
+        TimeTillAttackReset = .6f;
+        AttacksPreformed = 2;
+        TimeTillnextAttack = .1f;
     }
     void punch(int attackNumber)
     {
@@ -93,7 +141,9 @@ public class PlayerAttack : MonoBehaviour
             transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
 
         PlayAnimation("Attack", attackNumber);
+
         AttackAgian = false;
+
         //this is here to fix the end lag for his attack animations
         //---------------
         if (AttacksPreformed == 1)
@@ -119,12 +169,28 @@ public class PlayerAttack : MonoBehaviour
         anim.SetInteger(BoolName, AttackNumber);
     }
     /// <summary>
+    /// Call this for anytime you need to play an animation 
+    /// </summary>
+    /// <param name="animName"></param>
+    public void PlayAnimation(string BoolName)
+    {
+        anim.SetBool(BoolName, true);
+    }
+    /// <summary>
     /// Call this for anytime you need to stop an animation
     /// </summary>
     /// <param name="BoolName"></param>
-    public void StopAnimation(string BoolName)
+    public void StopAnimationInt(string BoolName)
     {
         anim.SetInteger(BoolName, 0);
+    }
+    /// <summary>
+    /// Call this for anytime you need to stop an animation
+    /// </summary>
+    /// <param name="BoolName"></param>
+    public void StopAnimationBool(string BoolName)
+    {
+        anim.SetBool(BoolName, false);
     }
     #endregion
 }
