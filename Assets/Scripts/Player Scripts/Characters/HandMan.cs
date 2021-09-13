@@ -46,7 +46,7 @@ public class HandMan : MonoBehaviour
                                 isHoldingOBJ = true;
                                 hit.collider.gameObject.GetComponent<PickUpables>().PickedUp(transform);
                                 PickUp = hit.collider.gameObject;
-                                pickUpTimer = 1;
+                                pickUpTimer = .7f;
                             }
                         }
                     }
@@ -68,13 +68,19 @@ public class HandMan : MonoBehaviour
             //this is for the throwing / droping logic
             if (Input.GetButtonDown("Fire1") && pickUpTimer < 0)
             {
-                PickUp.GetComponent<PickUpables>().DropInFront();
-                PickUp = null;
-                isHoldingOBJ = false;
+                if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
+                {
+                    PickUp.GetComponent<PickUpables>().DropInFront();
+                    PickUp = null;
+                    isHoldingOBJ = false;
+                }
             }
             if (Input.GetButtonDown("Fire2") && pickUpTimer <= 0)
             {
-                ThrowGameObject();
+                if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
+                {
+                    ThrowGameObject();
+                }
             }
         }
 
