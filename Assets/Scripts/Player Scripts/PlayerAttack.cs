@@ -7,7 +7,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] int AmountOfAttacks;
     [SerializeField] GameObject[] PunchHitBoxes;
     [SerializeField] float[] AttackTimers = new float[3];
-
+    [SerializeField] float[] MoveForward = new float[3];
     private Animator anim;
     private int AttacksPreformed = 1;
     private float TimeTillnextAttack;

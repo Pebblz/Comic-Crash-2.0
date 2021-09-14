@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     float SwimmingDownSpeed = 4f;
 
     [SerializeField, Range(10f, 50f), Tooltip("How fast you shoot forward when diving")]
-    float DiveSpeed = 10f;
+    float AirDiveSpeed = 10f;
 
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-
+    private bool OnFloor;
 
     bool isCrouching;
     bool blobert, handman;
@@ -484,7 +484,7 @@ public class PlayerMovement : MonoBehaviour
     #region Collision && triggers
     void OnTriggerEnter(Collider other)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0)
+        if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
         {
             EvaluateSubmergence(other);
             water = other;
@@ -493,7 +493,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0)
+        if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
         {
             EvaluateSubmergence(other);
             water = other;
@@ -501,6 +501,10 @@ public class PlayerMovement : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Floor")
+        {
+            OnFloor = true;
+        }
         EvaluateCollision(collision);
         if (LastWallJumpedOn == collision.gameObject)
             return;
@@ -523,8 +527,16 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Floor")
+        {
+            OnFloor = false;
+        }
+    }
     void OnCollisionStay(Collision collision)
     {
+       
         EvaluateCollision(collision);
         if (collision.gameObject.tag == "BuilderBlock")
             onBlock = true;
@@ -718,7 +730,7 @@ public class PlayerMovement : MonoBehaviour
             if (jumpPhase == maxAirJumps + 1 && CanDive)
             {
                 PlayAnimation("Dive");
-                Vector3 DiveDir = transform.forward * DiveSpeed;
+                Vector3 DiveDir = transform.forward * AirDiveSpeed;
                 velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
                 jumpPhase = 5;
             }
