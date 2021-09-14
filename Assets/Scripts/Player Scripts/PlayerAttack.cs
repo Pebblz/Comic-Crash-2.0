@@ -111,10 +111,10 @@ public class PlayerAttack : MonoBehaviour
             body.velocity = Vector3.zero;
         }
 
-        if (TimeTillAttackReset > 0 && !movement.OnGround)
-        {
-            body.velocity = new Vector3(body.velocity.x / 2, -1, body.velocity.z / 2);
-        }
+        //if (TimeTillAttackReset > 0 && !movement.OnGround)
+        //{
+        //    body.velocity = new Vector3(body.velocity.x / 2, -1, body.velocity.z / 2);
+        //}
 
         if (TimeTillAttackReset <= 0 && movement.OnGround)
         {
