@@ -257,6 +257,7 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("Sinking");
                     StopAnimation("SwimmingDown");
                     StopAnimation("SwimmingUp");
+                    StopAnimation("SwimLeftOrRight");
                     StopAnimation("Drowning");
                 }
                 isCrouching = Input.GetButton("Crouch");
