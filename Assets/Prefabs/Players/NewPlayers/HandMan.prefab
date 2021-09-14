@@ -460,7 +460,7 @@ MonoBehaviour:
   SwimUpSpeed: 8
   SlowlyFloatDownSpeed: 2
   SwimmingDownSpeed: 4
-  DiveSpeed: 10
+  AirDiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
   maxClimbAcceleration: 40
@@ -593,6 +593,11 @@ MonoBehaviour:
   - 0.5
   - 0.7
   - 0.85
+  AirAttackTimer: 0.5
+  MoveForward:
+  - 0
+  - 0
+  - 0
   CanAttack: 0
 --- !u!114 &-7128637376864548726
 MonoBehaviour:

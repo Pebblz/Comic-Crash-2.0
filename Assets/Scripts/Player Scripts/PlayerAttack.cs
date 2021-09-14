@@ -7,6 +7,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] int AmountOfAttacks;
     [SerializeField] GameObject[] PunchHitBoxes;
     [SerializeField] float[] AttackTimers = new float[3];
+    [SerializeField] float AirAttackTimer;
     [SerializeField] float[] MoveForward = new float[3];
     private Animator anim;
     private int AttacksPreformed = 1;
@@ -135,7 +136,7 @@ public class PlayerAttack : MonoBehaviour
     {
         Instantiate(PunchHitBoxes[0], transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
         PlayAnimation("AirAttack");
-        TimeTillAttackReset = .6f;
+        TimeTillAttackReset = AirAttackTimer;
         AttacksPreformed = 2;
         AirAttacked = true;
         TimeTillnextAttack = .1f;
