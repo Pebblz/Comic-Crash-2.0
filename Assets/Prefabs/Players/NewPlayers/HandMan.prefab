@@ -499,7 +499,6 @@ MonoBehaviour:
   CanWallJump: 0
   CantMove: 0
   LastWallJumpedOn: {fileID: 0}
-  OnMovingPlatform: 0
   onBlock: 0
   jumpPhase: 0
   canJump: 1
@@ -590,6 +589,10 @@ MonoBehaviour:
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
+  AttackTimers:
+  - 0.5
+  - 0.7
+  - 0.85
   CanAttack: 0
 --- !u!114 &-7128637376864548726
 MonoBehaviour:

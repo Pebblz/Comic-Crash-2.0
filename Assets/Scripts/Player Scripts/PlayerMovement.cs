@@ -340,13 +340,13 @@ public class PlayerMovement : MonoBehaviour
                 if (!blobert)
                 {
                     //If your not holding space or crouch
-                    if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
-                    {
-                        PlayAnimation("Sinking");
-                        StopAnimation("SwimmingDown");
-                        StopAnimation("SwimmingUp");
-                        velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
-                    }
+                    //if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
+                    //{
+                    //    PlayAnimation("Sinking");
+                    //    StopAnimation("SwimmingDown");
+                    //    StopAnimation("SwimmingUp");
+                    //    velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                    //}
                     //If your holding crouch
                     if (playerInput.z < 0)
                     {

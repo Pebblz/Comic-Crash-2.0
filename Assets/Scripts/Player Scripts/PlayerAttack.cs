@@ -6,12 +6,15 @@ public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] int AmountOfAttacks;
     [SerializeField] GameObject[] PunchHitBoxes;
+    [SerializeField] float[] AttackTimers = new float[3];
+
     private Animator anim;
     private int AttacksPreformed = 1;
     private float TimeTillnextAttack;
     private float TimeTillAttackReset;
     private bool AttackAgian;
     [HideInInspector] public bool CanAttack;
+    bool AirAttacked;
     HandMan handman;
     Rigidbody body;
     PlayerMovement movement;
@@ -109,7 +112,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (TimeTillAttackReset > 0 && !movement.OnGround)
         {
-            body.velocity = Vector3.zero;
+            body.velocity = new Vector3(body.velocity.x, -1, body.velocity.y);
         }
 
         if (TimeTillAttackReset <= 0 && movement.OnGround)
@@ -119,9 +122,10 @@ public class PlayerAttack : MonoBehaviour
             movement.enabled = true;
             AttacksPreformed = 1;
         }
-        if (TimeTillAttackReset <= 0 && !movement.OnGround)
+        if (TimeTillAttackReset <= 0 && !movement.OnGround && AirAttacked)
         {
             StopAnimationBool("AirAttack");
+            AirAttacked = false;
             movement.PlayFallingAnimation();
         }
         TimeTillAttackReset -= Time.deltaTime;
@@ -133,6 +137,7 @@ public class PlayerAttack : MonoBehaviour
         PlayAnimation("AirAttack");
         TimeTillAttackReset = .6f;
         AttacksPreformed = 2;
+        AirAttacked = true;
         TimeTillnextAttack = .1f;
     }
     void punch(int attackNumber)
@@ -148,11 +153,15 @@ public class PlayerAttack : MonoBehaviour
         //---------------
         if (AttacksPreformed == 1)
         {
-            TimeTillAttackReset = .6f;
+            TimeTillAttackReset = AttackTimers[0];
         }
-        else
+        if (AttacksPreformed == 2)
         {
-            TimeTillAttackReset = .85f;
+            TimeTillAttackReset = AttackTimers[1];
+        }
+        if (AttacksPreformed == 1)
+        {
+            TimeTillAttackReset = AttackTimers[2];
         }
         //---------------
         AttacksPreformed++;
