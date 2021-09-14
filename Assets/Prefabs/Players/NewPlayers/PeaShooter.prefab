@@ -1052,7 +1052,7 @@ MonoBehaviour:
   SwimUpSpeed: 8
   SlowlyFloatDownSpeed: 2
   SwimmingDownSpeed: 4
-  DiveSpeed: 30
+  AirDiveSpeed: 30
   maxAcceleration: 60
   maxAirAcceleration: 3
   maxClimbAcceleration: 40
@@ -1091,7 +1091,6 @@ MonoBehaviour:
   CanWallJump: 0
   CantMove: 0
   LastWallJumpedOn: {fileID: 0}
-  OnMovingPlatform: 0
   onBlock: 0
   jumpPhase: 0
   canJump: 1
