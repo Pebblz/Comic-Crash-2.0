@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-    private bool OnFloor;
+    private bool OnFloor, inWaterAndFloor;
 
     bool isCrouching;
     bool blobert, handman;
@@ -391,6 +391,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
+            if(!OnGround && inWaterAndFloor)
+            {
+                EvaluateSubmergence(water);
+            }
             if (OnGround)
                 body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
             body.velocity = velocity;
@@ -494,6 +498,11 @@ public class PlayerMovement : MonoBehaviour
             EvaluateSubmergence(other);
             water = other;
         }
+        if((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
+        {
+            inWaterAndFloor = true;
+            water = other;
+        }
     }
 
     void OnTriggerStay(Collider other)
@@ -501,6 +510,11 @@ public class PlayerMovement : MonoBehaviour
         if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
         {
             EvaluateSubmergence(other);
+            water = other;
+        }
+        if ((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
+        {
+            inWaterAndFloor = true;
             water = other;
         }
     }
@@ -579,6 +593,7 @@ public class PlayerMovement : MonoBehaviour
         {
             connectedBody = collider.attachedRigidbody;
         }
+        inWaterAndFloor = false;
     }
 
     void EvaluateCollision(Collision collision)
