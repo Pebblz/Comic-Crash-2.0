@@ -354,6 +354,7 @@ public class PlayerMovement : MonoBehaviour
                         PlayAnimation("SwimmingDown");
                         StopAnimation("SwimmingUp");
                         StopAnimation("Sinking");
+                        StopAnimation("SwimLeftOrRight");
                         velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
                     //If your holding space 
@@ -362,14 +363,16 @@ public class PlayerMovement : MonoBehaviour
                         PlayAnimation("SwimmingUp");
                         StopAnimation("Sinking");
                         StopAnimation("SwimmingDown");
+                        StopAnimation("SwimLeftOrRight");
                         velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
                     //If your moving left or right
                     if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)
                     {
-                        PlayAnimation("SwimmingUp");
+                        PlayAnimation("SwimLeftOrRight");
                         StopAnimation("Sinking");
                         StopAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
                     }
                 }
                 else
