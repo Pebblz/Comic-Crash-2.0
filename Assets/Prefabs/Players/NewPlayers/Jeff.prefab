@@ -1931,13 +1931,13 @@ MonoBehaviour:
   WalkSpeed: 5
   RunSpeed: 10
   maxClimbSpeed: 2
-  maxSwimSpeed: 5
+  maxSwimSpeed: 8
   slowDownSpeed: 0.2
   CrouchSpeed: 2
   maxJumpSpeed: 14.4
-  SwimUpSpeed: 4
+  SwimUpSpeed: 3.4
   SlowlyFloatDownSpeed: 1
-  SwimmingDownSpeed: 4
+  SwimmingDownSpeed: 1
   AirDiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
@@ -2005,12 +2005,12 @@ MonoBehaviour:
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   AttackTimers:
-  - 0.6
+  - 0.4
   - 0.85
   - 0.85
   MoveForward:
   - 0
-  - 5
+  - 0
   - 0
   CanAttack: 0
 --- !u!1 &7099164988006128948
