@@ -154,14 +154,17 @@ public class PlayerAttack : MonoBehaviour
         if (AttacksPreformed == 1)
         {
             TimeTillAttackReset = AttackTimers[0];
+            body.position += transform.forward * MoveForward[0] * Time.deltaTime;
         }
         if (AttacksPreformed == 2)
         {
             TimeTillAttackReset = AttackTimers[1];
+            body.position += transform.forward * MoveForward[1] * Time.deltaTime;
         }
         if (AttacksPreformed == 3)
         {
             TimeTillAttackReset = AttackTimers[2];
+            body.position += transform.forward * MoveForward[2] * Time.deltaTime;
         }
         //---------------
         AttacksPreformed++;
