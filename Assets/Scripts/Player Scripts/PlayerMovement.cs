@@ -336,6 +336,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (InWater)
             {
+                jumpPhase = 0;
                 StopAnimation("Falling");
                 if (!blobert)
                 {
