@@ -159,7 +159,7 @@ public class PlayerAttack : MonoBehaviour
         {
             TimeTillAttackReset = AttackTimers[1];
         }
-        if (AttacksPreformed == 1)
+        if (AttacksPreformed == 3)
         {
             TimeTillAttackReset = AttackTimers[2];
         }
