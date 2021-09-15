@@ -135,7 +135,7 @@ public class PlayerAttack : MonoBehaviour
     }
     void PunchAir()
     {
-        Instantiate(PunchHitBoxes[0], transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
+        Instantiate(PunchHitBoxes[0], transform.position +  transform.forward * 1.1f, Quaternion.identity);
         PlayAnimation("AirAttack");
         TimeTillAttackReset = AirAttackTimer;
         AttacksPreformed = 2;
