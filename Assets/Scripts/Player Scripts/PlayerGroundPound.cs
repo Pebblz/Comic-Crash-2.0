@@ -43,7 +43,7 @@ public class PlayerGroundPound : MonoBehaviour
         {
             Squish();
         }
-        if (pm.Swimming)
+        if (pm.Swimming || pm.inWaterAndFloor)
         {
             StopAnimation("GroundPound");
             StopAnimation("GroundPoundImpact");

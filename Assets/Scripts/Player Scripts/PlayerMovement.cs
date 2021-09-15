@@ -93,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
     public bool Bounce = false;
     public bool CanDive = false;
     [HideInInspector]
+    public bool inWaterAndFloor;
+    [HideInInspector]
     public Vector3 velocity;
     #endregion
     #region private fields
@@ -124,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-    private bool OnFloor, inWaterAndFloor;
+    private bool OnFloor;
 
     bool isCrouching;
     bool blobert, handman;
@@ -743,7 +745,8 @@ public class PlayerMovement : MonoBehaviour
         //------------------------
         velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
 
-        if (velocity.magnitude > 1f && !InWater)
+        if (velocity.x != 0 && !InWater || 
+            velocity.z != 0 && !InWater)
         {
             PlayAnimation("Walk");
             if (Isrunning)
