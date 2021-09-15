@@ -1935,9 +1935,13 @@ MonoBehaviour:
   slowDownSpeed: 0.2
   CrouchSpeed: 2
   maxJumpSpeed: 14.4
+  WalkUnderWaterSpeed: 2
+  RunUnderWaterSpeed: 4
   SwimUpSpeed: 3.4
   SlowlyFloatDownSpeed: 1
   SwimmingDownSpeed: 1
+  WalkAnimationSpeed: 0.3
+  RunAnimationSpeed: 0.3
   AirDiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
@@ -2014,6 +2018,7 @@ MonoBehaviour:
   - 0
   - 0
   CanAttack: 0
+  AirAttacked: 0
 --- !u!1 &7099164988006128948
 GameObject:
   m_ObjectHideFlags: 0
