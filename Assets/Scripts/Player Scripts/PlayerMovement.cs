@@ -225,12 +225,12 @@ public class PlayerMovement : MonoBehaviour
             playerInput.y = Input.GetAxis("Vertical");
             playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
             playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-            if (!isCrouching || InWater || Climbing || !OnGround)
+            if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
             {
                 StopAnimation("Crouching");
                 isCrouching = false;
             }
-            if (isCrouching && !InWater && !Climbing && OnGround)
+            if (isCrouching && !InWater && !Climbing && OnGround&& !inWaterAndFloor)
             {
                 PlayAnimation("Crouching");
                 CurrentSpeed = CrouchSpeed;
