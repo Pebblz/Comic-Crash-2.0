@@ -136,6 +136,10 @@ public class AIStates : MonoBehaviour
                 {
                     GetComponent<BullyAI>().Attack(player.position);
                 }
+                if(enemy == EnemyType.BasicEnemy)
+                {
+                    GetComponent<BasicEnemyAI>().Attack();
+                }
                 alreadyAttacked = true;
             }
         } else
@@ -159,6 +163,7 @@ public class AIStates : MonoBehaviour
     enum EnemyType
     {
         BullyAI,
+        BasicEnemy,
         None
     }
 
