@@ -15,7 +15,7 @@ public class PlayerAttack : MonoBehaviour
     private float TimeTillAttackReset;
     private bool AttackAgian;
     [HideInInspector] public bool CanAttack;
-    bool AirAttacked;
+    [HideInInspector] public bool AirAttacked;
     HandMan handman;
     Rigidbody body;
     PlayerMovement movement;

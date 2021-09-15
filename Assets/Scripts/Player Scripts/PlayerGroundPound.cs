@@ -23,12 +23,12 @@ public class PlayerGroundPound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Crouch") && !pm.OnGround && !pm.Swimming && !anim.GetCurrentAnimatorStateInfo(0).IsName("AirAttack"))
-        {
-            GroundPounding = true;
-            pm.CantMove = true;
-            GroundPound();
-        }
+            if (Input.GetButtonDown("Crouch") && !pm.OnGround && !pm.Swimming)
+            {
+                GroundPounding = true;
+                pm.CantMove = true;
+                GroundPound();
+            }
         if (squishTime && pm.OnGround || squishTime && pm.OnGround)
         {
             StopAnimation("GroundPound");
