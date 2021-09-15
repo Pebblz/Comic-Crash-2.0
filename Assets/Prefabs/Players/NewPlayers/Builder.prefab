@@ -1226,8 +1226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e39ea96e8380f40baf73a71cddf117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 3
-  RunSpeed: 6
+  WalkSpeed: 4
+  RunSpeed: 7
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
@@ -1236,7 +1236,7 @@ MonoBehaviour:
   SwimUpSpeed: 10
   SlowlyFloatDownSpeed: 2
   SwimmingDownSpeed: 4
-  DiveSpeed: 10
+  AirDiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
   maxClimbAcceleration: 40
@@ -1275,7 +1275,6 @@ MonoBehaviour:
   CanWallJump: 0
   CantMove: 0
   LastWallJumpedOn: {fileID: 0}
-  OnMovingPlatform: 0
   onBlock: 0
   jumpPhase: 0
   canJump: 1

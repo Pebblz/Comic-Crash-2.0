@@ -2386,7 +2386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WalkSpeed: 3.5
-  RunSpeed: 6.5
+  RunSpeed: 7.5
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
@@ -2394,8 +2394,8 @@ MonoBehaviour:
   maxJumpSpeed: 13.5
   SwimUpSpeed: 6
   SlowlyFloatDownSpeed: 2
-  SwimmingCouchSpeed: 2
-  DiveSpeed: 10
+  SwimmingDownSpeed: 4
+  AirDiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
   maxClimbAcceleration: 40
@@ -2434,12 +2434,12 @@ MonoBehaviour:
   CanWallJump: 0
   CantMove: 0
   LastWallJumpedOn: {fileID: 0}
-  OnMovingPlatform: 0
   onBlock: 0
   jumpPhase: 0
   canJump: 1
   Bounce: 0
   CanDive: 0
+  velocity: {x: 0, y: 0, z: 0}
   walkingPartical1: {fileID: 3431810257052248293}
   walkingPartical2: {fileID: 3431810258925503099}
   walkingPartical3: {fileID: 3431810256880064934}
