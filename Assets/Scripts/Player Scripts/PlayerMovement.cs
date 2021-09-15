@@ -747,7 +747,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = false;
             }
-            if (jumpPhase == maxAirJumps + 1 && CanDive)
+            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f || 
+                jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f)
             {
                 PlayAnimation("Dive");
                 Vector3 DiveDir = transform.forward * AirDiveSpeed;
