@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     #region serializedFields
     [Header("Speed / Pat varibles")]
     [SerializeField, Range(0f, 100f)]
-    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15;
+    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15, WalkUnderWaterSpeed = 5f, RunUnderWaterSpeed = 8f;
 
     [SerializeField, Range(1f, 20f), Tooltip("How fast you swim up when holding jump button")]
     float SwimUpSpeed = 4f;
@@ -17,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField, Range(1f, 20f), Tooltip("How fast you go down when Crouching")]
     float SwimmingDownSpeed = 4f;
-
+    [SerializeField, Range(.1f, 1), Tooltip("The speed of underwater Animations")]
+    float WalkAnimationSpeed = .5f, RunAnimationSpeed = .5f;
     [SerializeField, Range(10f, 50f), Tooltip("How fast you shoot forward when diving")]
     float AirDiveSpeed = 10f;
 
@@ -268,13 +269,31 @@ public class PlayerMovement : MonoBehaviour
                 Isrunning = Input.GetButton("Run");
 
             }
-            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+            if (!inWaterAndFloor)
             {
-                CurrentSpeed = RunSpeed;
+                if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+                {
+                    CurrentSpeed = RunSpeed;
+                    SetAnimatorFloat("RunMultiplier", 1);
+                }
+                if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+                {
+                    CurrentSpeed = WalkSpeed;
+                    SetAnimatorFloat("WalkMultiplier", 1);
+                }
             }
-            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+            else
             {
-                CurrentSpeed = WalkSpeed;
+                if (Isrunning && !isCrouching && !CheckSteepContacts())
+                {
+                    CurrentSpeed = RunUnderWaterSpeed;
+                    SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
+                }
+                if (!Isrunning && !isCrouching || CheckSteepContacts())
+                {
+                    CurrentSpeed = WalkUnderWaterSpeed;
+                    SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
+                }
             }
             if (isCrouching)
             {
@@ -344,13 +363,14 @@ public class PlayerMovement : MonoBehaviour
                 if (!blobert)
                 {
                     //If your not holding space or crouch
-                    //if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
-                    //{
-                    //    PlayAnimation("Sinking");
-                    //    StopAnimation("SwimmingDown");
-                    //    StopAnimation("SwimmingUp");
-                    //    velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
-                    //}
+                    if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
+                    {
+                        PlayAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
+                        StopAnimation("SwimLeftOrRight");
+                        //velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
                     //If your holding crouch
                     if (playerInput.z < 0)
                     {
@@ -518,6 +538,13 @@ public class PlayerMovement : MonoBehaviour
         {
             inWaterAndFloor = true;
             water = other;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if ((waterMask & (1 << other.gameObject.layer)) != 0)
+        {
+            inWaterAndFloor = false;
         }
     }
     void OnCollisionEnter(Collision collision)
@@ -890,6 +917,10 @@ public class PlayerMovement : MonoBehaviour
     public void StopAnimation(string BoolName)
     {
         anim.SetBool(BoolName, false);
+    }
+    public void SetAnimatorFloat(string FloatName, float speed)
+    {
+        anim.SetFloat(FloatName, speed);
     }
     public void PlayFallingAnimation()
     {
