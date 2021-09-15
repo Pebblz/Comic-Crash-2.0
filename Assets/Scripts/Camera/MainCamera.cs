@@ -83,6 +83,7 @@ public class MainCamera : MonoBehaviour
         {
             rigidbody.freezeRotation = true;
         }
+        RenderSettings.fog = false;
     }
 
     void LateUpdate()
@@ -197,6 +198,29 @@ public class MainCamera : MonoBehaviour
             {
                 transform.LookAt(target);
             }
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 4)
+        {
+            RenderSettings.fog = true;
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == 4)
+        {
+            RenderSettings.fog = true;
+        }
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 4)
+        {
+            RenderSettings.fog = false;
         }
     }
     public void Shake(float duration, float strength)
