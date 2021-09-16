@@ -2392,9 +2392,13 @@ MonoBehaviour:
   slowDownSpeed: 0.2
   CrouchSpeed: 3
   maxJumpSpeed: 13.5
-  SwimUpSpeed: 6
+  WalkUnderWaterSpeed: 5
+  RunUnderWaterSpeed: 8
+  SwimUpSpeed: 2
   SlowlyFloatDownSpeed: 2
   SwimmingDownSpeed: 4
+  WalkAnimationSpeed: 0.5
+  RunAnimationSpeed: 0.5
   AirDiveSpeed: 10
   maxAcceleration: 60
   maxAirAcceleration: 3
@@ -2439,6 +2443,7 @@ MonoBehaviour:
   canJump: 1
   Bounce: 0
   CanDive: 0
+  inWaterAndFloor: 0
   velocity: {x: 0, y: 0, z: 0}
   walkingPartical1: {fileID: 3431810257052248293}
   walkingPartical2: {fileID: 3431810258925503099}
