@@ -47,15 +47,15 @@ public class Trampoline : MonoBehaviour
             squishTime = true;
         }
     }
-    void OnTriggerStay(Collider other)
-    {
-        Rigidbody body = other.attachedRigidbody;
-        if (body && !other.gameObject.GetComponent<BlobBert>())
-        {
-            Accelerate(body);
-            other.gameObject.GetComponent<PlayerMovement>().PlayJumpAnimation();
-        }
-    }
+    //void OnTriggerStay(Collider other)
+    //{
+    //    Rigidbody body = other.attachedRigidbody;
+    //    if (body && !other.gameObject.GetComponent<BlobBert>())
+    //    {
+    //        Accelerate(body);
+    //        other.gameObject.GetComponent<PlayerMovement>().PlayJumpAnimation();
+    //    }
+    //}
 
     void Accelerate(Rigidbody body)
     {

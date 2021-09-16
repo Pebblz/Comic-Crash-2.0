@@ -25,6 +25,12 @@ public class NPCTalkable : MonoBehaviour
 
     bool talking = false;
 
+    DialogueManager manager;
+    private void Start()
+    {
+        manager = FindObjectOfType<DialogueManager>();
+    }
+
     private void Update()
     {
         if (ways == WaysToStartConversation.GetClose)
@@ -38,17 +44,28 @@ public class NPCTalkable : MonoBehaviour
             {
                 if (Vector3.Distance(transform.position, player.transform.position) < Talkdistance)
                 {
-                    if (Input.GetKeyDown(KeyCode.Q) && !talking)
+                    if (Input.GetButtonDown("Interact") && !talking)
                     {
                         TriggerDialogue();
                     }
                     //this is a way for the player to skip dialogue if he's talking to the npc
-                    if (Input.GetKeyDown(KeyCode.Escape) && talking)
+                    if (Input.GetButtonDown("Pause") && talking)
                     {
                         EndDialogue();
                     }
+                    //return means enter
+                    if (talking && Input.GetKeyDown(KeyCode.Return))
+                    {
+                        manager.DisplayNextSentence();
+                    }
+                }
+                else
+                {
+                    talking = false;
                 }
             }
+
+
         }
     }
     public void DoneTalking()
@@ -56,7 +73,7 @@ public class NPCTalkable : MonoBehaviour
         if (!GavePlayerAlready)
             GivePlayerItem();
 
-        player.GetComponent<PlayerMovement>().enabled = true;
+        player.GetComponent<PlayerMovement>().CantMove = false;
         talking = false;
     }
     /// <summary>
@@ -65,9 +82,9 @@ public class NPCTalkable : MonoBehaviour
     public void TriggerDialogue()
     {
         talking = true;
-        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
-        FindObjectOfType<DialogueManager>().NPC = this.gameObject;
-        player.GetComponent<PlayerMovement>().enabled = false;
+        manager.StartDialogue(dialogue);
+        manager.NPC = this.gameObject;
+        player.GetComponent<PlayerMovement>().CantMove = true;
     }
     public void EndDialogue()
     {
@@ -75,7 +92,8 @@ public class NPCTalkable : MonoBehaviour
             GivePlayerItem();
 
         talking = false;
-        FindObjectOfType<DialogueManager>().EndDialogue();
+        manager.EndDialogue();
+        player.GetComponent<PlayerMovement>().CantMove = false;
     }
     void GivePlayerItem()
     {

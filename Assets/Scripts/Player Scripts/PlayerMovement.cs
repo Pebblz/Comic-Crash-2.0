@@ -553,15 +553,18 @@ public class PlayerMovement : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor")
+        if (!blobert)
         {
-            OnFloor = true;
-        }
-        if(collision.gameObject.tag == "WalkableUnderWater")
-        {
-            if (collision.gameObject.transform.GetChild(0).GetComponent<UnderWaterSurfaces>().walkingOn)
+            if (collision.gameObject.tag == "Floor")
             {
                 OnFloor = true;
+            }
+            if (collision.gameObject.tag == "WalkableUnderWater")
+            {
+                if (collision.gameObject.transform.GetChild(0).GetComponent<UnderWaterSurfaces>().walkingOn)
+                {
+                    OnFloor = true;
+                }
             }
         }
         EvaluateCollision(collision);
