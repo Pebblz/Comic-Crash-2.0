@@ -450,16 +450,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e39ea96e8380f40baf73a71cddf117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 4
-  RunSpeed: 8
+  WalkSpeed: 4.5
+  RunSpeed: 8.5
   maxClimbSpeed: 2
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
   CrouchSpeed: 2
   maxJumpSpeed: 15
-  onBelt: 0
+  SwimUpSpeed: 8
+  SlowlyFloatDownSpeed: 2
+  SwimmingDownSpeed: 4
+  AirDiveSpeed: 10
   maxAcceleration: 60
-  maxAirAcceleration: 20
+  maxAirAcceleration: 3
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
   jumpHeight: 10
@@ -469,8 +472,8 @@ MonoBehaviour:
   maxClimbAngle: 140
   maxSnapSpeed: 100
   probeDistance: 1
-  wallJumpSpeed: 3
-  WallJumpIntensifire: 2
+  wallJumpSpeed: 6
+  WallJumpIntensifire: 1.5
   probeMask:
     serializedVersion: 2
     m_Bits: 35
@@ -485,20 +488,27 @@ MonoBehaviour:
     m_Bits: 16
   playerInputSpace: {fileID: 0}
   turnSmoothTime: 0.01
-  submergenceOffset: 0.67
+  submergenceOffset: 1
   submergenceRange: 1
   waterDrag: 1
-  buoyancy: 2.2
+  buoyancy: 1.2
   swimThreshold: 1
   anim: {fileID: 375778916001974254}
+  CrouchOffsetY: 0.1
+  onBelt: 0
   CanWallJump: 0
   CantMove: 0
+  LastWallJumpedOn: {fileID: 0}
   onBlock: 0
   jumpPhase: 0
   canJump: 1
   Bounce: 0
-  CrouchOffsetY: 0.1
-  LastWallJumpedOn: {fileID: 0}
+  CanDive: 0
+  velocity: {x: 0, y: 0, z: 0}
+  walkingPartical1: {fileID: 6044490633680549245}
+  walkingPartical2: {fileID: 6044490633389514723}
+  walkingPartical3: {fileID: 6044490633491547198}
+  walkingPartical4: {fileID: 6044490633214130655}
 --- !u!54 &375778916001974160
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -579,6 +589,15 @@ MonoBehaviour:
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
+  AttackTimers:
+  - 0.5
+  - 0.7
+  - 0.85
+  AirAttackTimer: 0.5
+  MoveForward:
+  - 0
+  - 0
+  - 0
   CanAttack: 0
 --- !u!114 &-7128637376864548726
 MonoBehaviour:
@@ -4098,6 +4117,30 @@ PrefabInstance:
 --- !u!4 &6044490634208964875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8432600094113097603, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2802581675844441736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6044490633680549245 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094641906677, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2802581675844441736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6044490633389514723 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094840293739, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2802581675844441736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6044490633491547198 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094738125494, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2802581675844441736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6044490633214130655 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094982631255, guid: 8b1342aa52b91ac40b422de484c92cac,
     type: 3}
   m_PrefabInstance: {fileID: 2802581675844441736}
   m_PrefabAsset: {fileID: 0}

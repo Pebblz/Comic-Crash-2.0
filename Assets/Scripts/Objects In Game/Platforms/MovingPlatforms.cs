@@ -188,7 +188,8 @@ public class MovingPlatforms : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
 
-        if (col.gameObject.tag == "Player" && StepOnToActivate)
+        if (col.gameObject.tag == "Player" && StepOnToActivate 
+            && col.transform.position.y > transform.position.y)
         {
             isSteppedOn = true;
         }

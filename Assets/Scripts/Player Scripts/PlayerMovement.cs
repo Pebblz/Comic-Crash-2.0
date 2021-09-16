@@ -5,10 +5,23 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     #region serializedFields
-    [Header("Speed")]
+    [Header("Speed / Pat varibles")]
     [SerializeField, Range(0f, 100f)]
-    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15;
-    public bool onBelt;
+    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15, WalkUnderWaterSpeed = 5f, RunUnderWaterSpeed = 8f;
+
+    [SerializeField, Range(1f, 20f), Tooltip("How fast you swim up when holding jump button")]
+    float SwimUpSpeed = 4f;
+
+    [SerializeField, Range(1f, 20f), Tooltip("How fast you float down when holding no button")]
+    float SlowlyFloatDownSpeed = 4f;
+
+    [SerializeField, Range(1f, 20f), Tooltip("How fast you go down when Crouching")]
+    float SwimmingDownSpeed = 4f;
+    [SerializeField, Range(.1f, 1), Tooltip("The speed of underwater Animations")]
+    float WalkAnimationSpeed = .5f, RunAnimationSpeed = .5f;
+    [SerializeField, Range(10f, 50f), Tooltip("How fast you shoot forward when diving")]
+    float AirDiveSpeed = 10f;
+
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
@@ -29,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     float wallJumpSpeed;
     [SerializeField, Range(1.5f, 5f)]
     float WallJumpIntensifire = 2f;
+
     [Header("Layers"), Space(2)]
     [SerializeField]
     LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
@@ -45,20 +59,43 @@ public class PlayerMovement : MonoBehaviour
     float submergenceOffset = 0.5f;
     [SerializeField, Min(0.1f)]
     float submergenceRange = 1f;
-    [SerializeField, Range(0f, 10f)]
+    [SerializeField, Range(0f, 20f)]
     float waterDrag = 1f;
     [SerializeField, Min(0f)]
     float buoyancy = 1f;
     [SerializeField, Range(0.01f, 1f)]
     float swimThreshold = 0.5f;
+
     [Header("Animator"), Space(5)]
     [SerializeField]
     Animator anim;
+
+
+    [Header("Offsets")]
+    [SerializeField, Range(0, .5f)]
+    float CrouchOffsetY = .1f;
+
+    [HideInInspector]
+    public bool onBelt;
     [HideInInspector]
     public bool CanWallJump;
     [HideInInspector]
     public bool CantMove;
-
+    [HideInInspector]
+    public GameObject LastWallJumpedOn;
+    [HideInInspector]
+    public bool onBlock;
+    [HideInInspector]
+    public int jumpPhase;
+    [HideInInspector]
+    public bool canJump = true;
+    [HideInInspector]
+    public bool Bounce = false;
+    public bool CanDive = false;
+    [HideInInspector]
+    public bool inWaterAndFloor;
+    [HideInInspector]
+    public Vector3 velocity;
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -68,18 +105,12 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;
     public bool OnGround => groundContactCount > 0;
-    public bool onBlock;
-    bool Swimming => submergence >= swimThreshold;
+
+    public bool Swimming => submergence >= swimThreshold;
     float submergence;
     bool InWater => submergence > 0f;
-    //[HideInInspector]
-    public int jumpPhase;
-    [HideInInspector]
-    public bool canJump = true;
 
-    [HideInInspector]
-    public bool Bounce = false;
-
+    Collider water;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
     int groundContactCount, steepContactCount, climbContactCount;
@@ -95,14 +126,15 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-    private Vector3 velocity;
-    [Header("Offsets")]
-    [SerializeField, Range(0, .5f)]
-    float CrouchOffsetY = .1f;
+    private bool OnFloor;
+
     bool isCrouching;
-    public GameObject LastWallJumpedOn;
-    [HideInInspector]
-    public bool OnMovingPlatform;
+    bool blobert, handman;
+    [Header("Particles")]
+    [SerializeField] ParticleSystem walkingPartical1;
+    [SerializeField] ParticleSystem walkingPartical2;
+    [SerializeField] ParticleSystem walkingPartical3;
+    [SerializeField] ParticleSystem walkingPartical4;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -123,6 +155,14 @@ public class PlayerMovement : MonoBehaviour
         }
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
+        if (GetComponent<BlobBert>())
+        {
+            blobert = true;
+        }
+        if(GetComponent<HandMan>())
+        {
+            handman = true;
+        }
         OnValidate();
     }
     void Update()
@@ -130,19 +170,38 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
-            if(OnGround)
+            if (OnGround)
             {
                 FallTimer = 2;
+                if (walkingPartical1 != null && walkingPartical1.isStopped)
+                    walkingPartical1.Play();
+                if (walkingPartical2 != null && walkingPartical2.isStopped)
+                    walkingPartical2.Play();
+                if (walkingPartical3 != null && walkingPartical3.isStopped)
+                    walkingPartical3.Play();
+                if (walkingPartical4 != null && walkingPartical4.isStopped)
+                    walkingPartical4.Play();
             }
             else
             {
                 FallTimer -= Time.deltaTime;
+                if (walkingPartical1 != null && walkingPartical1.isPlaying)
+                    walkingPartical1.Stop();
+                if (walkingPartical2 != null && walkingPartical2.isPlaying)
+                    walkingPartical2.Stop();
+                if (walkingPartical3 != null && walkingPartical3.isPlaying)
+                    walkingPartical3.Stop();
+                if (walkingPartical4 != null && walkingPartical4.isPlaying)
+                    walkingPartical4.Stop();
             }
             if (OnGround && !Bounce)
             {
                 canJump = true;
                 CanWallJump = true;
-                if(jumpPhase > 0 && !desiredJump)
+                if (CanDive)
+                    StopAnimation("Dive");
+
+                if (jumpPhase > 0 && !desiredJump)
                 {
                     PlayAnimation("IsLanded");
                 }
@@ -154,11 +213,11 @@ public class PlayerMovement : MonoBehaviour
                 }
                 LastWallJumpedOn = null;
             }
-            if(anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !Swimming && !InWater)
             {
                 PlayFallingAnimation();
             }
-            if(!OnGround || jumpPhase == 0)
+            if (!OnGround || jumpPhase == 0)
             {
                 StopAnimation("IsLanded");
             }
@@ -168,12 +227,12 @@ public class PlayerMovement : MonoBehaviour
             playerInput.y = Input.GetAxis("Vertical");
             playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
             playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-            if (!isCrouching || InWater || Climbing || !OnGround)
+            if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
             {
                 StopAnimation("Crouching");
                 isCrouching = false;
             }
-            if (isCrouching && !InWater && !Climbing && OnGround)
+            if (isCrouching && !InWater && !Climbing && OnGround&& !inWaterAndFloor)
             {
                 PlayAnimation("Crouching");
                 CurrentSpeed = CrouchSpeed;
@@ -192,22 +251,51 @@ public class PlayerMovement : MonoBehaviour
             if (Swimming)
             {
                 desiresClimbing = false;
+
             }
             else
             {
-                isCrouching = Input.GetButton("Crouch");
+                if (!InWater)
+                {
+                    StopAnimation("Sinking");
+                    StopAnimation("SwimmingDown");
+                    StopAnimation("SwimmingUp");
+                    StopAnimation("SwimLeftOrRight");
+                    StopAnimation("Drowning");
+                }
+                if(OnGround)
+                    isCrouching = Input.GetButton("Crouch");
+
                 desiredJump |= Input.GetButtonDown("Jump");
                 desiresClimbing = Input.GetButton("Climb");
                 Isrunning = Input.GetButton("Run");
 
             }
-            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+            if (!inWaterAndFloor)
             {
-                CurrentSpeed = RunSpeed;
+                if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+                {
+                    CurrentSpeed = RunSpeed;
+                    SetAnimatorFloat("RunMultiplier", 1);
+                }
+                if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+                {
+                    CurrentSpeed = WalkSpeed;
+                    SetAnimatorFloat("WalkMultiplier", 1);
+                }
             }
-            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+            else
             {
-                CurrentSpeed = WalkSpeed;
+                if (Isrunning && !isCrouching && !CheckSteepContacts())
+                {
+                    CurrentSpeed = RunUnderWaterSpeed;
+                    SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
+                }
+                if (!Isrunning && !isCrouching || CheckSteepContacts())
+                {
+                    CurrentSpeed = WalkUnderWaterSpeed;
+                    SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
+                }
             }
             if (isCrouching)
             {
@@ -246,6 +334,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
+
             Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
             UpdateState();
 
@@ -257,7 +346,6 @@ public class PlayerMovement : MonoBehaviour
 
             if (desiredJump)
             {
-
                 PlayAnimation("Jump");
                 Jump(gravity);
                 desiredJump = false;
@@ -272,13 +360,51 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (InWater)
             {
-                if (!Input.GetKey(KeyCode.Space))
+                jumpPhase = 0;
+                StopAnimation("Falling");
+                if (!blobert)
                 {
-                    velocity -= gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                    //If your not holding space or crouch
+                    if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
+                    {
+                        PlayAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
+                        StopAnimation("SwimLeftOrRight");
+                        //velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
+                    //If your holding crouch
+                    if (playerInput.z < 0)
+                    {
+                        PlayAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimLeftOrRight");
+                        velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
+                    //If your holding space 
+                    if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y) > transform.position.y)
+                    {
+                        PlayAnimation("SwimmingUp");
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        StopAnimation("SwimLeftOrRight");
+                        velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
+                    //If your moving left or right
+                    if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)
+                    {
+                        PlayAnimation("SwimLeftOrRight");
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
+                    }
                 }
-                if (Input.GetKey(KeyCode.Space))
+                else
                 {
-                    velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+                    PlayAnimation("Drowning");
+                    if (Swimming)
+                        velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                 }
             }
             else if (desiresClimbing && OnGround)
@@ -289,7 +415,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
-            if(OnGround)
+            if(!OnGround && inWaterAndFloor)
+            {
+                EvaluateSubmergence(water);
+            }
+            if (OnGround)
                 body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
             body.velocity = velocity;
         }
@@ -387,37 +517,69 @@ public class PlayerMovement : MonoBehaviour
     #region Collision && triggers
     void OnTriggerEnter(Collider other)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0)
+        if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
         {
             EvaluateSubmergence(other);
+            water = other;
+        }
+        if((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
+        {
+            inWaterAndFloor = true;
+            water = other;
         }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0)
+        if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
         {
             EvaluateSubmergence(other);
+            water = other;
         }
+        if ((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
+        {
+            inWaterAndFloor = true;
+            water = other;
+        }
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if ((waterMask & (1 << other.gameObject.layer)) != 0)
+        {
+            inWaterAndFloor = false;
+        }
+
     }
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Floor")
+        {
+            OnFloor = true;
+        }
+        if(collision.gameObject.tag == "WalkableUnderWater")
+        {
+            if (collision.gameObject.transform.GetChild(0).GetComponent<UnderWaterSurfaces>().walkingOn)
+            {
+                OnFloor = true;
+            }
+        }
         EvaluateCollision(collision);
-        //if (LastWallJumpedOn == collision.gameObject)
-        //    return;
-        if (collision.gameObject.tag == "MovingPlatForm")
-            OnMovingPlatform = true;
+        if (LastWallJumpedOn == collision.gameObject)
+            return;
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject && Input.GetButton("Jump") && collision.gameObject.layer != 9 && CanWallJump)
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
+                Input.GetButton("Jump") && collision.gameObject.layer != 9 &&
+                collision.gameObject.layer != 10 && CanWallJump)
             {
                 Vector3 _velocity = contact.normal;
 
                 _velocity.y = jumpHeight * WallJumpIntensifire;
 
-                body.velocity = new Vector3(_velocity.x * (RunSpeed * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (RunSpeed * wallJumpSpeed));
+                body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
+                    _velocity.y, _velocity.z * (4 * wallJumpSpeed));
 
                 PreventSnapToGround();
                 LastWallJumpedOn = collision.gameObject;
@@ -426,21 +588,23 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag == "MovingPlatForm")
-            OnMovingPlatform = false;
+        if (collision.gameObject.tag == "Floor")
+        {
+            OnFloor = false;
+        }
+        if (collision.gameObject.tag == "WalkableUnderWater")
+        {
+            OnFloor = false;
+        }
     }
     void OnCollisionStay(Collision collision)
     {
+       
         EvaluateCollision(collision);
         if (collision.gameObject.tag == "BuilderBlock")
             onBlock = true;
         else
             onBlock = false;
-
-        if (collision.gameObject.tag == "MovingPlatForm")
-            OnMovingPlatform = true;
-        else
-            OnMovingPlatform = false;
     }
     #endregion
     bool CheckSteepContacts()
@@ -473,6 +637,7 @@ public class PlayerMovement : MonoBehaviour
         {
             connectedBody = collider.attachedRigidbody;
         }
+        inWaterAndFloor = false;
     }
 
     void EvaluateCollision(Collision collision)
@@ -575,7 +740,7 @@ public class PlayerMovement : MonoBehaviour
         float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
 
         //rotation
-        if (!Climbing && !CheckSteepContacts() && playerInput.magnitude > .1f)
+        if (!Climbing && !CheckSteepContacts() && playerInput.x != 0f || !Climbing && !CheckSteepContacts() && playerInput.y != 0f)
         {
             float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
 
@@ -593,92 +758,111 @@ public class PlayerMovement : MonoBehaviour
         //------------------------
         velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
 
-        if (velocity.magnitude > 1f && !InWater)
+        if (velocity.x != 0 && !InWater || 
+            velocity.z != 0 && !InWater)
         {
-            //if (velocity.y < .1f)
-            //{
-                PlayAnimation("Walk");
-                if (Isrunning)
-                {
-                    PlayAnimation("Run");
-                }
-                else
-                {
-                    StopAnimation("Run");
-                }
-            //}
+            PlayAnimation("Walk");
+            if (Isrunning)
+            {
+                PlayAnimation("Run");
+            }
+            else
+            {
+                StopAnimation("Run");
+            }
         }
         if (InWater || velocity.magnitude < 1f)
         {
             StopAnimation("Run");
             StopAnimation("Walk");
         }
-        if (Swimming)
-        {
+        //if (Swimming)
+        //{
 
-            float currentY = Vector3.Dot(relativeVelocity, upAxis);
-            float newY = Mathf.MoveTowards(currentY, playerInput.z * speed, maxSpeedChange);
-            velocity += upAxis * (newY - currentY);
-        }
+        //    float currentY = Vector3.Dot(relativeVelocity, upAxis);
+        //    float newY = Mathf.MoveTowards(currentY, playerInput.z * speed, maxSpeedChange);
+        //    velocity += upAxis * (newY - currentY);
+        //}
     }
     void Jump(Vector3 gravity)
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
+        if (!Swimming || !InWater)
         {
-            canJump = false;
-        }
-        if (canJump)
-        {
-            Vector3 jumpDirection;
-            if (OnGround)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
             {
-                jumpDirection = contactNormal;
+                canJump = false;
             }
-            else if (OnSteep)
+            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f || 
+                jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f)
             {
-                jumpDirection = steepNormal;
-                jumpPhase = 1;
-            }
-            else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
-            {
-                if (jumpPhase == 0)
-                {
-                    jumpPhase = 1;
-                }
-                jumpDirection = contactNormal;
-            }
-            else
-            {
-                return;
-            }
-            if (jumpPhase == 1)
-            {
-                PlayAnimation("DoubleJump");
+                PlayAnimation("Dive");
+                Vector3 DiveDir = transform.forward * AirDiveSpeed;
+                velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
+                jumpPhase = 5;
             }
 
-            stepsSinceLastJump = 0;
-            jumpPhase += 1;
-            float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-            if (InWater)
+            if (canJump)
             {
-                jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-            }
-            jumpDirection = (jumpDirection + upAxis).normalized;
-            float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
-            if (alignedSpeed > 0f)
-            {
-                if (jumpPhase == 0)
-                    jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                StopAnimation("Dive");
+                Vector3 jumpDirection;
+                if (OnGround)
+                {
+                    jumpDirection = contactNormal;
+                }
+                else if (OnSteep)
+                {
+                    jumpDirection = steepNormal;
+                    jumpPhase = 1;
+                }
+                else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
+                {
+                    if (jumpPhase == 0)
+                    {
+                        jumpPhase = 1;
+                    }
+                    jumpDirection = contactNormal;
+                }
                 else
-                    jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+                {
+                    return;
+                }
+                if (jumpPhase == 1 && !handman)
+                {
+                    PlayAnimation("DoubleJump");
+                }
+                if(jumpPhase == 1 && handman)
+                {
+                    if(GetComponent<HandMan>().isHoldingOBJ)
+                    {
+                        return;
+                    }
+                    PlayAnimation("DoubleJump");
+                }
+                stepsSinceLastJump = 0;
+                jumpPhase += 1;
+
+                float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+                if (InWater)
+                {
+                    jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+                }
+                jumpDirection = (jumpDirection + upAxis).normalized;
+                float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+                if (alignedSpeed > 0f)
+                {
+                    if (jumpPhase == 0)
+                        jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                    else
+                        jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+                }
+                if (jumpSpeed < 10)
+                {
+                    jumpDirection.z = 0;
+                    jumpSpeed = 16;
+                }
+                velocity += jumpDirection * jumpSpeed;
+                velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
             }
-            if (jumpSpeed < 10)
-            {
-                jumpDirection.z = 0;
-                jumpSpeed = 16;
-            }
-            velocity += jumpDirection * jumpSpeed;
-            velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
         }
     }
     bool CheckClimbing()
@@ -725,7 +909,7 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
     }
-    
+
     public void GroundPound()
     {
         body.velocity = new Vector3(0, -20, 0);
@@ -749,6 +933,10 @@ public class PlayerMovement : MonoBehaviour
     public void StopAnimation(string BoolName)
     {
         anim.SetBool(BoolName, false);
+    }
+    public void SetAnimatorFloat(string FloatName, float speed)
+    {
+        anim.SetFloat(FloatName, speed);
     }
     public void PlayFallingAnimation()
     {

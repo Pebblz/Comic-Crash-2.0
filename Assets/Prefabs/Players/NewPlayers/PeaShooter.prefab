@@ -508,7 +508,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 75de0a1215a3fa448acb9271225dccae, type: 2}
+  - {fileID: 2100000, guid: fb2e3c26f75ca7348ad001b6b2150e9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1022,7 +1022,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4595979783101676548}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 5
   m_Drag: 1
   m_AngularDrag: 1
   m_UseGravity: 0
@@ -1049,9 +1049,12 @@ MonoBehaviour:
   slowDownSpeed: 0.2
   CrouchSpeed: 3
   maxJumpSpeed: 17
-  onBelt: 0
+  SwimUpSpeed: 8
+  SlowlyFloatDownSpeed: 2
+  SwimmingDownSpeed: 4
+  AirDiveSpeed: 30
   maxAcceleration: 60
-  maxAirAcceleration: 12
+  maxAirAcceleration: 3
   maxClimbAcceleration: 40
   maxSwimAcceleration: 5
   jumpHeight: 10
@@ -1061,8 +1064,8 @@ MonoBehaviour:
   maxClimbAngle: 140
   maxSnapSpeed: 100
   probeDistance: 1
-  wallJumpSpeed: 3
-  WallJumpIntensifire: 2
+  wallJumpSpeed: 6
+  WallJumpIntensifire: 1.7
   probeMask:
     serializedVersion: 2
     m_Bits: 35
@@ -1077,20 +1080,27 @@ MonoBehaviour:
     m_Bits: 16
   playerInputSpace: {fileID: 0}
   turnSmoothTime: 0.01
-  submergenceOffset: 0.67
+  submergenceOffset: 1
   submergenceRange: 1
   waterDrag: 1
-  buoyancy: 2.2
+  buoyancy: 1.5
   swimThreshold: 1
   anim: {fileID: 4595979783101676549}
+  CrouchOffsetY: 0.1
+  onBelt: 0
   CanWallJump: 0
   CantMove: 0
+  LastWallJumpedOn: {fileID: 0}
   onBlock: 0
   jumpPhase: 0
   canJump: 1
   Bounce: 0
-  CrouchOffsetY: 0.1
-  LastWallJumpedOn: {fileID: 0}
+  CanDive: 1
+  velocity: {x: 0, y: 0, z: 0}
+  walkingPartical1: {fileID: 477770468372329194}
+  walkingPartical2: {fileID: 477770469193209972}
+  walkingPartical3: {fileID: 477770468284548009}
+  walkingPartical4: {fileID: 477770469115838024}
 --- !u!114 &-7688661775723245965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1797,6 +1807,30 @@ PrefabInstance:
 --- !u!4 &477770467827398300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8432600094113097603, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 8333907460222832927}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &477770468372329194 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094641906677, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 8333907460222832927}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &477770469193209972 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094840293739, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 8333907460222832927}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &477770468284548009 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094738125494, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 8333907460222832927}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &477770469115838024 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8432600094982631255, guid: 8b1342aa52b91ac40b422de484c92cac,
     type: 3}
   m_PrefabInstance: {fileID: 8333907460222832927}
   m_PrefabAsset: {fileID: 0}

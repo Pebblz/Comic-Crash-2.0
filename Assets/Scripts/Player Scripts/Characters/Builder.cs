@@ -14,16 +14,19 @@ public class Builder : MonoBehaviour
     Animator anim;
     bool buildingOnGround, digging;
     PlayerMovement movement;
+    Pause pause;
     private void Start()
     {
         movement = GetComponent<PlayerMovement>();
         anim = GetComponent<Animator>();
         for(int i = 0; i < blocksSpawned.Count;i++)
             blocksSpawned.Add(FindObjectOfType<DestroyBlock>());
+
+        pause = FindObjectOfType<Pause>();
     }
     void Update()
     {
-        if (Input.GetButtonDown("Fire2") && blocktimer <= 0  && blocksSpawned.Count < MaxSpawnableBlocks && CurrentBlockStorage > 0)
+        if (Input.GetButtonDown("Fire2") && blocktimer <= 0 && CurrentBlockStorage > 0)
         {
             if (GetComponent<PlayerMovement>().OnGround)
             {
@@ -62,7 +65,7 @@ public class Builder : MonoBehaviour
             digTimer = MaxDigTimer;
             digging = true;
         }
-        if(digging && movement.OnGround && CurrentBlockStorage < MaxSpawnableBlocks && !movement.onBlock)
+        if(digging && movement.OnGround && CurrentBlockStorage < MaxSpawnableBlocks && !movement.onBlock && !pause.isPaused)
         {
             PlayAnimation("Digging");
             movement.CantMove = true;
@@ -72,7 +75,8 @@ public class Builder : MonoBehaviour
                 digTimer = MaxDigTimer;
             }
         }
-        if (Input.GetMouseButtonUp(0) || CurrentBlockStorage >= MaxSpawnableBlocks)
+        if (Input.GetMouseButtonUp(0) && !pause.isPaused || Input.GetButtonUp("Fire1") && !pause.isPaused 
+            || CurrentBlockStorage >= MaxSpawnableBlocks && !pause.isPaused)
         {
             StopAnimation("Digging");
             movement.CantMove = false;

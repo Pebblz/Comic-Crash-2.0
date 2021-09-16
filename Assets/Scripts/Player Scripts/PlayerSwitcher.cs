@@ -68,8 +68,9 @@ public class PlayerSwitcher : MonoBehaviour
     void SwitchCharacter(int i)
     {
 
-        if (i + 1 <= CharactersToSwitchTo.Length && CharactersToSwitchTo[i] != null && CanSwitch)
+        if (CharactersToSwitchTo[i] != null && CanSwitch)
         {
+            PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
             if(CurrentPlayer.GetComponent<HandMan>())
             {
                if( CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
@@ -80,16 +81,19 @@ public class PlayerSwitcher : MonoBehaviour
 
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
-            if (!CurrentPlayer.GetComponent<PlayerMovement>().OnGround)
+
+            PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
+
+            if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
             {
-                Temp.GetComponent<PlayerMovement>().PlayFallingAnimation();
+                TempPlayerMovement.PlayFallingAnimation();
             }
             Temp.GetComponent<Player>().respawnPoint =
                 CurrentPlayer.GetComponent<Player>().respawnPoint;
 
-            Temp.GetComponent<PlayerMovement>().jumpPhase = 5;
+            TempPlayerMovement.jumpPhase = 5;
 
-            Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
+            TempPlayerMovement.velocity = currentPlayerMovement.velocity;
 
             if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Walk"))
             {
@@ -99,7 +103,7 @@ public class PlayerSwitcher : MonoBehaviour
             {
                 Temp.GetComponent<Animator>().SetBool("Run", true);
             }
-            Temp.GetComponent<PlayerMovement>().CanWallJump = false;
+            TempPlayerMovement.CanWallJump = false;
             PlayerTransform = Temp.transform;
             Camera.transform.parent = null;
             Camera.GetComponent<MainCamera>().thirdPersonCamera = true;

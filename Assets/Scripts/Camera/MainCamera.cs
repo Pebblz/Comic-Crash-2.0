@@ -36,7 +36,7 @@ public class MainCamera : MonoBehaviour
     float x = 0.0f;
     float y = 0.0f;
 
-    [SerializeField, Range(-100, 10)]
+    [SerializeField, Range(-300, 10), Tooltip("The Y position that the camera will stop falling you and just stare at you")]
     float fallLookAtPosition;
 
     [SerializeField]
@@ -83,6 +83,7 @@ public class MainCamera : MonoBehaviour
         {
             rigidbody.freezeRotation = true;
         }
+        RenderSettings.fog = false;
     }
 
     void LateUpdate()
@@ -197,6 +198,29 @@ public class MainCamera : MonoBehaviour
             {
                 transform.LookAt(target);
             }
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 4)
+        {
+            RenderSettings.fog = true;
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == 4)
+        {
+            RenderSettings.fog = true;
+        }
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 4)
+        {
+            RenderSettings.fog = false;
         }
     }
     public void Shake(float duration, float strength)

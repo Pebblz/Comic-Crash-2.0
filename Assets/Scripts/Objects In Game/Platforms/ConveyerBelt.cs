@@ -19,9 +19,16 @@ public class ConveyerBelt : MonoBehaviour
     [Tooltip("if this is set active the conveyer belt is working")]
     public bool active = true;
 
+    Pause pause;
+
+    private void Start()
+    {
+        pause = FindObjectOfType<Pause>();
+    }
+
     void Update()
     {
-        if (active)
+        if (active && !pause.isPaused)
         {
             //loops throught each of the gameobjects on the belt and moves them
             for (int i = 0; i < onBelt.Count; i++)

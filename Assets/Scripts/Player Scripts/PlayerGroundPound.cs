@@ -23,26 +23,36 @@ public class PlayerGroundPound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!pm.OnGround && Input.GetButtonDown("Punch") 
-            || Input.GetMouseButtonDown(0) && !pm.OnGround)
-        {
-            GroundPounding = true;
-            GroundPound();
-        }
-        if (squishTime && pm.OnGround && pm.OnMovingPlatform)
+            if (Input.GetButtonDown("Crouch") && !pm.OnGround && !pm.Swimming)
+            {
+                GroundPounding = true;
+                pm.CantMove = true;
+                GroundPound();
+            }
+        if (squishTime && pm.OnGround || squishTime && pm.OnGround)
         {
             StopAnimation("GroundPound");
             PlayAnimation("GroundPoundImpact");
-            pm.CantMove = true;
-            if(!pm.OnMovingPlatform)
-                Squish();
+            Squish();
         }
+
         //this is here to make sure he unSquishes
         //because if he jumps when he is unSquishing
         //he wont fully unSquish until he gets grounded again
-        if (doingSquish && !pm.OnGround && !pm.OnMovingPlatform)
+        if (doingSquish && !pm.OnGround)
         {
             Squish();
+        }
+        if (pm.Swimming || pm.inWaterAndFloor)
+        {
+            StopAnimation("GroundPound");
+            StopAnimation("GroundPoundImpact");
+            pm.CantMove = false;
+            doingSquish = false;
+            GroundPounding = false;
+            doneSquishing = false;
+            squishTime = false;
+            transform.localScale = origanalScale;
         }
     }
     void GroundPound()
@@ -50,6 +60,7 @@ public class PlayerGroundPound : MonoBehaviour
         pm.GroundPound();
         squishTime = true;
         PlayAnimation("GroundPound");
+        StopAnimation("GroundPoundImpact");
     }
     void Squish()
     {

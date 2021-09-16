@@ -149,6 +149,9 @@ MonoBehaviour:
   yMaxLimit: 80
   distanceMin: 3
   distanceMax: 15
+  waterMask:
+    serializedVersion: 2
+    m_Bits: 16
   fallLookAtPosition: -50
   collisionZoomSpeed: 5
   collisionZoomOutSpeed: 5
@@ -158,3 +161,4 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 22819
+  StopCamera: 0

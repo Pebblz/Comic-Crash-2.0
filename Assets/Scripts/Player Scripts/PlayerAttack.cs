@@ -6,74 +6,172 @@ public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] int AmountOfAttacks;
     [SerializeField] GameObject[] PunchHitBoxes;
+    [SerializeField] float[] AttackTimers = new float[3];
+    [SerializeField] float AirAttackTimer;
+    [SerializeField] float[] MoveForward = new float[3];
     private Animator anim;
     private int AttacksPreformed = 1;
     private float TimeTillnextAttack;
     private float TimeTillAttackReset;
     private bool AttackAgian;
     [HideInInspector] public bool CanAttack;
+    [HideInInspector] public bool AirAttacked;
+    HandMan handman;
+    Rigidbody body;
+    PlayerMovement movement;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        body = GetComponent<Rigidbody>();
+        movement = GetComponent<PlayerMovement>();
+        if (GetComponent<HandMan>())
+            handman = GetComponent<HandMan>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        #region Punch
         //this is so if the players in any of
         //the jump animation you can't attack
         if (!anim.GetBool("Jump"))
-        {
-            if (Input.GetMouseButtonDown(0) && AttacksPreformed == 1 && TimeTillnextAttack <= 0
-               && !Input.GetKey(KeyCode.C) || Input.GetButtonDown("Punch") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
-               && !Input.GetKey(KeyCode.C))
+        { // Ground Punch
+            if (handman == null)
             {
-                punch(AttacksPreformed);
+                if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
+                   && !Input.GetKey(KeyCode.C))
+                {
+                    punch(AttacksPreformed);
+                }
+                //this basically queues up the next attack for the player
+                if (Input.GetButtonDown("Fire1") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                {
+                    AttackAgian = true;
+                }
+                //this waits for the animation to be done before going to the next punch
+                if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
+                    anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
+                {
+                    punch(AttacksPreformed);
+                }
             }
-            //this basically queues up the next attack for the player
-            if (Input.GetMouseButtonDown(0) && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0 
-                || Input.GetButtonDown("Punch") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+            else
             {
-                AttackAgian = true;
-            }
-            //this waits for the animation to be done before going to the next punch
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
-                anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
-            {
-                punch(AttacksPreformed);
+                if (!handman.isHoldingOBJ)
+                {
+                    if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 &&
+                        TimeTillnextAttack <= 0 && !Input.GetKey(KeyCode.C))
+                    {
+                        punch(AttacksPreformed);
+                    }
+                    //this basically queues up the next attack for the player
+                    if (Input.GetButtonDown("Fire1") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                    {
+                        AttackAgian = true;
+                    }
+                    //this waits for the animation to be done before going to the next punch
+                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
+                        anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
+                    {
+                        punch(AttacksPreformed);
+                    }
+                }
             }
         }
+        else
+        {
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") || !anim.GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
+            {
+                // Air Punch
+                if (handman == null)
+                {
+                    if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                    {
+                        PunchAir();
+                    }
+                }
+                else
+                {
+                    if (!handman.isHoldingOBJ)
+                    {
+                        if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                        {
+                            PunchAir();
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
         //this is so the player can't swing around like a crazy person and kill everything around him
-        if(TimeTillAttackReset > 0 && GetComponent<PlayerMovement>().OnGround)
+        if (TimeTillAttackReset > 0 && movement.OnGround)
         {
-            GetComponent<PlayerMovement>().enabled = false;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            movement.enabled = false;
+            body.velocity = Vector3.zero;
         }
-        if(TimeTillAttackReset <= 0)
+
+        //if (TimeTillAttackReset > 0 && !movement.OnGround)
+        //{
+        //    body.velocity = new Vector3(body.velocity.x / 2, -1, body.velocity.z / 2);
+        //}
+
+        if (TimeTillAttackReset <= 0 && movement.OnGround)
         {
-            StopAnimation("Attack");
-            GetComponent<PlayerMovement>().enabled = true;
+            StopAnimationInt("Attack");
+            StopAnimationBool("AirAttack");
+            movement.enabled = true;
+            AirAttacked = false;
             AttacksPreformed = 1;
+        }
+        if(movement.OnGround && AirAttacked)
+        {
+            StopAnimationBool("AirAttack");
+            StopAnimationBool("Jump");
+        }
+        if (TimeTillAttackReset <= 0 && !movement.OnGround && AirAttacked)
+        {
+            StopAnimationBool("AirAttack");
+            AirAttacked = false;
+            movement.PlayFallingAnimation();
         }
         TimeTillAttackReset -= Time.deltaTime;
         TimeTillnextAttack -= Time.deltaTime;
     }
+    void PunchAir()
+    {
+        Instantiate(PunchHitBoxes[0], transform.position +  transform.forward * 1.1f, Quaternion.identity);
+        PlayAnimation("AirAttack");
+        TimeTillAttackReset = AirAttackTimer;
+        AttacksPreformed = 2;
+        AirAttacked = true;
+        TimeTillnextAttack = .1f;
+    }
     void punch(int attackNumber)
     {
-        Instantiate(PunchHitBoxes[attackNumber - 1], 
-            transform.position + new Vector3(0,.6f,0) + transform.forward * 1.1f, Quaternion.identity);
+        Instantiate(PunchHitBoxes[attackNumber - 1],
+            transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
 
-        PlayAnimation("Attack",attackNumber);
+        PlayAnimation("Attack", attackNumber);
+
         AttackAgian = false;
+
         //this is here to fix the end lag for his attack animations
         //---------------
-        if(AttacksPreformed == 1)
+        if (AttacksPreformed == 1)
         {
-            TimeTillAttackReset = .6f;
-        } else
+            TimeTillAttackReset = AttackTimers[0];
+            body.position += transform.forward * MoveForward[0] * Time.deltaTime;
+        }
+        if (AttacksPreformed == 2)
         {
-            TimeTillAttackReset = .85f;
+            TimeTillAttackReset = AttackTimers[1];
+            body.position += transform.forward * MoveForward[1] * Time.deltaTime;
+        }
+        if (AttacksPreformed == 3)
+        {
+            TimeTillAttackReset = AttackTimers[2];
+            body.position += transform.forward * MoveForward[2] * Time.deltaTime;
         }
         //---------------
         AttacksPreformed++;
@@ -85,17 +183,33 @@ public class PlayerAttack : MonoBehaviour
     /// Call this for anytime you need to play an animation 
     /// </summary>
     /// <param name="animName"></param>
-    public void PlayAnimation(string BoolName,int AttackNumber)
+    public void PlayAnimation(string BoolName, int AttackNumber)
     {
         anim.SetInteger(BoolName, AttackNumber);
+    }
+    /// <summary>
+    /// Call this for anytime you need to play an animation 
+    /// </summary>
+    /// <param name="animName"></param>
+    public void PlayAnimation(string BoolName)
+    {
+        anim.SetBool(BoolName, true);
     }
     /// <summary>
     /// Call this for anytime you need to stop an animation
     /// </summary>
     /// <param name="BoolName"></param>
-    public void StopAnimation(string BoolName)
+    public void StopAnimationInt(string BoolName)
     {
         anim.SetInteger(BoolName, 0);
+    }
+    /// <summary>
+    /// Call this for anytime you need to stop an animation
+    /// </summary>
+    /// <param name="BoolName"></param>
+    public void StopAnimationBool(string BoolName)
+    {
+        anim.SetBool(BoolName, false);
     }
     #endregion
 }
