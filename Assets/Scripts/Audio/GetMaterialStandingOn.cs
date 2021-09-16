@@ -40,8 +40,10 @@ public class GetMaterialStandingOn : MonoBehaviour
                               Color.yellow, 3f);
             }
 
-            Material mat = hit.collider.gameObject.GetComponent<Renderer>().material;
-            current_mat = mat;
+            Material[] mats = hit.collider.gameObject.GetComponent<MeshRenderer>().materials;
+            if(mats.Length == 1)
+                current_mat = mats[0];
+
 
 
 

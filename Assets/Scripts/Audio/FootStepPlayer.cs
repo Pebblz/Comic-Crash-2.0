@@ -94,7 +94,7 @@ public class FootStepPlayer : MonoBehaviour
                     {
                         string current_name = materialDetector.current_mat.name;
                         current_name = getMatchingName(current_name);
-                        Debug.Log(current_name);
+                        // Debug.Log(current_name);
                         if (matsToAudio.ContainsKey(current_name))
                         {
                             AudioClip clip;
