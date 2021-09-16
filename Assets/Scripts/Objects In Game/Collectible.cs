@@ -9,6 +9,15 @@ public class Collectible : MonoBehaviour
 
     [SerializeField, Range(1, 5), Tooltip("This would be here for if we have like a gold coin that would give 5 coins instead of 1")]
     int numberGivenToPlayer;
+
+    [SerializeField, Range(0,100)]float RotationSpeed;
+
+    void Update()
+    {
+        // Rotate the object around its local y axis at 1 degree per second
+        transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+    }
+
     private void OnTriggerEnter(Collider col)
     {
         if (col.tag == "Player")

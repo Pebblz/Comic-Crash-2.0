@@ -170,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
-            if (OnGround)
+            if (OnGround && !inWaterAndFloor)
             {
                 FallTimer = 2;
                 if (walkingPartical1 != null && walkingPartical1.isStopped)
