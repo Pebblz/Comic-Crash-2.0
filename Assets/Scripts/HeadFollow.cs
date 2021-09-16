@@ -8,6 +8,7 @@ public class HeadFollow : MonoBehaviour
     public GameObject head;
     Quaternion headStartingRot;
     bool lookAt;
+    [SerializeField] float HeadYOffset;
     private void Start()
     {
         headStartingRot = head.transform.rotation;
@@ -23,7 +24,7 @@ public class HeadFollow : MonoBehaviour
         //this checks if any of the rays hit an object with pickupables script
         if (lookAt)
         {
-            head.transform.LookAt(player.transform.position);
+            head.transform.LookAt(player.transform.position + new Vector3(0, HeadYOffset,0));
         }
         else
         {
