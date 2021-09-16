@@ -541,6 +541,7 @@ public class PlayerMovement : MonoBehaviour
             inWaterAndFloor = true;
             water = other;
         }
+
     }
     private void OnTriggerExit(Collider other)
     {
@@ -548,6 +549,7 @@ public class PlayerMovement : MonoBehaviour
         {
             inWaterAndFloor = false;
         }
+
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -557,8 +559,10 @@ public class PlayerMovement : MonoBehaviour
         }
         if(collision.gameObject.tag == "WalkableUnderWater")
         {
-            if(collision.gameObject.transform.GetChild(0).GetComponent<UnderWaterSurfaces>().walkingOn)
+            if (collision.gameObject.transform.GetChild(0).GetComponent<UnderWaterSurfaces>().walkingOn)
+            {
                 OnFloor = true;
+            }
         }
         EvaluateCollision(collision);
         if (LastWallJumpedOn == collision.gameObject)
@@ -585,6 +589,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Floor")
+        {
+            OnFloor = false;
+        }
+        if (collision.gameObject.tag == "WalkableUnderWater")
         {
             OnFloor = false;
         }
