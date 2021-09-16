@@ -1,0 +1,717 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3751666787486552258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4565323721177565816}
+  - component: {fileID: 645301352410056157}
+  - component: {fileID: 3391321985914761495}
+  - component: {fileID: 4094318248039378327}
+  - component: {fileID: 4094318248039378326}
+  - component: {fileID: 4094318248039378324}
+  - component: {fileID: 3751666787486552260}
+  - component: {fileID: 3751666787486552261}
+  - component: {fileID: 3751666787486552263}
+  m_Layer: 9
+  m_Name: lounging mann
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4565323721177565816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_LocalRotation: {x: -0.016662743, y: -0.43775463, z: -0.008888978, w: 0.89889616}
+  m_LocalPosition: {x: -2.43, y: 6.1, z: 80.17}
+  m_LocalScale: {x: 0.016951809, y: 0.016951809, z: 0.016951809}
+  m_Children:
+  - {fileID: 4565323720045526846}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -2.163, y: -51.930004, z: -0.080000006}
+--- !u!33 &645301352410056157
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Mesh: {fileID: -5597002278806442958, guid: 17c4b03dcef5b784dabdd3da7ac20ac1, type: 3}
+--- !u!23 &3391321985914761495
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 925a08c6d9e95f542b2de95d967909a7, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!65 &4094318248039378327
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 49.63695, y: 71.31411, z: 85.72147}
+  m_Center: {x: -0.000000011402996, y: 4.4990206, z: -0.000000028640684}
+--- !u!114 &4094318248039378326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16149fd1a966d9d47b41b2363d1b0277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 500
+  speed: 502.73
+  timeToSquish: 0.1
+--- !u!114 &4094318248039378324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c1337907ec60745a5a05467521939c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsPickedUp: 0
+  PlayerTransform: {fileID: 0}
+  OffsetFromPlayerHead: 1
+--- !u!114 &3751666787486552260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 226752afa6453a54496c5ea51604a10a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  head: {fileID: 5191816187317286339}
+--- !u!114 &3751666787486552261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2540bb625ac6d439fef7cf0e5672b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogue:
+    name: Gamer
+    sentences:
+    - "i really love hot sweaty cock in my mouth\t"
+    - '18 naked cowboys in the showers at Ram Ranch!
+
+      Big, hard, throbbing
+      cocks wanting to be sucked!
+
+      18 naked cowboys wanting to be fucked!
+
+      Cowboys
+      in the showers at Ram Ranch!
+
+      On their knees wanting to suck cowboy cocks!
+
+      Ram
+      Ranch really rocks!
+
+      Hot, hard, buff cowboys, their cocks throbbing hard!
+
+      18
+      more wild cowboys out in the yard!
+
+      Big, bulging cocks ever so hard!
+
+      Orgy
+      in the showers at Ram Ranch!
+
+      Big, hard, throbbing cocks ramming cowboy
+      butt!
+
+      Like a breed of ram wanting to rut!
+
+      Big, hard, throbbing
+      cocks getting sucked real deep!
+
+      Cowboys even getting fucked in their
+      sleep!
+
+      Ram Ranch ... it ROCKS!
+
+      Cowboys love big hard throbbing
+      cocks!
+
+      18 naked cowboys in the showers at Ram Ranch!
+
+      Big hard
+      throbbing cocks wanting to be sucked!
+
+      18 naked cowboys wanting to be
+      fucked!
+
+      Cowboys in the showers at Ram Ranch!
+
+      On their knees wanting
+      to suck cowboy cocks!
+
+      Ram Ranch really rocks!
+
+      Hot, hard, buff
+      cowboys their cocks throbbing hard!
+
+      18 more wild cowboys out in the
+      yard!
+
+      Big, bulging cocks ever so hard!
+
+      Orgy in the showers at
+      Ram Ranch!
+
+      Big, hard throbbing cocks ramming cowboy butt!
+
+      Like
+      a breed of ram wanting to rut!
+
+      18 naked cowboys in the showers at Ram
+      Ranch!
+
+      Big, hard, throbbing cocks wanting to be sucked!
+
+      18 naked
+      cowboys wanting to be fucked!
+
+      Cowboys in the showers at Ram Ranch!
+
+      On
+      their knees wanting to suck cowboy cocks!
+
+      Ram Ranch really rocks!
+
+      Big,
+      hard, throbbing cocks getting sucked real deep!
+
+      Cowboys even getting
+      fucked in their sleep!
+
+      Ram Ranch ... it ROCKS!
+
+      Cowboys love big
+      hard throbbing cocks!
+
+      18 naked cowboys in the showers at Ram Ranch!
+
+      Big,
+      hard, throbbing cocks wanting to be sucked!
+
+      18 naked cowboys wanting
+      to be fucked!
+
+      Cowboys in the showers at Ram Ranch!
+
+      On their knees
+      wanting to suck cowboy cocks!
+
+      Ram Ranch really rocks!
+
+      Hot, hard,
+      buff cowboys, their cocks throbbing hard!
+
+      18 more wild cowboys out in
+      the yard!
+
+      Big, bulging cocks ever so hard!
+
+      Orgy in the showers
+      at Ram Ranch!
+
+      Big, hard, throbbing cocks ramming cowboy butt!
+
+      Like
+      a breed of ram wanting to rut!
+
+      Big, hard, throbbing cocks getting sucked
+      real deep!
+
+      Cowboys even getting fucked in their sleep!
+
+      Ram Ranch
+      ... it ROCKS!
+
+      Cowboys love big hard throbbing cocks!
+
+      18 naked
+      cowboys in the showers at Ram Ranch!
+
+      Big, hard, throbbing cocks wanting
+      to be sucked!
+
+      18 naked cowboys wanting to be fucked!
+
+      Cowboys
+      in the showers at Ram Ranch!
+
+      On their knees wanting to suck cowboy cocks!
+
+      Ram
+      Ranch really rocks!
+
+      Hot, hard, buff cowboys, their cocks throbbing hard!
+
+      18
+      more wild cowboys out in the yard!
+
+      Big, bulging cocks ever so hard!
+
+      Orgy
+      in the showers at Ram Ranch!
+
+      Big, hard, throbbing cocks ramming cowboy
+      butt!
+
+      Like a breed of ram wanting to rut!
+
+      18 naked cowboys in
+      the showers at Ram Ranch!
+
+      Big, hard, throbbing cocks wanting to be sucked!
+
+      18
+      naked cowboys wanting to be fucked!
+
+      Cowboys in the showers at Ram Ranch!
+
+      On
+      their knees wanting to suck cowboy cocks!
+
+      Ram Ranch really rocks!
+
+      Big,
+      hard, throbbing cocks getting sucked real deep!
+
+      Cowboys even getting
+      fucked in their sleep!
+
+      Ram Ranch ... it ROCKS!
+
+      Cowboys love big
+      hard throbbing cocks!'
+  ways: 0
+  thingsGivenToPlayer: 0
+  amountGiven: 0
+  Talkdistance: 3
+--- !u!65 &3751666787486552263
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666787486552258}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 110.99, y: 62.31602, z: 85.72145}
+  m_Center: {x: 0, y: -0.000015258789, z: 82.36}
+--- !u!95 &4094318249171687643
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751666786337695108}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: aa275cffdb3b37d48a66fce9af931586, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &4094318249864358786
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7613029132244443922}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 69.49646, y: 72.468185, z: 75.12888}
+  m_Center: {x: -7.730561, y: 4642.4175, z: 239.62123}
+--- !u!1001 &4094318249171687637
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4565323721177565816}
+    m_Modifications:
+    - target: {fileID: -9041437203057519383, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -9025548017225416655, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100.000015
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.000015
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100.000015
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.1799752
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.9743333
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.8283315
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8506139094995558193, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8175947775405710259, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8070293127898005045, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -7924146112627880789, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -7525995285583663527, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -6690428918868956386, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -6552523097689689640, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -6448589180424869786, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -4779395090705435871, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -4308857325466653711, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -4118655837375753801, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -3993972461900444788, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -3817276460077226930, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -3560991749709721987, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -2456596348256489822, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -1498556080190532592, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -1090722604682285802, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Name
+      value: HEAD BONE PICK THIS
+      objectReference: {fileID: 0}
+    - target: {fileID: -1090722604682285802, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -977825621400638570, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -50103467237499920, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 134473900968385503, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 425605041006440226, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 494041356669921892, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 903436159370445920, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Name
+      value: lounging dude
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1479053125023032012, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310022899572569668, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2968784766262027255, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4187129170248175243, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4877115523185618693, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4962712178906685823, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5870188574898813895, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568730181438796935, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7692422478955380017, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033349944342405761, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8153123043083835913, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d755a24a27b519c4e8237527ac6b68cc, type: 2}
+    - target: {fileID: 8720085487998785729, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8793037055176842949, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9083435589573056521, guid: 5ffe05f833441f145a12df373321b394,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5ffe05f833441f145a12df373321b394, type: 3}
+--- !u!1 &3751666786337695108 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ffe05f833441f145a12df373321b394,
+    type: 3}
+  m_PrefabInstance: {fileID: 4094318249171687637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4565323720045526846 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5ffe05f833441f145a12df373321b394,
+    type: 3}
+  m_PrefabInstance: {fileID: 4094318249171687637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5191816187317286339 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1090722604682285802, guid: 5ffe05f833441f145a12df373321b394,
+    type: 3}
+  m_PrefabInstance: {fileID: 4094318249171687637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7613029132244443922 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5870188574898813895, guid: 5ffe05f833441f145a12df373321b394,
+    type: 3}
+  m_PrefabInstance: {fileID: 4094318249171687637}
+  m_PrefabAsset: {fileID: 0}
