@@ -555,6 +555,11 @@ public class PlayerMovement : MonoBehaviour
         {
             OnFloor = true;
         }
+        if(collision.gameObject.tag == "WalkableUnderWater")
+        {
+            if(collision.gameObject.transform.GetChild(0).GetComponent<UnderWaterSurfaces>().walkingOn)
+                OnFloor = true;
+        }
         EvaluateCollision(collision);
         if (LastWallJumpedOn == collision.gameObject)
             return;
