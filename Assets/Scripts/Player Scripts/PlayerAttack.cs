@@ -140,7 +140,18 @@ public class PlayerAttack : MonoBehaviour
     }
     void PunchAir()
     {
-        Instantiate(PunchHitBoxes[0], transform.position +  transform.forward * 1.1f, Quaternion.identity);
+        if(handman)
+        {
+            GameObject temp = Instantiate(PunchHitBoxes[0], transform.position + new Vector3(0,.6f,0) + transform.forward * 1.1f, Quaternion.identity);
+            temp.transform.parent = transform;
+        }
+        else
+        {
+            GameObject temp = Instantiate(PunchHitBoxes[0], transform.position + transform.forward * 1.1f, Quaternion.identity);
+            temp.transform.parent = transform;
+        }
+
+
         PlayAnimation("AirAttack");
         TimeTillAttackReset = AirAttackTimer;
         AttacksPreformed = 2;
