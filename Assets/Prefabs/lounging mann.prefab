@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPickedUp: 0
   PlayerTransform: {fileID: 0}
-  OffsetFromPlayerHead: 1
+  OffsetFromPlayerHead: 1.5
 --- !u!114 &3751666787486552260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 5191816187317286339}
+  rotateSpeed: 7
   HeadYOffset: 1
 --- !u!114 &3751666787486552261
 MonoBehaviour:
@@ -388,8 +389,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 110.99, y: 86.47, z: 85.72145}
-  m_Center: {x: 0, y: 21.84, z: 82.36}
+  m_Size: {x: 171.86, y: 86.47, z: 117.6}
+  m_Center: {x: 0, y: 26.4, z: 100.6}
 --- !u!65 &4094318249864358786
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class HeadFollow : MonoBehaviour
     public GameObject head;
     Quaternion headStartingRot;
     bool lookAt;
+    [SerializeField] float rotateSpeed;
     [SerializeField] float HeadYOffset;
     private void Start()
     {
@@ -24,14 +25,26 @@ public class HeadFollow : MonoBehaviour
         //this checks if any of the rays hit an object with pickupables script
         if (lookAt)
         {
-            head.transform.LookAt(player.transform.position + new Vector3(0, HeadYOffset,0));
+            head.transform.rotation = lookAtSlowly(head.transform, player.transform.position + new Vector3(0, HeadYOffset,0), rotateSpeed);
         }
         else
         {
-            head.transform.rotation = headStartingRot;
+            head.transform.rotation = lookAtSlowly(head.transform, headStartingRot, rotateSpeed);
         }
 
 
+    }
+    Quaternion lookAtSlowly(Transform t, Vector3 target, float speed)
+    {
+        Vector3 relativePos = target - t.position;
+        Quaternion toRotation = Quaternion.LookRotation(relativePos);
+        return Quaternion.Lerp(t.rotation, toRotation, speed * Time.deltaTime);
+    }
+    Quaternion lookAtSlowly(Transform t, Quaternion targetRot, float speed)
+    {
+        //Vector3 relativePos = target - t.position;
+        //Quaternion toRotation = Quaternion.LookRotation(relativePos);
+        return Quaternion.Lerp(t.rotation, targetRot, speed * Time.deltaTime);
     }
     private void OnTriggerEnter(Collider col)
     {
