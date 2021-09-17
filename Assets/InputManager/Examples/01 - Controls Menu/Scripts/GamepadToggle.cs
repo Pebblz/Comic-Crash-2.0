@@ -55,11 +55,23 @@ namespace Luminosity.IO.Examples
         {
             if (m_gamepadOn)
             {
-				
-            }
+				if (InputManager.GetAxis("MLookHorizontal") != 0 || InputManager.GetAxis("MLookVertical") != 0 ||
+					InputManager.GetAxis("MHorizontal") != 0 || InputManager.GetAxis("MVertical") != 0)
+				{
+					InputManager.SetControlScheme(m_keyboardScheme, PlayerID.One);
+					m_status.text = "Gamepad: Off";
+					m_gamepadOn = false;
+				}
+			}
             else
             {
-				//if(InputManager.GetAxis("LeftStick Horizontal"))
+				if(InputManager.GetAxis("GLookHorizontal") != 0 || InputManager.GetAxis("GLookVertical") != 0 || 
+				   InputManager.GetAxis("GHorizontal") != 0 || InputManager.GetAxis("GVertical") != 0)
+                {
+					InputManager.SetControlScheme(m_gamepadScheme, PlayerID.One);
+					m_gamepadOn = true;
+					m_status.text = "Gamepad: On";
+				}
             }
 		}
         private void OnDestroy()
