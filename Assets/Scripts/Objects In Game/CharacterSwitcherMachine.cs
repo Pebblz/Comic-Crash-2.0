@@ -35,7 +35,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
         {
             if (InRadius())
             {
-                if (!CharacterSwitcherUI.activeSelf && CheckIfAnyMachineIsInRange())
+                if (!CharacterSwitcherUI.activeSelf)
                 {
                     EText.SetActive(true);
                 }
@@ -78,7 +78,8 @@ public class CharacterSwitcherMachine : MonoBehaviour
                     Cursor.visible = false;
                     CharacterSwitcherUI.SetActive(false);
                 }
-                EText.SetActive(false);
+                if(!CheckIfAnyMachineIsInRange())
+                    EText.SetActive(false);
             }
         }
     }
