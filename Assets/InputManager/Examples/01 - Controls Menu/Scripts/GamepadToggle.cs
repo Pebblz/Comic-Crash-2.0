@@ -31,8 +31,6 @@ namespace Luminosity.IO.Examples
 		private string m_keyboardScheme = null;
 		[SerializeField]
 		private string m_gamepadScheme = null;
-		[SerializeField]
-		private Text m_status = null;
 
 		private bool m_gamepadOn;
 
@@ -41,12 +39,10 @@ namespace Luminosity.IO.Examples
 			if(InputManager.PlayerOneControlScheme.Name == m_keyboardScheme)
 			{
 				m_gamepadOn = false;
-				m_status.text = "Gamepad: Off";
 			}
 			else
 			{
 				m_gamepadOn = true;
-				m_status.text = "Gamepad: On";
 			}
 
 			InputManager.Loaded += HandleInputLoaded;
@@ -59,7 +55,6 @@ namespace Luminosity.IO.Examples
 					InputManager.GetAxis("MHorizontal") != 0 || InputManager.GetAxis("MVertical") != 0)
 				{
 					InputManager.SetControlScheme(m_keyboardScheme, PlayerID.One);
-					m_status.text = "Gamepad: Off";
 					m_gamepadOn = false;
 				}
 			}
@@ -70,7 +65,6 @@ namespace Luminosity.IO.Examples
                 {
 					InputManager.SetControlScheme(m_gamepadScheme, PlayerID.One);
 					m_gamepadOn = true;
-					m_status.text = "Gamepad: On";
 				}
             }
 		}
@@ -84,12 +78,10 @@ namespace Luminosity.IO.Examples
 			if(m_gamepadOn)
 			{
 				InputManager.SetControlScheme(m_gamepadScheme, PlayerID.One);
-				m_status.text = "Gamepad: On";
 			}
 			else
 			{
 				InputManager.SetControlScheme(m_keyboardScheme, PlayerID.One);
-				m_status.text = "Gamepad: Off";
 			}
 		}
 
@@ -98,13 +90,11 @@ namespace Luminosity.IO.Examples
 			if(m_gamepadOn)
 			{
 				InputManager.SetControlScheme(m_keyboardScheme, PlayerID.One);
-				m_status.text = "Gamepad: Off";
 				m_gamepadOn = false;
 			}
 			else
 			{
 				InputManager.SetControlScheme(m_gamepadScheme, PlayerID.One);
-				m_status.text = "Gamepad: On";
 				m_gamepadOn = true;
 			}
 		}
