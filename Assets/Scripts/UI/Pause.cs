@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class Pause : MonoBehaviour
 {
     [SerializeField]
@@ -31,7 +31,7 @@ public class Pause : MonoBehaviour
     {
         if (PausePage != null)
         {
-            if (Input.GetButtonDown("Pause") && pauseTimer <= 0)
+            if (InputManager.GetButtonDown("Pause") && pauseTimer <= 0)
             {
                 isPaused = !isPaused;
                 pause(isPaused);

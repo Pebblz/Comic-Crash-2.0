@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Luminosity.IO;
 using UnityEngine;
 
 public class PlayerGroundPound : MonoBehaviour
@@ -23,7 +22,7 @@ public class PlayerGroundPound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-            if (Input.GetButtonDown("Crouch") && !pm.OnGround && !pm.Swimming)
+            if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming)
             {
                 GroundPounding = true;
                 pm.CantMove = true;

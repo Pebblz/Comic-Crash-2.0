@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Luminosity.IO;
 public class PeaShooter : MonoBehaviour
 {
 
@@ -27,18 +28,18 @@ public class PeaShooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (InputManager.GetButtonDown("Right Mouse"))
         {
             camera.GetComponent<MainCamera>().thirdPersonCamera = false;
             PlayAnimation("Aiming");
         }
-        if (Input.GetMouseButtonUp(1))
+        if (InputManager.GetButtonUp("Right Mouse"))
         {
             camera.GetComponent<MainCamera>().thirdPersonCamera = true;
             StopAnimation("Aiming");
         }
 
-        if (Input.GetMouseButtonDown(0) && NextAttack <= 0)
+        if (InputManager.GetButtonDown("Left Mouse") && NextAttack <= 0)
         {
             Attack();
         }

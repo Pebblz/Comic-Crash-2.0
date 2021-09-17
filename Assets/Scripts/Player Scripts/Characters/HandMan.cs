@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class HandMan : MonoBehaviour
 {
     [HideInInspector] public GameObject PickUp;
@@ -25,7 +25,7 @@ public class HandMan : MonoBehaviour
     void Update()
     {
         pickUpTimer -= Time.deltaTime;
-        if (Input.GetButtonDown("Fire2") && pickUpTimer < 0)
+        if (InputManager.GetButtonDown("Right Mouse") && pickUpTimer < 0)
         {
             //this checks to see if the players picking up an obj
             if (PickUp == null)
@@ -66,7 +66,7 @@ public class HandMan : MonoBehaviour
             pAttack.CanAttack = false;
             movement.CanWallJump = false;
             //this is for the throwing / droping logic
-            if (Input.GetButtonDown("Fire1") && pickUpTimer < 0)
+            if (InputManager.GetButtonDown("Left Mouse") && pickUpTimer < 0)
             {
                 if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
                 {
@@ -75,7 +75,7 @@ public class HandMan : MonoBehaviour
                     isHoldingOBJ = false;
                 }
             }
-            if (Input.GetButtonDown("Fire2") && pickUpTimer <= 0)
+            if (InputManager.GetButtonDown("Right Mouse") && pickUpTimer <= 0)
             {
                 if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
                 {

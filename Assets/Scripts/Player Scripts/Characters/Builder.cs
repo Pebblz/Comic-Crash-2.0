@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class Builder : MonoBehaviour
 {
     [SerializeField] GameObject block;
@@ -26,7 +26,7 @@ public class Builder : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetButtonDown("Fire2") && blocktimer <= 0 && CurrentBlockStorage > 0)
+        if (InputManager.GetButtonDown("Right Mouse") && blocktimer <= 0 && CurrentBlockStorage > 0)
         {
             if (GetComponent<PlayerMovement>().OnGround)
             {
@@ -60,7 +60,7 @@ public class Builder : MonoBehaviour
         {
             StopAnimation("BuildingAir");
         }
-        if(Input.GetButtonDown("Fire1"))
+        if(InputManager.GetButtonDown("Left Mouse"))
         {
             digTimer = MaxDigTimer;
             digging = true;
@@ -75,7 +75,7 @@ public class Builder : MonoBehaviour
                 digTimer = MaxDigTimer;
             }
         }
-        if (Input.GetMouseButtonUp(0) && !pause.isPaused || Input.GetButtonUp("Fire1") && !pause.isPaused 
+        if (InputManager.GetButtonUp("Left Mouse") && !pause.isPaused 
             || CurrentBlockStorage >= MaxSpawnableBlocks && !pause.isPaused)
         {
             StopAnimation("Digging");

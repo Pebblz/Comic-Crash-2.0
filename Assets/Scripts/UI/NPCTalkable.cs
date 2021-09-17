@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class NPCTalkable : MonoBehaviour
 {
     public Dialogue dialogue;
@@ -44,17 +44,17 @@ public class NPCTalkable : MonoBehaviour
             {
                 if (Vector3.Distance(transform.position, player.transform.position) < Talkdistance)
                 {
-                    if (Input.GetButtonDown("Interact") && !talking)
+                    if (InputManager.GetButtonDown("Interact") && !talking)
                     {
                         TriggerDialogue();
                     }
                     //this is a way for the player to skip dialogue if he's talking to the npc
-                    if (Input.GetButtonDown("Pause") && talking)
+                    if (InputManager.GetButtonDown("Pause") && talking)
                     {
                         EndDialogue();
                     }
                     //return means enter
-                    if (talking && Input.GetKeyDown(KeyCode.Return))
+                    if (talking && InputManager.GetButtonDown("Enter"))
                     {
                         manager.DisplayNextSentence();
                     }
