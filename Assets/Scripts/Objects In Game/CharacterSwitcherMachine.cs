@@ -39,7 +39,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
                 {
                     EText.SetActive(true);
                 }
-                if(CharacterSwitcherUI.activeSelf && !CheckIfAnyMachineIsInRange())
+                if (CharacterSwitcherUI.activeSelf && !CheckIfAnyMachineIsInRange())
                 {
                     EText.SetActive(false);
                 }
@@ -68,18 +68,24 @@ public class CharacterSwitcherMachine : MonoBehaviour
             else
             {
 
-                if (CharacterSwitcherUI.activeSelf && !CheckIfAnyMachineIsInRange())
+                if (CharacterSwitcherUI.activeSelf)
                 {
-                    Ps.CanSwitch = true;
-                    //this is here just incase the player finds a way to die while in the switcher menu
-                    player.GetComponent<PlayerMovement>().CantMove = false;
-                    camera.GetComponent<MainCamera>().StopCamera = false;
-                    Cursor.lockState = CursorLockMode.Locked;
-                    Cursor.visible = false;
-                    CharacterSwitcherUI.SetActive(false);
+                    if (!CheckIfAnyMachineIsInRange())
+                    {
+                        Ps.CanSwitch = true;
+                        //this is here just incase the player finds a way to die while in the switcher menu
+                        player.GetComponent<PlayerMovement>().CantMove = false;
+                        camera.GetComponent<MainCamera>().StopCamera = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Cursor.visible = false;
+                        CharacterSwitcherUI.SetActive(false);
+                    }
                 }
-                if(!CheckIfAnyMachineIsInRange())
-                    EText.SetActive(false);
+                if (EText.activeSelf)
+                {
+                    if (!CheckIfAnyMachineIsInRange())
+                        EText.SetActive(false);
+                }
             }
         }
     }
@@ -94,9 +100,9 @@ public class CharacterSwitcherMachine : MonoBehaviour
     }
     bool CheckIfAnyMachineIsInRange()
     {
-        foreach(CharacterSwitcherMachine c in otherMachines)
+        foreach (CharacterSwitcherMachine c in otherMachines)
         {
-            if(c.InRadius())
+            if (c.InRadius())
             {
                 return true;
             }
