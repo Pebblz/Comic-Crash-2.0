@@ -18,10 +18,14 @@ public class CharacterSwitcherMachine : MonoBehaviour
     GameObject camera;
 
     PlayerSwitcher Ps;
+
+    CharacterSwitcherMachine[] otherMachines;
+
     private void Start()
     {
         camera = FindObjectOfType<MainCamera>().gameObject;
         Ps = FindObjectOfType<PlayerSwitcher>();
+        otherMachines = FindObjectsOfType<CharacterSwitcherMachine>();
     }
     private void Update()
     {
@@ -31,11 +35,11 @@ public class CharacterSwitcherMachine : MonoBehaviour
         {
             if (InRadius())
             {
-                if (!CharacterSwitcherUI.activeSelf)
+                if (!CharacterSwitcherUI.activeSelf && CheckIfAnyMachineIsInRange())
                 {
                     EText.SetActive(true);
                 }
-                else
+                if(CharacterSwitcherUI.activeSelf && !CheckIfAnyMachineIsInRange())
                 {
                     EText.SetActive(false);
                 }
@@ -64,7 +68,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
             else
             {
 
-                if (CharacterSwitcherUI.activeSelf)
+                if (CharacterSwitcherUI.activeSelf && !CheckIfAnyMachineIsInRange())
                 {
                     Ps.CanSwitch = true;
                     //this is here just incase the player finds a way to die while in the switcher menu
@@ -87,7 +91,18 @@ public class CharacterSwitcherMachine : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    bool InRadius()
+    bool CheckIfAnyMachineIsInRange()
+    {
+        foreach(CharacterSwitcherMachine c in otherMachines)
+        {
+            if(c.InRadius())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool InRadius()
     {
         if (Vector3.Distance(gameObject.transform.position, player.transform.position) < Range)
         {
