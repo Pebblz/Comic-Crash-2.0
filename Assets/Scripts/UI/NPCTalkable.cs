@@ -26,6 +26,8 @@ public class NPCTalkable : MonoBehaviour
     bool talking = false;
 
     DialogueManager manager;
+
+    float Timer;
     private void Start()
     {
         manager = FindObjectOfType<DialogueManager>();
@@ -47,6 +49,7 @@ public class NPCTalkable : MonoBehaviour
                     if (InputManager.GetButtonDown("Interact") && !talking)
                     {
                         TriggerDialogue();
+                        Timer = .5f;
                     }
                     //this is a way for the player to skip dialogue if he's talking to the npc
                     if (InputManager.GetButtonDown("Pause") && talking)
@@ -54,9 +57,10 @@ public class NPCTalkable : MonoBehaviour
                         EndDialogue();
                     }
                     //return means enter
-                    if (talking && InputManager.GetButtonDown("Enter"))
+                    if (talking && InputManager.GetButtonDown("Enter") && Timer < 0)
                     {
                         manager.DisplayNextSentence();
+                        Timer = .5f;
                     }
                 }
                 else
@@ -64,7 +68,7 @@ public class NPCTalkable : MonoBehaviour
                     talking = false;
                 }
             }
-
+            Timer -= Time.deltaTime;
 
         }
     }
