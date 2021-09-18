@@ -118,7 +118,10 @@ namespace Luminosity.IO.Examples
 		{
 			StartCoroutine(StartInputScanDelayed());
 		}
-
+		public void PressedButton()
+        {
+			StartCoroutine(StartInputScanDelayed());
+		}
 		private IEnumerator StartInputScanDelayed()
 		{
 			yield return null;
