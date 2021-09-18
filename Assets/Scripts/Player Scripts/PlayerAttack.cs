@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] int AmountOfAttacks;
@@ -39,13 +39,13 @@ public class PlayerAttack : MonoBehaviour
         { // Ground Punch
             if (handman == null)
             {
-                if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
+                if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
                    && !Input.GetKey(KeyCode.C))
                 {
                     punch(AttacksPreformed);
                 }
                 //this basically queues up the next attack for the player
-                if (Input.GetButtonDown("Fire1") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                if (InputManager.GetButtonDown("Left Mouse") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
                 {
                     AttackAgian = true;
                 }
@@ -60,13 +60,13 @@ public class PlayerAttack : MonoBehaviour
             {
                 if (!handman.isHoldingOBJ)
                 {
-                    if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 &&
+                    if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 &&
                         TimeTillnextAttack <= 0 && !Input.GetKey(KeyCode.C))
                     {
                         punch(AttacksPreformed);
                     }
                     //this basically queues up the next attack for the player
-                    if (Input.GetButtonDown("Fire1") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                    if (InputManager.GetButtonDown("Left Mouse") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
                     {
                         AttackAgian = true;
                     }
@@ -86,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
                 // Air Punch
                 if (handman == null)
                 {
-                    if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                    if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
                     {
                         PunchAir();
                     }
@@ -95,7 +95,7 @@ public class PlayerAttack : MonoBehaviour
                 {
                     if (!handman.isHoldingOBJ)
                     {
-                        if (Input.GetButtonDown("Fire1") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                        if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
                         {
                             PunchAir();
                         }

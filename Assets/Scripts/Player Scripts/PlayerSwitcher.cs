@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class PlayerSwitcher : MonoBehaviour
 {
     [Tooltip("This is for the other characters that the player can switch to")]
@@ -30,25 +30,25 @@ public class PlayerSwitcher : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        dpadX = Input.GetAxis("Dpad Horizontal");
-        dpady = Input.GetAxis("DPad Vertical");
+        dpadX = InputManager.GetAxis("Dpad Horizontal");
+        dpady = InputManager.GetAxis("DPad Vertical");
 
         //arrays start at zero so i have to make it one less 
         if (timer < 0)
         {
-            if (Input.GetButtonDown("1") || dpadX == -1)
+            if (InputManager.GetButtonDown("1") || dpadX == -1)
             {
                 SwitchCharacter(0);
             }
-            if (Input.GetButtonDown("2") || dpady == 1)
+            if (InputManager.GetButtonDown("2") || dpady == 1)
             {
                 SwitchCharacter(1);
             }
-            if (Input.GetButtonDown("3") || dpadX == 1)
+            if (InputManager.GetButtonDown("3") || dpadX == 1)
             {
                 SwitchCharacter(2);
             }
-            if (Input.GetButtonDown("4") || dpady == -1)
+            if (InputManager.GetButtonDown("4") || dpady == -1)
             {
                 SwitchCharacter(3);
             }

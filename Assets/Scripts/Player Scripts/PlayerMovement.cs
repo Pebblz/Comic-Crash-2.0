@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class PlayerMovement : MonoBehaviour
 {
     #region serializedFields
@@ -223,9 +223,9 @@ public class PlayerMovement : MonoBehaviour
             }
             minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
 
-            playerInput.x = Input.GetAxis("Horizontal");
-            playerInput.y = Input.GetAxis("Vertical");
-            playerInput.z = Swimming ? Input.GetAxis("UpDown") : 0f;
+            playerInput.x = InputManager.GetAxis("Horizontal");
+            playerInput.y = InputManager.GetAxis("Vertical");
+            playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
             playerInput = Vector3.ClampMagnitude(playerInput, 1f);
             if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
             {
@@ -265,11 +265,11 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("Drowning");
                 }
                 if(OnGround)
-                    isCrouching = Input.GetButton("Crouch");
+                    isCrouching = InputManager.GetButton("Crouch");
 
-                desiredJump |= Input.GetButtonDown("Jump");
-                desiresClimbing = Input.GetButton("Climb");
-                Isrunning = Input.GetButton("Run");
+                desiredJump |= InputManager.GetButtonDown("Jump");
+                desiresClimbing = InputManager.GetButton("Climb");
+                Isrunning = InputManager.GetButton("Sprint");
 
             }
             if (!inWaterAndFloor)
@@ -575,7 +575,7 @@ public class PlayerMovement : MonoBehaviour
         foreach (ContactPoint contact in collision.contacts)
         {
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                Input.GetButton("Jump") && collision.gameObject.layer != 9 &&
+                InputManager.GetButton("Jump") && collision.gameObject.layer != 9 &&
                 collision.gameObject.layer != 10 && CanWallJump)
             {
                 Vector3 _velocity = contact.normal;

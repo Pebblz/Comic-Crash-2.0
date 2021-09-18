@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class CharacterSwitcherMachine : MonoBehaviour
 {
     [SerializeField]
@@ -43,7 +43,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
                 {
                     EText.SetActive(false);
                 }
-                if (Input.GetButtonDown("Interact"))
+                if (InputManager.GetButtonDown("Interact"))
                 {
                     CharacterSwitcherUI.SetActive(!CharacterSwitcherUI.activeSelf);
 

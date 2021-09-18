@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Luminosity.IO;
 public class MainCamera : MonoBehaviour
 {
     #region Third Person Vars
@@ -131,14 +132,14 @@ public class MainCamera : MonoBehaviour
         {
             if (transform.position.y > fallLookAtPosition)
             {
-                x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.02f;
-                y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+                x += InputManager.GetAxis("LookHorizontal") * xSpeed * distance * 0.02f;
+                y -= InputManager.GetAxis("LookVertical") * ySpeed * 0.02f;
 
                 y = ClampAngle(y, yMinLimit, yMaxLimit);
 
                 Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-                distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
+                distance = Mathf.Clamp(distance - InputManager.GetAxis("Scroll Wheel") * 5, distanceMin, distanceMax);
 
                 RaycastHit hit;
 
@@ -171,7 +172,7 @@ public class MainCamera : MonoBehaviour
                 }
                 else
                 {
-                    if (onlyOnce && hit.collider == null && !DontZoomOut && Input.GetAxisRaw("Mouse ScrollWheel") == 0)
+                    if (onlyOnce && hit.collider == null && !DontZoomOut && InputManager.GetAxisRaw("Scroll Wheel") == 0)
                     {
                         if (distance < prevDistance && Vector3.Distance(transform.position, prevHitPoint) > 1.5f)
                         {
@@ -183,7 +184,7 @@ public class MainCamera : MonoBehaviour
                             onlyOnce = false;
                         }
                     }
-                    if (Input.GetAxisRaw("Mouse ScrollWheel") != 0)
+                    if (InputManager.GetAxisRaw("Scroll Wheel") != 0)
                     {
                         onlyOnce = false;
                     }
