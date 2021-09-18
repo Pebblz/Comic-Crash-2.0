@@ -36,6 +36,7 @@ public class PauseMenu : MonoBehaviour
     public void CloseMenuBTN()
     {
         pause.pause(false);
+        pause.isPaused = false;
     }
     public void OpenControlBinds()
     {
