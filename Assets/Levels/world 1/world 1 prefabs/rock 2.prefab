@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3688231618985439962}
   - component: {fileID: 5195179343859083310}
   - component: {fileID: 5555150581202148383}
-  - component: {fileID: 7326341807667124749}
+  - component: {fileID: 1774185512967639286}
   m_Layer: 0
   m_Name: PolyShape__16_:polySurface2
   m_TagString: Untagged
@@ -111,8 +111,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &7326341807667124749
-CapsuleCollider:
+--- !u!64 &1774185512967639286
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -121,7 +121,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 147.3017
-  m_Height: 662.3023
-  m_Direction: 1
-  m_Center: {x: 0, y: -78.332565, z: -17.173218}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4916753314459519847, guid: 9a2f3392d9b592f479f3a59f1fc41fad, type: 3}
