@@ -143,15 +143,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   distance: 5
-  xSpeed: 120
-  ySpeed: 120
+  xSpeed: 40
+  ySpeed: 90
   yMinLimit: -20
   yMaxLimit: 80
   distanceMin: 3
   distanceMax: 15
-  waterMask:
-    serializedVersion: 2
-    m_Bits: 16
   fallLookAtPosition: -50
   collisionZoomSpeed: 5
   collisionZoomOutSpeed: 5

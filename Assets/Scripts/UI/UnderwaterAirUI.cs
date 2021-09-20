@@ -13,11 +13,17 @@ public class UnderwaterAirUI : MonoBehaviour
     public float airRecoverySpeed;
     public bool ReFillAirBar;
     GameObject player;
+
+    GameObject child1;
+    GameObject child2;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         airBar = GetComponent<Slider>();
         airLeft = airBar.maxValue;
+
+        child1 = gameObject.transform.GetChild(0).gameObject;
+        child2 = gameObject.transform.GetChild(1).gameObject;
     }
 
     // Update is called once per frame
@@ -45,7 +51,18 @@ public class UnderwaterAirUI : MonoBehaviour
         }
         airBar.value = airLeft;
     }
-
+    public void DisableSlider()
+    {
+        airBar.enabled = false;
+        child1.SetActive(false);
+        child2.SetActive(false);
+    }
+    public void EnableSlider()
+    {
+        airBar.enabled = true;
+        child1.SetActive(true);
+        child2.SetActive(true);
+    }
     public void AirChange(float Air, float maxAir)
     {
         airBar.maxValue = maxAir;

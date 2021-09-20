@@ -18,10 +18,10 @@ public class MainCamera : MonoBehaviour
 
     private SoundManager soundManager;
 
-    [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go left to right")]
+    [SerializeField, Range(40f, 160f), Tooltip("How fast the camera can go left to right")]
     float xSpeed = 120.0f;
 
-    [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go up and down")]
+    [SerializeField, Range(40f, 160f), Tooltip("How fast the camera can go up and down")]
     float ySpeed = 120.0f;
 
     [SerializeField, Range(-45f, 45f), Tooltip("How far the camera can rotate down")]
@@ -246,8 +246,8 @@ public class MainCamera : MonoBehaviour
             transform.SetParent(target);
         }
 
-        float mouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * MouseSensitivity;
-        float mouseX = Input.GetAxis("Mouse X") * Time.deltaTime * MouseSensitivity;
+        float mouseY = InputManager.GetAxis("LookVertical") * Time.deltaTime * MouseSensitivity;
+        float mouseX = InputManager.GetAxis("LookHorizontal") * Time.deltaTime * MouseSensitivity;
 
         rotationOnX -= mouseY;
         rotationOnX = Mathf.Clamp(rotationOnX, -90, 90);

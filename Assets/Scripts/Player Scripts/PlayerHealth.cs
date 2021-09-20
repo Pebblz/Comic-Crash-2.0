@@ -42,9 +42,12 @@ public class PlayerHealth : MonoBehaviour
     {
         IFrameTimer -= Time.deltaTime;
 
-        if(movement.InWater || movement.inWaterAndFloor)
+        if (movement.InWater || movement.inWaterAndFloor)
         {
-            if(movement.AtTheTopOfWater)
+            if (!WaterUI.airBar.enabled)
+                WaterUI.EnableSlider();
+
+            if (movement.AtTheTopOfWater)
             {
                 WaterUI.ReFillAirBar = true;
             }
@@ -52,7 +55,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 WaterUI.airLeft -= Time.deltaTime;
             }
-            if(WaterUI.airLeft <= 0)
+            if (WaterUI.airLeft <= 0)
             {
                 GetComponent<PlayerDeath>().isdead = true;
             }
@@ -63,6 +66,9 @@ public class PlayerHealth : MonoBehaviour
                 WaterUI.ReFillAirBar = true;
             else
                 WaterUI.ReFillAirBar = false;
+
+            if (WaterUI.airBar.enabled)
+                WaterUI.DisableSlider();
         }
     }
     public void HurtPlayer(int amount)
