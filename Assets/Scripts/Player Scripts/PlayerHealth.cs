@@ -19,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerMovement movement;
 
+    private Pause pause;
     private void Awake()
     {
         //this is for if you forget to set the current health 
@@ -35,7 +36,7 @@ public class PlayerHealth : MonoBehaviour
         {
             WaterUI.MaxAir = MaxAirTimer;
         }
-
+        pause = FindObjectOfType<Pause>();
         movement = GetComponent<PlayerMovement>();
     }
     private void Update()
@@ -53,7 +54,10 @@ public class PlayerHealth : MonoBehaviour
             }
             else
             {
-                WaterUI.airLeft -= Time.deltaTime;
+                if (!pause.isPaused)
+                {
+                    WaterUI.airLeft -= Time.deltaTime;
+                }
             }
             if (WaterUI.airLeft <= 0)
             {
