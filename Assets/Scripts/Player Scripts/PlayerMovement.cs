@@ -96,6 +96,10 @@ public class PlayerMovement : MonoBehaviour
     public bool inWaterAndFloor;
     [HideInInspector]
     public Vector3 velocity;
+    [HideInInspector]
+    public bool AtTheTopOfWater;
+
+    public bool InWater => submergence > 0f;
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -108,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool Swimming => submergence >= swimThreshold;
     float submergence;
-    bool InWater => submergence > 0f;
+
 
     Collider water;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
@@ -391,6 +395,14 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("SwimmingDown");
                         StopAnimation("SwimLeftOrRight");
                         velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                    }
+                    if((water.GetComponent<Transform>().GetChild(0).transform.position.y) < transform.position.y)
+                    {
+                        AtTheTopOfWater = true;
+                    }
+                    else
+                    {
+                        AtTheTopOfWater = false;
                     }
                     //If your moving left or right
                     if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)

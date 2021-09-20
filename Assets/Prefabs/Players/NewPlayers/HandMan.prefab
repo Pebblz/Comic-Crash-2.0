@@ -510,6 +510,7 @@ MonoBehaviour:
   CanDive: 0
   inWaterAndFloor: 0
   velocity: {x: 0, y: 0, z: 0}
+  AtTheTopOfWater: 0
   walkingPartical1: {fileID: 6044490633680549245}
   walkingPartical2: {fileID: 6044490633389514723}
   walkingPartical3: {fileID: 6044490633491547198}
@@ -577,6 +578,8 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   IFrameTimer: 1.5
+  MaxAirTimer: 40
+  WaterUI: {fileID: 0}
 --- !u!114 &375778916001974253
 MonoBehaviour:
   m_ObjectHideFlags: 0

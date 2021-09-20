@@ -967,6 +967,8 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   IFrameTimer: 1.5
+  MaxAirTimer: 40
+  WaterUI: {fileID: 0}
 --- !u!114 &4595979783101676555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,9 +1051,13 @@ MonoBehaviour:
   slowDownSpeed: 0.2
   CrouchSpeed: 3
   maxJumpSpeed: 17
+  WalkUnderWaterSpeed: 5
+  RunUnderWaterSpeed: 8
   SwimUpSpeed: 8
   SlowlyFloatDownSpeed: 2
   SwimmingDownSpeed: 4
+  WalkAnimationSpeed: 0.5
+  RunAnimationSpeed: 0.5
   AirDiveSpeed: 30
   maxAcceleration: 60
   maxAirAcceleration: 3
@@ -1096,7 +1102,9 @@ MonoBehaviour:
   canJump: 1
   Bounce: 0
   CanDive: 1
+  inWaterAndFloor: 0
   velocity: {x: 0, y: 0, z: 0}
+  AtTheTopOfWater: 0
   walkingPartical1: {fileID: 477770468372329194}
   walkingPartical2: {fileID: 477770469193209972}
   walkingPartical3: {fileID: 477770468284548009}
