@@ -6,7 +6,8 @@ using UnityEngine.Audio;
 public class SoundManager : MonoBehaviour
 {
 
-  
+
+
     AudioMixerGroup sfx;
     AudioMixerGroup music;
     AudioMixerGroup amb;
@@ -15,7 +16,19 @@ public class SoundManager : MonoBehaviour
     private const string sfxVol = "SFXVol";
     private const string ambVol = "AMBVol";
 
-   
+    [SerializeField]
+    [Tooltip("The length of the transition to and from water")]
+    float waterTimeout = 0.3f;
+
+    [SerializeField]
+    [Tooltip("The Filter for the underwater section")]
+    AudioMixerSnapshot underwater;
+
+
+    [SerializeField]
+    [Tooltip("The default filter section")]
+    AudioMixerSnapshot normal;
+
 
     #region sounds
     [SerializeField] AudioSource boing;
@@ -27,8 +40,8 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         AudioMixer mixer = Resources.Load("Sounds/Mixer") as AudioMixer;
-
-        if(mixer != null)
+        normal.TransitionTo(0.1f);
+        if (mixer != null)
         {
             //only one of each group will be found, it just likes to return an array
             sfx = mixer.FindMatchingGroups("SFX")[0];
@@ -119,5 +132,19 @@ public class SoundManager : MonoBehaviour
         if (box_break.isPlaying) return;
         this.box_break.Play();
     }
+    #endregion
+
+    #region FILTER_TRANSITIONS
+
+    public void to_underwater()
+    {
+        underwater.TransitionTo(waterTimeout);
+    }
+
+    public void to_normal_from_water()
+    {
+        normal.TransitionTo(waterTimeout);
+    }
+    
     #endregion
 }

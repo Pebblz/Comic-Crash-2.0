@@ -16,6 +16,8 @@ public class MainCamera : MonoBehaviour
     private bool isShaking;
     private float shakeTime;
 
+    private SoundManager soundManager;
+
     [SerializeField, Range(100f, 160f), Tooltip("How fast the camera can go left to right")]
     float xSpeed = 120.0f;
 
@@ -71,6 +73,7 @@ public class MainCamera : MonoBehaviour
     #region MonoBehaviours
     void Start()
     {
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         pause = FindObjectOfType<Pause>();
         startPos = transform.position;
         Vector3 angles = transform.eulerAngles;
@@ -206,6 +209,7 @@ public class MainCamera : MonoBehaviour
         if (other.gameObject.layer == 4)
         {
             RenderSettings.fog = true;
+            soundManager.to_underwater();
         }
     }
 
@@ -214,6 +218,7 @@ public class MainCamera : MonoBehaviour
         if (other.gameObject.layer == 4)
         {
             RenderSettings.fog = true;
+            soundManager.to_underwater();
         }
 
     }
@@ -222,6 +227,7 @@ public class MainCamera : MonoBehaviour
         if (other.gameObject.layer == 4)
         {
             RenderSettings.fog = false;
+            soundManager.to_normal_from_water();
         }
     }
     public void Shake(float duration, float strength)
