@@ -35,7 +35,6 @@ public class JellyFish : MonoBehaviour
         if (speed < MaxSpeed && Timer <= 0)
         {
             speed += acceleration * Time.deltaTime;
-            print(speed);
         }
 
         UpAndDown();
