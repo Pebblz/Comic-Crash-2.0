@@ -99,6 +99,12 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool AtTheTopOfWater;
 
+    public bool CollectibleGotten;
+
+    [SerializeField, Tooltip("The length of time for collecting a collectible")]
+    float collectibleTimer;
+    float currentCollectibleTimer;
+
     public bool InWater => submergence > 0f;
     #endregion
     #region private fields
@@ -163,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
         {
             blobert = true;
         }
-        if(GetComponent<HandMan>())
+        if (GetComponent<HandMan>())
         {
             handman = true;
         }
@@ -236,7 +242,7 @@ public class PlayerMovement : MonoBehaviour
                 StopAnimation("Crouching");
                 isCrouching = false;
             }
-            if (isCrouching && !InWater && !Climbing && OnGround&& !inWaterAndFloor)
+            if (isCrouching && !InWater && !Climbing && OnGround && !inWaterAndFloor)
             {
                 PlayAnimation("Crouching");
                 CurrentSpeed = CrouchSpeed;
@@ -265,10 +271,10 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("SwimmingDown");
                     StopAnimation("SwimmingUp");
                     StopAnimation("SwimLeftOrRight");
-                    if(blobert)
+                    if (blobert)
                         StopAnimation("Drowning");
                 }
-                if(OnGround)
+                if (OnGround)
                     isCrouching = InputManager.GetButton("Crouch");
 
                 desiredJump |= InputManager.GetButtonDown("Jump");
@@ -331,7 +337,20 @@ public class PlayerMovement : MonoBehaviour
             else
                 body.velocity = new Vector3(0, body.velocity.y, 0);
         }
-
+        if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove)
+        {
+            currentCollectibleTimer = collectibleTimer;
+        }
+        if (CollectibleGotten && currentCollectibleTimer <= 0 && CantMove)
+        {
+            DoneWithCollectible();
+            CollectibleGotten = false;
+        }
+        if (currentCollectibleTimer > 0)
+        {
+            GotCollectible();
+        }
+        currentCollectibleTimer -= Time.deltaTime;
     }
 
     void FixedUpdate()
@@ -339,7 +358,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
         {
-
             Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
             UpdateState();
 
@@ -396,7 +414,7 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("SwimLeftOrRight");
                         velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
-                    if((water.GetComponent<Transform>().GetChild(0).transform.position.y) < transform.position.y)
+                    if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) < transform.position.y)
                     {
                         AtTheTopOfWater = true;
                     }
@@ -428,7 +446,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 velocity += gravity * Time.deltaTime;
             }
-            if(!OnGround && inWaterAndFloor)
+            if (!OnGround && inWaterAndFloor)
             {
                 EvaluateSubmergence(water);
             }
@@ -535,7 +553,7 @@ public class PlayerMovement : MonoBehaviour
             EvaluateSubmergence(other);
             water = other;
         }
-        if((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
+        if ((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
         {
             inWaterAndFloor = true;
             water = other;
@@ -615,7 +633,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void OnCollisionStay(Collision collision)
     {
-       
+
         EvaluateCollision(collision);
         if (collision.gameObject.tag == "BuilderBlock")
             onBlock = true;
@@ -774,7 +792,7 @@ public class PlayerMovement : MonoBehaviour
         //------------------------
         velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
 
-        if (velocity.x != 0 && !InWater || 
+        if (velocity.x != 0 && !InWater ||
             velocity.z != 0 && !InWater)
         {
             PlayAnimation("Walk");
@@ -800,6 +818,22 @@ public class PlayerMovement : MonoBehaviour
         //    velocity += upAxis * (newY - currentY);
         //}
     }
+
+    public void GotCollectible()
+    {
+        CantMove = true;
+        playerInputSpace.GetComponent<MainCamera>().collectibleCamera = true;
+        //PlayAnimation("Collected");
+        StopAnimation("Run");
+        StopAnimation("Walk");
+        transform.LookAt(new Vector3(playerInputSpace.position.x, transform.position.y, playerInputSpace.position.z));
+    }
+    public void DoneWithCollectible()
+    {
+        CantMove = false;
+        playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
+        //StopAnimation("Collected");
+    }
     void Jump(Vector3 gravity)
     {
         if (!Swimming || !InWater)
@@ -808,7 +842,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = false;
             }
-            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f || 
+            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f ||
                 jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f)
             {
                 PlayAnimation("Dive");
@@ -846,9 +880,9 @@ public class PlayerMovement : MonoBehaviour
                 {
                     PlayAnimation("DoubleJump");
                 }
-                if(jumpPhase == 1 && handman)
+                if (jumpPhase == 1 && handman)
                 {
-                    if(GetComponent<HandMan>().isHoldingOBJ)
+                    if (GetComponent<HandMan>().isHoldingOBJ)
                     {
                         return;
                     }

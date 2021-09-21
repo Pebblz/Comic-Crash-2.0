@@ -32,7 +32,8 @@ public class Collectible : MonoBehaviour
             else if (collect == collectible.MainCollectible)
             {
                 gm.GetComponent<GameManager>().CollectibleCount += numberGivenToPlayer;
-                Destroy(this.gameObject);
+                FindObjectOfType<PlayerMovement>().CollectibleGotten = true;
+                Destroy(this.gameObject, .05f);
             }
             else if(collect == collectible.HeartOne)
             {

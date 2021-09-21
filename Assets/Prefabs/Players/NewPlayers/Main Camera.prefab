@@ -100,13 +100,12 @@ MonoBehaviour:
   yMaxLimit: 80
   distanceMin: 1
   distanceMax: 15
-  waterMask:
-    serializedVersion: 2
-    m_Bits: 16
+  CollectibleDistance: 5
   fallLookAtPosition: -15
   collisionZoomSpeed: 0
   collisionZoomOutSpeed: 0
   thirdPersonCamera: 1
+  collectibleCamera: 0
   MouseSensitivity: 120
   CrossHair: {fileID: 0}
   obstructionMask:
