@@ -36,6 +36,9 @@ public class MainCamera : MonoBehaviour
     [SerializeField, Range(10f, 20f), Tooltip("The max distance away for scrolling out")]
     float distanceMax = 15f;
 
+    [SerializeField, Range(3f, 10f), Tooltip("The max distance away from player while getting a collectible")]
+    float CollectibleDistance = 15f;
+
     float x = 0.0f;
     float y = 0.0f;
 
@@ -51,6 +54,9 @@ public class MainCamera : MonoBehaviour
 
     [HideInInspector, Tooltip("If this is true, it'll the camera will be in third person if it's not true it'll be in first person")]
     public bool thirdPersonCamera = true;
+
+    [Tooltip("If this is true, it'll the camera will be in the collectible camera state")]
+    public bool collectibleCamera;
 
     private Rigidbody rigidbody;
 
@@ -94,13 +100,20 @@ public class MainCamera : MonoBehaviour
     {
         if (!isShaking && !pause.isPaused && !StopCamera)
         {
-            if (thirdPersonCamera)
+            if (!collectibleCamera)
             {
-                ThirdPersonCamera();
+                if (thirdPersonCamera)
+                {
+                    ThirdPersonCamera();
+                }
+                else
+                {
+                    FirstPersonCamera();
+                }
             }
             else
             {
-                FirstPersonCamera();
+                CollectibleCamera();
             }
         }
         shakeTime -= Time.deltaTime;
@@ -204,6 +217,49 @@ public class MainCamera : MonoBehaviour
             }
         }
     }
+    
+    public void Shake(float duration, float strength)
+    {
+        isShaking = true;
+        shakeTime = duration;
+        CameraShake.Shake(duration, strength);
+    }
+    void FirstPersonCamera()
+    {
+        //this makes the camera always in front of the player 
+        transform.position = target.position + target.transform.forward + new Vector3(0, .4f, 0);
+        CrossHair.SetActive(true);
+        if (transform.parent == null)
+        {
+            transform.SetParent(target);
+        }
+
+        float mouseY = InputManager.GetAxis("LookVertical") * Time.deltaTime * MouseSensitivity;
+        float mouseX = InputManager.GetAxis("LookHorizontal") * Time.deltaTime * MouseSensitivity;
+
+        rotationOnX -= mouseY;
+        rotationOnX = Mathf.Clamp(rotationOnX, -90, 90);
+        transform.localEulerAngles = new Vector3(rotationOnX, 0, 0);
+
+        target.Rotate(Vector3.up * mouseX);
+    }
+
+    public void CollectibleCamera()
+    {
+        if(distance > CollectibleDistance)
+        {
+            Quaternion rotation = Quaternion.Euler(y, x, 0);
+
+            distance -= 10 * Time.deltaTime;
+
+            Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+            Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
+            transform.SetPositionAndRotation(position, rotation);
+        }
+    }
+
+    #endregion
+    #region Collision
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 4)
@@ -229,31 +285,6 @@ public class MainCamera : MonoBehaviour
             RenderSettings.fog = false;
             soundManager.to_normal_from_water();
         }
-    }
-    public void Shake(float duration, float strength)
-    {
-        isShaking = true;
-        shakeTime = duration;
-        CameraShake.Shake(duration, strength);
-    }
-    void FirstPersonCamera()
-    {
-        //this makes the camera always in front of the player 
-        transform.position = target.position + target.transform.forward + new Vector3(0, .4f, 0);
-        CrossHair.SetActive(true);
-        if (transform.parent == null)
-        {
-            transform.SetParent(target);
-        }
-
-        float mouseY = InputManager.GetAxis("LookVertical") * Time.deltaTime * MouseSensitivity;
-        float mouseX = InputManager.GetAxis("LookHorizontal") * Time.deltaTime * MouseSensitivity;
-
-        rotationOnX -= mouseY;
-        rotationOnX = Mathf.Clamp(rotationOnX, -90, 90);
-        transform.localEulerAngles = new Vector3(rotationOnX, 0, 0);
-
-        target.Rotate(Vector3.up * mouseX);
     }
     #endregion
 }

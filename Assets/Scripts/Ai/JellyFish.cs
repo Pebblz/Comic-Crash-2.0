@@ -8,8 +8,11 @@ public class JellyFish : MonoBehaviour
     float DistanceToMoveY;
 
     [SerializeField, Range(0f, 10f), Tooltip("The speed at which the JellyFish moves")]
-    float speed = 2;
+    float MaxSpeed = 2;
 
+    float speed;
+
+    public float acceleration;
     [SerializeField, Range(1f, 10f), Tooltip("The amount of damage done to the player")]
     float damage = 2;
     [SerializeField]
@@ -29,6 +32,12 @@ public class JellyFish : MonoBehaviour
     }
     private void Update()
     {
+        if (speed < MaxSpeed && Timer <= 0)
+        {
+            speed += acceleration * Time.deltaTime;
+            print(speed);
+        }
+
         UpAndDown();
         if(Timer > 0)
             Timer -= Time.deltaTime;
@@ -39,21 +48,23 @@ public class JellyFish : MonoBehaviour
         {
             if (GoBackY)
             {
-                this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                transform.position = new Vector3(transform.position.x, transform.position.y - speed * Time.deltaTime, transform.position.z);
                 if (this.gameObject.transform.position.y <= StartPoint.y)
                 {
                     GoBackY = false;
                     Timer = TimeToWait;
+                    speed = 0;
                 }
             }
             else
             {
 
-                this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                transform.position = new Vector3(transform.position.x, transform.position.y + speed * Time.deltaTime, transform.position.z);
                 if (this.gameObject.transform.position.y >= EndPointY)
                 {
                     GoBackY = true;
                     Timer = TimeToWait;
+                    speed = 0;
                 }
             }
         }
