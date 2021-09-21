@@ -740,6 +740,12 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: SwimmingUp
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimLeftOrRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimmingDown
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1044374882447497003}
   m_Solo: 0
@@ -1300,8 +1306,8 @@ AnimatorState:
   - {fileID: -6651266951138858334}
   - {fileID: -4218850502121820845}
   - {fileID: 8897940917257187262}
-  - {fileID: -3650325657440062401}
   - {fileID: -1018887522641890493}
+  - {fileID: -3650325657440062401}
   - {fileID: -1208198437901610021}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
@@ -3514,6 +3520,12 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: Falling
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimLeftOrRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimmingDown
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4454243314089766941}
@@ -7385,6 +7397,12 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: SwimmingUp
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimLeftOrRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimmingDown
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -9055261117179111891}
@@ -11515,6 +11533,12 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: SwimLeftOrRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimmingDown
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimmingUp
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3955115639487137715}
