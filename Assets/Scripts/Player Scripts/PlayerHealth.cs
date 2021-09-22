@@ -19,6 +19,8 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerMovement movement;
 
+    int currentAir;
+
     private Pause pause;
     private void Awake()
     {
@@ -43,11 +45,10 @@ public class PlayerHealth : MonoBehaviour
     {
         IFrameTimer -= Time.deltaTime;
 
-        if (movement.InWater || movement.inWaterAndFloor)
+        if (movement.InWater || movement.inWaterAndFloor )
         {
             if (!WaterUI.airBar.enabled)
                 WaterUI.EnableSlider();
-
             if (movement.AtTheTopOfWater)
             {
                 WaterUI.ReFillAirBar = true;

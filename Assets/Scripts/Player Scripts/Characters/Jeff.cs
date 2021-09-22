@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class Jeff : MonoBehaviour
 {
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (InputManager.GetButtonDown("Right Mouse"))
         {
             Roll();
         }
-        if (Input.GetMouseButtonUp(1))
+        if (InputManager.GetButtonDown("Right Mouse"))
         {
             BackToNormal();
         }

@@ -65,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
     float buoyancy = 1f;
     [SerializeField, Range(0.01f, 1f)]
     float swimThreshold = 0.5f;
+    [SerializeField, Range(.1f, 5f)]
+    float AtTopOfWaterOffset = 1;
 
     [Header("Animator"), Space(5)]
     [SerializeField]
@@ -406,21 +408,13 @@ public class PlayerMovement : MonoBehaviour
                         velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
                     //If your holding space 
-                    if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y) > transform.position.y)
+                    if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y)  > transform.position.y)
                     {
                         PlayAnimation("SwimmingUp");
                         StopAnimation("Sinking");
                         StopAnimation("SwimmingDown");
                         StopAnimation("SwimLeftOrRight");
                         velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
-                    }
-                    if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) < transform.position.y)
-                    {
-                        AtTheTopOfWater = true;
-                    }
-                    else
-                    {
-                        AtTheTopOfWater = false;
                     }
                     //If your moving left or right
                     if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)
@@ -450,6 +444,19 @@ public class PlayerMovement : MonoBehaviour
             {
                 EvaluateSubmergence(water);
             }
+
+            if(water != null)
+            {
+                if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - 1 < transform.position.y)
+                {
+                    AtTheTopOfWater = true;
+                }
+                else
+                {
+                    AtTheTopOfWater = false;
+                }
+            }
+
             if (OnGround)
                 body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
             body.velocity = velocity;
