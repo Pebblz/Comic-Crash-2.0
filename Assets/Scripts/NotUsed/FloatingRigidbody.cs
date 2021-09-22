@@ -54,7 +54,7 @@ public class FloatingRigidbody : MonoBehaviour
 		float buoyancyFactor = -buoyancy / buoyancyOffsets.Length;
 		for (int i = 0; i < buoyancyOffsets.Length; i++)
 		{
-			if (submergence[i] > 0f)
+			if (submergence[i] > 0f )
 			{
 				float drag = Mathf.Max(0f, 1f - dragFactor * submergence[i]);
 				body.velocity *= drag;
@@ -84,6 +84,7 @@ public class FloatingRigidbody : MonoBehaviour
 
 	void EvaluateSubmergence()
 	{
+		print("submerged");
 		Vector3 down = gravity.normalized;
 		Vector3 offset = down * -submergenceOffset;
 		for (int i = 0; i < buoyancyOffsets.Length; i++)

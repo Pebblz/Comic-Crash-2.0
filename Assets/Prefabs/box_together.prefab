@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1381971465792515451}
   - component: {fileID: 7051104830110193970}
   - component: {fileID: 2727170411480799400}
+  - component: {fileID: 5800293432364882607}
   m_Layer: 9
   m_Name: box_together
   m_TagString: Untagged
@@ -175,3 +176,26 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &5800293432364882607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824482949963907193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e23fdf3048f424d88defd4ea62fba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatToSleep: 0
+  submergenceOffset: 0.04
+  submergenceRange: 0.5
+  buoyancy: 1.5
+  waterDrag: 1
+  waterMask:
+    serializedVersion: 2
+    m_Bits: 16
+  buoyancyOffsets:
+  - {x: 0, y: 0, z: 0}
+  safeFloating: 1
