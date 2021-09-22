@@ -76,6 +76,7 @@ public class MainCamera : MonoBehaviour
 
     public bool StopCamera;
 
+    public bool UnderWaterFog = false;
     #region MonoBehaviours
     void Start()
     {
@@ -93,7 +94,8 @@ public class MainCamera : MonoBehaviour
         {
             rigidbody.freezeRotation = true;
         }
-        RenderSettings.fog = false;
+        if(UnderWaterFog)
+            RenderSettings.fog = false;
     }
 
     void LateUpdate()
@@ -262,28 +264,37 @@ public class MainCamera : MonoBehaviour
     #region Collision
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 4)
+        if (UnderWaterFog)
         {
-            RenderSettings.fog = true;
-            soundManager.to_underwater();
+            if (other.gameObject.layer == 4)
+            {
+                RenderSettings.fog = true;
+                soundManager.to_underwater();
+            }
         }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == 4)
+        if (UnderWaterFog)
         {
-            RenderSettings.fog = true;
-            soundManager.to_underwater();
+            if (other.gameObject.layer == 4)
+            {
+                RenderSettings.fog = true;
+                soundManager.to_underwater();
+            }
         }
 
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == 4)
+        if (UnderWaterFog)
         {
-            RenderSettings.fog = false;
-            soundManager.to_normal_from_water();
+            if (other.gameObject.layer == 4)
+            {
+                RenderSettings.fog = false;
+                soundManager.to_normal_from_water();
+            }
         }
     }
     #endregion
