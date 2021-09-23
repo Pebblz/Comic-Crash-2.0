@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Luminosity.IO;
+using Luminosity.IO.Examples;
 public class CharacterSelectionTiles : MonoBehaviour
 {
     [SerializeField]
@@ -12,15 +14,69 @@ public class CharacterSelectionTiles : MonoBehaviour
     public DraggableUI HoveringCharacter;
     [SerializeField]
     CharacterSelectionTiles[] otherTiles = new CharacterSelectionTiles[3];
+    bool once;
+    GamepadToggle gm;
+    Button button;
+    private void Start()
+    {
+        gm = FindObjectOfType<GamepadToggle>();
+        button = GetComponent<Button>();
+    }
     void Update()
     {
-        if(Input.GetMouseButtonUp(0) && OnThisTile )
+        if (gm.m_gamepadOn)
         {
-            ChangeCharacters();
+            button.enabled = true;
+            if (EventSystem.current.currentSelectedGameObject == this.gameObject && once)
+            {
+                DraggableUI[] ui = FindObjectsOfType<DraggableUI>();
+
+                foreach (DraggableUI i in ui)
+                {
+                    if (i.dragging)
+                    {
+                        OnThisTile = true;
+                        HoveringCharacter = i;
+                        HoveringCharacter.Ontile = true;
+                    }
+                }
+                once = false;
+            }
+            if (EventSystem.current.currentSelectedGameObject != this.gameObject && !once)
+            {
+                once = true;
+                if (HoveringCharacter != null)
+                {
+                    if (HoveringCharacter.gameObject == CharacterOnTile)
+                    {
+                        CharacterOnTile = null;
+                    }
+                    OnThisTile = false;
+                    HoveringCharacter.Ontile = false;
+                    HoveringCharacter = null;
+                }
+                
+            }
+            if (InputManager.GetButtonUp("UI_Submit") && OnThisTile)
+            {
+                ChangeCharacters();
+            }
+            if (InputManager.GetButtonUp("UI_Submit") && CharacterOnTile != null)
+            {
+                CharacterOnTile.transform.position = this.transform.position;
+            }
         }
-        if(Input.GetMouseButtonUp(0) && CharacterOnTile != null)
+        else
         {
-            CharacterOnTile.transform.position = this.transform.position;
+            if (InputManager.GetMouseButtonUp(0) && OnThisTile)
+            {
+                ChangeCharacters();
+            }
+            if (InputManager.GetMouseButtonUp(0) && CharacterOnTile != null)
+            {
+                CharacterOnTile.transform.position = this.transform.position;
+            }
+            button.enabled = false;
         }
     }
 
@@ -35,7 +91,7 @@ public class CharacterSelectionTiles : MonoBehaviour
         }
     }
     private void OnTriggerExit2D(Collider2D col)
-    { 
+    {
         if (col.GetComponent<DraggableUI>())
         {
             if (col.GetComponent<DraggableUI>().Ontile)
@@ -44,7 +100,7 @@ public class CharacterSelectionTiles : MonoBehaviour
                 col.GetComponent<DraggableUI>().Ontile = false;
                 HoveringCharacter = null;
             }
-            if(col.gameObject == CharacterOnTile)
+            if (col.gameObject == CharacterOnTile)
             {
                 CharacterOnTile = null;
             }
@@ -79,7 +135,6 @@ public class CharacterSelectionTiles : MonoBehaviour
                 {
                     dOrg.GetRidOfUIFromList(HoveringCharacter.gameObject);
                     dOrg.AddToList(CharacterOnTile.gameObject);
-                    dOrg.ReOrderList();
                     CharacterOnTile.Ontile = false;
                     CharacterOnTile.GetComponent<DraggableUI>().TileOn = null;
                     CharacterOnTile = HoveringCharacter;
@@ -97,6 +152,8 @@ public class CharacterSelectionTiles : MonoBehaviour
                         t.CharacterOnTile = null;
                     }
                 }
+                dOrg.ReOrderList();
+                return;
             }
         }
         else

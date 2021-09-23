@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Luminosity.IO;
 public class CharacterSwitcherMachine : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class CharacterSwitcherMachine : MonoBehaviour
     PlayerSwitcher Ps;
 
     CharacterSwitcherMachine[] otherMachines;
+
+    [SerializeField] GameObject FirstButton;
 
     private void Start()
     {
@@ -49,6 +52,9 @@ public class CharacterSwitcherMachine : MonoBehaviour
 
                     if (CharacterSwitcherUI.activeSelf)
                     {
+                        EventSystem.current.SetSelectedGameObject(null);
+                        EventSystem.current.SetSelectedGameObject(FirstButton);
+
                         Ps.CanSwitch = false;
                         player.GetComponent<PlayerMovement>().CantMove = true;
                         camera.GetComponent<MainCamera>().StopCamera = true;
