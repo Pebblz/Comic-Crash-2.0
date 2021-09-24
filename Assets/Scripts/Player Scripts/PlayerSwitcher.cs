@@ -20,9 +20,11 @@ public class PlayerSwitcher : MonoBehaviour
     public bool CanSwitch;
     public GameObject[] AllCharactersInGame = new GameObject[10];
     Pause pause;
+    UnderwaterAirUI ui;
     void Awake()
     {
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
+        ui = FindObjectOfType<UnderwaterAirUI>();
         pause = GetComponent<Pause>();
         CanSwitch = true;
     }
@@ -78,7 +80,8 @@ public class PlayerSwitcher : MonoBehaviour
 
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
-
+            Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
+            ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
             PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
 
             if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
@@ -90,8 +93,8 @@ public class PlayerSwitcher : MonoBehaviour
 
             TempPlayerMovement.jumpPhase = 5;
 
-            TempPlayerMovement.velocity = currentPlayerMovement.velocity;
-
+            //TempPlayerMovement.velocity = currentPlayerMovement.velocity;
+            Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
             if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Walk"))
             {
                 Temp.GetComponent<Animator>().SetBool("Walk", true);
