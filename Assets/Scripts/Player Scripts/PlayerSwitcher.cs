@@ -71,6 +71,7 @@ public class PlayerSwitcher : MonoBehaviour
         if (CharactersToSwitchTo[i] != null && CanSwitch)
         {
             PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
+            
             if(CurrentPlayer.GetComponent<HandMan>())
             {
                if( CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
@@ -81,10 +82,12 @@ public class PlayerSwitcher : MonoBehaviour
 
             GameObject Temp = Instantiate(CharactersToSwitchTo[i],
                 PlayerTransform.position, PlayerTransform.rotation);
+            PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
+
             Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
             ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
 
-            PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
+
 
             if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
             {

@@ -42,7 +42,7 @@ public class PlayerHealth : MonoBehaviour
         pause = FindObjectOfType<Pause>();
         movement = GetComponent<PlayerMovement>();
     }
-    private void Update()
+    private void LateUpdate()
     {
         IFrameTimer -= Time.deltaTime;
 
