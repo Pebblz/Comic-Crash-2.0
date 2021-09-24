@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
         {
             WaterUI.MaxAir = MaxAirTimer;
         }
-        WaterUI.airLeft = currentAir;
+        //WaterUI.airLeft = currentAir;
         pause = FindObjectOfType<Pause>();
         movement = GetComponent<PlayerMovement>();
     }
