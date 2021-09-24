@@ -17,6 +17,7 @@ public class PlayerSwitcher : MonoBehaviour
     private float dpadX;
     private float dpady;
     float timer;
+    [SerializeField] float maxSwitchTimer = .5f;
     public bool CanSwitch;
     public GameObject[] AllCharactersInGame = new GameObject[10];
     Pause pause;
@@ -82,6 +83,7 @@ public class PlayerSwitcher : MonoBehaviour
                 PlayerTransform.position, PlayerTransform.rotation);
             Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
             ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
+
             PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
 
             if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
@@ -93,7 +95,6 @@ public class PlayerSwitcher : MonoBehaviour
 
             TempPlayerMovement.jumpPhase = 5;
 
-            //TempPlayerMovement.velocity = currentPlayerMovement.velocity;
             Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
             if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Walk"))
             {
@@ -110,7 +111,7 @@ public class PlayerSwitcher : MonoBehaviour
             Camera.GetComponent<MainCamera>().target = Temp.transform;
             Destroy(CurrentPlayer);
             CurrentPlayer = Temp;
-            timer = .2f;
+            timer = maxSwitchTimer;
         }
     }
 }
