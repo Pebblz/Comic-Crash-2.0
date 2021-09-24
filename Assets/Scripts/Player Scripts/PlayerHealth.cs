@@ -19,7 +19,7 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerMovement movement;
 
-    int currentAir;
+    public float currentAir;
 
     private Pause pause;
     private void Awake()
@@ -38,6 +38,7 @@ public class PlayerHealth : MonoBehaviour
         {
             WaterUI.MaxAir = MaxAirTimer;
         }
+        WaterUI.airLeft = currentAir;
         pause = FindObjectOfType<Pause>();
         movement = GetComponent<PlayerMovement>();
     }
@@ -75,6 +76,7 @@ public class PlayerHealth : MonoBehaviour
             if (WaterUI.airBar.enabled)
                 WaterUI.DisableSlider();
         }
+        currentAir = WaterUI.airLeft;
     }
     public void HurtPlayer(int amount)
     {

@@ -32,7 +32,7 @@ namespace Luminosity.IO.Examples
 		[SerializeField]
 		private string m_gamepadScheme = null;
 
-		private bool m_gamepadOn;
+		public bool m_gamepadOn;
 
 		private void Awake()
 		{

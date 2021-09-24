@@ -84,7 +84,6 @@ public class FloatingRigidbody : MonoBehaviour
 
 	void EvaluateSubmergence()
 	{
-		print("submerged");
 		Vector3 down = gravity.normalized;
 		Vector3 offset = down * -submergenceOffset;
 		for (int i = 0; i < buoyancyOffsets.Length; i++)
