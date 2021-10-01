@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
-public class PlayerSwitcher : MonoBehaviour
+using Photon.Realtime;
+using Photon.Pun;
+using System.IO;
+public class PlayerSwitcher : MonoBehaviourPun
 {
     [Tooltip("This is for the other characters that the player can switch to")]
     public GameObject[] CharactersToSwitchTo = new GameObject[4];
@@ -33,28 +36,30 @@ public class PlayerSwitcher : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        //arrays start at zero so i have to make it one less 
-        if (timer < 0)
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            if (InputManager.GetButton("1"))
+            //arrays start at zero so i have to make it one less 
+            if (timer < 0)
             {
-                SwitchCharacter(0);
-            }
-            if (InputManager.GetButton("2"))
-            {
-                SwitchCharacter(1);
-            }
-            if (InputManager.GetButton("3"))
-            {
-                SwitchCharacter(2);
-            }
-            if (InputManager.GetButton("4"))
-            {
-                SwitchCharacter(3);
+                if (InputManager.GetButton("1"))
+                {
+                    SwitchCharacter(0);
+                }
+                if (InputManager.GetButton("2"))
+                {
+                    SwitchCharacter(1);
+                }
+                if (InputManager.GetButton("3"))
+                {
+                    SwitchCharacter(2);
+                }
+                if (InputManager.GetButton("4"))
+                {
+                    SwitchCharacter(3);
+                }
             }
         }
         timer -= Time.deltaTime;
-
     }
     public void ChangeSelectedCharacters(int index, GameObject Character)
     {
@@ -70,6 +75,8 @@ public class PlayerSwitcher : MonoBehaviour
 
         if (CharactersToSwitchTo[i] != null && CanSwitch)
         {
+            CurrentPlayer = PhotonFindCurrentClient();
+            PlayerTransform = CurrentPlayer.transform;
             PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
             
             if(CurrentPlayer.GetComponent<HandMan>())
@@ -80,14 +87,13 @@ public class PlayerSwitcher : MonoBehaviour
                 }
             }
 
-            GameObject Temp = Instantiate(CharactersToSwitchTo[i],
-                PlayerTransform.position, PlayerTransform.rotation);
+            GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name), 
+                PlayerTransform.position, PlayerTransform.rotation,0);
+
             PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
 
             Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
             ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
-
-
 
             if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
             {
@@ -112,9 +118,26 @@ public class PlayerSwitcher : MonoBehaviour
             Camera.transform.parent = null;
             Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
             Camera.GetComponent<MainCamera>().target = Temp.transform;
-            Destroy(CurrentPlayer);
+            PhotonNetwork.Destroy(CurrentPlayer);
             CurrentPlayer = Temp;
             timer = maxSwitchTimer;
         }
+    }
+    [PunRPC]
+    public void DestroyPlayer()
+    {
+        PhotonNetwork.Destroy(CurrentPlayer.GetComponent<PhotonView>());
+    }
+
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
 }

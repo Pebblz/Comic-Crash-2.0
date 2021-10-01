@@ -22,7 +22,7 @@ public class Pause : MonoBehaviour
     void Start()
     {
         Gm = GetComponent<GameManager>();
-        player = FindObjectOfType<PlayerMovement>().gameObject;
+        //player = FindObjectOfType<PlayerMovement>().gameObject;
         Ps = GetComponent<PlayerSwitcher>();
         if (PausePage == null)
         {

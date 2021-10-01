@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     public int coinCount;
     [Tooltip("The amount of the main collectibles the player has")]
     public int CollectibleCount;
-
+    [Tooltip("The Position that the players will spawn at when starting")]
+    public Vector3 photonStartPosition;
     #region MonoBehaviours
     void Start()
     {
