@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Realtime;
+using Photon.Pun;
 public class Collectible : MonoBehaviour
 {
     [SerializeField, Tooltip("This is here for all the diffrent collectibles in the game")]
@@ -10,10 +11,13 @@ public class Collectible : MonoBehaviour
     [SerializeField, Range(1, 5), Tooltip("This would be here for if we have like a gold coin that would give 5 coins instead of 1")]
     int numberGivenToPlayer;
 
-    [SerializeField, Range(0,100)]float RotationSpeed;
+    [SerializeField, Range(0, 100)] float RotationSpeed;
 
+    GameObject player;
     void Update()
     {
+        if (player == null)
+            player = PhotonFindCurrentClient();
         // Rotate the object around its local y axis at 1 degree per second
         transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
     }
@@ -27,44 +31,62 @@ public class Collectible : MonoBehaviour
             if (collect == collectible.Coin)
             {
                 gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
-                Destroy(this.gameObject);
+                PhotonNetwork.Destroy(this.gameObject);
             }
             else if (collect == collectible.MainCollectible)
             {
                 gm.GetComponent<GameManager>().CollectibleCount += numberGivenToPlayer;
-                FindObjectOfType<PlayerMovement>().CollectibleGotten = true;
-                Destroy(this.gameObject, .05f);
+                if (col.gameObject == player)
+                {
+                    FindObjectOfType<PlayerMovement>().CollectibleGotten = true;
+                    PhotonNetwork.Destroy(this.gameObject);
+                }
             }
-            else if(collect == collectible.HeartOne)
+            else if (collect == collectible.HeartOne)
             {
-                if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
+                if (col.gameObject == player)
                 {
-                    col.gameObject.GetComponent<PlayerHealth>().currentHealth += 1;
-                    Destroy(this.gameObject);
-                } else
-                {
-                    print("Your at max health dumb dumb");
+                    if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
+                    {
+                        col.gameObject.GetComponent<PlayerHealth>().currentHealth += 1;
+                        PhotonNetwork.Destroy(this.gameObject);
+                    }
                 }
-            } else if(collect == collectible.maxHealthUp)
+            }
+            else if (collect == collectible.maxHealthUp)
             {
-                col.gameObject.GetComponent<PlayerHealth>().maxHealth += 1;
-                col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
-                print("new health = " + col.gameObject.GetComponent<PlayerHealth>().maxHealth);
-                Destroy(this.gameObject);
-            } else if( collect == collectible.FullHeal)
-            {
-                if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
+                if (col.gameObject == player)
                 {
+                    col.gameObject.GetComponent<PlayerHealth>().maxHealth += 1;
                     col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
-                    Destroy(this.gameObject);
+                    print("new health = " + col.gameObject.GetComponent<PlayerHealth>().maxHealth);
+                    PhotonNetwork.Destroy(this.gameObject);
                 }
-                else
+            }
+            else if (collect == collectible.FullHeal)
+            {
+                if (col.gameObject == player)
                 {
-                    print("Your at max health dumb dumb");
+                    if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
+                    {
+                        col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
+                        PhotonNetwork.Destroy(this.gameObject);
+                    }
                 }
             }
 
         }
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
     enum collectible
     {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
+using Photon.Realtime;
+using Photon.Pun;
 public class HandMan : MonoBehaviour
 {
     [HideInInspector] public GameObject PickUp;
@@ -13,73 +15,79 @@ public class HandMan : MonoBehaviour
     PlayerSquish squish;
     PlayerMovement movement;
     PlayerAttack pAttack;
+    PhotonView photonView;
     void Awake()
     {
         Anim = GetComponent<Animator>();
         movement = GetComponent<PlayerMovement>();
         squish = GetComponent<PlayerSquish>();
         pAttack = GetComponent<PlayerAttack>();
+        photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
         pickUpTimer -= Time.deltaTime;
-        if (InputManager.GetButtonDown("Right Mouse") && pickUpTimer < 0)
+        if (photonView.IsMine)
         {
-            //this checks to see if the players picking up an obj
-            if (PickUp == null)
+            if (InputManager.GetButtonDown("Right Mouse") && pickUpTimer < 0)
             {
-                isHoldingOBJ = true;
-                Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
-                RaycastHit hit;
-                for (float x = -.5f; x <= .5f; x += .5f)
+                //this checks to see if the players picking up an obj
+                if (PickUp == null)
                 {
-                    for (float y = -4; y <= 4; y += .6f)
+                    isHoldingOBJ = true;
+                    Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
+                    RaycastHit hit;
+                    for (float x = -.5f; x <= .5f; x += .5f)
                     {
-
-                        if (Physics.Raycast(start, transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f) && PickUp == null)
+                        for (float y = -4; y <= 4; y += .6f)
                         {
-                            //this checks if any of the rays hit an object with pickupables script
-                            if (hit.collider.gameObject.GetComponent<PickUpables>() != null)
+
+                            if (Physics.Raycast(start, transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f) && PickUp == null)
                             {
-                                isHoldingOBJ = true;
-                                hit.collider.gameObject.GetComponent<PickUpables>().PickedUp(transform);
-                                PickUp = hit.collider.gameObject;
-                                pickUpTimer = .7f;
+                                //this checks if any of the rays hit an object with pickupables script
+                                if (hit.collider.gameObject.GetComponent<PickUpables>() != null)
+                                {
+                                    isHoldingOBJ = true;
+                                    hit.collider.gameObject.GetComponent<PickUpables>().PickedUp(transform);
+                                    PickUp = hit.collider.gameObject;
+                                    pickUpTimer = .7f;
+                                }
                             }
                         }
                     }
                 }
-            }         
 
-        }
-        if (PickUp == null)
-        {
-            squish.enabled = true;
-            pAttack.CanAttack = true;
-            movement.CanWallJump = true;
-            isHoldingOBJ = false;
-        } else
-        {
-            squish.enabled = false;
-            pAttack.CanAttack = false;
-            movement.CanWallJump = false;
-            //this is for the throwing / droping logic
-            if (InputManager.GetButtonDown("Left Mouse") && pickUpTimer < 0)
-            {
-                if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
-                {
-                    PickUp.GetComponent<PickUpables>().DropInFront();
-                    PickUp = null;
-                    isHoldingOBJ = false;
-                }
             }
-            if (InputManager.GetButtonDown("Right Mouse") && pickUpTimer <= 0)
+            if (PickUp == null)
             {
-                if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
+                squish.enabled = true;
+                pAttack.CanAttack = true;
+                movement.CanWallJump = true;
+                isHoldingOBJ = false;
+            }
+            else
+            {
+                squish.enabled = false;
+                pAttack.CanAttack = false;
+                movement.CanWallJump = false;
+                //this is for the throwing / droping logic
+                if (InputManager.GetButtonDown("Left Mouse") && pickUpTimer < 0)
                 {
-                    ThrowGameObject();
+                    if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
+                    {
+                        PickUp.GetComponent<PickUpables>().DropInFront();
+                        PickUp = null;
+                        isHoldingOBJ = false;
+                    }
+                }
+                if (InputManager.GetButtonDown("Right Mouse") && pickUpTimer <= 0)
+                {
+                    if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
+                    {
+                        ThrowGameObject();
+                    }
                 }
             }
         }
