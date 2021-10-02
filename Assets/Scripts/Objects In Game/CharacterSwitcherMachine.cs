@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Luminosity.IO;
+using Photon.Realtime;
+using Photon.Pun;
 public class CharacterSwitcherMachine : MonoBehaviour
 {
     [SerializeField]
@@ -32,9 +34,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
     }
     private void Update()
     {
-        if (player == null)
-            player = FindObjectOfType<PlayerMovement>().gameObject;
-        else
+        if (player != null)
         {
             if (InRadius())
             {
@@ -94,6 +94,22 @@ public class CharacterSwitcherMachine : MonoBehaviour
                 }
             }
         }
+        else
+        {
+
+            player = PhotonFindCurrentClient();
+        }
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
     public void CloseSwitcher()
     {

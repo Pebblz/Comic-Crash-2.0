@@ -529,7 +529,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375778916001974165}
   serializedVersion: 2
-  m_Mass: 5
+  m_Mass: 30
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
@@ -687,8 +687,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Dead
+  - Type: 4
+    SynchronizeType: 0
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Walk
+  - Type: 4
+    SynchronizeType: 0
+    Name: Run
+  - Type: 4
+    SynchronizeType: 0
+    Name: Falling
+  - Type: 4
+    SynchronizeType: 0
+    Name: Balancing
+  - Type: 4
+    SynchronizeType: 0
+    Name: Hanging
+  - Type: 4
+    SynchronizeType: 0
+    Name: Getup
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsLanded
+  - Type: 4
+    SynchronizeType: 0
+    Name: Crouching
+  - Type: 4
+    SynchronizeType: 0
+    Name: DoubleJump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Skid
+  - Type: 3
+    SynchronizeType: 0
+    Name: Attack
+  - Type: 4
+    SynchronizeType: 0
+    Name: Sinking
+  - Type: 4
+    SynchronizeType: 0
+    Name: SwimmingDown
+  - Type: 4
+    SynchronizeType: 0
+    Name: SwimLeftOrRight
+  - Type: 4
+    SynchronizeType: 0
+    Name: AirAttack
+  - Type: 4
+    SynchronizeType: 0
+    Name: SwimmingUp
+  - Type: 1
+    SynchronizeType: 0
+    Name: WalkMultiplier
+  - Type: 1
+    SynchronizeType: 0
+    Name: RunMultiplier
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!114 &-1672702501602046878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,6 +771,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -6185063462678670471}
+  - {fileID: 849935704019061599}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -3110,6 +3173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2975181827143592320}
   - component: {fileID: 5953471444027307361}
+  - component: {fileID: 948210253609464743}
   m_Layer: 10
   m_Name: pCube60
   m_TagString: Untagged
@@ -3251,6 +3315,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 3.3292809, y: 22.237913, z: -5.0892735}
     m_Extent: {x: 59.322315, y: 49.51111, z: 39.263695}
   m_DirtyAABB: 0
+--- !u!114 &948210253609464743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7242189364675765239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &7545006349744769684
 GameObject:
   m_ObjectHideFlags: 0

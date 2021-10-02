@@ -915,6 +915,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3584676744305154157}
   - component: {fileID: 975619710362483093}
+  - component: {fileID: 8777730211904920906}
   m_Layer: 10
   m_Name: pPlane5
   m_TagString: Untagged
@@ -1025,6 +1026,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.61881065, y: 17.609247, z: -2.651867}
     m_Extent: {x: 45.081314, y: 53.869644, z: 35.929405}
   m_DirtyAABB: 0
+--- !u!114 &8777730211904920906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622095496542197311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &3696258738320921625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1805,7 +1822,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7093078686324562486}
   serializedVersion: 2
-  m_Mass: 5
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
@@ -2051,6 +2068,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: -2360383561209079985}
   - {fileID: 561296504702199882}
+  - {fileID: 8777730211904920906}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

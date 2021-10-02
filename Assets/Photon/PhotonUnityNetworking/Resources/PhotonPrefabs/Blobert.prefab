@@ -2313,7 +2313,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4937292684294454743}
   serializedVersion: 2
-  m_Mass: 5
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 1
   m_UseGravity: 0
@@ -2489,8 +2489,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Dead
+  - Type: 4
+    SynchronizeType: 0
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Walk
+  - Type: 4
+    SynchronizeType: 0
+    Name: Run
+  - Type: 4
+    SynchronizeType: 0
+    Name: Falling
+  - Type: 4
+    SynchronizeType: 0
+    Name: Crouching
+  - Type: 4
+    SynchronizeType: 0
+    Name: Attack
+  - Type: 4
+    SynchronizeType: 0
+    Name: Balancing
+  - Type: 4
+    SynchronizeType: 0
+    Name: Hanging
+  - Type: 4
+    SynchronizeType: 0
+    Name: Getup
+  - Type: 4
+    SynchronizeType: 0
+    Name: DoubleJump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Skid
+  - Type: 4
+    SynchronizeType: 0
+    Name: Drowning
+  - Type: 4
+    SynchronizeType: 0
+    Name: AirAttack
+  - Type: 1
+    SynchronizeType: 0
+    Name: WalkMultiplier
+  - Type: 1
+    SynchronizeType: 0
+    Name: RunMultiplier
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!114 &7979093232838032977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2509,7 +2559,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4310544434737268546}
+  - {fileID: 4738721306745950856}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -3222,6 +3274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1967307436597319599}
   - component: {fileID: 8763588243539607121}
+  - component: {fileID: 2515508529194248667}
   m_Layer: 9
   m_Name: polySurface2
   m_TagString: Untagged
@@ -3307,6 +3360,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 3.9327617, y: -3.7110553, z: 0.10658264}
     m_Extent: {x: 18.09555, y: 15.187967, z: 18.653713}
   m_DirtyAABB: 0
+--- !u!114 &2515508529194248667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6058703603874339322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &6149463778754831785
 GameObject:
   m_ObjectHideFlags: 0

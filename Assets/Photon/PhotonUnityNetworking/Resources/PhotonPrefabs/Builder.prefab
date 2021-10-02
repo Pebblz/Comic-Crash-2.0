@@ -1305,7 +1305,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2126054934864030735}
   serializedVersion: 2
-  m_Mass: 5
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -1425,8 +1425,79 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Dead
+  - Type: 4
+    SynchronizeType: 0
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Walk
+  - Type: 4
+    SynchronizeType: 0
+    Name: Run
+  - Type: 4
+    SynchronizeType: 0
+    Name: Falling
+  - Type: 4
+    SynchronizeType: 0
+    Name: Crouching
+  - Type: 4
+    SynchronizeType: 0
+    Name: Balancing
+  - Type: 4
+    SynchronizeType: 0
+    Name: Hanging
+  - Type: 4
+    SynchronizeType: 0
+    Name: Getup
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsLanded
+  - Type: 4
+    SynchronizeType: 0
+    Name: DoubleJump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Skid
+  - Type: 3
+    SynchronizeType: 0
+    Name: Attack
+  - Type: 4
+    SynchronizeType: 0
+    Name: Digging
+  - Type: 4
+    SynchronizeType: 0
+    Name: Building
+  - Type: 4
+    SynchronizeType: 0
+    Name: BuildingAir
+  - Type: 4
+    SynchronizeType: 0
+    Name: SwimLeftOrRight
+  - Type: 4
+    SynchronizeType: 0
+    Name: SwimmingDown
+  - Type: 4
+    SynchronizeType: 0
+    Name: Sinking
+  - Type: 4
+    SynchronizeType: 0
+    Name: AirAttack
+  - Type: 4
+    SynchronizeType: 0
+    Name: SwimmingUp
+  - Type: 1
+    SynchronizeType: 0
+    Name: WalkMultiplier
+  - Type: 1
+    SynchronizeType: 0
+    Name: RunMultiplier
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!114 &6237674236333460901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,7 +1516,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -8782405838213571898}
+  - {fileID: -3359052407388523657}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1782,6 +1855,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2418707630251762174}
   - component: {fileID: 4082060288827013546}
+  - component: {fileID: 5225872265844438176}
   m_Layer: 10
   m_Name: polySurface55
   m_TagString: Untagged
@@ -1947,6 +2021,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 1.6127586, y: 17.619751, z: 1.6171646}
     m_Extent: {x: 105.90987, y: 163.15408, z: 75.59243}
   m_DirtyAABB: 0
+--- !u!114 &5225872265844438176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2561161796874527324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &2597151671027236177
 GameObject:
   m_ObjectHideFlags: 0
