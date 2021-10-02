@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
+using Photon.Realtime;
+using Photon.Pun;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] int AmountOfAttacks;
@@ -19,6 +21,9 @@ public class PlayerAttack : MonoBehaviour
     HandMan handman;
     Rigidbody body;
     PlayerMovement movement;
+
+
+    PhotonView photonView;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +32,7 @@ public class PlayerAttack : MonoBehaviour
         movement = GetComponent<PlayerMovement>();
         if (GetComponent<HandMan>())
             handman = GetComponent<HandMan>();
+        photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -35,33 +41,14 @@ public class PlayerAttack : MonoBehaviour
         #region Punch
         //this is so if the players in any of
         //the jump animation you can't attack
-        if (!anim.GetBool("Jump"))
-        { // Ground Punch
-            if (handman == null)
-            {
-                if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
-                   && !Input.GetKey(KeyCode.C))
+        if (photonView.IsMine)
+        {
+            if (!anim.GetBool("Jump"))
+            { // Ground Punch
+                if (handman == null)
                 {
-                    punch(AttacksPreformed);
-                }
-                //this basically queues up the next attack for the player
-                if (InputManager.GetButtonDown("Left Mouse") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
-                {
-                    AttackAgian = true;
-                }
-                //this waits for the animation to be done before going to the next punch
-                if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
-                    anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
-                {
-                    punch(AttacksPreformed);
-                }
-            }
-            else
-            {
-                if (!handman.isHoldingOBJ)
-                {
-                    if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 &&
-                        TimeTillnextAttack <= 0 && !Input.GetKey(KeyCode.C))
+                    if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
+                       && !Input.GetKey(KeyCode.C))
                     {
                         punch(AttacksPreformed);
                     }
@@ -77,63 +64,85 @@ public class PlayerAttack : MonoBehaviour
                         punch(AttacksPreformed);
                     }
                 }
-            }
-        }
-        else
-        {
-            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") || !anim.GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
-            {
-                // Air Punch
-                if (handman == null)
-                {
-                    if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
-                    {
-                        PunchAir();
-                    }
-                }
                 else
                 {
                     if (!handman.isHoldingOBJ)
+                    {
+                        if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 &&
+                            TimeTillnextAttack <= 0 && !Input.GetKey(KeyCode.C))
+                        {
+                            punch(AttacksPreformed);
+                        }
+                        //this basically queues up the next attack for the player
+                        if (InputManager.GetButtonDown("Left Mouse") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                        {
+                            AttackAgian = true;
+                        }
+                        //this waits for the animation to be done before going to the next punch
+                        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
+                            anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
+                        {
+                            punch(AttacksPreformed);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") || !anim.GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
+                {
+                    // Air Punch
+                    if (handman == null)
                     {
                         if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
                         {
                             PunchAir();
                         }
                     }
+                    else
+                    {
+                        if (!handman.isHoldingOBJ)
+                        {
+                            if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                            {
+                                PunchAir();
+                            }
+                        }
+                    }
                 }
             }
-        }
-        #endregion
-        //this is so the player can't swing around like a crazy person and kill everything around him
-        if (TimeTillAttackReset > 0 && movement.OnGround)
-        {
-            movement.enabled = false;
-            body.velocity = Vector3.zero;
-        }
+            #endregion
+            //this is so the player can't swing around like a crazy person and kill everything around him
+            if (TimeTillAttackReset > 0 && movement.OnGround)
+            {
+                movement.enabled = false;
+                body.velocity = Vector3.zero;
+            }
 
-        //if (TimeTillAttackReset > 0 && !movement.OnGround)
-        //{
-        //    body.velocity = new Vector3(body.velocity.x / 2, -1, body.velocity.z / 2);
-        //}
+            //if (TimeTillAttackReset > 0 && !movement.OnGround)
+            //{
+            //    body.velocity = new Vector3(body.velocity.x / 2, -1, body.velocity.z / 2);
+            //}
 
-        if (TimeTillAttackReset <= 0 && movement.OnGround)
-        {
-            StopAnimationInt("Attack");
-            StopAnimationBool("AirAttack");
-            movement.enabled = true;
-            AirAttacked = false;
-            AttacksPreformed = 1;
-        }
-        if(movement.OnGround && AirAttacked)
-        {
-            StopAnimationBool("AirAttack");
-            StopAnimationBool("Jump");
-        }
-        if (TimeTillAttackReset <= 0 && !movement.OnGround && AirAttacked)
-        {
-            StopAnimationBool("AirAttack");
-            AirAttacked = false;
-            movement.PlayFallingAnimation();
+            if (TimeTillAttackReset <= 0 && movement.OnGround)
+            {
+                StopAnimationInt("Attack");
+                StopAnimationBool("AirAttack");
+                movement.enabled = true;
+                AirAttacked = false;
+                AttacksPreformed = 1;
+            }
+            if (movement.OnGround && AirAttacked)
+            {
+                StopAnimationBool("AirAttack");
+                StopAnimationBool("Jump");
+            }
+            if (TimeTillAttackReset <= 0 && !movement.OnGround && AirAttacked)
+            {
+                StopAnimationBool("AirAttack");
+                AirAttacked = false;
+                movement.PlayFallingAnimation();
+            }
         }
         TimeTillAttackReset -= Time.deltaTime;
         TimeTillnextAttack -= Time.deltaTime;

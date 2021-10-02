@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Realtime;
+using Photon.Pun;
 public class UnderwaterAirUI : MonoBehaviour
 {
     public Slider airBar;
@@ -29,27 +30,41 @@ public class UnderwaterAirUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player == null)
+        if (player != null)
         {
-            //this needs to be here because the player can switch characters
-            player = GameObject.FindGameObjectWithTag("Player");
-        }
-        if(airBar.maxValue != MaxAir)
-        {
-            airBar.maxValue = MaxAir;
-        }
-        if (ReFillAirBar)
-        {
-            if (airLeft < airBar.maxValue)
+            if (airBar.maxValue != MaxAir)
             {
-                airLeft += airRecoverySpeed;
+                airBar.maxValue = MaxAir;
             }
-            else
+            if (ReFillAirBar)
             {
-                ReFillAirBar = false;
+                if (airLeft < airBar.maxValue)
+                {
+                    airLeft += airRecoverySpeed;
+                }
+                else
+                {
+                    ReFillAirBar = false;
+                }
             }
+        }
+        else
+        {
+
+            player = PhotonFindCurrentClient();
         }
         airBar.value = airLeft;
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
     public void DisableSlider()
     {

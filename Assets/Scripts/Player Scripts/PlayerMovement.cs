@@ -161,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
         minClimbDotProduct = Mathf.Cos(maxClimbAngle * Mathf.Deg2Rad);
     }
 
-    void Awake()
+    void Start()
     {
         photonView = GetComponent<PhotonView>();
         anim = GetComponent<Animator>();

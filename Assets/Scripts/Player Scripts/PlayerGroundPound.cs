@@ -1,6 +1,7 @@
 ﻿using Luminosity.IO;
 using UnityEngine;
-
+using Photon.Realtime;
+using Photon.Pun;
 public class PlayerGroundPound : MonoBehaviour
 {
     private Animator anim;
@@ -12,46 +13,52 @@ public class PlayerGroundPound : MonoBehaviour
     private bool doneSquishing;
     public bool GroundPounding;
     bool doingSquish;
+
+    PhotonView photonView;
     void Start()
     {
         origanalScale = transform.localScale;
         anim = GetComponent<Animator>();
         pm = GetComponent<PlayerMovement>();
+        photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (photonView.IsMine)
+        {
             if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming)
             {
                 GroundPounding = true;
                 pm.CantMove = true;
                 GroundPound();
             }
-        if (squishTime && pm.OnGround || squishTime && pm.OnGround)
-        {
-            StopAnimation("GroundPound");
-            PlayAnimation("GroundPoundImpact");
-            Squish();
-        }
+            if (squishTime && pm.OnGround || squishTime && pm.OnGround)
+            {
+                StopAnimation("GroundPound");
+                PlayAnimation("GroundPoundImpact");
+                Squish();
+            }
 
-        //this is here to make sure he unSquishes
-        //because if he jumps when he is unSquishing
-        //he wont fully unSquish until he gets grounded again
-        if (doingSquish && !pm.OnGround)
-        {
-            Squish();
-        }
-        if (pm.Swimming || pm.inWaterAndFloor)
-        {
-            StopAnimation("GroundPound");
-            StopAnimation("GroundPoundImpact");
-            pm.CantMove = false;
-            doingSquish = false;
-            GroundPounding = false;
-            doneSquishing = false;
-            squishTime = false;
-            transform.localScale = origanalScale;
+            //this is here to make sure he unSquishes
+            //because if he jumps when he is unSquishing
+            //he wont fully unSquish until he gets grounded again
+            if (doingSquish && !pm.OnGround)
+            {
+                Squish();
+            }
+            if (pm.Swimming || pm.inWaterAndFloor)
+            {
+                StopAnimation("GroundPound");
+                StopAnimation("GroundPoundImpact");
+                pm.CantMove = false;
+                doingSquish = false;
+                GroundPounding = false;
+                doneSquishing = false;
+                squishTime = false;
+                transform.localScale = origanalScale;
+            }
         }
     }
     void GroundPound()
