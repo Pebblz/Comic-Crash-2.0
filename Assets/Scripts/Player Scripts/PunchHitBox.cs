@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using Photon.Pun;
 public class PunchHitBox : MonoBehaviour
 {
     float DestroyTimer = .4f;
@@ -7,7 +7,7 @@ public class PunchHitBox : MonoBehaviour
     {
         DestroyTimer -= Time.deltaTime;
         if (DestroyTimer <= 0)
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider col)
     {

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
@@ -151,12 +152,12 @@ public class PlayerAttack : MonoBehaviour
     {
         if(handman)
         {
-            GameObject temp = Instantiate(PunchHitBoxes[0], transform.position + new Vector3(0,.6f,0) + transform.forward * 1.1f, Quaternion.identity);
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[0].name), transform.position + new Vector3(0,.6f,0) + transform.forward * 1.1f, Quaternion.identity);
             temp.transform.parent = transform;
         }
         else
         {
-            GameObject temp = Instantiate(PunchHitBoxes[0], transform.position + transform.forward * 1.1f, Quaternion.identity);
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[0].name), transform.position + transform.forward * 1.1f, Quaternion.identity);
             temp.transform.parent = transform;
         }
 
@@ -169,7 +170,7 @@ public class PlayerAttack : MonoBehaviour
     }
     void punch(int attackNumber)
     {
-        Instantiate(PunchHitBoxes[attackNumber - 1],
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[attackNumber - 1].name),
             transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
 
         PlayAnimation("Attack", attackNumber);
