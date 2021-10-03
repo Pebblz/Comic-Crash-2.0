@@ -2226,6 +2226,7 @@ GameObject:
   - component: {fileID: 4310544434737268546}
   - component: {fileID: 7979093232838032977}
   - component: {fileID: 4738721306745950856}
+  - component: {fileID: 7822219443780449300}
   m_Layer: 10
   m_Name: Blobert
   m_TagString: Player
@@ -2562,6 +2563,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 4310544434737268546}
   - {fileID: 4738721306745950856}
+  - {fileID: 7822219443780449300}
+  - {fileID: 2515508529194248667}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -2581,6 +2584,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &7822219443780449300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937292684294454743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &5004774281104163437
 GameObject:
   m_ObjectHideFlags: 0
