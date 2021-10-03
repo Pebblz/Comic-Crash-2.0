@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
@@ -21,9 +22,12 @@ public class PeaShooter : MonoBehaviour
     private Animator anim;
 
     PhotonView photonView;
+
+    Pause pause;
     #region MonoBehaviours
     void Start()
     {
+        pause = FindObjectOfType<Pause>();
         camera = GameObject.FindGameObjectWithTag("MainCamera");
         anim = GetComponent<Animator>();
         photonView = GetComponent<PhotonView>();
@@ -34,20 +38,25 @@ public class PeaShooter : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (InputManager.GetButtonDown("Right Mouse"))
+            if (!pause.isPaused)
             {
-                camera.GetComponent<MainCamera>().thirdPersonCamera = false;
-                PlayAnimation("Aiming");
-            }
-            if (InputManager.GetButtonUp("Right Mouse"))
-            {
-                camera.GetComponent<MainCamera>().thirdPersonCamera = true;
-                StopAnimation("Aiming");
-            }
+                if (InputManager.GetButtonDown("Right Mouse"))
+                {
+                    camera.GetComponent<MainCamera>().thirdPersonCamera = false;
+                    GetComponent<PlayerMovement>().CantMove = true;
+                    PlayAnimation("Aiming");
+                }
+                if (InputManager.GetButtonUp("Right Mouse"))
+                {
+                    camera.GetComponent<MainCamera>().thirdPersonCamera = true;
+                    GetComponent<PlayerMovement>().CantMove = false;
+                    StopAnimation("Aiming");
+                }
 
-            if (InputManager.GetButtonDown("Left Mouse") && NextAttack <= 0)
-            {
-                Attack();
+                if (InputManager.GetButtonDown("Left Mouse") && NextAttack <= 0)
+                {
+                    Attack();
+                }
             }
         }
         NextAttack -= Time.deltaTime;
@@ -67,7 +76,7 @@ public class PeaShooter : MonoBehaviour
     {
         if (!camera.GetComponent<MainCamera>().thirdPersonCamera)
         {
-            GameObject tempbul = Instantiate(BulletPrefab, camera.transform.position, camera.transform.rotation);
+            GameObject tempbul = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "TempBullet"), camera.transform.position, camera.transform.rotation);
             tempbul.GetComponent<Rigidbody>().AddForce(tempbul.transform.forward * shotSpeed);
         }
         NextAttack = 1f;

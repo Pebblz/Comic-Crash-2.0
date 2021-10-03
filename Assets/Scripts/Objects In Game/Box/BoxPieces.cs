@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using Photon.Pun;
 public class BoxPieces : MonoBehaviour
 {
     private float timer;
@@ -10,10 +10,10 @@ public class BoxPieces : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-
+        
         if (timer <= 0)
         {
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
     void OnCollisionEnter(Collision col)

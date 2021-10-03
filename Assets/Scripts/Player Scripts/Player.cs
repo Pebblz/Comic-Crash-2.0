@@ -26,11 +26,6 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    CharacterTree.exp += 1;
-        //}
         if (transform.parent != null)
         {
             transform.rotation = new Quaternion(rotation.x, transform.rotation.y, rotation.z, transform.rotation.w);

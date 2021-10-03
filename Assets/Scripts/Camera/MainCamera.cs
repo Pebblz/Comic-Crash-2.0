@@ -124,8 +124,7 @@ public class MainCamera : MonoBehaviour
             }
         }
         else
-        {
-            
+        {  
             target = PhotonFindCurrentClient().transform;
         }
         shakeTime -= Time.deltaTime;
