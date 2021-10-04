@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class Bullet : MonoBehaviour
 {
     float TimeTillDestroy = 2;
@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
         TimeTillDestroy -= Time.deltaTime;
         if (TimeTillDestroy <= 0)
         {
-            Destroy(this.gameObject);
+            PhotonNetwork.Destroy(this.gameObject);
         }
     }
 }

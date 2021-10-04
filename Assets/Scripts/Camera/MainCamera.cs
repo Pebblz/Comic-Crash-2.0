@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Luminosity.IO;
+using Photon.Realtime;
+using Photon.Pun;
 public class MainCamera : MonoBehaviour
 {
     #region Third Person Vars
@@ -100,23 +102,30 @@ public class MainCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isShaking && !pause.isPaused && !StopCamera)
+        if (target != null)
         {
-            if (!collectibleCamera)
+            if (!isShaking && !pause.isPaused && !StopCamera)
             {
-                if (thirdPersonCamera)
+                if (!collectibleCamera)
                 {
-                    ThirdPersonCamera();
+                    if (thirdPersonCamera)
+                    {
+                        ThirdPersonCamera();
+                    }
+                    else
+                    {
+                        FirstPersonCamera();
+                    }
                 }
                 else
                 {
-                    FirstPersonCamera();
+                    CollectibleCamera();
                 }
             }
-            else
-            {
-                CollectibleCamera();
-            }
+        }
+        else
+        {  
+            target = PhotonFindCurrentClient().transform;
         }
         shakeTime -= Time.deltaTime;
         if (shakeTime <= 0)
@@ -125,6 +134,17 @@ public class MainCamera : MonoBehaviour
         }
     }
     #endregion
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
+    }
     public void ResetCamera()
     {
         transform.position = startPos;

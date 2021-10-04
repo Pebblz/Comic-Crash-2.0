@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
+using Photon.Realtime;
+using Photon.Pun;
 public class PlayerMovement : MonoBehaviour
 {
     #region serializedFields
@@ -142,6 +144,9 @@ public class PlayerMovement : MonoBehaviour
 
     bool isCrouching;
     bool blobert, handman;
+
+    PhotonView photonView;
+
     [Header("Particles")]
     [SerializeField] ParticleSystem walkingPartical1;
     [SerializeField] ParticleSystem walkingPartical2;
@@ -156,8 +161,13 @@ public class PlayerMovement : MonoBehaviour
         minClimbDotProduct = Mathf.Cos(maxClimbAngle * Mathf.Deg2Rad);
     }
 
-    void Awake()
+    void Start()
     {
+        photonView = GetComponent<PhotonView>();
+
+        if(photonView.IsMine)
+            photonView.TransferOwnership(photonView.ViewID);
+
         anim = GetComponent<Animator>();
         playerInputSpace = GameObject.FindGameObjectWithTag("MainCamera").transform;
         if (GetComponent<BoxCollider>() != null)
@@ -179,289 +189,330 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
+        if (photonView.IsMine)
         {
-            if (OnGround && !inWaterAndFloor)
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
             {
-                FallTimer = 2;
-                if (walkingPartical1 != null && walkingPartical1.isStopped)
-                    walkingPartical1.Play();
-                if (walkingPartical2 != null && walkingPartical2.isStopped)
-                    walkingPartical2.Play();
-                if (walkingPartical3 != null && walkingPartical3.isStopped)
-                    walkingPartical3.Play();
-                if (walkingPartical4 != null && walkingPartical4.isStopped)
-                    walkingPartical4.Play();
+                if (OnGround && !inWaterAndFloor)
+                {
+                    FallTimer = 2;
+                    if (walkingPartical1 != null && walkingPartical1.isStopped)
+                        walkingPartical1.Play();
+                    if (walkingPartical2 != null && walkingPartical2.isStopped)
+                        walkingPartical2.Play();
+                    if (walkingPartical3 != null && walkingPartical3.isStopped)
+                        walkingPartical3.Play();
+                    if (walkingPartical4 != null && walkingPartical4.isStopped)
+                        walkingPartical4.Play();
+                }
+                else
+                {
+                    FallTimer -= Time.deltaTime;
+                    if (walkingPartical1 != null && walkingPartical1.isPlaying)
+                        walkingPartical1.Stop();
+                    if (walkingPartical2 != null && walkingPartical2.isPlaying)
+                        walkingPartical2.Stop();
+                    if (walkingPartical3 != null && walkingPartical3.isPlaying)
+                        walkingPartical3.Stop();
+                    if (walkingPartical4 != null && walkingPartical4.isPlaying)
+                        walkingPartical4.Stop();
+                }
+                if (OnGround && !Bounce)
+                {
+                    canJump = true;
+                    CanWallJump = true;
+                    if (CanDive)
+                        StopAnimation("Dive");
+
+                    if (jumpPhase > 0 && !desiredJump)
+                    {
+                        PlayAnimation("IsLanded");
+                    }
+                    StopAnimation("Falling");
+                    if (!desiredJump && velocity.y < 0.1f)
+                    {
+                        StopAnimation("Jump");
+                        StopAnimation("DoubleJump");
+                    }
+                    LastWallJumpedOn = null;
+                }
+                if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !Swimming && !InWater)
+                {
+                    PlayFallingAnimation();
+                }
+                if (!OnGround || jumpPhase == 0)
+                {
+                    StopAnimation("IsLanded");
+                }
+                minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
+
+                playerInput.x = InputManager.GetAxis("Horizontal");
+                playerInput.y = InputManager.GetAxis("Vertical");
+                playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
+                playerInput = Vector3.ClampMagnitude(playerInput, 1f);
+                if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
+                {
+                    StopAnimation("Crouching");
+                    isCrouching = false;
+                }
+                if (isCrouching && !InWater && !Climbing && OnGround && !inWaterAndFloor)
+                {
+                    PlayAnimation("Crouching");
+                    CurrentSpeed = CrouchSpeed;
+                    isCrouching = true;
+                }
+                if (playerInputSpace)
+                {
+                    rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
+                    forwardAxis = ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
+                }
+                else
+                {
+                    rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
+                    forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
+                }
+                if (Swimming)
+                {
+                    desiresClimbing = false;
+
+                }
+                else
+                {
+                    if (!InWater)
+                    {
+                        StopAnimation("Sinking");
+                        StopAnimation("SwimmingDown");
+                        StopAnimation("SwimmingUp");
+                        StopAnimation("SwimLeftOrRight");
+                        if (blobert)
+                            StopAnimation("Drowning");
+                    }
+                    if (OnGround)
+                        isCrouching = InputManager.GetButton("Crouch");
+
+                    desiredJump |= InputManager.GetButtonDown("Jump");
+                    desiresClimbing = InputManager.GetButton("Climb");
+                    Isrunning = InputManager.GetButton("Sprint");
+
+                }
+                if (!inWaterAndFloor)
+                {
+                    if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+                    {
+                        CurrentSpeed = RunSpeed;
+                        SetAnimatorFloat("RunMultiplier", 1);
+                    }
+                    if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+                    {
+                        CurrentSpeed = WalkSpeed;
+                        SetAnimatorFloat("WalkMultiplier", 1);
+                    }
+                }
+                else
+                {
+                    if (Isrunning && !isCrouching && !CheckSteepContacts())
+                    {
+                        CurrentSpeed = RunUnderWaterSpeed;
+                        SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
+                    }
+                    if (!Isrunning && !isCrouching || CheckSteepContacts())
+                    {
+                        CurrentSpeed = WalkUnderWaterSpeed;
+                        SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
+                    }
+                }
+                if (isCrouching)
+                {
+                    if (GetComponent<BoxCollider>() != null)
+                    {
+                        GetComponent<BoxCollider>().size =
+                        new Vector3(ColliderScale.x, ColliderScale.y / 1.2f, ColliderScale.z);
+                        GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
+                    }
+                }
+                else
+                {
+                    if (GetComponent<BoxCollider>() != null)
+                    {
+                        GetComponent<BoxCollider>().size = ColliderScale;
+                        GetComponent<BoxCollider>().center = ColliderCenter;
+                    }
+                }
+                if (playerInput.magnitude < 0.6f && !onBelt)
+                {
+                    body.velocity = new Vector3(0, body.velocity.y, 0);
+                }
             }
             else
             {
-                FallTimer -= Time.deltaTime;
-                if (walkingPartical1 != null && walkingPartical1.isPlaying)
-                    walkingPartical1.Stop();
-                if (walkingPartical2 != null && walkingPartical2.isPlaying)
-                    walkingPartical2.Stop();
-                if (walkingPartical3 != null && walkingPartical3.isPlaying)
-                    walkingPartical3.Stop();
-                if (walkingPartical4 != null && walkingPartical4.isPlaying)
-                    walkingPartical4.Stop();
+                if (!CantMove)
+                    body.velocity = Vector3.zero;
+                else
+                    body.velocity = new Vector3(0, body.velocity.y, 0);
             }
-            if (OnGround && !Bounce)
+            if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove)
             {
-                canJump = true;
-                CanWallJump = true;
-                if (CanDive)
-                    StopAnimation("Dive");
-
-                if (jumpPhase > 0 && !desiredJump)
-                {
-                    PlayAnimation("IsLanded");
-                }
-                StopAnimation("Falling");
-                if (!desiredJump && velocity.y < 0.1f)
-                {
-                    StopAnimation("Jump");
-                    StopAnimation("DoubleJump");
-                }
-                LastWallJumpedOn = null;
+                currentCollectibleTimer = collectibleTimer;
             }
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !Swimming && !InWater)
+            if (CollectibleGotten && currentCollectibleTimer <= 0 && CantMove)
             {
-                PlayFallingAnimation();
+                DoneWithCollectible();
+                CollectibleGotten = false;
             }
-            if (!OnGround || jumpPhase == 0)
+            if (currentCollectibleTimer > 0)
             {
-                StopAnimation("IsLanded");
+                GotCollectible();
             }
-            minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-
-            playerInput.x = InputManager.GetAxis("Horizontal");
-            playerInput.y = InputManager.GetAxis("Vertical");
-            playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
-            playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-            if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
-            {
-                StopAnimation("Crouching");
-                isCrouching = false;
-            }
-            if (isCrouching && !InWater && !Climbing && OnGround && !inWaterAndFloor)
-            {
-                PlayAnimation("Crouching");
-                CurrentSpeed = CrouchSpeed;
-                isCrouching = true;
-            }
-            if (playerInputSpace)
-            {
-                rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
-                forwardAxis = ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
-            }
-            else
-            {
-                rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
-                forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
-            }
-            if (Swimming)
-            {
-                desiresClimbing = false;
-
-            }
-            else
-            {
-                if (!InWater)
-                {
-                    StopAnimation("Sinking");
-                    StopAnimation("SwimmingDown");
-                    StopAnimation("SwimmingUp");
-                    StopAnimation("SwimLeftOrRight");
-                    if (blobert)
-                        StopAnimation("Drowning");
-                }
-                if (OnGround)
-                    isCrouching = InputManager.GetButton("Crouch");
-
-                desiredJump |= InputManager.GetButtonDown("Jump");
-                desiresClimbing = InputManager.GetButton("Climb");
-                Isrunning = InputManager.GetButton("Sprint");
-
-            }
-            if (!inWaterAndFloor)
-            {
-                if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
-                {
-                    CurrentSpeed = RunSpeed;
-                    SetAnimatorFloat("RunMultiplier", 1);
-                }
-                if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
-                {
-                    CurrentSpeed = WalkSpeed;
-                    SetAnimatorFloat("WalkMultiplier", 1);
-                }
-            }
-            else
-            {
-                if (Isrunning && !isCrouching && !CheckSteepContacts())
-                {
-                    CurrentSpeed = RunUnderWaterSpeed;
-                    SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
-                }
-                if (!Isrunning && !isCrouching || CheckSteepContacts())
-                {
-                    CurrentSpeed = WalkUnderWaterSpeed;
-                    SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
-                }
-            }
-            if (isCrouching)
-            {
-                if (GetComponent<BoxCollider>() != null)
-                {
-                    GetComponent<BoxCollider>().size =
-                    new Vector3(ColliderScale.x, ColliderScale.y / 1.2f, ColliderScale.z);
-                    GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
-                }
-            }
-            else
-            {
-                if (GetComponent<BoxCollider>() != null)
-                {
-                    GetComponent<BoxCollider>().size = ColliderScale;
-                    GetComponent<BoxCollider>().center = ColliderCenter;
-                }
-            }
-            if (playerInput.magnitude < 0.6f && !onBelt)
-            {
-                body.velocity = new Vector3(0, body.velocity.y, 0);
-            }
+            currentCollectibleTimer -= Time.deltaTime;
         }
         else
         {
-            if (!CantMove)
-                body.velocity = Vector3.zero;
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
+            {
+                if (OnGround && !inWaterAndFloor)
+                {
+                    FallTimer = 2;
+                    if (walkingPartical1 != null && walkingPartical1.isStopped)
+                        walkingPartical1.Play();
+                    if (walkingPartical2 != null && walkingPartical2.isStopped)
+                        walkingPartical2.Play();
+                    if (walkingPartical3 != null && walkingPartical3.isStopped)
+                        walkingPartical3.Play();
+                    if (walkingPartical4 != null && walkingPartical4.isStopped)
+                        walkingPartical4.Play();
+                }
+                else
+                {
+                    FallTimer -= Time.deltaTime;
+                    if (walkingPartical1 != null && walkingPartical1.isPlaying)
+                        walkingPartical1.Stop();
+                    if (walkingPartical2 != null && walkingPartical2.isPlaying)
+                        walkingPartical2.Stop();
+                    if (walkingPartical3 != null && walkingPartical3.isPlaying)
+                        walkingPartical3.Stop();
+                    if (walkingPartical4 != null && walkingPartical4.isPlaying)
+                        walkingPartical4.Stop();
+                }
+            }
             else
-                body.velocity = new Vector3(0, body.velocity.y, 0);
+            {
+                if (!CantMove)
+                    body.velocity = Vector3.zero;
+                else
+                    body.velocity = new Vector3(0, body.velocity.y, 0);
+            }
         }
-        if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove)
-        {
-            currentCollectibleTimer = collectibleTimer;
-        }
-        if (CollectibleGotten && currentCollectibleTimer <= 0 && CantMove)
-        {
-            DoneWithCollectible();
-            CollectibleGotten = false;
-        }
-        if (currentCollectibleTimer > 0)
-        {
-            GotCollectible();
-        }
-        currentCollectibleTimer -= Time.deltaTime;
     }
 
     void FixedUpdate()
     {
-
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
+        if (photonView.IsMine)
         {
-            Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
-            UpdateState();
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
+            {
+                Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
+                UpdateState();
 
-            if (InWater)
-            {
-                velocity *= 1f - waterDrag * submergence * Time.deltaTime;
-            }
-            AdjustVelocity();
-
-            if (desiredJump)
-            {
-                PlayAnimation("Jump");
-                Jump(gravity);
-                desiredJump = false;
-            }
-            if (Climbing)
-            {
-                velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
-            }
-            else if (OnGround && velocity.sqrMagnitude < 0.01f)
-            {
-                velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
-            }
-            else if (InWater)
-            {
-                jumpPhase = 0;
-                StopAnimation("Falling");
-                if (!blobert)
+                if (InWater)
                 {
-                    //If your not holding space or crouch
-                    if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
+                    velocity *= 1f - waterDrag * submergence * Time.deltaTime;
+                }
+                AdjustVelocity();
+
+                if (desiredJump)
+                {
+                    PlayAnimation("Jump");
+                    Jump(gravity);
+                    desiredJump = false;
+                }
+                if (Climbing)
+                {
+                    velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
+                }
+                else if (OnGround && velocity.sqrMagnitude < 0.01f)
+                {
+                    velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
+                }
+                else if (InWater)
+                {
+                    jumpPhase = 0;
+                    StopAnimation("Falling");
+                    if (!blobert)
                     {
-                        PlayAnimation("Sinking");
-                        StopAnimation("SwimmingDown");
-                        StopAnimation("SwimmingUp");
-                        StopAnimation("SwimLeftOrRight");
-                        //velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                        //If your not holding space or crouch
+                        if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
+                        {
+                            PlayAnimation("Sinking");
+                            StopAnimation("SwimmingDown");
+                            StopAnimation("SwimmingUp");
+                            StopAnimation("SwimLeftOrRight");
+                            //velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                        }
+                        //If your holding crouch
+                        if (playerInput.z < 0)
+                        {
+                            PlayAnimation("SwimmingDown");
+                            StopAnimation("SwimmingUp");
+                            StopAnimation("Sinking");
+                            StopAnimation("SwimLeftOrRight");
+                            velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                        }
+                        //If your holding space 
+                        if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y) > transform.position.y)
+                        {
+                            PlayAnimation("SwimmingUp");
+                            StopAnimation("Sinking");
+                            StopAnimation("SwimmingDown");
+                            StopAnimation("SwimLeftOrRight");
+                            velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                        }
+                        //If your moving left or right
+                        if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)
+                        {
+                            PlayAnimation("SwimLeftOrRight");
+                            StopAnimation("Sinking");
+                            StopAnimation("SwimmingDown");
+                            StopAnimation("SwimmingUp");
+                        }
                     }
-                    //If your holding crouch
-                    if (playerInput.z < 0)
+                    else
                     {
-                        PlayAnimation("SwimmingDown");
-                        StopAnimation("SwimmingUp");
-                        StopAnimation("Sinking");
-                        StopAnimation("SwimLeftOrRight");
-                        velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                        PlayAnimation("Drowning");
+                        if (Swimming)
+                            velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
-                    //If your holding space 
-                    if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y)  > transform.position.y)
-                    {
-                        PlayAnimation("SwimmingUp");
-                        StopAnimation("Sinking");
-                        StopAnimation("SwimmingDown");
-                        StopAnimation("SwimLeftOrRight");
-                        velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
-                    }
-                    //If your moving left or right
-                    if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)
-                    {
-                        PlayAnimation("SwimLeftOrRight");
-                        StopAnimation("Sinking");
-                        StopAnimation("SwimmingDown");
-                        StopAnimation("SwimmingUp");
-                    }
+                }
+                else if (desiresClimbing && OnGround)
+                {
+                    velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
                 }
                 else
                 {
-                    PlayAnimation("Drowning");
-                    if (Swimming)
-                        velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                    velocity += gravity * Time.deltaTime;
                 }
-            }
-            else if (desiresClimbing && OnGround)
-            {
-                velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
-            }
-            else
-            {
-                velocity += gravity * Time.deltaTime;
-            }
-            if (!OnGround && inWaterAndFloor)
-            {
-                EvaluateSubmergence(water);
-            }
-
-            if(water != null)
-            {
-                if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - 1 < transform.position.y)
+                if (!OnGround && inWaterAndFloor)
                 {
-                    AtTheTopOfWater = true;
+                    EvaluateSubmergence(water);
                 }
-                else
-                {
-                    AtTheTopOfWater = false;
-                }
-            }
 
-            if (OnGround)
-                body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
-            body.velocity = velocity;
+                if (water != null)
+                {
+                    if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - 1 < transform.position.y)
+                    {
+                        AtTheTopOfWater = true;
+                    }
+                    else
+                    {
+                        AtTheTopOfWater = false;
+                    }
+                }
+
+                if (OnGround)
+                    body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
+                body.velocity = velocity;
+            }
+            ClearState();
         }
-        ClearState();
     }
     #endregion
     void ClearState()

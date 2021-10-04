@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Luminosity.IO;
+using Photon.Realtime;
+using Photon.Pun;
 public class Pause : MonoBehaviour
 {
     [SerializeField]
@@ -22,7 +24,7 @@ public class Pause : MonoBehaviour
     void Start()
     {
         Gm = GetComponent<GameManager>();
-        player = FindObjectOfType<PlayerMovement>().gameObject;
+        //player = FindObjectOfType<PlayerMovement>().gameObject;
         Ps = GetComponent<PlayerSwitcher>();
         if (PausePage == null)
         {
@@ -32,20 +34,34 @@ public class Pause : MonoBehaviour
     }
     void Update()
     {
-        if (PausePage != null)
+        if (player != null)
         {
-            if (InputManager.GetButtonDown("Pause") && pauseTimer <= 0)
+            if (PausePage != null)
             {
-                isPaused = !isPaused;
-                pause(isPaused);
-                pauseTimer = .2f;
-            }
-            if(player == null)
-            {
-                player = FindObjectOfType<PlayerMovement>().gameObject;
+                if (InputManager.GetButtonDown("Pause") && pauseTimer <= 0)
+                {
+                    isPaused = !isPaused;
+                    pause(isPaused);
+                    pauseTimer = .2f;
+                }
             }
         }
+        else
+        {
+            player = PhotonFindCurrentClient();
+        }
         pauseTimer -= Time.unscaledDeltaTime;
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
     public void pause(bool pause)
     {

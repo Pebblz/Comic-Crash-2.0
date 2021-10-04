@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class JellyFish : MonoBehaviour
 {
     [SerializeField, Range(0f, 40f), Tooltip("The amount the JellyFish will move up and down")]
@@ -79,6 +79,6 @@ public class JellyFish : MonoBehaviour
 
         //play particle effect
 
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 }

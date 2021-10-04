@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-
+using Photon.Realtime;
+using Photon.Pun;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField, Range(1f, 10f), Tooltip("The max health the player would be able to get to")]
@@ -22,8 +23,11 @@ public class PlayerHealth : MonoBehaviour
     public float currentAir;
 
     private Pause pause;
+
+    PhotonView photonView;
     private void Awake()
     {
+        photonView = GetComponent<PhotonView>();
         //this is for if you forget to set the current health 
         //in the inspector
         if (currentHealth == 0)
@@ -45,36 +49,38 @@ public class PlayerHealth : MonoBehaviour
     private void LateUpdate()
     {
         IFrameTimer -= Time.deltaTime;
-
-        if (movement.InWater || movement.inWaterAndFloor )
+        if (photonView.IsMine)
         {
-            if (!WaterUI.airBar.enabled)
-                WaterUI.EnableSlider();
-            if (movement.AtTheTopOfWater)
+            if (movement.InWater || movement.inWaterAndFloor)
             {
-                WaterUI.ReFillAirBar = true;
-            }
-            else
-            {
-                if (!pause.isPaused)
+                if (!WaterUI.airBar.enabled)
+                    WaterUI.EnableSlider();
+                if (movement.AtTheTopOfWater)
                 {
-                    WaterUI.airLeft -= Time.deltaTime;
+                    WaterUI.ReFillAirBar = true;
+                }
+                else
+                {
+                    if (!pause.isPaused)
+                    {
+                        WaterUI.airLeft -= Time.deltaTime;
+                    }
+                }
+                if (WaterUI.airLeft <= 0)
+                {
+                    GetComponent<PlayerDeath>().isdead = true;
                 }
             }
-            if (WaterUI.airLeft <= 0)
-            {
-                GetComponent<PlayerDeath>().isdead = true;
-            }
-        }
-        else
-        {
-            if (WaterUI.airLeft < MaxAirTimer)
-                WaterUI.ReFillAirBar = true;
             else
-                WaterUI.ReFillAirBar = false;
+            {
+                if (WaterUI.airLeft < MaxAirTimer)
+                    WaterUI.ReFillAirBar = true;
+                else
+                    WaterUI.ReFillAirBar = false;
 
-            if (WaterUI.airBar.enabled)
-                WaterUI.DisableSlider();
+                if (WaterUI.airBar.enabled)
+                    WaterUI.DisableSlider();
+            }
         }
         currentAir = WaterUI.airLeft;
     }
