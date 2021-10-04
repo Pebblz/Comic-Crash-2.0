@@ -34,7 +34,7 @@ public class MatchMakingLobbyController : MonoBehaviourPunCallbacks
         {
             if (PlayerPrefs.GetString("NickName") == "")
             {
-                PhotonNetwork.NickName = "Player " + Random.Range(0, 1000);
+                PhotonNetwork.NickName = "Player " + Random.Range(0, 10000);
             }
             else
             {
@@ -42,7 +42,7 @@ public class MatchMakingLobbyController : MonoBehaviourPunCallbacks
             }
         } else
         {
-            PhotonNetwork.NickName = "Player " + Random.Range(0, 1000);
+            PhotonNetwork.NickName = "Player " + Random.Range(0, 10000);
         }
         playerNameInput.text = PhotonNetwork.NickName;
     }
@@ -51,7 +51,6 @@ public class MatchMakingLobbyController : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.NickName = nameInput;
         PlayerPrefs.SetString("NickName", nameInput);
-        playerNameInput.text = nameInput;
     }
     public void JoinLobbyOnClick()
     {
@@ -115,7 +114,7 @@ public class MatchMakingLobbyController : MonoBehaviourPunCallbacks
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        
+        Debug.Log("Tried to create room but failed");
     }
     public void MatchmakingCancel()
     {
