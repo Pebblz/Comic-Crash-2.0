@@ -164,6 +164,10 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
+
+        if(photonView.IsMine)
+            photonView.TransferOwnership(photonView.ViewID);
+
         anim = GetComponent<Animator>();
         playerInputSpace = GameObject.FindGameObjectWithTag("MainCamera").transform;
         if (GetComponent<BoxCollider>() != null)
