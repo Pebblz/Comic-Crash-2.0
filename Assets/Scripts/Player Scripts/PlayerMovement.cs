@@ -1012,10 +1012,12 @@ public class PlayerMovement : MonoBehaviour
     }
     public void PlayFallingAnimation()
     {
+        anim = GetComponent<Animator>();
         PlayAnimation("Falling");
     }
     public void PlayJumpAnimation()
     {
+        anim = GetComponent<Animator>();
         PlayAnimation("Jump");
     }
     #endregion

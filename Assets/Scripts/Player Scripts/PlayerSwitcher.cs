@@ -94,15 +94,16 @@ public class PlayerSwitcher : MonoBehaviourPun
                 GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name),
                     PlayerTransform.position, PlayerTransform.rotation, 0);
 
+                Temp.GetComponent<PhotonView>().ViewID = CurrentPlayer.GetComponent<PhotonView>().ViewID;
                 PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
 
                 Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
                 ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
 
-                //if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
-                //{
-                    //TempPlayerMovement.PlayFallingAnimation();
-                //}
+                if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
+                {
+                    TempPlayerMovement.PlayFallingAnimation();
+                }
                 Temp.GetComponent<Player>().respawnPoint =
                     CurrentPlayer.GetComponent<Player>().respawnPoint;
 
