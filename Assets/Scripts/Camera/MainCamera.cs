@@ -284,36 +284,44 @@ public class MainCamera : MonoBehaviour
     #region Collision
     void OnTriggerEnter(Collider other)
     {
-        if (UnderWaterFog)
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            if (other.gameObject.layer == 4)
+            if (UnderWaterFog)
             {
-                RenderSettings.fog = true;
-                soundManager.to_underwater();
+                if (other.gameObject.layer == 4)
+                {
+                    RenderSettings.fog = true;
+                    soundManager.to_underwater();
+                }
             }
         }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (UnderWaterFog)
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            if (other.gameObject.layer == 4)
+            if (UnderWaterFog)
             {
-                RenderSettings.fog = true;
-                soundManager.to_underwater();
+                if (other.gameObject.layer == 4)
+                {
+                    RenderSettings.fog = true;
+                    soundManager.to_underwater();
+                }
             }
         }
-
     }
     private void OnTriggerExit(Collider other)
     {
-        if (UnderWaterFog)
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            if (other.gameObject.layer == 4)
+            if (UnderWaterFog)
             {
-                RenderSettings.fog = false;
-                soundManager.to_normal_from_water();
+                if (other.gameObject.layer == 4)
+                {
+                    RenderSettings.fog = false;
+                    soundManager.to_normal_from_water();
+                }
             }
         }
     }

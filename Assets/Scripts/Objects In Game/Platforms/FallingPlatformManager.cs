@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Realtime;
+using Photon.Pun;
 public class FallingPlatformManager : MonoBehaviour
 {
     public GameObject[] _fallingPlatforms;
@@ -20,8 +21,8 @@ public class FallingPlatformManager : MonoBehaviour
     private void ResetPlatform(GameObject platform, int index, Vector3 Originalpos, Quaternion Originalrot)
     {
         GameObject oldPlatform = _fallingPlatforms[index];
-        GameObject temp = Instantiate(platform,Originalpos, Originalrot);
+        GameObject temp = PhotonNetwork.Instantiate(platform.name,Originalpos, Originalrot);
         _fallingPlatforms[index] = temp;
-        Destroy(oldPlatform);
+        PhotonNetwork.Destroy(oldPlatform);
     }
 }

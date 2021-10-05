@@ -76,10 +76,13 @@ public class PlayerSwitcher : MonoBehaviourPun
         if (CharactersToSwitchTo[i] != null && CanSwitch)
         {
             CurrentPlayer = PhotonFindCurrentClient();
+        
             PlayerTransform = CurrentPlayer.transform;
             PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
-            
-            if(CurrentPlayer.GetComponent<HandMan>())
+
+            currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
+
+            if (CurrentPlayer.GetComponent<HandMan>())
             {
                if( CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
                 {

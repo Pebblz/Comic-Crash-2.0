@@ -165,9 +165,6 @@ public class PlayerMovement : MonoBehaviour
     {
         photonView = GetComponent<PhotonView>();
 
-        if(photonView.IsMine)
-            photonView.TransferOwnership(photonView.ViewID);
-
         anim = GetComponent<Animator>();
         playerInputSpace = GameObject.FindGameObjectWithTag("MainCamera").transform;
         if (GetComponent<BoxCollider>() != null)
@@ -364,43 +361,6 @@ public class PlayerMovement : MonoBehaviour
                 GotCollectible();
             }
             currentCollectibleTimer -= Time.deltaTime;
-        }
-        else
-        {
-            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
-            {
-                if (OnGround && !inWaterAndFloor)
-                {
-                    FallTimer = 2;
-                    if (walkingPartical1 != null && walkingPartical1.isStopped)
-                        walkingPartical1.Play();
-                    if (walkingPartical2 != null && walkingPartical2.isStopped)
-                        walkingPartical2.Play();
-                    if (walkingPartical3 != null && walkingPartical3.isStopped)
-                        walkingPartical3.Play();
-                    if (walkingPartical4 != null && walkingPartical4.isStopped)
-                        walkingPartical4.Play();
-                }
-                else
-                {
-                    FallTimer -= Time.deltaTime;
-                    if (walkingPartical1 != null && walkingPartical1.isPlaying)
-                        walkingPartical1.Stop();
-                    if (walkingPartical2 != null && walkingPartical2.isPlaying)
-                        walkingPartical2.Stop();
-                    if (walkingPartical3 != null && walkingPartical3.isPlaying)
-                        walkingPartical3.Stop();
-                    if (walkingPartical4 != null && walkingPartical4.isPlaying)
-                        walkingPartical4.Stop();
-                }
-            }
-            else
-            {
-                if (!CantMove)
-                    body.velocity = Vector3.zero;
-                else
-                    body.velocity = new Vector3(0, body.velocity.y, 0);
-            }
         }
     }
 
@@ -876,7 +836,11 @@ public class PlayerMovement : MonoBehaviour
         //    velocity += upAxis * (newY - currentY);
         //}
     }
-
+    public void transferOwnership(PhotonView view)
+    {
+        if (photonView.IsMine)
+            photonView.TransferOwnership(view.ViewID);
+    }
     public void GotCollectible()
     {
         CantMove = true;
