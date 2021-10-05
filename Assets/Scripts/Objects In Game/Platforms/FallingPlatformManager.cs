@@ -21,8 +21,8 @@ public class FallingPlatformManager : MonoBehaviour
     private void ResetPlatform(GameObject platform, int index, Vector3 Originalpos, Quaternion Originalrot)
     {
         GameObject oldPlatform = _fallingPlatforms[index];
-        GameObject temp = PhotonNetwork.Instantiate(platform.name,Originalpos, Originalrot);
+        GameObject temp = Instantiate(platform,Originalpos, Originalrot);
         _fallingPlatforms[index] = temp;
-        PhotonNetwork.Destroy(oldPlatform);
+        Destroy(oldPlatform);
     }
 }

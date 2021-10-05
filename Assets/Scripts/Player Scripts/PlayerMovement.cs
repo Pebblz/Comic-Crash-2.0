@@ -121,7 +121,8 @@ public class PlayerMovement : MonoBehaviour
     public bool OnGround => groundContactCount > 0;
 
     public bool Swimming => submergence >= swimThreshold;
-    float submergence;
+    [HideInInspector]
+    public float submergence;
 
 
     Collider water;
@@ -140,7 +141,8 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-    private bool OnFloor;
+    [HideInInspector]
+    public bool OnFloor;
 
     bool isCrouching;
     bool blobert, handman;
@@ -361,6 +363,33 @@ public class PlayerMovement : MonoBehaviour
                 GotCollectible();
             }
             currentCollectibleTimer -= Time.deltaTime;
+        }
+        else
+        {
+            if (OnGround && !inWaterAndFloor)
+            {
+                FallTimer = 2;
+                if (walkingPartical1 != null && walkingPartical1.isStopped)
+                    walkingPartical1.Play();
+                if (walkingPartical2 != null && walkingPartical2.isStopped)
+                    walkingPartical2.Play();
+                if (walkingPartical3 != null && walkingPartical3.isStopped)
+                    walkingPartical3.Play();
+                if (walkingPartical4 != null && walkingPartical4.isStopped)
+                    walkingPartical4.Play();
+            }
+            else
+            {
+                FallTimer -= Time.deltaTime;
+                if (walkingPartical1 != null && walkingPartical1.isPlaying)
+                    walkingPartical1.Stop();
+                if (walkingPartical2 != null && walkingPartical2.isPlaying)
+                    walkingPartical2.Stop();
+                if (walkingPartical3 != null && walkingPartical3.isPlaying)
+                    walkingPartical3.Stop();
+                if (walkingPartical4 != null && walkingPartical4.isPlaying)
+                    walkingPartical4.Stop();
+            }
         }
     }
 
@@ -836,11 +865,11 @@ public class PlayerMovement : MonoBehaviour
         //    velocity += upAxis * (newY - currentY);
         //}
     }
-    public void transferOwnership(PhotonView view)
-    {
-        if (photonView.IsMine)
-            photonView.TransferOwnership(view.ViewID);
-    }
+    //public void transferOwnership(PhotonView view)
+    //{
+        //if (view.IsMine)
+            //photonView.TransferOwnership(view.ViewID);
+    //}
     public void GotCollectible()
     {
         CantMove = true;
@@ -1012,10 +1041,12 @@ public class PlayerMovement : MonoBehaviour
     }
     public void PlayFallingAnimation()
     {
+        anim = GetComponent<Animator>();
         PlayAnimation("Falling");
     }
     public void PlayJumpAnimation()
     {
+        anim = GetComponent<Animator>();
         PlayAnimation("Jump");
     }
     #endregion

@@ -81,7 +81,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                 PlayerTransform = CurrentPlayer.transform;
                 PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
 
-                currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
+                //currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
 
                 if (CurrentPlayer.GetComponent<HandMan>())
                 {
@@ -94,6 +94,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                 GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name),
                     PlayerTransform.position, PlayerTransform.rotation, 0);
 
+                Temp.GetComponent<PhotonView>().ViewID = CurrentPlayer.GetComponent<PhotonView>().ViewID;
                 PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
 
                 Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
@@ -116,6 +117,11 @@ public class PlayerSwitcher : MonoBehaviourPun
                 if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
                     Temp.GetComponent<Animator>().SetBool("Run", true);
+                }
+                TempPlayerMovement.OnFloor = currentPlayerMovement.OnFloor;
+                if(currentPlayerMovement.InWater)
+                {
+                    TempPlayerMovement.submergence = currentPlayerMovement.submergence;
                 }
                 TempPlayerMovement.CanWallJump = false;
                 PlayerTransform = Temp.transform;

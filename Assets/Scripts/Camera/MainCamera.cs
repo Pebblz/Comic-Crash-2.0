@@ -284,7 +284,7 @@ public class MainCamera : MonoBehaviour
     #region Collision
     void OnTriggerEnter(Collider other)
     {
-        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
+        if (target.GetComponent<PhotonView>().IsMine)
         {
             if (UnderWaterFog)
             {
@@ -299,7 +299,7 @@ public class MainCamera : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
+        if (target.GetComponent<PhotonView>().IsMine)
         {
             if (UnderWaterFog)
             {
@@ -313,7 +313,7 @@ public class MainCamera : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
+        if (target.GetComponent<PhotonView>().IsMine)
         {
             if (UnderWaterFog)
             {

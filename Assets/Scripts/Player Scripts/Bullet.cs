@@ -8,9 +8,24 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         TimeTillDestroy -= Time.deltaTime;
-        if (TimeTillDestroy <= 0)
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            if (TimeTillDestroy <= 0)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
+    }
+
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
 }
