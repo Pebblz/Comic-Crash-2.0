@@ -153,11 +153,13 @@ public class PlayerAttack : MonoBehaviour
         if(handman)
         {
             GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[0].name), transform.position + new Vector3(0,.6f,0) + transform.forward * 1.1f, Quaternion.identity);
+            temp.GetComponent<PhotonView>().ViewID = photonView.ViewID;
             temp.transform.parent = transform;
         }
         else
         {
             GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[0].name), transform.position + transform.forward * 1.1f, Quaternion.identity);
+            temp.GetComponent<PhotonView>().ViewID = photonView.ViewID;
             temp.transform.parent = transform;
         }
 

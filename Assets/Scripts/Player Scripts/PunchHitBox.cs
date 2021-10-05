@@ -3,11 +3,20 @@ using Photon.Pun;
 public class PunchHitBox : MonoBehaviour
 {
     float DestroyTimer = .4f;
+
+    PhotonView photonView;
+    private void Start()
+    {
+        photonView = GetComponent<PhotonView>();
+    }
     void Update()
     {
         DestroyTimer -= Time.deltaTime;
-        if (DestroyTimer <= 0)
-            PhotonNetwork.Destroy(gameObject);
+        if (photonView.IsMine)
+        {
+            if (DestroyTimer <= 0)
+                PhotonNetwork.Destroy(gameObject);
+        }
     }
     private void OnTriggerEnter(Collider col)
     {

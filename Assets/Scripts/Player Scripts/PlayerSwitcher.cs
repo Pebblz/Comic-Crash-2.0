@@ -81,7 +81,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                 PlayerTransform = CurrentPlayer.transform;
                 PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
 
-                currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
+                //currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
 
                 if (CurrentPlayer.GetComponent<HandMan>())
                 {
@@ -99,10 +99,10 @@ public class PlayerSwitcher : MonoBehaviourPun
                 Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
                 ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
 
-                if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
-                {
-                    TempPlayerMovement.PlayFallingAnimation();
-                }
+                //if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
+                //{
+                    //TempPlayerMovement.PlayFallingAnimation();
+                //}
                 Temp.GetComponent<Player>().respawnPoint =
                     CurrentPlayer.GetComponent<Player>().respawnPoint;
 
