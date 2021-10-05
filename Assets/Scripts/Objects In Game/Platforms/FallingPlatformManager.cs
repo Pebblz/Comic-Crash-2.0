@@ -23,6 +23,6 @@ public class FallingPlatformManager : MonoBehaviour
         GameObject oldPlatform = _fallingPlatforms[index];
         GameObject temp = Instantiate(platform,Originalpos, Originalrot);
         _fallingPlatforms[index] = temp;
-        PhotonNetwork.Destroy(oldPlatform);
+        Destroy(oldPlatform);
     }
 }

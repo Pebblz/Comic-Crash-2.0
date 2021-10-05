@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
@@ -36,7 +36,7 @@ public class Builder : MonoBehaviour
             {
                 if (GetComponent<PlayerMovement>().OnGround)
                 {
-                    GameObject temp = PhotonNetwork.Instantiate(block.name, transform.position + (transform.forward * 2f) + new Vector3(0, BlockPlacementYOffset, 0), transform.rotation);
+                    GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", block.name), transform.position + (transform.forward * 2f) + new Vector3(0, BlockPlacementYOffset, 0), transform.rotation);
                     blocksSpawned.Add(temp.GetComponent<DestroyBlock>());
                     PlayAnimation("Building");
                     CurrentBlockStorage--;
@@ -46,7 +46,7 @@ public class Builder : MonoBehaviour
                 }
                 else
                 {
-                    GameObject temp = PhotonNetwork.Instantiate(block.name, transform.position + (-transform.up * 1.2f), transform.rotation);
+                    GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", block.name), transform.position + (-transform.up * 1.2f), transform.rotation);
                     blocksSpawned.Add(temp.GetComponent<DestroyBlock>());
                     PlayAnimation("BuildingAir");
                     CurrentBlockStorage--;
