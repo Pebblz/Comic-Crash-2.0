@@ -118,6 +118,11 @@ public class PlayerSwitcher : MonoBehaviourPun
                 {
                     Temp.GetComponent<Animator>().SetBool("Run", true);
                 }
+                TempPlayerMovement.OnFloor = currentPlayerMovement.OnFloor;
+                if(currentPlayerMovement.InWater)
+                {
+                    TempPlayerMovement.submergence = currentPlayerMovement.submergence;
+                }
                 TempPlayerMovement.CanWallJump = false;
                 PlayerTransform = Temp.transform;
                 Camera.transform.parent = null;

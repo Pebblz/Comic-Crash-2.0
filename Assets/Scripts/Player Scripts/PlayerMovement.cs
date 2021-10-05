@@ -121,7 +121,8 @@ public class PlayerMovement : MonoBehaviour
     public bool OnGround => groundContactCount > 0;
 
     public bool Swimming => submergence >= swimThreshold;
-    float submergence;
+    [HideInInspector]
+    public float submergence;
 
 
     Collider water;
@@ -140,7 +141,8 @@ public class PlayerMovement : MonoBehaviour
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-    private bool OnFloor;
+    [HideInInspector]
+    public bool OnFloor;
 
     bool isCrouching;
     bool blobert, handman;
