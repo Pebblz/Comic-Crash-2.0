@@ -364,6 +364,33 @@ public class PlayerMovement : MonoBehaviour
             }
             currentCollectibleTimer -= Time.deltaTime;
         }
+        else
+        {
+            if (OnGround && !inWaterAndFloor)
+            {
+                FallTimer = 2;
+                if (walkingPartical1 != null && walkingPartical1.isStopped)
+                    walkingPartical1.Play();
+                if (walkingPartical2 != null && walkingPartical2.isStopped)
+                    walkingPartical2.Play();
+                if (walkingPartical3 != null && walkingPartical3.isStopped)
+                    walkingPartical3.Play();
+                if (walkingPartical4 != null && walkingPartical4.isStopped)
+                    walkingPartical4.Play();
+            }
+            else
+            {
+                FallTimer -= Time.deltaTime;
+                if (walkingPartical1 != null && walkingPartical1.isPlaying)
+                    walkingPartical1.Stop();
+                if (walkingPartical2 != null && walkingPartical2.isPlaying)
+                    walkingPartical2.Stop();
+                if (walkingPartical3 != null && walkingPartical3.isPlaying)
+                    walkingPartical3.Stop();
+                if (walkingPartical4 != null && walkingPartical4.isPlaying)
+                    walkingPartical4.Stop();
+            }
+        }
     }
 
     void FixedUpdate()
