@@ -72,58 +72,60 @@ public class PlayerSwitcher : MonoBehaviourPun
     }
     void SwitchCharacter(int i)
     {
-
-        if (CharactersToSwitchTo[i] != null && CanSwitch)
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            CurrentPlayer = PhotonFindCurrentClient();
-        
-            PlayerTransform = CurrentPlayer.transform;
-            PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
-
-            currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
-
-            if (CurrentPlayer.GetComponent<HandMan>())
+            if (CharactersToSwitchTo[i] != null && CanSwitch)
             {
-               if( CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
+                CurrentPlayer = PhotonFindCurrentClient();
+
+                PlayerTransform = CurrentPlayer.transform;
+                PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
+
+                currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
+
+                if (CurrentPlayer.GetComponent<HandMan>())
                 {
-                    CurrentPlayer.GetComponent<HandMan>().PickUp.GetComponent<PickUpables>().DropInFront();
+                    if (CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
+                    {
+                        CurrentPlayer.GetComponent<HandMan>().PickUp.GetComponent<PickUpables>().DropInFront();
+                    }
                 }
+
+                GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name),
+                    PlayerTransform.position, PlayerTransform.rotation, 0);
+
+                PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
+
+                Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
+                ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
+
+                if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
+                {
+                    TempPlayerMovement.PlayFallingAnimation();
+                }
+                Temp.GetComponent<Player>().respawnPoint =
+                    CurrentPlayer.GetComponent<Player>().respawnPoint;
+
+                TempPlayerMovement.jumpPhase = 5;
+
+                Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
+                if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                {
+                    Temp.GetComponent<Animator>().SetBool("Walk", true);
+                }
+                if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                {
+                    Temp.GetComponent<Animator>().SetBool("Run", true);
+                }
+                TempPlayerMovement.CanWallJump = false;
+                PlayerTransform = Temp.transform;
+                Camera.transform.parent = null;
+                Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
+                Camera.GetComponent<MainCamera>().target = Temp.transform;
+                PhotonNetwork.Destroy(CurrentPlayer);
+                CurrentPlayer = Temp;
+                timer = maxSwitchTimer;
             }
-
-            GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name), 
-                PlayerTransform.position, PlayerTransform.rotation,0);
-
-            PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
-
-            Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
-            ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
-
-            if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
-            {
-                TempPlayerMovement.PlayFallingAnimation();
-            }
-            Temp.GetComponent<Player>().respawnPoint =
-                CurrentPlayer.GetComponent<Player>().respawnPoint;
-
-            TempPlayerMovement.jumpPhase = 5;
-
-            Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
-            if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Walk"))
-            {
-                Temp.GetComponent<Animator>().SetBool("Walk", true);
-            }
-            if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Run"))
-            {
-                Temp.GetComponent<Animator>().SetBool("Run", true);
-            }
-            TempPlayerMovement.CanWallJump = false;
-            PlayerTransform = Temp.transform;
-            Camera.transform.parent = null;
-            Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
-            Camera.GetComponent<MainCamera>().target = Temp.transform;
-            PhotonNetwork.Destroy(CurrentPlayer);
-            CurrentPlayer = Temp;
-            timer = maxSwitchTimer;
         }
     }
     [PunRPC]
