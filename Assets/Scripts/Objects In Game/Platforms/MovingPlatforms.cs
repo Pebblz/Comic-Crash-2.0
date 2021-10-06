@@ -19,10 +19,10 @@ public class MovingPlatforms : MonoBehaviour
 
     [Header("Distance")]
 
-    [SerializeField, Range(0f, 40f), Tooltip("The amount the platform will move up and down")]
+    [SerializeField, Range(-40f, 40f), Tooltip("The amount the platform will move up and down")]
     float DistanceToMoveY;
 
-    [SerializeField, Range(0f, 40f), Tooltip("The amount the platform will move left nad right or striaght and back")]
+    [SerializeField, Range(-40f, 40f), Tooltip("The amount the platform will move left nad right or striaght and back")]
     float DistanceToMoveXZ;
 
     [Space(10)]
@@ -36,8 +36,6 @@ public class MovingPlatforms : MonoBehaviour
     [Tooltip("If this is true the moving platforms active and moving")]
     public bool active = true;
 
-    [Tooltip("Inverts the direction of the platform")]
-    public bool Invert;
     private float EndPointY, EndPointX, EndPointZ;
 
     private Vector3 StartPoint;
@@ -51,28 +49,16 @@ public class MovingPlatforms : MonoBehaviour
     void Start()
     {
         StartPoint = transform.position;
-        if (!Invert)
-        {
-            if (upAndDown)
-                EndPointY = StartPoint.y + DistanceToMoveY;
 
-            if (!LeftAndRight)
-                EndPointZ = StartPoint.z + DistanceToMoveXZ;
+        if (upAndDown)
+            EndPointY = StartPoint.y + DistanceToMoveY;
 
-            if (LeftAndRight)
-                EndPointX = StartPoint.x + DistanceToMoveXZ;
-        } 
-        else
-        {
-            if (upAndDown)
-                EndPointY = StartPoint.y - DistanceToMoveY;
+        if (!LeftAndRight)
+            EndPointZ = StartPoint.z + DistanceToMoveXZ;
 
-            if (!LeftAndRight)
-                EndPointZ = StartPoint.z - DistanceToMoveXZ;
+        if (LeftAndRight)
+            EndPointX = StartPoint.x + DistanceToMoveXZ;
 
-            if (LeftAndRight)
-                EndPointX = StartPoint.x - DistanceToMoveXZ;
-        }
     }
 
     void FixedUpdate()
@@ -137,38 +123,23 @@ public class MovingPlatforms : MonoBehaviour
     {
         if (GoBackX)
         {
-
-            if (!Invert)
+            if (this.gameObject.transform.position.x <= StartPoint.x)
             {
-                if (this.gameObject.transform.position.x <= StartPoint.x)
-                {
-                    GoBackX = false;
-                }
-            }
-            else
-            {
-                if (this.gameObject.transform.position.x >= StartPoint.x)
-                {
-                    GoBackX = false;
-                }
+                GoBackX = false;
             }
         }
         else
         {
             this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
-            if (!Invert)
+
+            if (this.gameObject.transform.position.x >= EndPointX)
             {
-                if (this.gameObject.transform.position.x >= EndPointX)
-                {
-                    GoBackX = true;
-                }
+                GoBackX = true;
             }
-            else
+
+            if (this.gameObject.transform.position.x <= EndPointX)
             {
-                if (this.gameObject.transform.position.x <= EndPointX)
-                {
-                    GoBackX = true;
-                }
+                GoBackX = true;
             }
         }
     }
@@ -177,79 +148,63 @@ public class MovingPlatforms : MonoBehaviour
         if (GoBackZ)
         {
             this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
-            if (!Invert)
+
+            if (this.gameObject.transform.position.z <= StartPoint.z)
             {
-                if (this.gameObject.transform.position.z <= StartPoint.z)
-                {
-                    GoBackZ = false;
-                }
+                GoBackZ = false;
             }
-            else
+            if (this.gameObject.transform.position.z >= StartPoint.z)
             {
-                if (this.gameObject.transform.position.z >= StartPoint.z)
-                {
-                    GoBackZ = false;
-                }
+                GoBackZ = false;
             }
         }
         else
         {
             this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
-            if (!Invert)
+
+            if (this.gameObject.transform.position.z >= EndPointZ)
             {
-                if (this.gameObject.transform.position.z >= EndPointZ)
-                {
-                    GoBackZ = true;
-                }
+                GoBackZ = true;
             }
-            else
+
+            if (this.gameObject.transform.position.z <= EndPointZ)
             {
-                if (this.gameObject.transform.position.z <= EndPointZ)
-                {
-                    GoBackZ = true;
-                }
+                GoBackZ = true;
             }
         }
     }
     void UpAndDown()
     {
-        
+
         if (GoBackY)
         {
             this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
-            if (!Invert)
+
+            if (this.gameObject.transform.position.y <= StartPoint.y)
             {
-                if (this.gameObject.transform.position.y <= StartPoint.y)
-                {
-                    GoBackY = false;
-                }
+                GoBackY = false;
             }
-            else
+            if (this.gameObject.transform.position.y >= StartPoint.y)
             {
-                if (this.gameObject.transform.position.y >= StartPoint.y)
-                {
-                    GoBackY = false;
-                }
+                GoBackY = false;
             }
+
         }
         else
         {
 
             this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
-            if (!Invert)
+
+            if (this.gameObject.transform.position.y >= EndPointY)
             {
-                if (this.gameObject.transform.position.y >= EndPointY)
-                {
-                    GoBackY = true;
-                }
+                GoBackY = true;
             }
-            else
+
+            if (this.gameObject.transform.position.y <= EndPointY)
             {
-                if (this.gameObject.transform.position.y <= EndPointY)
-                {
-                    GoBackY = true;
-                }
+                GoBackY = true;
             }
+
         }
     }
     void resetPosition()
@@ -265,7 +220,7 @@ public class MovingPlatforms : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
 
-        if (col.gameObject.tag == "Player" && StepOnToActivate 
+        if (col.gameObject.tag == "Player" && StepOnToActivate
             && col.transform.position.y > transform.position.y)
         {
             isSteppedOn = true;
