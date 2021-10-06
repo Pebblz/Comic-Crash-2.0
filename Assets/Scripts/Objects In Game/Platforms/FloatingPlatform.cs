@@ -45,14 +45,14 @@ public class FloatingPlatform : MonoBehaviour
     {
         if (transform.position.y > startPos.y - HowFarDown)
         {
-            this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * 1f, 0), Space.World);
+            this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * .7f, 0), Space.World);
         }
     }
     void goUp()
     {
         if (transform.position.y < startPos.y)
         {
-            this.gameObject.transform.Translate(new Vector3(0, Time.deltaTime * 1f, 0), Space.World);
+            this.gameObject.transform.Translate(new Vector3(0, Time.deltaTime * .7f, 0), Space.World);
         }
         else
         {
