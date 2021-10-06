@@ -595,39 +595,46 @@ public class PlayerMovement : MonoBehaviour
     #region Collision && triggers
     void OnTriggerEnter(Collider other)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
+        if (photonView.IsMine)
         {
-            EvaluateSubmergence(other);
-            water = other;
-        }
-        if ((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
-        {
-            inWaterAndFloor = true;
-            water = other;
+            if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
+            {
+                EvaluateSubmergence(other);
+                water = other;
+            }
+            if ((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
+            {
+                inWaterAndFloor = true;
+                water = other;
+            }
         }
     }
 
     void OnTriggerStay(Collider other)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
+        if (photonView.IsMine)
         {
-            EvaluateSubmergence(other);
-            water = other;
+            if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
+            {
+                EvaluateSubmergence(other);
+                water = other;
+            }
+            if ((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
+            {
+                inWaterAndFloor = true;
+                water = other;
+            }
         }
-        if ((waterMask & (1 << other.gameObject.layer)) != 0 && OnFloor)
-        {
-            inWaterAndFloor = true;
-            water = other;
-        }
-
     }
     private void OnTriggerExit(Collider other)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0)
+        if (photonView.IsMine)
         {
-            inWaterAndFloor = false;
+            if ((waterMask & (1 << other.gameObject.layer)) != 0)
+            {
+                inWaterAndFloor = false;
+            }
         }
-
     }
     void OnCollisionEnter(Collision collision)
     {
