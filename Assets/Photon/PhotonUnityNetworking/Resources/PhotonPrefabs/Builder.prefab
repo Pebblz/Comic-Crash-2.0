@@ -1259,6 +1259,7 @@ MonoBehaviour:
   probeDistance: 1
   wallJumpSpeed: 6
   WallJumpIntensifire: 1.5
+  MaxWallJumpWait: 0.2
   probeMask:
     serializedVersion: 2
     m_Bits: 35
@@ -1295,6 +1296,8 @@ MonoBehaviour:
   AtTheTopOfWater: 0
   CollectibleGotten: 0
   collectibleTimer: 3
+  submergence: 0
+  OnFloor: 0
   walkingPartical1: {fileID: 7275624923034715496}
   walkingPartical2: {fileID: 7275624922349137910}
   walkingPartical3: {fileID: 7275624923256747051}

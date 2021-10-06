@@ -44,7 +44,8 @@ public class PlayerMovement : MonoBehaviour
     float wallJumpSpeed;
     [SerializeField, Range(1.5f, 5f)]
     float WallJumpIntensifire = 2f;
-
+    [SerializeField, Range(.1f,1f),Tooltip("The amount of time till you can wall jump, the timer starts when you leave the ground, this is here to make sure player doesn't wall jump off of stupid things")]
+    float MaxWallJumpWait = .3f;
     [Header("Layers"), Space(2)]
     [SerializeField]
     LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
@@ -146,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool isCrouching;
     bool blobert, handman;
+    float wallJumpTimer;
 
     PhotonView photonView;
 
@@ -194,6 +196,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (OnGround && !inWaterAndFloor)
                 {
+                    wallJumpTimer = MaxWallJumpWait;
                     FallTimer = 2;
                     if (walkingPartical1 != null && walkingPartical1.isStopped)
                         walkingPartical1.Play();
@@ -206,6 +209,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
+                    wallJumpTimer -= Time.deltaTime;
                     FallTimer -= Time.deltaTime;
                     if (walkingPartical1 != null && walkingPartical1.isPlaying)
                         walkingPartical1.Stop();
@@ -660,7 +664,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
                 InputManager.GetButton("Jump") && collision.gameObject.layer != 9 &&
-                collision.gameObject.layer != 10 && CanWallJump)
+                collision.gameObject.layer != 10 && CanWallJump && wallJumpTimer <= 0)
             {
                 Vector3 _velocity = contact.normal;
 
