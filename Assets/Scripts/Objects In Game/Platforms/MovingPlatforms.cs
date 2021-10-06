@@ -61,7 +61,8 @@ public class MovingPlatforms : MonoBehaviour
 
             if (LeftAndRight)
                 EndPointX = StartPoint.x + DistanceToMoveXZ;
-        } else
+        } 
+        else
         {
             if (upAndDown)
                 EndPointY = StartPoint.y - DistanceToMoveY;
@@ -137,17 +138,37 @@ public class MovingPlatforms : MonoBehaviour
         if (GoBackX)
         {
             this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
-            if (this.gameObject.transform.position.x <= StartPoint.x)
+            if (!Invert)
             {
-                GoBackX = false;
+                if (this.gameObject.transform.position.x <= StartPoint.x)
+                {
+                    GoBackX = false;
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.x >= StartPoint.x)
+                {
+                    GoBackX = false;
+                }
             }
         }
         else
         {
             this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
-            if (this.gameObject.transform.position.x >= EndPointX)
+            if (!Invert)
             {
-                GoBackX = true;
+                if (this.gameObject.transform.position.x >= EndPointX)
+                {
+                    GoBackX = true;
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.x <= EndPointX)
+                {
+                    GoBackX = true;
+                }
             }
         }
     }
