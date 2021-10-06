@@ -137,7 +137,7 @@ public class MovingPlatforms : MonoBehaviour
     {
         if (GoBackX)
         {
-            this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
+
             if (!Invert)
             {
                 if (this.gameObject.transform.position.x <= StartPoint.x)
@@ -177,17 +177,37 @@ public class MovingPlatforms : MonoBehaviour
         if (GoBackZ)
         {
             this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
-            if (this.gameObject.transform.position.z <= StartPoint.z)
+            if (!Invert)
             {
-                GoBackZ = false;
+                if (this.gameObject.transform.position.z <= StartPoint.z)
+                {
+                    GoBackZ = false;
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.z >= StartPoint.z)
+                {
+                    GoBackZ = false;
+                }
             }
         }
         else
         {
             this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
-            if (this.gameObject.transform.position.z >= EndPointZ)
+            if (!Invert)
             {
-                GoBackZ = true;
+                if (this.gameObject.transform.position.z >= EndPointZ)
+                {
+                    GoBackZ = true;
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.z <= EndPointZ)
+                {
+                    GoBackZ = true;
+                }
             }
         }
     }
@@ -197,18 +217,38 @@ public class MovingPlatforms : MonoBehaviour
         if (GoBackY)
         {
             this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
-            if (this.gameObject.transform.position.y <= StartPoint.y)
+            if (!Invert)
             {
-                GoBackY = false;
+                if (this.gameObject.transform.position.y <= StartPoint.y)
+                {
+                    GoBackY = false;
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.y >= StartPoint.y)
+                {
+                    GoBackY = false;
+                }
             }
         }
         else
         {
 
             this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
-            if (this.gameObject.transform.position.y >= EndPointY)
+            if (!Invert)
             {
-                GoBackY = true;
+                if (this.gameObject.transform.position.y >= EndPointY)
+                {
+                    GoBackY = true;
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.y <= EndPointY)
+                {
+                    GoBackY = true;
+                }
             }
         }
     }
