@@ -36,6 +36,8 @@ public class MovingPlatforms : MonoBehaviour
     [Tooltip("If this is true the moving platforms active and moving")]
     public bool active = true;
 
+    [Tooltip("Inverts the direction of the platform")]
+    public bool Invert;
     private float EndPointY, EndPointX, EndPointZ;
 
     private Vector3 StartPoint;
@@ -49,14 +51,27 @@ public class MovingPlatforms : MonoBehaviour
     void Start()
     {
         StartPoint = transform.position;
-        if (upAndDown)
-            EndPointY = StartPoint.y + DistanceToMoveY;
+        if (!Invert)
+        {
+            if (upAndDown)
+                EndPointY = StartPoint.y + DistanceToMoveY;
 
-        if (!LeftAndRight)
-            EndPointZ = StartPoint.z + DistanceToMoveXZ;
+            if (!LeftAndRight)
+                EndPointZ = StartPoint.z + DistanceToMoveXZ;
 
-        if (LeftAndRight)
-            EndPointX = StartPoint.x + DistanceToMoveXZ;
+            if (LeftAndRight)
+                EndPointX = StartPoint.x + DistanceToMoveXZ;
+        } else
+        {
+            if (upAndDown)
+                EndPointY = StartPoint.y - DistanceToMoveY;
+
+            if (!LeftAndRight)
+                EndPointZ = StartPoint.z - DistanceToMoveXZ;
+
+            if (LeftAndRight)
+                EndPointX = StartPoint.x - DistanceToMoveXZ;
+        }
     }
 
     void FixedUpdate()
@@ -157,6 +172,7 @@ public class MovingPlatforms : MonoBehaviour
     }
     void UpAndDown()
     {
+        
         if (GoBackY)
         {
             this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
