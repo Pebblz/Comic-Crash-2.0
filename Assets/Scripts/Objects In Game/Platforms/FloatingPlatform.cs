@@ -8,6 +8,9 @@ public class FloatingPlatform : MonoBehaviour
 
     Vector3 startPos;
 
+    [SerializeField]
+    float speed = .7f;
+
     bool GoUp;
     private void Start()
     {
@@ -45,14 +48,14 @@ public class FloatingPlatform : MonoBehaviour
     {
         if (transform.position.y > startPos.y - HowFarDown)
         {
-            this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * .7f, 0), Space.World);
+            this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
         }
     }
     void goUp()
     {
         if (transform.position.y < startPos.y)
         {
-            this.gameObject.transform.Translate(new Vector3(0, Time.deltaTime * .7f, 0), Space.World);
+            this.gameObject.transform.Translate(new Vector3(0, Time.deltaTime * speed, 0), Space.World);
         }
         else
         {
