@@ -70,7 +70,7 @@ public class MovingPlatforms : MonoBehaviour
             EndPointX = StartPoint.x + DistanceToMoveX;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (active)
         {
@@ -139,10 +139,10 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x <= StartPoint.x)
                 {
                     GoBackX = false;
-                    if (!once)
+                    if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -157,10 +157,10 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x >= EndPointX)
                 {
                     GoBackX = true;
-                    if (!once)
+                    if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -178,10 +178,10 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x >= StartPoint.x)
                 {
                     GoBackX = false;
-                    if (!once)
+                    if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -196,10 +196,10 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x <= EndPointX)
                 {
                     GoBackX = true;
-                    if (!once)
+                    if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -222,8 +222,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackZ = false;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -239,8 +239,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackZ = true;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -263,8 +263,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackZ = false;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -283,8 +283,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackZ = true;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -309,8 +309,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackY = false;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -329,8 +329,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackY = true;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -352,8 +352,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackY = false;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
@@ -372,8 +372,8 @@ public class MovingPlatforms : MonoBehaviour
                     GoBackY = true;
                     if (!once && stopTimer <= 0)
                     {
-                        stopTimer = MaxStopTimer;
                         once = true;
+                        stopTimer = MaxStopTimer;
                     }
                 }
                 else
