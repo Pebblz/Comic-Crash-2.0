@@ -119,59 +119,166 @@ public class MovingPlatforms : MonoBehaviour
     }
     void LeftToRight()
     {
-        if (GoBackX)
+        if (EndPointX > StartPoint.x)
         {
-            this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
-            if (this.gameObject.transform.position.x <= StartPoint.x)
+            if (GoBackX)
             {
-                GoBackX = false;
+
+                if (this.gameObject.transform.position.x <= StartPoint.x)
+                {
+                    GoBackX = false;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
+                }
+            }
+            else
+            {
+
+                if (this.gameObject.transform.position.x >= EndPointX)
+                {
+                    GoBackX = true;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
+                }
             }
         }
         else
         {
-            this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
-            if (this.gameObject.transform.position.x >= EndPointX)
+            if (GoBackX)
             {
-                GoBackX = true;
+
+                if (this.gameObject.transform.position.x >= StartPoint.x)
+                {
+                    GoBackX = false;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
+                }
+            }
+            else
+            {
+
+                if (this.gameObject.transform.position.x <= EndPointX)
+                {
+                    GoBackX = true;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
+                }
             }
         }
     }
     void FrontToBack()
     {
-        if (GoBackZ)
+        if (EndPointZ > StartPoint.z)
         {
-            this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
-            if (this.gameObject.transform.position.z <= StartPoint.z)
+            if (GoBackZ)
             {
-                GoBackZ = false;
+
+                if (this.gameObject.transform.position.z <= StartPoint.z)
+                {
+                    GoBackZ = false;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.z >= EndPointZ)
+                {
+                    GoBackZ = true;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                }
             }
         }
         else
         {
-            this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
-            if (this.gameObject.transform.position.z >= EndPointZ)
+            if (GoBackZ)
             {
-                GoBackZ = true;
+
+                if (this.gameObject.transform.position.z >= StartPoint.z)
+                {
+                    GoBackZ = false;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.z <= EndPointZ)
+                {
+                    GoBackZ = true;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
+                }
             }
         }
     }
     void UpAndDown()
     {
-        if (GoBackY)
+        if (EndPointY > StartPoint.y)
         {
-            this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
-            if (this.gameObject.transform.position.y <= StartPoint.y)
+            if (GoBackY)
             {
-                GoBackY = false;
+                if (this.gameObject.transform.position.y <= StartPoint.y)
+                {
+                    GoBackY = false;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.y >= EndPointY)
+                {
+                    GoBackY = true;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                }
             }
         }
         else
         {
-
-            this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
-            if (this.gameObject.transform.position.y >= EndPointY)
+            if (GoBackY)
             {
-                GoBackY = true;
+                if (this.gameObject.transform.position.y >= StartPoint.y)
+                {
+                    GoBackY = false;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                }
+            }
+            else
+            {
+                if (this.gameObject.transform.position.y <= EndPointY)
+                {
+                    GoBackY = true;
+                }
+                else
+                {
+                    this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                }
             }
         }
     }
