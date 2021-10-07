@@ -8,13 +8,13 @@ public class MovingPlatforms : MonoBehaviour
     [Header("Direction")]
 
     [SerializeField, Tooltip("If set true it'll go up and down, if false it'll move side to side. Also don't forget to add the parent player script only for up and down")]
-    bool upAndDown;
+    bool MoveY;
 
     [SerializeField, Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
-    bool LeftAndRight;
+    bool MoveX;
 
     [SerializeField, Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
-    bool ForwardAndBack;
+    bool MoveZ;
 
     [SerializeField, Tooltip("If you want it to go up and down and what ever you put for left and right")]
     bool Multiple;
@@ -60,13 +60,13 @@ public class MovingPlatforms : MonoBehaviour
     void Start()
     {
         StartPoint = transform.position;
-        if (upAndDown)
+        if (MoveY)
             EndPointY = StartPoint.y + DistanceToMoveY;
 
-        if (ForwardAndBack)
+        if (MoveZ)
             EndPointZ = StartPoint.z + DistanceToMoveZ;
 
-        if (LeftAndRight)
+        if (MoveX)
             EndPointX = StartPoint.x + DistanceToMoveX;
     }
 
@@ -100,16 +100,16 @@ public class MovingPlatforms : MonoBehaviour
     #region Movement functions
     private void Move()
     {
-        if (upAndDown)
+        if (MoveY)
         {
             UpAndDown();
             if (Multiple)
             {
-                if (ForwardAndBack)
+                if (MoveZ)
                 {
                     FrontToBack();
                 }
-                if (LeftAndRight)
+                if (MoveX)
                 {
                     LeftToRight();
                 }
@@ -118,11 +118,11 @@ public class MovingPlatforms : MonoBehaviour
         }
         else
         {
-            if (ForwardAndBack)
+            if (MoveZ)
             {
                 FrontToBack();
             }
-            if(LeftAndRight)
+            if(MoveX)
             {
                 LeftToRight();
             }
