@@ -21,32 +21,41 @@ public class FloatingPlatform : MonoBehaviour
     }
     private void Update()
     {
+        if(ChildTriggered)
+        {
+            goDown();
+        }
+        else
+        {
+            GoUp = true;
+        }
+
         if (GoUp)
         {
             goUp();
         }
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player" && ChildTriggered)
-        {
-            goDown();
-        }
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player" && ChildTriggered)
-        {
-            goDown();
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            GoUp = true;
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Player" && ChildTriggered)
+    //    {
+    //        goDown();
+    //    }
+    //}
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Player" && ChildTriggered)
+    //    {
+    //        goDown();
+    //    }
+    //}
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Player")
+    //    {
+    //        GoUp = true;
+    //    }
+    //}
     void goDown()
     {
         if (GoUp)
