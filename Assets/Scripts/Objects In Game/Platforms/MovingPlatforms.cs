@@ -15,9 +15,13 @@ public class MovingPlatforms : MonoBehaviour
 
     [SerializeField, Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
     bool ForwardAndBack;
+
     [SerializeField, Tooltip("If you want it to go up and down and what ever you put for left and right")]
     bool Multiple;
 
+
+    [SerializeField, Tooltip("The amount of time the platforms stops for when the platform hits the start of end point")]
+    float MaxStopTimer;
 
     [Header("Distance")]
 
@@ -50,6 +54,8 @@ public class MovingPlatforms : MonoBehaviour
     private bool isSteppedOn;
 
     Vector3 lastPosition, lastMove;
+    float stopTimer;
+    bool once;
     #region MonoBehaviour functions
     void Start()
     {
@@ -121,6 +127,7 @@ public class MovingPlatforms : MonoBehaviour
                 LeftToRight();
             }
         }
+        stopTimer -= Time.deltaTime;
     }
     void LeftToRight()
     {
@@ -132,10 +139,16 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x <= StartPoint.x)
                 {
                     GoBackX = false;
+                    if (!once)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
+                    if(stopTimer <= 0)
+                        this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
             else
@@ -144,10 +157,16 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x >= EndPointX)
                 {
                     GoBackX = true;
+                    if (!once)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
+                    if (stopTimer <= 0)
+                        this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
         }
@@ -159,10 +178,16 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x >= StartPoint.x)
                 {
                     GoBackX = false;
+                    if (!once)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
+                    if (stopTimer <= 0)
+                        this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
             else
@@ -171,10 +196,16 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.x <= EndPointX)
                 {
                     GoBackX = true;
+                    if (!once)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
+                    if (stopTimer <= 0)
+                        this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
         }
@@ -189,10 +220,16 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.z <= StartPoint.z)
                 {
                     GoBackZ = false;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
+                    if (stopTimer <= 0)
+                        this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
                 }
             }
             else
@@ -200,10 +237,19 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.z >= EndPointZ)
                 {
                     GoBackZ = true;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                    if (stopTimer <= 0)
+                    {
+                        this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                        once = false;
+                    }
                 }
             }
         }
@@ -215,10 +261,19 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.z >= StartPoint.z)
                 {
                     GoBackZ = false;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                    if (stopTimer <= 0)
+                    {
+                        this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                        once = false;
+                    }
                 }
             }
             else
@@ -226,10 +281,19 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.z <= EndPointZ)
                 {
                     GoBackZ = true;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
+                    if (stopTimer <= 0)
+                    {
+                        this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
+                        once = false;
+                    }
                 }
             }
         }
@@ -243,10 +307,19 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.y <= StartPoint.y)
                 {
                     GoBackY = false;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                    if (stopTimer <= 0)
+                    {
+                        this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                        once = false;
+                    }
                 }
             }
             else
@@ -254,10 +327,19 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.y >= EndPointY)
                 {
                     GoBackY = true;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                    if (stopTimer <= 0)
+                    {
+                        this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                        once = false;
+                    }
                 }
             }
         }
@@ -268,10 +350,19 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.y >= StartPoint.y)
                 {
                     GoBackY = false;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                    if (stopTimer <= 0)
+                    {
+                        this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                        once = false;
+                    }
                 }
             }
             else
@@ -279,10 +370,19 @@ public class MovingPlatforms : MonoBehaviour
                 if (this.gameObject.transform.position.y <= EndPointY)
                 {
                     GoBackY = true;
+                    if (!once && stopTimer <= 0)
+                    {
+                        stopTimer = MaxStopTimer;
+                        once = true;
+                    }
                 }
                 else
                 {
-                    this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                    if (stopTimer <= 0)
+                    {
+                        this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                        once = false;
+                    }
                 }
             }
         }
