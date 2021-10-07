@@ -13,8 +13,10 @@ public class MovingPlatforms : MonoBehaviour
     [SerializeField, Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
     bool LeftAndRight;
 
+    [SerializeField, Tooltip("If up and down if false, this'll will be for if the platform will move straight and back or left and right")]
+    bool ForwardAndBack;
     [SerializeField, Tooltip("If you want it to go up and down and what ever you put for left and right")]
-    bool Both;
+    bool Multiple;
 
 
     [Header("Distance")]
@@ -23,7 +25,10 @@ public class MovingPlatforms : MonoBehaviour
     float DistanceToMoveY;
 
     [SerializeField, Range(-40f, 40f), Tooltip("The amount the platform will move left nad right or striaght and back")]
-    float DistanceToMoveXZ;
+    float DistanceToMoveX;
+
+    [SerializeField, Range(-40f, 40f), Tooltip("The amount the platform will move left nad right or striaght and back")]
+    float DistanceToMoveZ;
 
     [Space(10)]
 
@@ -52,11 +57,11 @@ public class MovingPlatforms : MonoBehaviour
         if (upAndDown)
             EndPointY = StartPoint.y + DistanceToMoveY;
 
-        if (!LeftAndRight)
-            EndPointZ = StartPoint.z + DistanceToMoveXZ;
+        if (ForwardAndBack)
+            EndPointZ = StartPoint.z + DistanceToMoveZ;
 
         if (LeftAndRight)
-            EndPointX = StartPoint.x + DistanceToMoveXZ;
+            EndPointX = StartPoint.x + DistanceToMoveX;
     }
 
     void FixedUpdate()
@@ -92,13 +97,13 @@ public class MovingPlatforms : MonoBehaviour
         if (upAndDown)
         {
             UpAndDown();
-            if (Both)
+            if (Multiple)
             {
-                if (!LeftAndRight)
+                if (ForwardAndBack)
                 {
                     FrontToBack();
                 }
-                else
+                if (LeftAndRight)
                 {
                     LeftToRight();
                 }
@@ -107,11 +112,11 @@ public class MovingPlatforms : MonoBehaviour
         }
         else
         {
-            if (!LeftAndRight)
+            if (ForwardAndBack)
             {
                 FrontToBack();
             }
-            else
+            if(LeftAndRight)
             {
                 LeftToRight();
             }
