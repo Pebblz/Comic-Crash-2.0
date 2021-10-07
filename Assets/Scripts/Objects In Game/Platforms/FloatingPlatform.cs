@@ -12,6 +12,9 @@ public class FloatingPlatform : MonoBehaviour
     float speed = .7f;
 
     bool GoUp;
+
+    [HideInInspector]
+    public bool ChildTriggered;
     private void Start()
     {
         startPos = transform.position;
@@ -25,14 +28,14 @@ public class FloatingPlatform : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.gameObject.transform.position.y > transform.gameObject.transform.position.y)
+        if (collision.gameObject.tag == "Player" && ChildTriggered)
         {
             goDown();
         }
     }
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.gameObject.transform.position.y > transform.gameObject.transform.position.y)
+        if (collision.gameObject.tag == "Player" && ChildTriggered)
         {
             goDown();
         }
@@ -46,6 +49,8 @@ public class FloatingPlatform : MonoBehaviour
     }
     void goDown()
     {
+        if (GoUp)
+            GoUp = false;
         if (transform.position.y > startPos.y - HowFarDown)
         {
             this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
