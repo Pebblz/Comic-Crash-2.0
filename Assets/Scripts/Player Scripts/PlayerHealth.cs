@@ -84,6 +84,13 @@ public class PlayerHealth : MonoBehaviour
         }
         currentAir = WaterUI.airLeft;
     }
+    public void GainAir(int amount)
+    {
+        if (WaterUI.airLeft + amount > MaxAirTimer)
+            WaterUI.airLeft = MaxAirTimer;
+        else
+            WaterUI.airLeft += amount;
+    }
     public void HurtPlayer(int amount)
     {
         if (IFrameTimer <= 0)
