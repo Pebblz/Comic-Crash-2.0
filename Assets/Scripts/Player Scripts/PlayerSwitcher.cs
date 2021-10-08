@@ -34,7 +34,7 @@ public class PlayerSwitcher : MonoBehaviourPun
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {
         if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
@@ -93,6 +93,8 @@ public class PlayerSwitcher : MonoBehaviourPun
 
                 GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name),
                     PlayerTransform.position, PlayerTransform.rotation, 0);
+
+                Temp.GetComponent<PlayerHealth>().currentHealth = CurrentPlayer.GetComponent<PlayerHealth>().currentHealth;
 
                 Temp.GetComponent<PhotonView>().ViewID = CurrentPlayer.GetComponent<PhotonView>().ViewID;
                 PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();

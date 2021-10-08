@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
     private Pause pause;
 
     PhotonView photonView;
-    private void Awake()
+    private void Start()
     {
         photonView = GetComponent<PhotonView>();
         //this is for if you forget to set the current health 
