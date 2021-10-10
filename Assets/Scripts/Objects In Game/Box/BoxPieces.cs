@@ -3,9 +3,13 @@ using Photon.Pun;
 public class BoxPieces : MonoBehaviour
 {
     private float timer;
+    PhotonView photonView;
+    GameObject player;
     private void Awake()
     {
         timer = Random.RandomRange(4, 7);
+        photonView = GetComponent<PhotonView>();
+        player = PhotonFindCurrentClient();
     }
     void Update()
     {
@@ -13,8 +17,16 @@ public class BoxPieces : MonoBehaviour
         
         if (timer <= 0)
         {
-            PhotonNetwork.Destroy(gameObject);
+            if (player.GetComponent<PhotonView>().IsMine)
+            {
+                photonView.RPC("DestroyPieces", RpcTarget.All);
+            }
         }
+    }
+    [PunRPC]
+    void DestroyPieces()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
     void OnCollisionEnter(Collision col)
     {
@@ -22,5 +34,16 @@ public class BoxPieces : MonoBehaviour
         {
             Physics.IgnoreCollision(this.gameObject.GetComponent<Collider>(), col.gameObject.GetComponent<Collider>());
         }
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
 }

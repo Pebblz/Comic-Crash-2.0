@@ -7,6 +7,11 @@ public class Bullet : MonoBehaviourPunCallbacks
 {
     float TimeTillDestroy = 2;
     public PhotonView shootersView;
+    PhotonView photonView;
+    private void Start()
+    {
+        photonView = GetComponent<PhotonView>();
+    }
     void Update()
     {
         TimeTillDestroy -= Time.deltaTime;
@@ -14,7 +19,7 @@ public class Bullet : MonoBehaviourPunCallbacks
         {
             if (TimeTillDestroy <= 0)
             {
-                shootersView.RPC("DestroyGameObject",RpcTarget.All);
+                photonView.RPC("DestroyGameObject",RpcTarget.All);
             }
         }
     }
@@ -22,6 +27,6 @@ public class Bullet : MonoBehaviourPunCallbacks
     [PunRPC]
     void DestroyGameObject()
     {
-        PhotonNetwork.Destroy(GetComponent<PhotonView>());
+        PhotonNetwork.Destroy(gameObject);
     }
 }
