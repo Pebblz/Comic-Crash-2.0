@@ -35,7 +35,7 @@ public class FallingPlatforms : MonoBehaviour
                     transform.position.y - DownSpeed, transform.position.z);
                 if (timer < 0)
                 {
-                    _fallingPlatformManager.GetComponent<FallingPlatformManager>().PlatformFalling(gameObject, OriginalPos, Originalrot);
+                    _fallingPlatformManager.GetComponent<FallingPlatformManager>().PlatformFalling(gameObject, OriginalPos, Originalrot, GetComponent<PhotonView>());
                 }
             }
             timer -= Time.fixedDeltaTime;

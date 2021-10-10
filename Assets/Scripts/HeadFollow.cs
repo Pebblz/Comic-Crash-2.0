@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class HeadFollow : MonoBehaviour
 {
     GameObject player;
@@ -19,19 +19,20 @@ public class HeadFollow : MonoBehaviour
         if (player == null)
         {
             //this needs to be here because the player can switch characters
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = PhotonFindCurrentClient();
         }
-
-        //this checks if any of the rays hit an object with pickupables script
-        if (lookAt)
+        if (player.GetComponent<PhotonView>().IsMine)
         {
-            head.transform.rotation = lookAtSlowly(head.transform, player.transform.position + new Vector3(0, HeadYOffset,0), rotateSpeed);
+            //this checks if any of the rays hit an object with pickupables script
+            if (lookAt)
+            {
+                head.transform.rotation = lookAtSlowly(head.transform, player.transform.position + new Vector3(0, HeadYOffset, 0), rotateSpeed);
+            }
+            else
+            {
+                head.transform.rotation = lookAtSlowly(head.transform, headStartingRot, rotateSpeed);
+            }
         }
-        else
-        {
-            head.transform.rotation = lookAtSlowly(head.transform, headStartingRot, rotateSpeed);
-        }
-
 
     }
     Quaternion lookAtSlowly(Transform t, Vector3 target, float speed)
@@ -45,6 +46,17 @@ public class HeadFollow : MonoBehaviour
         //Vector3 relativePos = target - t.position;
         //Quaternion toRotation = Quaternion.LookRotation(relativePos);
         return Quaternion.Lerp(t.rotation, targetRot, speed * Time.deltaTime);
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
     private void OnTriggerEnter(Collider col)
     {

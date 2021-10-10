@@ -104,22 +104,25 @@ public class MainCamera : MonoBehaviour
     {
         if (target != null)
         {
-            if (!isShaking && !pause.isPaused && !StopCamera)
+            if (target.GetComponent<PhotonView>().IsMine)
             {
-                if (!collectibleCamera)
+                if (!isShaking && !pause.isPaused && !StopCamera)
                 {
-                    if (thirdPersonCamera)
+                    if (!collectibleCamera)
                     {
-                        ThirdPersonCamera();
+                        if (thirdPersonCamera)
+                        {
+                            ThirdPersonCamera();
+                        }
+                        else
+                        {
+                            FirstPersonCamera();
+                        }
                     }
                     else
                     {
-                        FirstPersonCamera();
+                        CollectibleCamera();
                     }
-                }
-                else
-                {
-                    CollectibleCamera();
                 }
             }
         }
