@@ -21,13 +21,13 @@ public class FallingPlatformManager : MonoBehaviour
     private void ResetPlatform(GameObject platform, int index, Vector3 Originalpos, Quaternion Originalrot, PhotonView photonView)
     {
         GameObject oldPlatform = _fallingPlatforms[index];
+        photonView.RPC("DestroyGameObject", RpcTarget.All, index);
         GameObject temp = Instantiate(platform,Originalpos, Originalrot);
         _fallingPlatforms[index] = temp;
-        photonView.RPC("DestroyGameObject", RpcTarget.All, photonView);
     }
     [PunRPC]
-    void DestroyGameObject(PhotonView photonView)
+    void DestroyGameObject(int platform)
     {
-        PhotonNetwork.Destroy(photonView);
+        PhotonNetwork.Destroy(_fallingPlatforms[platform]);
     }
 }

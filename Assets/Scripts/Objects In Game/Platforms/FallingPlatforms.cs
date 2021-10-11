@@ -7,6 +7,7 @@ public class FallingPlatforms : MonoBehaviour
 {
     bool Falling;
     [SerializeField] float timeTillReset;
+
     [SerializeField] public float timeTillPlatformFalls;
     private float timer;
     private float DownSpeed;
@@ -35,12 +36,21 @@ public class FallingPlatforms : MonoBehaviour
                     transform.position.y - DownSpeed, transform.position.z);
                 if (timer < 0)
                 {
-                    _fallingPlatformManager.GetComponent<FallingPlatformManager>().PlatformFalling(gameObject, OriginalPos, Originalrot, GetComponent<PhotonView>());
+                    resetPosition();
                 }
             }
             timer -= Time.fixedDeltaTime;
             timeTillPlatformFalls -= Time.fixedDeltaTime;
         }
+    }
+
+    void resetPosition()
+    {
+        timer = timeTillReset;
+        transform.position = OriginalPos;
+        timeTillPlatformFalls = Random.Range(.5f, 3f);
+        Falling = false;
+        DownSpeed = 0;
     }
     private void OnTriggerEnter(Collider col)
     {
