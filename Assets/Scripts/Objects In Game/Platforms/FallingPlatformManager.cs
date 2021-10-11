@@ -8,21 +8,26 @@ public class FallingPlatformManager : MonoBehaviour
     public GameObject[] _fallingPlatforms;
 
 
-    public void PlatformFalling(GameObject platform, Vector3 Originalpos, Quaternion Originalrot)
+    public void PlatformFalling(GameObject platform, Vector3 Originalpos, Quaternion Originalrot, PhotonView photonView)
     {
         for(int i = 0; i < _fallingPlatforms.Length; i++)
         {
             if(_fallingPlatforms[i] == platform)
             {
-                ResetPlatform(platform, i, Originalpos, Originalrot);
+                ResetPlatform(platform, i, Originalpos, Originalrot, photonView);
             }
         }
     }
-    private void ResetPlatform(GameObject platform, int index, Vector3 Originalpos, Quaternion Originalrot)
+    private void ResetPlatform(GameObject platform, int index, Vector3 Originalpos, Quaternion Originalrot, PhotonView photonView)
     {
         GameObject oldPlatform = _fallingPlatforms[index];
+        photonView.RPC("DestroyGameObject", RpcTarget.All, index);
         GameObject temp = Instantiate(platform,Originalpos, Originalrot);
         _fallingPlatforms[index] = temp;
-        Destroy(oldPlatform);
+    }
+    [PunRPC]
+    void DestroyGameObject(int platform)
+    {
+        PhotonNetwork.Destroy(_fallingPlatforms[platform]);
     }
 }

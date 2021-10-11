@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4099671002370278393}
   - component: {fileID: 4099671002370278371}
   - component: {fileID: 4099671002370278374}
-  - component: {fileID: 3756528925814818119}
   - component: {fileID: 4099671002370278368}
   - component: {fileID: 4099671002370278369}
   - component: {fileID: 4099671002370278392}
@@ -67,43 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinCount: 0
   CollectibleCount: 0
---- !u!114 &3756528925814818119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4099671002370278375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae7bca4bc33bcb341a40597d0fd4e3d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fallingPlatforms:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  photonStartPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4099671002370278368
 MonoBehaviour:
   m_ObjectHideFlags: 0

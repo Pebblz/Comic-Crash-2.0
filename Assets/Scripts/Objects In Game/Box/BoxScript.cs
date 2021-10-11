@@ -21,65 +21,75 @@ public class BoxScript : MonoBehaviour
     [PunRPC]
     void DestroyBox()
     {
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BrokenBox"), transform.position, transform.rotation);
+        PhotonNetwork.Destroy(photonView);
+    }
+    void InstanciateBox()
+    {
         if (wasPunched)
         {
             cam = FindObjectOfType<MainCamera>();
             cam.GetComponent<MainCamera>().Shake(.1f, .1f);
         }
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BrokenBox"), transform.position, transform.rotation);
         soundManager.playBoxBreak();
-        photonView.TransferOwnership(PhotonFindCurrentClient().GetComponent<PhotonView>().ViewID);
-        PhotonNetwork.Destroy(gameObject);
+       // photonView.TransferOwnership(PhotonFindCurrentClient().GetComponent<PhotonView>().ViewID);
     }
-
     private void OnCollisionEnter(Collision col)
     {
-        if (Ways.Contains(WaysToBreak.Shoot))
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            //this will check if the thing that hit it is a bullet
-            if (col.gameObject.GetComponent<Bullet>() != null)
+            if (Ways.Contains(WaysToBreak.Shoot))
             {
-                photonView.RPC("DestroyBox", RpcTarget.All);
-            }
-
-            //somewhere here we need to have code to launch the pieces
-            //from where ever the player punched / shot the crate
-
-        }
-        if (Ways.Contains(WaysToBreak.Punch))
-        {
-            if (col.gameObject.tag == "PlayerPunch")
-            {
-                photonView.RPC("DestroyBox", RpcTarget.All);
-            }
-        }
-        if (Ways.Contains(WaysToBreak.JumpOn))
-        {
-            if (col.gameObject.tag == "Player")
-            {
-                if (!col.gameObject.GetComponent<PlayerMovement>().OnGround &&
-                    col.gameObject.transform.position.y > gameObject.transform.position.y)
+                //this will check if the thing that hit it is a bullet
+                if (col.gameObject.GetComponent<Bullet>() != null)
                 {
-                    col.gameObject.GetComponent<PlayerMovement>().jumpOnEnemy();
+                    InstanciateBox();
+                    photonView.RPC("DestroyBox", RpcTarget.All);
+                }
+
+                //somewhere here we need to have code to launch the pieces
+                //from where ever the player punched / shot the crate
+
+            }
+            if (Ways.Contains(WaysToBreak.Punch))
+            {
+                if (col.gameObject.tag == "PlayerPunch")
+                {
+                    InstanciateBox();
                     photonView.RPC("DestroyBox", RpcTarget.All);
                 }
             }
-        }
-        if (Ways.Contains(WaysToBreak.JumpUnder))
-        {
-            if (!col.gameObject.GetComponent<PlayerMovement>().OnGround &&
-                col.gameObject.transform.position.y < gameObject.transform.position.y)
+            if (Ways.Contains(WaysToBreak.JumpOn))
             {
-                photonView.RPC("DestroyBox", RpcTarget.All);
-            }
-        }
-        if (Ways.Contains(WaysToBreak.GroundPound))
-        {
-            if (col.gameObject.GetComponent<PlayerGroundPound>())
-            {
-                if (col.gameObject.GetComponent<Animator>().GetBool("GroundPound"))
+                if (col.gameObject.tag == "Player")
                 {
-                    DestroyBox();
+                    if (!col.gameObject.GetComponent<PlayerMovement>().OnGround &&
+                        col.gameObject.transform.position.y > gameObject.transform.position.y)
+                    {
+                        col.gameObject.GetComponent<PlayerMovement>().jumpOnEnemy();
+                        InstanciateBox();
+                        photonView.RPC("DestroyBox", RpcTarget.All);
+                    }
+                }
+            }
+            if (Ways.Contains(WaysToBreak.JumpUnder))
+            {
+                if (!col.gameObject.GetComponent<PlayerMovement>().OnGround &&
+                    col.gameObject.transform.position.y < gameObject.transform.position.y)
+                {
+                    InstanciateBox();
+                    photonView.RPC("DestroyBox", RpcTarget.All);
+                }
+            }
+            if (Ways.Contains(WaysToBreak.GroundPound))
+            {
+                if (col.gameObject.GetComponent<PlayerGroundPound>())
+                {
+                    if (col.gameObject.GetComponent<Animator>().GetBool("GroundPound"))
+                    {
+                        InstanciateBox();
+                        photonView.RPC("DestroyBox", RpcTarget.All);
+                    }
                 }
             }
         }

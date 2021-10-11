@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
     private Pause pause;
 
     PhotonView photonView;
-    private void Awake()
+    private void Start()
     {
         photonView = GetComponent<PhotonView>();
         //this is for if you forget to set the current health 
@@ -83,6 +83,13 @@ public class PlayerHealth : MonoBehaviour
             }
         }
         currentAir = WaterUI.airLeft;
+    }
+    public void GainAir(int amount)
+    {
+        if (WaterUI.airLeft + amount > MaxAirTimer)
+            WaterUI.airLeft = MaxAirTimer;
+        else
+            WaterUI.airLeft += amount;
     }
     public void HurtPlayer(int amount)
     {
