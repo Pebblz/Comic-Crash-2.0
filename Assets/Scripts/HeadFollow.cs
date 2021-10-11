@@ -60,24 +60,32 @@ public class HeadFollow : MonoBehaviour
     }
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.tag ==  "Player")
+        if (player.GetComponent<PhotonView>().IsMine)
         {
-            lookAt = true;
+            if (col.gameObject.tag == "Player")
+            {
+                lookAt = true;
+            }
         }
     }
     private void OnTriggerStay(Collider col)
     {
-        if (col.gameObject.tag == "Player")
+        if (player.GetComponent<PhotonView>().IsMine)
         {
-            lookAt = true;
+            if (col.gameObject.tag == "Player")
+            {
+                lookAt = true;
+            }
         }
     }
     private void OnTriggerExit(Collider col)
     {
-        if (col.gameObject.tag == "Player")
+        if (player.GetComponent<PhotonView>().IsMine)
         {
-            lookAt = false;
+            if (col.gameObject.tag == "Player")
+            {
+                lookAt = false;
+            }
         }
-
     }
 }

@@ -14,7 +14,9 @@ public class BoxPieces : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        
+        if (player == null)
+            player = PhotonFindCurrentClient();
+
         if (timer <= 0)
         {
             if (player.GetComponent<PhotonView>().IsMine)

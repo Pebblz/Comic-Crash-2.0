@@ -6,7 +6,6 @@ using Photon.Realtime;
 public class Bullet : MonoBehaviourPunCallbacks
 {
     float TimeTillDestroy = 2;
-    public PhotonView shootersView;
     PhotonView photonView;
     private void Start()
     {
@@ -15,15 +14,27 @@ public class Bullet : MonoBehaviourPunCallbacks
     void Update()
     {
         TimeTillDestroy -= Time.deltaTime;
-        if (shootersView.IsMine)
+
+        if (TimeTillDestroy <= 0)
         {
-            if (TimeTillDestroy <= 0)
+            if (GetComponent<PhotonView>().AmOwner)
             {
-                photonView.RPC("DestroyGameObject",RpcTarget.All);
+                photonView.RPC("DestroyGameObject", RpcTarget.All);
             }
         }
-    }
 
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
+    }
     [PunRPC]
     void DestroyGameObject()
     {

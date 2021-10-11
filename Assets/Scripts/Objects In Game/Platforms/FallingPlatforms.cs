@@ -21,7 +21,6 @@ public class FallingPlatforms : MonoBehaviour
             timeTillPlatformFalls = Random.Range(.5f, 3f);
 
         timer = timeTillReset;
-        _fallingPlatformManager = FindObjectOfType<FallingPlatformManager>().gameObject;
         OriginalPos = transform.position;
         Originalrot = transform.rotation;
     }

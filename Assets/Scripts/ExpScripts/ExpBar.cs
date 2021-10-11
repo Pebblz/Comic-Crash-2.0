@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
 public class ExpBar : MonoBehaviour
 {
     [SerializeField] Slider slider;
@@ -12,14 +12,28 @@ public class ExpBar : MonoBehaviour
     void Update()
     {
         fadeTimer -= Time.fixedDeltaTime;
-        if(fadeTimer < 0)
+        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
-            cg.alpha -= Time.fixedDeltaTime;
+            if (fadeTimer < 0)
+            {
+                cg.alpha -= Time.fixedDeltaTime;
+            }
+            if (cg.alpha < 0)
+            {
+                slider.gameObject.SetActive(false);
+            }
         }
-        if (cg.alpha < 0)
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
         {
-            slider.gameObject.SetActive(false);
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
         }
+        return null;
     }
 
     public void newMax(int maxValue, int overFillValue) {
