@@ -14,30 +14,20 @@ public class Bullet : MonoBehaviourPunCallbacks
     void Update()
     {
         TimeTillDestroy -= Time.deltaTime;
-
-        if (TimeTillDestroy <= 0)
+        if (photonView.IsMine)
         {
-            if (GetComponent<PhotonView>().AmOwner)
+            if (TimeTillDestroy <= 0)
             {
                 photonView.RPC("DestroyGameObject", RpcTarget.All);
             }
         }
-
-    }
-    GameObject PhotonFindCurrentClient()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject g in players)
-        {
-            if (g.GetComponent<PhotonView>().IsMine)
-                return g;
-        }
-        return null;
     }
     [PunRPC]
     void DestroyGameObject()
     {
-        PhotonNetwork.Destroy(gameObject);
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }

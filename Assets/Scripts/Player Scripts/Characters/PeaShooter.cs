@@ -77,6 +77,9 @@ public class PeaShooter : MonoBehaviour
         if (!camera.GetComponent<MainCamera>().thirdPersonCamera)
         {
             GameObject tempbul = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "TempBullet"), camera.transform.position, camera.transform.rotation);
+            tempbul.GetComponent<PhotonView>().ViewID = GetComponent<PhotonView>().ViewID;
+            tempbul.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Takeover;
+            tempbul.GetComponent<PhotonView>().TransferOwnership(GetComponent<PhotonView>().Owner);
             tempbul.GetComponent<Rigidbody>().AddForce(tempbul.transform.forward * shotSpeed);
         }
         NextAttack = 1f;

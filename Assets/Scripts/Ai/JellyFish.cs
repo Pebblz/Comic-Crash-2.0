@@ -24,11 +24,15 @@ public class JellyFish : MonoBehaviour
     private float EndPointY;
 
     private float Timer;
+
+    PhotonView photonView;
     private void Start()
     {
         StartPoint = transform.position;
 
         EndPointY = StartPoint.y + DistanceToMoveY;
+
+        photonView = GetComponent<PhotonView>();
     }
     private void Update()
     {
@@ -78,7 +82,13 @@ public class JellyFish : MonoBehaviour
         player.GetComponent<PlayerHealth>().HurtPlayer((int)damage);
 
         //play particle effect
-
-        PhotonNetwork.Destroy(gameObject);
+        if(photonView.IsMine)
+            photonView.RPC("DestroyJelly", RpcTarget.All);
+    }
+    [PunRPC]
+    void DestroyJelly()
+    {
+        if(photonView.IsMine)
+            PhotonNetwork.Destroy(gameObject);
     }
 }
