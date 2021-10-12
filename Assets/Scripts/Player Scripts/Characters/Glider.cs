@@ -8,6 +8,13 @@ public class Glider : MonoBehaviour
 {
     GravityPlane gravityPlane;
 
+    Rigidbody body;
+
+    float originalMass;
+
+    [SerializeField]
+    float glidingMass;
+
     [SerializeField]
     float glidingGravity;
 
@@ -21,9 +28,14 @@ public class Glider : MonoBehaviour
 
     float NotOnGroundTimer;
 
+    [SerializeField]
     float HowLongNeededToGlide = .5f;
     void Start()
     {
+        body = GetComponent<Rigidbody>();
+
+        originalMass = body.mass;
+
         gravityPlane = FindObjectOfType<GravityPlane>();
 
         originalGravity = gravityPlane.gravity;

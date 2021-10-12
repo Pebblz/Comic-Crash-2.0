@@ -637,8 +637,8 @@ public class PlayerMovement : MonoBehaviour
         {
 
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 &&
-                collision.gameObject.layer != 10 && CanWallJump)
+                InputManager.GetButton("Jump") && collision.gameObject.layer != 9 &&
+                collision.gameObject.layer != 10 && wallJumpTimer <= 0 )
             {
                 Vector3 _velocity = contact.normal;
 
