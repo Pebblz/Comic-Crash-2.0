@@ -29,9 +29,11 @@ public class Glider : MonoBehaviour
     float NotOnGroundTimer;
 
     [SerializeField]
-    float HowLongNeededToGlide = .5f;
+    float HowLongNeededToGlide = .3f;
     void Start()
     {
+        NotOnGroundTimer = HowLongNeededToGlide;
+
         body = GetComponent<Rigidbody>();
 
         originalMass = body.mass;
@@ -54,18 +56,25 @@ public class Glider : MonoBehaviour
         {
             if (!pause.isPaused)
             {
-                if (InputManager.GetButtonDown("Jump"))
+                if (!movement.OnGround)
                 {
-                    NotOnGroundTimer += Time.deltaTime;
-                    if (!movement.OnGround && NotOnGroundTimer >= HowLongNeededToGlide)
+                    if (InputManager.GetButton("Jump"))
                     {
-                        SetGravity();
+                        NotOnGroundTimer -= Time.deltaTime;
+                        if (NotOnGroundTimer <= 0)
+                        {
+                            SetGravity();
+                        }
+                    }
+                    else
+                    {
+                        unSetGravity();
                     }
                 }
                 else
                 {
                     unSetGravity();
-                    NotOnGroundTimer = 0;
+                    NotOnGroundTimer = HowLongNeededToGlide;
                 }
             }
         }
@@ -74,10 +83,12 @@ public class Glider : MonoBehaviour
     void SetGravity()
     {
         gravityPlane.gravity = glidingGravity;
+        body.mass = glidingMass;
     }
     void unSetGravity()
     {
         gravityPlane.gravity = originalGravity;
+        body.mass = originalMass;
     }
     private void OnDestroy()
     {
