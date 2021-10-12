@@ -70,6 +70,8 @@ public class PlayerMovement : MonoBehaviour
     float swimThreshold = 0.5f;
     [SerializeField, Range(.1f, 5f)]
     float AtTopOfWaterOffset = 1;
+    [SerializeField]
+    bool willWallJump;
 
     [Header("Animator"), Space(5)]
     [SerializeField]
@@ -638,7 +640,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
                 InputManager.GetButton("Jump") && collision.gameObject.layer != 9 &&
-                collision.gameObject.layer != 10 && wallJumpTimer <= 0 )
+                collision.gameObject.layer != 10 && wallJumpTimer <= 0 && willWallJump)
             {
                 Vector3 _velocity = contact.normal;
 

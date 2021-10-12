@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   glidingMass: 1
   glidingGravity: 1.2
-  HowLongNeededToGlide: 0.2
+  HowLongNeededToGlide: 0.4
 --- !u!114 &2615558730724235171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1142,7 +1142,7 @@ MonoBehaviour:
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
   CrouchSpeed: 2
-  maxJumpSpeed: 13
+  maxJumpSpeed: 23
   WalkUnderWaterSpeed: 1.5
   RunUnderWaterSpeed: 2.5
   SwimUpSpeed: 3
@@ -1185,6 +1185,7 @@ MonoBehaviour:
   buoyancy: 1.2
   swimThreshold: 1
   AtTopOfWaterOffset: 1
+  willWallJump: 0
   anim: {fileID: 0}
   CrouchOffsetY: 0.1
   onBelt: 0
