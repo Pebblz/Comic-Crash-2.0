@@ -96,7 +96,7 @@ public class Glider : MonoBehaviour
                         if (FloatingPartical.isPlaying)
                         {
                             FloatingPartical.Stop();
-                            FloatingPartical.Clear();
+                            //FloatingPartical.Clear();
                         }
                         unSetGravity();
                         movement.PlayAnimation("Falling");
@@ -109,7 +109,7 @@ public class Glider : MonoBehaviour
                     if (FloatingPartical.isPlaying)
                     {
                         FloatingPartical.Stop();
-                        FloatingPartical.Clear();
+                        //FloatingPartical.Clear();
                     }
                     unSetGravity();
                     movement.StopAnimation("GlidingIdle");
