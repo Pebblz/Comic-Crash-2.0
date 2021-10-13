@@ -2375,7 +2375,7 @@ MonoBehaviour:
   glidingGravity: 1.2
   HowLongNeededToGlide: 0.4
   FloatingPartical: {fileID: 7521553100835545903}
-  ParticleRotationAngle: -75
+  ParticleRotationAngle: -90
 --- !u!54 &5269230951779913778
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4269,6 +4269,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.274
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930627468687191263, guid: 7a14a8aafadd3d84da73b519c2008218,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.62312907
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930627468687191263, guid: 7a14a8aafadd3d84da73b519c2008218,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.78211904
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930627468687191263, guid: 7a14a8aafadd3d84da73b519c2008218,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -102.91
       objectReference: {fileID: 0}
     - target: {fileID: 4930627470156950454, guid: 7a14a8aafadd3d84da73b519c2008218,
         type: 3}

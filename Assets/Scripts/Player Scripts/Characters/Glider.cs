@@ -35,6 +35,8 @@ public class Glider : MonoBehaviour
 
     [SerializeField]
     float ParticleRotationAngle = -75;
+
+    float OriginalParticleX;
     void Start()
     {
         FloatingPartical.Stop();
@@ -54,6 +56,8 @@ public class Glider : MonoBehaviour
         photonView = GetComponent<PhotonView>();
 
         pause = FindObjectOfType<Pause>();
+
+        OriginalParticleX = FloatingPartical.GetComponent<Transform>().rotation.x;
     }
 
     // Update is called once per frame
@@ -75,6 +79,9 @@ public class Glider : MonoBehaviour
                             {
                                 if (FloatingPartical.isStopped)
                                 {
+                                    //FloatingPartical.GetComponent<Transform>().rotation = new Quaternion(ParticleRotationAngle,
+                                        //FloatingPartical.GetComponent<Transform>().rotation.y, FloatingPartical.GetComponent<Transform>().rotation.z,
+                                        //FloatingPartical.GetComponent<Transform>().rotation.w);
                                     FloatingPartical.Play();
 
                                 }
@@ -84,8 +91,14 @@ public class Glider : MonoBehaviour
                             }
                             if (movement.playerInput.x == 0 && movement.playerInput.y == 0)
                             {
+
                                 if (FloatingPartical.isStopped)
+                                {
+                                    //FloatingPartical.GetComponent<Transform>().rotation = new Quaternion(OriginalParticleX,
+                                       // FloatingPartical.GetComponent<Transform>().rotation.y, FloatingPartical.GetComponent<Transform>().rotation.z,
+                                        //FloatingPartical.GetComponent<Transform>().rotation.w);
                                     FloatingPartical.Play();
+                                }
                                 movement.PlayAnimation("GlidingIdle");
                                 movement.StopAnimation("GlidingForward");
                             }
@@ -96,7 +109,7 @@ public class Glider : MonoBehaviour
                         if (FloatingPartical.isPlaying)
                         {
                             FloatingPartical.Stop();
-                            //FloatingPartical.Clear();
+                            FloatingPartical.Clear();
                         }
                         unSetGravity();
                         movement.PlayAnimation("Falling");
@@ -109,7 +122,7 @@ public class Glider : MonoBehaviour
                     if (FloatingPartical.isPlaying)
                     {
                         FloatingPartical.Stop();
-                        //FloatingPartical.Clear();
+                        FloatingPartical.Clear();
                     }
                     unSetGravity();
                     movement.StopAnimation("GlidingIdle");
