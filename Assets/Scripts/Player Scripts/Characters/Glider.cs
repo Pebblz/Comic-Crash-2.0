@@ -65,9 +65,15 @@ public class Glider : MonoBehaviour
                         {
                             SetGravity();
                             if (movement.playerInput.x != 0 || movement.playerInput.y != 0)
+                            {
                                 movement.PlayAnimation("GlidingForward");
-                            if(movement.playerInput.x == 0 && movement.playerInput.y == 0)
+                                movement.StopAnimation("GlidingIdle");
+                            }
+                            if (movement.playerInput.x == 0 && movement.playerInput.y == 0)
+                            {
                                 movement.PlayAnimation("GlidingIdle");
+                                movement.StopAnimation("GlidingForward");
+                            }
                         }
                     }
                     else
