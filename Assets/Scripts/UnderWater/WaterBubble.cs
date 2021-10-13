@@ -13,6 +13,12 @@ public class WaterBubble : MonoBehaviour
     [SerializeField, Tooltip("Timer for the bubble till it gets destroyed")]
     float TimeTillBubbleIsDestroyed;
 
+    PhotonView photonView;
+    private void Start()
+    {
+        photonView = GetComponent<PhotonView>();
+    }
+
     private void Update()
     {
         //timer till bubble is destroyed;
@@ -22,7 +28,7 @@ public class WaterBubble : MonoBehaviour
         //if bubble timer is less then zero destroy bubble 
         if (TimeTillBubbleIsDestroyed <= 0)
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            photonView.RPC("DestroyGameObject", RpcTarget.All);
         }
     }
     //if player collects bubble, he gains air and destroys bubble
@@ -31,7 +37,16 @@ public class WaterBubble : MonoBehaviour
         if(col.gameObject.tag == "Player")
         {
             col.GetComponent<PlayerHealth>().GainAir(AmountOfAirGained);
-            PhotonNetwork.Destroy(this.gameObject);
+            photonView.RPC("DestroyGameObject", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    void DestroyGameObject()
+    {
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

@@ -30,8 +30,12 @@ public class Glider : MonoBehaviour
 
     [SerializeField]
     float HowLongNeededToGlide = .3f;
+
+    [SerializeField] ParticleSystem FloatingPartical;
     void Start()
     {
+        FloatingPartical.Stop();
+
         NotOnGroundTimer = HowLongNeededToGlide;
 
         body = GetComponent<Rigidbody>();
@@ -66,11 +70,16 @@ public class Glider : MonoBehaviour
                             SetGravity();
                             if (movement.playerInput.x != 0 || movement.playerInput.y != 0)
                             {
+                                if(FloatingPartical.isStopped)
+                                    FloatingPartical.Play();
+
                                 movement.PlayAnimation("GlidingForward");
                                 movement.StopAnimation("GlidingIdle");
                             }
                             if (movement.playerInput.x == 0 && movement.playerInput.y == 0)
                             {
+                                if (FloatingPartical.isStopped)
+                                    FloatingPartical.Play();
                                 movement.PlayAnimation("GlidingIdle");
                                 movement.StopAnimation("GlidingForward");
                             }
@@ -78,6 +87,8 @@ public class Glider : MonoBehaviour
                     }
                     else
                     {
+                        if (FloatingPartical.isPlaying)
+                            FloatingPartical.Stop();
                         unSetGravity();
                         movement.PlayAnimation("Falling");
                         movement.StopAnimation("GlidingIdle");
@@ -86,6 +97,8 @@ public class Glider : MonoBehaviour
                 }
                 else
                 {
+                    if (FloatingPartical.isPlaying)
+                        FloatingPartical.Stop();
                     unSetGravity();
                     movement.StopAnimation("GlidingIdle");
                     movement.StopAnimation("GlidingForward");
