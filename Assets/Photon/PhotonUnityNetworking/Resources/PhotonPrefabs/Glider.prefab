@@ -1202,6 +1202,7 @@ MonoBehaviour:
   AtTheTopOfWater: 0
   CollectibleGotten: 0
   collectibleTimer: 3
+  playerInput: {x: 0, y: 0, z: 0}
   submergence: 0
   OnFloor: 0
   walkingPartical1: {fileID: 7275624923034715496, guid: 99442a2b0b3450a4c9780e29be325bf8,
@@ -1288,7 +1289,7 @@ Animator:
   m_GameObject: {fileID: 2615558730724235175}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4f86f717c47e3074ea7be6f8595ab7cd, type: 2}
+  m_Controller: {fileID: 9100000, guid: 211f125cb2672c14f8a5c77cd3cf0f8f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1345,9 +1346,6 @@ MonoBehaviour:
     Name: Crouching
   - Type: 4
     SynchronizeType: 2
-    Name: Attack
-  - Type: 4
-    SynchronizeType: 2
     Name: Balancing
   - Type: 4
     SynchronizeType: 2
@@ -1357,22 +1355,49 @@ MonoBehaviour:
     Name: Getup
   - Type: 4
     SynchronizeType: 2
+    Name: IsLanded
+  - Type: 4
+    SynchronizeType: 2
     Name: DoubleJump
   - Type: 4
     SynchronizeType: 2
     Name: Skid
   - Type: 4
     SynchronizeType: 2
-    Name: Drowning
+    Name: GroundPound
+  - Type: 3
+    SynchronizeType: 2
+    Name: Attack
+  - Type: 4
+    SynchronizeType: 2
+    Name: GroundPoundImpact
+  - Type: 4
+    SynchronizeType: 2
+    Name: Sinking
+  - Type: 4
+    SynchronizeType: 2
+    Name: SwimLeftOrRight
+  - Type: 4
+    SynchronizeType: 2
+    Name: SwimmingDown
   - Type: 4
     SynchronizeType: 2
     Name: AirAttack
+  - Type: 4
+    SynchronizeType: 2
+    Name: SwimmingUp
   - Type: 1
     SynchronizeType: 2
     Name: WalkMultiplier
   - Type: 1
     SynchronizeType: 2
     Name: RunMultiplier
+  - Type: 4
+    SynchronizeType: 2
+    Name: GlidingForward
+  - Type: 4
+    SynchronizeType: 2
+    Name: GlidingIdle
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

@@ -117,7 +117,8 @@ public class PlayerMovement : MonoBehaviour
     #region private fields
     float CurrentSpeed;
     bool Isrunning;
-    Vector3 playerInput;
+    [HideInInspector]
+    public Vector3 playerInput;
     Vector3 connectionVelocity;
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;

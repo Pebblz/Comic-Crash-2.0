@@ -64,16 +64,25 @@ public class Glider : MonoBehaviour
                         if (NotOnGroundTimer <= 0)
                         {
                             SetGravity();
+                            if (movement.playerInput.x != 0 || movement.playerInput.y != 0)
+                                movement.PlayAnimation("GlidingForward");
+                            if(movement.playerInput.x == 0 && movement.playerInput.y == 0)
+                                movement.PlayAnimation("GlidingIdle");
                         }
                     }
                     else
                     {
                         unSetGravity();
+                        movement.PlayAnimation("Falling");
+                        movement.StopAnimation("GlidingIdle");
+                        movement.StopAnimation("GlidingForward");
                     }
                 }
                 else
                 {
                     unSetGravity();
+                    movement.StopAnimation("GlidingIdle");
+                    movement.StopAnimation("GlidingForward");
                     NotOnGroundTimer = HowLongNeededToGlide;
                 }
             }
