@@ -61,7 +61,7 @@ public class Trampoline : MonoBehaviour
     {
         Vector3 velocity = transform.InverseTransformDirection(body.velocity);
 
-        if (!body.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
+        if (!body.GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
         {
             if (acceleration > 0f)
             {

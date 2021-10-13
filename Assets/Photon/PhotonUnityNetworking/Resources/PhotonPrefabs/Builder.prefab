@@ -1240,6 +1240,7 @@ MonoBehaviour:
   maxJumpSpeed: 13
   WalkUnderWaterSpeed: 1.5
   RunUnderWaterSpeed: 2.5
+  WallJumpHeight: 5
   SwimUpSpeed: 3
   SlowlyFloatDownSpeed: 1
   SwimmingDownSpeed: 1
@@ -1281,7 +1282,7 @@ MonoBehaviour:
   swimThreshold: 1
   AtTopOfWaterOffset: 1
   willWallJump: 1
-  anim: {fileID: 0}
+  anim: {fileID: 2126054934864030729}
   CrouchOffsetY: 0.1
   onBelt: 0
   CanWallJump: 0
@@ -1297,6 +1298,7 @@ MonoBehaviour:
   AtTheTopOfWater: 0
   CollectibleGotten: 0
   collectibleTimer: 3
+  playerInput: {x: 0, y: 0, z: 0}
   submergence: 0
   OnFloor: 0
   walkingPartical1: {fileID: 7275624923034715496}

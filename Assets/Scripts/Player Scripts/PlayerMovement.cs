@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     #region serializedFields
     [Header("Speed / Pat varibles")]
     [SerializeField, Range(0f, 100f)]
-    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15, WalkUnderWaterSpeed = 5f, RunUnderWaterSpeed = 8f;
+    float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15, WalkUnderWaterSpeed = 5f, RunUnderWaterSpeed = 8f, WallJumpHeight;
 
     [SerializeField, Range(1f, 20f), Tooltip("How fast you swim up when holding jump button")]
     float SwimUpSpeed = 4f;
@@ -647,7 +647,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Vector3 _velocity = contact.normal;
 
-                _velocity.y = jumpHeight * WallJumpIntensifire;
+                _velocity.y = WallJumpHeight * WallJumpIntensifire;
 
                 body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
                     _velocity.y, _velocity.z * (4 * wallJumpSpeed));
@@ -1031,12 +1031,16 @@ public class PlayerMovement : MonoBehaviour
     }
     public void PlayFallingAnimation()
     {
-        anim = GetComponent<Animator>();
+        if(anim == null)
+            anim = GetComponent<Animator>();
+
         PlayAnimation("Falling");
     }
     public void PlayJumpAnimation()
     {
-        anim = GetComponent<Animator>();
+        if (anim == null)
+            anim = GetComponent<Animator>();
+
         PlayAnimation("Jump");
     }
     #endregion
