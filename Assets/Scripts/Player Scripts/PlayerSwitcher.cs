@@ -112,13 +112,13 @@ public class PlayerSwitcher : MonoBehaviourPun
                 TempPlayerMovement.jumpPhase = 5;
 
                 Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
-                if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
                 {
-                    Temp.GetComponent<Animator>().SetBool("Walk", true);
+                    TempPlayerMovement.PlayAnimation("Walk");
                 }
-                if (CurrentPlayer.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Run"))
+                if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
-                    Temp.GetComponent<Animator>().SetBool("Run", true);
+                    TempPlayerMovement.PlayAnimation("Run");
                 }
                 TempPlayerMovement.OnFloor = currentPlayerMovement.OnFloor;
                 if(currentPlayerMovement.InWater)

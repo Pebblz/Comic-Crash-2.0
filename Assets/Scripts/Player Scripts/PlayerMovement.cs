@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Animator"), Space(5)]
     [SerializeField]
-    Animator anim;
+    public Animator anim;
 
 
     [Header("Offsets")]
@@ -172,7 +172,9 @@ public class PlayerMovement : MonoBehaviour
     {
         photonView = GetComponent<PhotonView>();
 
-        anim = GetComponent<Animator>();
+        if(anim == null)
+            anim = GetComponent<Animator>();
+
         playerInputSpace = GameObject.FindGameObjectWithTag("MainCamera").transform;
         if (GetComponent<BoxCollider>() != null)
         {
