@@ -32,6 +32,9 @@ public class Glider : MonoBehaviour
     float HowLongNeededToGlide = .3f;
 
     [SerializeField] ParticleSystem FloatingPartical;
+
+    [SerializeField]
+    float ParticleRotationAngle = -75;
     void Start()
     {
         FloatingPartical.Stop();
@@ -70,8 +73,11 @@ public class Glider : MonoBehaviour
                             SetGravity();
                             if (movement.playerInput.x != 0 || movement.playerInput.y != 0)
                             {
-                                if(FloatingPartical.isStopped)
+                                if (FloatingPartical.isStopped)
+                                {
                                     FloatingPartical.Play();
+
+                                }
 
                                 movement.PlayAnimation("GlidingForward");
                                 movement.StopAnimation("GlidingIdle");
@@ -88,7 +94,10 @@ public class Glider : MonoBehaviour
                     else
                     {
                         if (FloatingPartical.isPlaying)
+                        {
                             FloatingPartical.Stop();
+                            FloatingPartical.Clear();
+                        }
                         unSetGravity();
                         movement.PlayAnimation("Falling");
                         movement.StopAnimation("GlidingIdle");
@@ -98,7 +107,10 @@ public class Glider : MonoBehaviour
                 else
                 {
                     if (FloatingPartical.isPlaying)
+                    {
                         FloatingPartical.Stop();
+                        FloatingPartical.Clear();
+                    }
                     unSetGravity();
                     movement.StopAnimation("GlidingIdle");
                     movement.StopAnimation("GlidingForward");
