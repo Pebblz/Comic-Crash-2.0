@@ -33,8 +33,10 @@ public class Glider : MonoBehaviour
 
     [SerializeField] ParticleSystem FloatingPartical;
 
+    [SerializeField] GameObject floatingParticalParent;
+
     [SerializeField]
-    float ParticleRotationAngle = -75;
+    float ParticleRotationAngle;
 
     float OriginalParticleX;
     void Start()
@@ -57,7 +59,7 @@ public class Glider : MonoBehaviour
 
         pause = FindObjectOfType<Pause>();
 
-        OriginalParticleX = FloatingPartical.GetComponent<Transform>().rotation.x;
+        OriginalParticleX = floatingParticalParent.GetComponent<Transform>().rotation.x;
     }
 
     // Update is called once per frame
@@ -79,11 +81,9 @@ public class Glider : MonoBehaviour
                             {
                                 if (FloatingPartical.isStopped)
                                 {
-                                    //FloatingPartical.GetComponent<Transform>().rotation = new Quaternion(ParticleRotationAngle,
-                                        //FloatingPartical.GetComponent<Transform>().rotation.y, FloatingPartical.GetComponent<Transform>().rotation.z,
-                                        //FloatingPartical.GetComponent<Transform>().rotation.w);
+                                    Quaternion target = Quaternion.Euler(ParticleRotationAngle, 0, 0);
+                                    floatingParticalParent.transform.rotation = Quaternion.Slerp(floatingParticalParent.transform.rotation, target, Time.deltaTime * 20);
                                     FloatingPartical.Play();
-
                                 }
 
                                 movement.PlayAnimation("GlidingForward");
@@ -94,9 +94,8 @@ public class Glider : MonoBehaviour
 
                                 if (FloatingPartical.isStopped)
                                 {
-                                    //FloatingPartical.GetComponent<Transform>().rotation = new Quaternion(OriginalParticleX,
-                                       // FloatingPartical.GetComponent<Transform>().rotation.y, FloatingPartical.GetComponent<Transform>().rotation.z,
-                                        //FloatingPartical.GetComponent<Transform>().rotation.w);
+                                    Quaternion target = Quaternion.Euler(OriginalParticleX, 0, 0);
+                                    floatingParticalParent.transform.rotation = Quaternion.Slerp(floatingParticalParent.transform.rotation, target, Time.deltaTime * 20);
                                     FloatingPartical.Play();
                                 }
                                 movement.PlayAnimation("GlidingIdle");
