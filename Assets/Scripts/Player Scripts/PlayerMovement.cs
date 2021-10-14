@@ -855,11 +855,6 @@ public class PlayerMovement : MonoBehaviour
         //    velocity += upAxis * (newY - currentY);
         //}
     }
-    //public void transferOwnership(PhotonView view)
-    //{
-        //if (view.IsMine)
-            //photonView.TransferOwnership(view.ViewID);
-    //}
     public void GotCollectible()
     {
         CantMove = true;

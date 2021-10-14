@@ -17,8 +17,6 @@ public class PlayerSwitcher : MonoBehaviourPun
 
     [SerializeField]
     GameObject CurrentPlayer;
-    private float dpadX;
-    private float dpady;
     float timer;
     [SerializeField] float maxSwitchTimer = .5f;
     public bool CanSwitch;
@@ -102,23 +100,27 @@ public class PlayerSwitcher : MonoBehaviourPun
                 Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
                 ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
 
-                if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
-                {
-                    TempPlayerMovement.PlayFallingAnimation();
-                }
                 Temp.GetComponent<Player>().respawnPoint =
                     CurrentPlayer.GetComponent<Player>().respawnPoint;
 
                 TempPlayerMovement.jumpPhase = 5;
 
                 Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
-                if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
-                {
-                    TempPlayerMovement.PlayAnimation("Walk");
-                }
+
                 if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
                     TempPlayerMovement.PlayAnimation("Run");
+                }
+                else
+                {
+                    if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                    {
+                        TempPlayerMovement.PlayAnimation("Walk");
+                    }
+                    if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
+                    {
+                        TempPlayerMovement.PlayFallingAnimation();
+                    }
                 }
                 TempPlayerMovement.OnFloor = currentPlayerMovement.OnFloor;
                 if(currentPlayerMovement.InWater)
