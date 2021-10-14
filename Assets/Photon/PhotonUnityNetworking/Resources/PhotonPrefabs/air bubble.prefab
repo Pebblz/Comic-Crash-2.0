@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1242737961040170014}
   - component: {fileID: 5346642720291674422}
   - component: {fileID: 3968037179068738487}
+  - component: {fileID: 8686385828917079461}
   m_Layer: 0
   m_Name: air bubble
   m_TagString: Untagged
@@ -67,7 +68,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 3968037179068738487}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -87,6 +89,19 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!135 &8686385828917079461
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242737961040170208}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &1242737961079841085
 Animator:
   serializedVersion: 3
