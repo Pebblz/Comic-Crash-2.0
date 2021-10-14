@@ -64,7 +64,7 @@ public class Glider : MonoBehaviour
         {
             if (!pause.isPaused)
             {
-                if (!movement.OnGround)
+                if (!movement.OnGround && !movement.InWater)
                 {
                     if (InputManager.GetButton("Jump"))
                     {
@@ -121,7 +121,7 @@ public class Glider : MonoBehaviour
                         movement.StopAnimation("GlidingForward");
                     }
                 }
-                else
+                if (movement.InWater || movement.OnGround)
                 {
                     if (FloatingPartical.isPlaying)
                     {
