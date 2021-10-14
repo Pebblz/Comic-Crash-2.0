@@ -952,7 +952,7 @@ public class PlayerMovement : MonoBehaviour
                     jumpSpeed = 16;
                 }
                 velocity += jumpDirection * jumpSpeed;
-                velocity.y = Mathf.Clamp(velocity.y, -20, maxJumpSpeed);
+                velocity.y = Mathf.Clamp(velocity.y, -30, maxJumpSpeed);
             }
         }
     }
