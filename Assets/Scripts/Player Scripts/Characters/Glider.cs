@@ -33,15 +33,11 @@ public class Glider : MonoBehaviour
 
     [SerializeField] ParticleSystem FloatingPartical;
 
-    [SerializeField] GameObject floatingParticalParent;
-
-    [SerializeField]
-    float ParticleRotationAngle;
-
-    float OriginalParticleX;
+    [SerializeField] ParticleSystem FloatingParticleRotated;
     void Start()
     {
         FloatingPartical.Stop();
+        FloatingParticleRotated.Stop();
 
         NotOnGroundTimer = HowLongNeededToGlide;
 
@@ -59,7 +55,6 @@ public class Glider : MonoBehaviour
 
         pause = FindObjectOfType<Pause>();
 
-        OriginalParticleX = floatingParticalParent.GetComponent<Transform>().rotation.x;
     }
 
     // Update is called once per frame
@@ -79,11 +74,14 @@ public class Glider : MonoBehaviour
                             SetGravity();
                             if (movement.playerInput.x != 0 || movement.playerInput.y != 0)
                             {
-                                if (FloatingPartical.isStopped)
+                                if (FloatingPartical.isPlaying)
                                 {
-                                    Quaternion target = Quaternion.Euler(ParticleRotationAngle, 0, 0);
-                                    floatingParticalParent.transform.rotation = Quaternion.Slerp(floatingParticalParent.transform.rotation, target, Time.deltaTime * 20);
-                                    FloatingPartical.Play();
+                                    FloatingPartical.Stop();
+                                    FloatingPartical.Clear();
+                                }
+                                if (FloatingParticleRotated.isStopped)
+                                {
+                                    FloatingParticleRotated.Play();
                                 }
 
                                 movement.PlayAnimation("GlidingForward");
@@ -91,11 +89,13 @@ public class Glider : MonoBehaviour
                             }
                             if (movement.playerInput.x == 0 && movement.playerInput.y == 0)
                             {
-
+                                if (FloatingParticleRotated.isPlaying)
+                                {
+                                    FloatingParticleRotated.Stop();
+                                    FloatingParticleRotated.Clear();
+                                }
                                 if (FloatingPartical.isStopped)
                                 {
-                                    Quaternion target = Quaternion.Euler(OriginalParticleX, 0, 0);
-                                    floatingParticalParent.transform.rotation = Quaternion.Slerp(floatingParticalParent.transform.rotation, target, Time.deltaTime * 20);
                                     FloatingPartical.Play();
                                 }
                                 movement.PlayAnimation("GlidingIdle");
@@ -110,6 +110,11 @@ public class Glider : MonoBehaviour
                             FloatingPartical.Stop();
                             FloatingPartical.Clear();
                         }
+                        if (FloatingParticleRotated.isPlaying)
+                        {
+                            FloatingParticleRotated.Stop();
+                            FloatingParticleRotated.Clear();
+                        }
                         unSetGravity();
                         movement.PlayAnimation("Falling");
                         movement.StopAnimation("GlidingIdle");
@@ -122,6 +127,11 @@ public class Glider : MonoBehaviour
                     {
                         FloatingPartical.Stop();
                         FloatingPartical.Clear();
+                    }
+                    if (FloatingParticleRotated.isPlaying)
+                    {
+                        FloatingParticleRotated.Stop();
+                        FloatingParticleRotated.Clear();
                     }
                     unSetGravity();
                     movement.StopAnimation("GlidingIdle");
