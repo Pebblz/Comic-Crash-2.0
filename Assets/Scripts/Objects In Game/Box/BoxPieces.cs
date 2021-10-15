@@ -28,7 +28,8 @@ public class BoxPieces : MonoBehaviour
     [PunRPC]
     void DestroyPieces()
     {
-        PhotonNetwork.Destroy(gameObject);
+        if(photonView.IsMine)
+            PhotonNetwork.Destroy(gameObject);
     }
     void OnCollisionEnter(Collision col)
     {
