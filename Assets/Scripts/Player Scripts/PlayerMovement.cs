@@ -859,7 +859,7 @@ public class PlayerMovement : MonoBehaviour
     {
         CantMove = true;
         playerInputSpace.GetComponent<MainCamera>().collectibleCamera = true;
-        //PlayAnimation("Collected");
+        PlayAnimation("Collected");
         StopAnimation("Run");
         StopAnimation("Walk");
         transform.LookAt(new Vector3(playerInputSpace.position.x, transform.position.y, playerInputSpace.position.z));
@@ -868,7 +868,7 @@ public class PlayerMovement : MonoBehaviour
     {
         CantMove = false;
         playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
-        //StopAnimation("Collected");
+        StopAnimation("Collected");
     }
     void Jump(Vector3 gravity)
     {
