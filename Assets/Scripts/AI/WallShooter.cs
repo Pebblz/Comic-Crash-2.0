@@ -1,12 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using System.IO;
 
 public class WallShooter : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Projectile the wall shoot will shoot")]
     GameObject projectile;
+
+    [SerializeField]
+    [Tooltip("Rate of fire of the gun")]
+    [Range(0.2f, 2f)]
+    float rof = 0.5f;
+    float init_rof;
 
     [Header("-----------------")]
     [SerializeField]
@@ -48,12 +56,14 @@ public class WallShooter : MonoBehaviour
 
     private PlayerSight player_sight;
 
+    
 
     private void Awake()
     {
         sight = transform.GetChild(0).gameObject;
         sight.GetComponent<MeshRenderer>().enabled = this.visible_sight_obj;
         this.starting_rot = this.transform.rotation;
+        this.init_rof = rof;
         init_timeout = rest_timeout;
         player_sight = sight.GetComponent<PlayerSight>();
         target_rot = random_look_rot();
@@ -62,28 +72,43 @@ public class WallShooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (rest_timeout <= 0f) {
+        if (rest_timeout <= 0f)
+        {
             target_rot = random_look_rot();
             rest_timeout = init_timeout;
         }
 
         if (player_sight.hasPlayer())
         {
+
+            if(rof <= 0f)
+            {
+                shoot(player_sight.getPlayer());
+                rof = init_rof;
+            }
             stay_on_target();
-        } else
+            rof -= Time.deltaTime;
+        }
+        else
         {
             move_to_rotation(target_rot.eulerAngles);
         }
         rest_timeout -= Time.deltaTime;
     }
-    
+
+    private void shoot(GameObject target)
+    {
+        string name = Path.Combine("PhotonPrefabs", this.projectile.name);
+        var obj = PhotonNetwork.Instantiate(name, this.transform.position, new Quaternion());
+        obj.GetComponent<BulletScript>().target = target;
+    }
     private void move_to_rotation(Vector3 target_angles)
     {
         Vector3 current = this.transform.rotation.eulerAngles;
         Vector3 target_clamped = new Vector3(Mathf.Clamp(target_angles.x,
                                                         starting_rot.eulerAngles.x + this.min_rand_x,
                                                         starting_rot.eulerAngles.x + max_rand_x),
-                                             Mathf.Clamp(target_angles.y, 
+                                             Mathf.Clamp(target_angles.y,
                                                         starting_rot.eulerAngles.y + this.min_rand_y,
                                                         starting_rot.eulerAngles.y + this.max_rand_y),
                                              0f);
@@ -102,9 +127,9 @@ public class WallShooter : MonoBehaviour
             Quaternion look_rot = Quaternion.LookRotation(player_pos);
             move_to_rotation(look_rot.eulerAngles);
             //this.transform.LookAt(this.player_sight.getPlayer().transform);
-    
+
         }
-        
+
     }
 
     private Quaternion random_look_rot()
