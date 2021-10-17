@@ -98,7 +98,10 @@ public class WallShooter : MonoBehaviour
     {
         if (this.player_sight.hasPlayer())
         {
-            this.transform.LookAt(this.player_sight.getPlayer().transform, Vector3.down);
+            Vector3 player_pos = this.player_sight.getPlayer().transform.position;
+            Quaternion look_rot = Quaternion.LookRotation(player_pos);
+            move_to_rotation(look_rot.eulerAngles);
+            //this.transform.LookAt(this.player_sight.getPlayer().transform);
     
         }
         
