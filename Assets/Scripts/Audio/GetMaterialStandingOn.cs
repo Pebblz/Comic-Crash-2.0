@@ -39,9 +39,10 @@ public class GetMaterialStandingOn : MonoBehaviour
                               player.transform.TransformDirection(Vector3.down) * hit.distance * 10,
                               Color.yellow, 3f);
             }
-
+            var filter = hit.collider.gameObject.GetComponent<MeshFilter>();
             Material[] mats = hit.collider.gameObject.GetComponent<MeshRenderer>().materials;
             if(mats.Length == 1)
+
                 current_mat = mats[0];
 
 
