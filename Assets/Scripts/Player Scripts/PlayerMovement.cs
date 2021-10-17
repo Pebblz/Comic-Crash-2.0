@@ -331,10 +331,15 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (isCrouching)
                 {
-                    if (GetComponent<BoxCollider>() != null)
+                    if (GetComponent<BoxCollider>() != null && !blobert)
                     {
                         GetComponent<BoxCollider>().size =
                         new Vector3(ColliderScale.x, ColliderScale.y / 1.2f, ColliderScale.z);
+                        GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
+                    }
+                    if(blobert)
+                    {
+                        GetComponent<BoxCollider>().size = new Vector3(ColliderScale.x / 2f, ColliderScale.y / 2f, ColliderScale.z / 2f);
                         GetComponent<BoxCollider>().center = ColliderCenter - new Vector3(0, CrouchOffsetY, 0);
                     }
                 }
