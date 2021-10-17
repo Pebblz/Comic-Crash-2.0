@@ -14,12 +14,15 @@ public class Collectible : MonoBehaviour
     [SerializeField, Range(0, 100)] float RotationSpeed;
 
     GameObject player;
+
+    PhotonView photonView;
     void Update()
     {
         if (player == null)
             player = PhotonFindCurrentClient();
         // Rotate the object around its local y axis at 1 degree per second
         transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
+        photonView = GetComponent<PhotonView>();
     }
 
     private void OnTriggerEnter(Collider col)
@@ -31,7 +34,7 @@ public class Collectible : MonoBehaviour
             if (collect == collectible.Coin)
             {
                 gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
-                PhotonNetwork.Destroy(this.gameObject);
+                photonView.RPC("DestroyThis", RpcTarget.All);
             }
             else if (collect == collectible.MainCollectible)
             {
@@ -39,7 +42,7 @@ public class Collectible : MonoBehaviour
                 if (col.gameObject == player)
                 {
                     FindObjectOfType<PlayerMovement>().CollectibleGotten = true;
-                    PhotonNetwork.Destroy(this.gameObject);
+                    photonView.RPC("DestroyThis", RpcTarget.All);
                 }
             }
             else if (collect == collectible.HeartOne)
@@ -49,7 +52,7 @@ public class Collectible : MonoBehaviour
                     if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
                     {
                         col.gameObject.GetComponent<PlayerHealth>().currentHealth += 1;
-                        PhotonNetwork.Destroy(this.gameObject);
+                        photonView.RPC("DestroyThis", RpcTarget.All);
                     }
                 }
             }
@@ -60,7 +63,7 @@ public class Collectible : MonoBehaviour
                     col.gameObject.GetComponent<PlayerHealth>().maxHealth += 1;
                     col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
                     print("new health = " + col.gameObject.GetComponent<PlayerHealth>().maxHealth);
-                    PhotonNetwork.Destroy(this.gameObject);
+                    photonView.RPC("DestroyThis", RpcTarget.All);
                 }
             }
             else if (collect == collectible.FullHeal)
@@ -70,12 +73,18 @@ public class Collectible : MonoBehaviour
                     if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
                     {
                         col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
-                        PhotonNetwork.Destroy(this.gameObject);
+                        photonView.RPC("DestroyThis", RpcTarget.All);
                     }
                 }
             }
 
         }
+    }
+    [PunRPC]
+    void DestroyThis()
+    {
+        if(photonView.IsMine)
+            PhotonNetwork.Destroy(this.gameObject);
     }
     GameObject PhotonFindCurrentClient()
     {
