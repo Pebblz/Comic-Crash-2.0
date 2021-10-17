@@ -13,8 +13,8 @@ public class ConveyerBelt : MonoBehaviour
     [SerializeField, Tooltip("The direction the conveyer belt moves the number needs to be set to 1 or -1 to work correctly. 1 means it moves forward on the axis and -1 means it moves backwords on the axis")]
     public Vector3 direction;
 
-    [SerializeField, Tooltip("The gameobjects on the belt currently")]
-    List<GameObject> onBelt;
+    [Tooltip("The gameobjects on the belt currently")]
+    public List<GameObject> onBelt;
 
     [Tooltip("if this is set active the conveyer belt is working")]
     public bool active = true;
@@ -54,44 +54,7 @@ public class ConveyerBelt : MonoBehaviour
             }
         }
     }
-    #region Collsion methods
-    private void OnCollisionEnter(Collision col)
-    {
-        if (col.transform.position.y > transform.position.y + collsionOffset)
-        {
-            //adds the objects on the conveyer belt to the belt list
-            if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform" && !onBelt.Contains(col.gameObject))
-            {
-                onBelt.Add(col.gameObject);
-                if (col.gameObject.GetComponent<PlayerMovement>())
-                    col.gameObject.GetComponent<PlayerMovement>().onBelt = true;
-            }
-        }
-    }
-    private void OnCollisionStay(Collision col)
-    {
-        if (col.transform.position.y > transform.position.y + collsionOffset)
-        {
-            //adds the objects on the conveyer belt to the belt list
-            if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform" && !onBelt.Contains(col.gameObject))
-            {
-                onBelt.Add(col.gameObject);
-                if (col.gameObject.GetComponent<PlayerMovement>())
-                    col.gameObject.GetComponent<PlayerMovement>().onBelt = true;
-            }
-        }
-    }
-    private void OnCollisionExit(Collision col)
-    {
-        //removes the objects on the conveyer belt list
-        if (col.gameObject.tag != "Floor" && col.gameObject.tag != "Platform")
-        {
-            onBelt.Remove(col.gameObject);
-            if (col.gameObject.GetComponent<PlayerMovement>())
-                col.gameObject.GetComponent<PlayerMovement>().onBelt = false;
-        }
-    }
-    #endregion
+
     //call this to make reverse the conveyer belts direction
     public void SwitchBeltDirection()
     {
