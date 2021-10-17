@@ -24,7 +24,13 @@ public class PlayerSight : MonoBehaviour
         }
     }
 
-
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            this.targetPlayer = other.gameObject;
+        }
+    }
 
     private void OnTriggerExit(Collider other)
     {
