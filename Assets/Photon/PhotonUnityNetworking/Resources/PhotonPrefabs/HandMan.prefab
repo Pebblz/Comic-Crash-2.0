@@ -463,7 +463,7 @@ MonoBehaviour:
   maxJumpSpeed: 15
   WalkUnderWaterSpeed: 1.8
   RunUnderWaterSpeed: 3.8
-  WallJumpHeight: 5
+  WallJumpHeight: 10
   SwimUpSpeed: 3.4
   SlowlyFloatDownSpeed: 1
   SwimmingDownSpeed: 1
@@ -520,6 +520,8 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   AtTheTopOfWater: 0
   CollectibleGotten: 0
+  SlidingGravity: 2
+  SlidingMass: 2
   collectibleTimer: 3
   playerInput: {x: 0, y: 0, z: 0}
   submergence: 0
