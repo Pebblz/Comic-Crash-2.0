@@ -155,8 +155,10 @@ public class PlayerMovement : MonoBehaviour
     bool blobert, handman;
 
     //Wall Jump Helpers
+    float wallJumpTimer;
     bool IsWallSliding;
-
+    bool JustWallJumped;
+    bool stickToWall;
 
     PhotonView photonView;
 
@@ -214,10 +216,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
             {
-
+                if (stickToWall)
+                {
+                    wallJumpTimer -= Time.deltaTime;
+                }
                 if (OnGround || InWater)
                 {
+                    wallJumpTimer = 0;
                     unSetGravity();
+                    JustWallJumped = false;
+                    stickToWall = false;
                 }
                 if (OnGround && !inWaterAndFloor)
                 {
@@ -702,6 +710,7 @@ public class PlayerMovement : MonoBehaviour
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
                 InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
             {
+                JustWallJumped = true;
                 unSetGravity();
                 Vector3 _velocity = contact.normal;
 
@@ -725,6 +734,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     void SetGravity()
     {
+        if (JustWallJumped)
+            wallJumpTimer = 1.5f;
 
         IsWallSliding = true;
         velocity = Vector3.zero;
@@ -783,14 +794,12 @@ public class PlayerMovement : MonoBehaviour
         }
         int layer = collision.gameObject.layer;
         float minDot = GetMinDot(layer);
-
         for (int i = 0; i < collision.contactCount; i++)
         {
             if (collision.gameObject.tag == "Grate" && GetComponent<BlobBert>() || collision.gameObject.tag == "CantJump")
             {
                 return;
             }
-
             Vector3 normal = collision.GetContact(i).normal;
             float upDot = Vector3.Dot(upAxis, normal);
             if (upDot >= minDot)
@@ -818,7 +827,6 @@ public class PlayerMovement : MonoBehaviour
                     connectedBody = collision.rigidbody;
                 }
             }
-
 
         }
     }
@@ -865,42 +873,42 @@ public class PlayerMovement : MonoBehaviour
         {
             maxClimbSpeed = WalkSpeed;
         }
-        if (!IsWallSliding)
+        xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
+        zAxis = ProjectDirectionOnPlane(zAxis, contactNormal);
+
+        Vector3 relativeVelocity = velocity - connectionVelocity;
+        float currentX = Vector3.Dot(relativeVelocity, xAxis);
+        float currentZ = Vector3.Dot(relativeVelocity, zAxis);
+
+        float maxSpeedChange = acceleration * 20f * Time.deltaTime;
+
+        float newX = Mathf.MoveTowards(currentX, playerInput.x * speed, maxSpeedChange);
+        float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
+
+        //rotation
+        if (!Climbing && !CheckSteepContacts() && playerInput.x != 0f || !Climbing && !CheckSteepContacts() && playerInput.y != 0f)
         {
-            xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
-            zAxis = ProjectDirectionOnPlane(zAxis, contactNormal);
+            float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
 
-            Vector3 relativeVelocity = velocity - connectionVelocity;
-
-            float currentX = Vector3.Dot(relativeVelocity, xAxis);
-            float currentZ = Vector3.Dot(relativeVelocity, zAxis);
-
-            float maxSpeedChange = acceleration * 20f * Time.deltaTime;
-
-            float newX = Mathf.MoveTowards(currentX, playerInput.x * speed, maxSpeedChange);
-            float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
-
-            //rotation
-            if (!Climbing && !CheckSteepContacts() && playerInput.x != 0f || !Climbing && !CheckSteepContacts() && playerInput.y != 0f)
+            //used to smooth the angle needed to move to avoid snapping to directions
+            float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            if (wallJumpTimer <= 0)
             {
-                float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
-
-                //used to smooth the angle needed to move to avoid snapping to directions
-                float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-
                 //rotate player
                 transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
             }
-            if (CheckSteepContacts())
+        }
+        if (CheckSteepContacts())
+        {
+            if (wallJumpTimer <= 0)
             {
-
                 //rotate player
                 transform.rotation = Quaternion.Euler(0f, velocity.y, 0f);
-
             }
-            //------------------------
-            velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
         }
+        //------------------------
+        velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
+
         if (velocity.x != 0 && !InWater ||
             velocity.z != 0 && !InWater)
         {
@@ -986,6 +994,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (jumpPhase == 1 && !handman)
                 {
+                    print("jump");
                     PlayAnimation("DoubleJump");
                 }
                 if (jumpPhase == 1 && handman)
