@@ -671,6 +671,33 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
+                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
+            {
+                JustWallJumped = true;
+                unSetGravity();
+                Vector3 _velocity = contact.normal;
+
+                _velocity.y = WallJumpHeight * WallJumpIntensifire;
+
+                body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
+                    _velocity.y, _velocity.z * (4 * wallJumpSpeed));
+
+                transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
+                    _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
+                PreventSnapToGround();
+                LastWallJumpedOn = collision.gameObject;
+            }
+            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButton("Jump")
+                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !IsWallSliding)
+            {
+                SetGravity();
+            }
+        }
+
         EvaluateCollision(collision);
         if (LastWallJumpedOn == collision.gameObject)
             return;
