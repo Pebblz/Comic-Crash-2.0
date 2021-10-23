@@ -1005,14 +1005,14 @@ public class PlayerMovement : MonoBehaviour
                 else if (OnSteep)
                 {
                     jumpDirection = steepNormal;
-                    jumpPhase = 1;
+                    //jumpPhase = 1;
                 }
                 else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
                 {
-                    if (jumpPhase == 0)
-                    {
-                        jumpPhase = 1;
-                    }
+                    //if (jumpPhase == 0)
+                    //{
+                    //    jumpPhase = 1;
+                    //}
                     jumpDirection = contactNormal;
                 }
                 else
