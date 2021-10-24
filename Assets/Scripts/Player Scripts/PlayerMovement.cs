@@ -335,6 +335,7 @@ public class PlayerMovement : MonoBehaviour
                     Isrunning = InputManager.GetButton("Sprint");
 
                 }
+                
                 if (!inWaterAndFloor)
                 {
                     if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
@@ -735,7 +736,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // && wallJumpTimer <= 0 && willWallJump
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
+                InputManager.GetButtonDown("Jump"))
             {
                 JustWallJumped = true;
                 unSetGravity();
@@ -1021,7 +1022,6 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (jumpPhase == 1 && !handman)
                 {
-                    print("jump");
                     PlayAnimation("DoubleJump");
                 }
                 if (jumpPhase == 1 && handman)
