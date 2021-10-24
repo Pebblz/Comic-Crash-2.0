@@ -692,7 +692,7 @@ public class PlayerMovement : MonoBehaviour
                 PreventSnapToGround();
                 LastWallJumpedOn = collision.gameObject;
             }
-            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButton("Jump")
+            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
                 && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !IsWallSliding)
             {
                 SetGravity();
@@ -736,7 +736,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // && wallJumpTimer <= 0 && willWallJump
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump"))
+                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
             {
                 JustWallJumped = true;
                 unSetGravity();
@@ -752,7 +752,7 @@ public class PlayerMovement : MonoBehaviour
                 PreventSnapToGround();
                 LastWallJumpedOn = collision.gameObject;
             }
-            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButton("Jump")
+            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
                 && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !IsWallSliding)
             {
                 SetGravity();
@@ -901,9 +901,11 @@ public class PlayerMovement : MonoBehaviour
         {
             maxClimbSpeed = WalkSpeed;
         }
-        xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
-        zAxis = ProjectDirectionOnPlane(zAxis, contactNormal);
-
+        if (JustWallJumped)
+        {
+            xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
+            zAxis = ProjectDirectionOnPlane(zAxis, contactNormal);
+        }
         Vector3 relativeVelocity = velocity - connectionVelocity;
         float currentX = Vector3.Dot(relativeVelocity, xAxis);
         float currentZ = Vector3.Dot(relativeVelocity, zAxis);
@@ -935,7 +937,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         //------------------------
-        velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
+            velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
 
         if (velocity.x != 0 && !InWater ||
             velocity.z != 0 && !InWater)
