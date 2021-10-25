@@ -216,10 +216,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
             {
-                if (stickToWall)
-                {
-                    wallJumpTimer -= Time.deltaTime;
-                }
+                wallJumpTimer -= Time.deltaTime;
+
                 if (OnGround || InWater)
                 {
                     wallJumpTimer = 0;
@@ -280,10 +278,11 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("IsLanded");
                 }
                 minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-
-                playerInput.x = InputManager.GetAxis("Horizontal");
-                playerInput.y = InputManager.GetAxis("Vertical");
-
+                if (wallJumpTimer <= 0)
+                {
+                    playerInput.x = InputManager.GetAxis("Horizontal");
+                    playerInput.y = InputManager.GetAxis("Vertical");
+                }
                 playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
                 playerInput = Vector3.ClampMagnitude(playerInput, 1f);
                 if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
@@ -675,10 +674,10 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
+            if (!OnGround && wallJumpTimer <= 0 && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
+                InputManager.GetButton("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
             {
-                JustWallJumped = true;
+                //JustWallJumped = true;
                 unSetGravity();
                 Vector3 _velocity = contact.normal;
 
@@ -693,9 +692,15 @@ public class PlayerMovement : MonoBehaviour
                 LastWallJumpedOn = collision.gameObject;
             }
             if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !IsWallSliding)
+                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && 
+                !IsWallSliding && collision.gameObject.layer != 16 &&
+                LastWallJumpedOn != collision.gameObject)
             {
                 SetGravity();
+            }
+            if (LastWallJumpedOn == collision.gameObject)
+            {
+                unSetGravity();
             }
         }
 
@@ -734,11 +739,11 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            // && wallJumpTimer <= 0 && willWallJump
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
+            //  && willWallJump
+            if (!OnGround && wallJumpTimer <= 0 && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
+                InputManager.GetButton("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
             {
-                JustWallJumped = true;
+                //JustWallJumped = true;
                 unSetGravity();
                 Vector3 _velocity = contact.normal;
 
@@ -752,18 +757,18 @@ public class PlayerMovement : MonoBehaviour
                 PreventSnapToGround();
                 LastWallJumpedOn = collision.gameObject;
             }
-            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !IsWallSliding)
-            {
-                SetGravity();
-            }
+            //if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
+            //    && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !IsWallSliding)
+            //{
+            //    SetGravity();
+            //}
         }
     }
     #endregion
     void SetGravity()
     {
-        if (JustWallJumped)
-            wallJumpTimer = 1.5f;
+
+        wallJumpTimer = .1f;
 
         IsWallSliding = true;
         velocity = Vector3.zero;
@@ -901,7 +906,7 @@ public class PlayerMovement : MonoBehaviour
         {
             maxClimbSpeed = WalkSpeed;
         }
-        if (JustWallJumped)
+        if (wallJumpTimer <= 0)
         {
             xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
             zAxis = ProjectDirectionOnPlane(zAxis, contactNormal);
@@ -922,19 +927,17 @@ public class PlayerMovement : MonoBehaviour
 
             //used to smooth the angle needed to move to avoid snapping to directions
             float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            if (wallJumpTimer <= 0)
-            {
+
                 //rotate player
                 transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
-            }
+            
         }
         if (CheckSteepContacts())
         {
-            if (wallJumpTimer <= 0)
-            {
+
                 //rotate player
                 transform.rotation = Quaternion.Euler(0f, velocity.y, 0f);
-            }
+            
         }
         //------------------------
             velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
