@@ -94,7 +94,7 @@ public class WallShooter : MonoBehaviour
 
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         switch (this.method)
         {
@@ -108,6 +108,7 @@ public class WallShooter : MonoBehaviour
                 execute_random_search();
                 break;
         }
+        rest_timeout -= Time.deltaTime;
     }
 
     private void shoot(GameObject target)
@@ -232,22 +233,16 @@ public class WallShooter : MonoBehaviour
             execute_follow_player();
         } else
         {
-            float dir_modifier = 1f;
             switch (this.rot_dir)
             {
                 case ROTATION_DIRECTION.CLOCKWISE:
-                    dir_modifier = -1f;
+                    this.transform.Rotate(Vector3.up * Time.deltaTime * speed);
                     break;
                 case ROTATION_DIRECTION.COUNTERCLOCKWISE:
-                    dir_modifier = 1f;
+                    this.transform.Rotate(Vector3.down * Time.deltaTime * speed);
                     break;
             }
 
-            Vector3 angles = Vector3.zero;
-            float y = this.transform.rotation.y + (1f * dir_modifier) * Time.deltaTime * speed;
-            angles.y = y;
-            
-            this.transform.Rotate(angles);
         }
     }
     
