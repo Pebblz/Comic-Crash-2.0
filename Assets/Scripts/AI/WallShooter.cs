@@ -6,6 +6,30 @@ using System.IO;
 
 public class WallShooter : MonoBehaviour
 {
+    enum SEARCH_METHOD
+    {
+        RANDOM_SEARCH,
+        CONSTANT_ROTATION,
+        FIXED,
+        LEFT_TO_RIGHT,
+        UP_TO_DOWN
+
+    };
+
+    enum ROTATION_DIRECTION { 
+        CLOCKWISE,
+        COUNTERCLOCKWISE
+    }
+
+
+    [SerializeField]
+    [Tooltip("The search method for the AI to use")]
+    SEARCH_METHOD method = SEARCH_METHOD.RANDOM_SEARCH;
+
+    [SerializeField]
+    [Tooltip("The direction to rotate in, only applies when search mode is CONSTANT_ROTATION")]
+    ROTATION_DIRECTION rot_dir = ROTATION_DIRECTION.CLOCKWISE;
+
     [SerializeField]
     [Tooltip("Projectile the wall shoot will shoot")]
     GameObject projectile;
@@ -23,7 +47,7 @@ public class WallShooter : MonoBehaviour
 
     [SerializeField]
     [Tooltip("The speed the mann looks around at")]
-    [Range(0.5f, 2f)]
+    [Range(0.5f, 5f)]
     float speed = 1f;
 
 
@@ -34,19 +58,19 @@ public class WallShooter : MonoBehaviour
 
     [SerializeField]
     [Tooltip("The max value for the random x rotation")]
-    [Range(1f, 20f)]
+    [Range(1f, 180f)]
     float max_rand_x = 1f;
     [SerializeField]
-    [Range(1f, 20f)]
+    [Range(1f, 360f)]
     [Tooltip("The max value for the random y rotation")]
     float max_rand_y = 1f;
 
     [SerializeField]
     [Tooltip("The max value for the random x rotation")]
-    [Range(-20f, -1f)]
+    [Range(-180f, -1f)]
     float min_rand_x = -1f;
     [SerializeField]
-    [Range(-20f, -1f)]
+    [Range(-360f, -1f)]
     [Tooltip("The max value for the random y rotation")]
     float min_rand_y = -1f;
 
@@ -72,28 +96,18 @@ public class WallShooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (rest_timeout <= 0f)
+        switch (this.method)
         {
-            target_rot = random_look_rot();
-            rest_timeout = init_timeout;
+            case SEARCH_METHOD.RANDOM_SEARCH:
+                execute_random_search();
+                break;
+            case SEARCH_METHOD.CONSTANT_ROTATION:
+                execute_constant_rotate();
+                break;
+            default:
+                execute_random_search();
+                break;
         }
-
-        if (player_sight.hasPlayer())
-        {
-
-            if(rof <= 0f)
-            {
-                shoot(player_sight.getPlayer());
-                rof = init_rof;
-            }
-            stay_on_target();
-            rof -= Time.deltaTime;
-        }
-        else
-        {
-            move_to_rotation(target_rot.eulerAngles);
-        }
-        rest_timeout -= Time.deltaTime;
     }
 
     private void shoot(GameObject target)
@@ -102,7 +116,7 @@ public class WallShooter : MonoBehaviour
         var obj = PhotonNetwork.Instantiate(name, this.transform.position, new Quaternion());
         obj.GetComponent<BulletScript>().target = target;
     }
-    private void move_to_rotation(Vector3 target_angles)
+    private void move_to_rotation_clamped(Vector3 target_angles)
     {
         Vector3 current = this.transform.rotation.eulerAngles;
         Vector3 target_clamped = new Vector3(Mathf.Clamp(target_angles.x,
@@ -119,13 +133,25 @@ public class WallShooter : MonoBehaviour
         this.transform.rotation = new_boy;
     }
 
+    private void move_to_rotation(Quaternion target)
+    {
+        Vector3 current = this.transform.rotation.eulerAngles;
+        Vector3 target_ang = target.eulerAngles;
+        Vector3 lerped = Vector3.Lerp(current, target_ang, Time.deltaTime * speed);
+        Quaternion newQ = new Quaternion();
+        newQ.eulerAngles = lerped;
+        this.transform.rotation = newQ;
+    }
+
+
+    #region SEARCH_METHODS
     private void stay_on_target()
     {
         if (this.player_sight.hasPlayer())
         {
             Vector3 player_pos = this.player_sight.getPlayer().transform.position;
             Quaternion look_rot = Quaternion.LookRotation(player_pos);
-            move_to_rotation(look_rot.eulerAngles);
+            move_to_rotation_clamped(look_rot.eulerAngles);
             //this.transform.LookAt(this.player_sight.getPlayer().transform);
 
         }
@@ -142,4 +168,88 @@ public class WallShooter : MonoBehaviour
         target.eulerAngles = (startAngles + randomAngles);
         return target;
     }
+
+    private Quaternion rotate()
+    {
+        Quaternion rot = new Quaternion();
+        Vector3 angles = this.transform.rotation.eulerAngles;
+        Vector3 newAngles = new Vector3();
+        newAngles.x = angles.x;
+        newAngles.z = 0;
+        switch (this.rot_dir)
+        {
+            case ROTATION_DIRECTION.CLOCKWISE:
+                newAngles.y = angles.y - 1f;
+                break;
+            case ROTATION_DIRECTION.COUNTERCLOCKWISE:
+                newAngles.y = angles.y + 1f;
+                break;
+        }
+        rot.eulerAngles = newAngles;
+        return rot;
+    }
+    #endregion
+
+    #region EXECUTE_SEARCH_METHODS
+    
+    private void execute_random_search()
+    {
+        if (rest_timeout <= 0f)
+        {
+            target_rot = random_look_rot();
+            rest_timeout = init_timeout;
+        }
+        if (player_sight.hasPlayer())
+        {
+            this.execute_follow_player();
+        }
+        else
+        {
+            move_to_rotation_clamped(target_rot.eulerAngles);
+        }
+        rest_timeout -= Time.deltaTime;
+    }
+
+    private void execute_follow_player()
+    {
+        if (player_sight.hasPlayer())
+        {
+
+            if (rof <= 0f)
+            {
+                shoot(player_sight.getPlayer());
+                rof = init_rof;
+            }
+            stay_on_target();
+            rof -= Time.deltaTime;
+        }
+    }
+
+    private void execute_constant_rotate()
+    {
+        if (player_sight.hasPlayer())
+        {
+            execute_follow_player();
+        } else
+        {
+            float dir_modifier = 1f;
+            switch (this.rot_dir)
+            {
+                case ROTATION_DIRECTION.CLOCKWISE:
+                    dir_modifier = -1f;
+                    break;
+                case ROTATION_DIRECTION.COUNTERCLOCKWISE:
+                    dir_modifier = 1f;
+                    break;
+            }
+
+            Vector3 angles = Vector3.zero;
+            float y = this.transform.rotation.y + (1f * dir_modifier) * Time.deltaTime * speed;
+            angles.y = y;
+            
+            this.transform.Rotate(angles);
+        }
+    }
+    
+    #endregion
 }
