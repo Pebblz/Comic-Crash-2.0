@@ -13,6 +13,9 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
     private int JoshSceneIndex;
 
     [SerializeField]
+    private int PatSceneIndex;
+
+    [SerializeField]
     private GameObject lobbyPanel;
 
     [SerializeField]
@@ -23,6 +26,9 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private GameObject JoshButton;
+
+    [SerializeField]
+    private GameObject PatButton;
 
     [SerializeField]
     private Transform playersContainer;
@@ -59,11 +65,13 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
         {
             startButton.SetActive(true);
             JoshButton.SetActive(true);
+            PatButton.SetActive(true);
         }
         else
         {
             startButton.SetActive(false);
             JoshButton.SetActive(false);
+            PatButton.SetActive(false);
         }
         ClearPlayerListings();
         ListPlayers();
@@ -97,6 +105,14 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.LoadLevel(JoshSceneIndex);
+        }
+    }
+    public void StartPatGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LoadLevel(PatSceneIndex);
         }
     }
     IEnumerator rejoinLobby()
