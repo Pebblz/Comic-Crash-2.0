@@ -8,29 +8,42 @@ using Photon.Pun;
 public class PeaShooter : MonoBehaviour
 {
 
-    private GameObject camera;
+    private MainCamera camera;
 
     private float NextAttack;
 
     [SerializeField, Tooltip("The prefab used for the bullet")]
     GameObject BulletPrefab;
 
+    [SerializeField]
+    GameObject GunTip;
+
     [SerializeField, Range(1000f, 5000f), Tooltip("The speed that the bullet goes when being fired")]
     float shotSpeed;
 
+    public float MouseSensitivityY;
+    public float MouseSensitivityX;
+
+    float originalMouseSensitivityY;
+    float originalMouseSensitivityX;
 
     private Animator anim;
 
     PhotonView photonView;
+
+    PlayerMovement movement;
 
     Pause pause;
     #region MonoBehaviours
     void Start()
     {
         pause = FindObjectOfType<Pause>();
-        camera = GameObject.FindGameObjectWithTag("MainCamera");
+        camera = FindObjectOfType<MainCamera>();
+        originalMouseSensitivityY = camera.ySpeed;
+        originalMouseSensitivityX = camera.xSpeed;
         anim = GetComponent<Animator>();
         photonView = GetComponent<PhotonView>();
+        movement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -40,20 +53,29 @@ public class PeaShooter : MonoBehaviour
         {
             if (!pause.isPaused)
             {
-                if (InputManager.GetButtonDown("Right Mouse"))
+                if (InputManager.GetButton("Right Mouse") && movement.OnGround)
                 {
-                    camera.GetComponent<MainCamera>().thirdPersonCamera = false;
                     GetComponent<PlayerMovement>().CantMove = true;
+
+                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, 
+                        camera.transform.localEulerAngles.y, transform.localEulerAngles.z);
+
+                    GunTip.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, 0 , camera.transform.localEulerAngles.z);
+                    camera.ySpeed = MouseSensitivityY;
+                    camera.xSpeed = MouseSensitivityX;
+                    camera.ShootingMode = true;
                     PlayAnimation("Aiming");
                 }
-                if (InputManager.GetButtonUp("Right Mouse"))
+                if (InputManager.GetButtonUp("Right Mouse") || !movement.OnGround)
                 {
-                    camera.GetComponent<MainCamera>().thirdPersonCamera = true;
                     GetComponent<PlayerMovement>().CantMove = false;
+                    camera.ySpeed = originalMouseSensitivityY;
+                    camera.xSpeed = originalMouseSensitivityX;
+                    camera.ShootingMode = false;
                     StopAnimation("Aiming");
                 }
 
-                if (InputManager.GetButtonDown("Left Mouse") && NextAttack <= 0)
+                if (InputManager.GetButton("Left Mouse") && NextAttack <= 0)
                 {
                     Attack();
                 }
@@ -74,9 +96,9 @@ public class PeaShooter : MonoBehaviour
     }
     void Attack()
     {
-        if (!camera.GetComponent<MainCamera>().thirdPersonCamera)
+        if (InputManager.GetButton("Right Mouse"))
         {
-            GameObject tempbul = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "TempBullet"), camera.transform.position, camera.transform.rotation);
+            GameObject tempbul = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "TempBullet"), GunTip.transform.position, GunTip.transform.rotation) ;
             tempbul.GetComponent<PhotonView>().ViewID = GetComponent<PhotonView>().ViewID;
             tempbul.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Takeover;
             tempbul.GetComponent<PhotonView>().TransferOwnership(GetComponent<PhotonView>().Owner);

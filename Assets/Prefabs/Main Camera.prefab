@@ -145,17 +145,20 @@ MonoBehaviour:
   distance: 5
   xSpeed: 40
   ySpeed: 90
-  yMinLimit: -20
+  yMinLimit: -40
   yMaxLimit: 80
   distanceMin: 3
   distanceMax: 15
+  CollectibleDistance: 15
   fallLookAtPosition: -50
   collisionZoomSpeed: 5
   collisionZoomOutSpeed: 5
   thirdPersonCamera: 1
+  collectibleCamera: 0
   MouseSensitivity: 90
   CrossHair: {fileID: 0}
   obstructionMask:
     serializedVersion: 2
     m_Bits: 22819
   StopCamera: 0
+  UnderWaterFog: 0

@@ -9,7 +9,10 @@ public class MainCamera : MonoBehaviour
     public Transform target;
 
     [SerializeField, Range(1f, 10f), Tooltip("The starting distance away from the player")]
-    float distance = 5.0f;
+    public float distance = 5.0f;
+
+    [HideInInspector]
+    public bool ShootingMode;
 
     private float prevDistance;
     private bool onlyOnce;
@@ -21,10 +24,10 @@ public class MainCamera : MonoBehaviour
     private SoundManager soundManager;
 
     [SerializeField, Range(40f, 160f), Tooltip("How fast the camera can go left to right")]
-    float xSpeed = 120.0f;
+    public float xSpeed = 120.0f;
 
     [SerializeField, Range(40f, 160f), Tooltip("How fast the camera can go up and down")]
-    float ySpeed = 120.0f;
+    public float ySpeed = 120.0f;
 
     [SerializeField, Range(-45f, 45f), Tooltip("How far the camera can rotate down")]
     float yMinLimit = -20f;
@@ -65,7 +68,7 @@ public class MainCamera : MonoBehaviour
     private float rotationOnX;
 
     [SerializeField, Range(45f, 180f), Tooltip("The sensitivity of the camera when the player's in first person mode")]
-    float MouseSensitivity = 90;
+    public float MouseSensitivity = 90;
 
     [SerializeField] GameObject CrossHair;
 
@@ -96,7 +99,7 @@ public class MainCamera : MonoBehaviour
         {
             rigidbody.freezeRotation = true;
         }
-        if(UnderWaterFog)
+        if (UnderWaterFog)
             RenderSettings.fog = false;
     }
 
@@ -110,14 +113,7 @@ public class MainCamera : MonoBehaviour
                 {
                     if (!collectibleCamera)
                     {
-                        if (thirdPersonCamera)
-                        {
-                            ThirdPersonCamera();
-                        }
-                        else
-                        {
-                            FirstPersonCamera();
-                        }
+                        ThirdPersonCamera();
                     }
                     else
                     {
@@ -127,7 +123,7 @@ public class MainCamera : MonoBehaviour
             }
         }
         else
-        {  
+        {
             target = PhotonFindCurrentClient().transform;
         }
         shakeTime -= Time.deltaTime;
@@ -180,8 +176,9 @@ public class MainCamera : MonoBehaviour
 
                 Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-                distance = Mathf.Clamp(distance - InputManager.GetAxis("Scroll Wheel") * 5, distanceMin, distanceMax);
-
+                if(!ShootingMode)
+                    distance = Mathf.Clamp(distance - InputManager.GetAxis("Scroll Wheel") * 5, distanceMin, distanceMax);
+                    
                 RaycastHit hit;
 
                 if (Physics.Linecast(target.position, transform.position, out hit, obstructionMask))
@@ -225,6 +222,8 @@ public class MainCamera : MonoBehaviour
                             onlyOnce = false;
                         }
                     }
+                    if (ShootingMode)
+                        distance = 3;
                     if (InputManager.GetAxisRaw("Scroll Wheel") != 0)
                     {
                         onlyOnce = false;
@@ -242,7 +241,7 @@ public class MainCamera : MonoBehaviour
             }
         }
     }
-    
+
     public void Shake(float duration, float strength)
     {
         isShaking = true;
@@ -271,7 +270,7 @@ public class MainCamera : MonoBehaviour
 
     public void CollectibleCamera()
     {
-        if(distance > CollectibleDistance)
+        if (distance > CollectibleDistance)
         {
             Quaternion rotation = Quaternion.Euler(y, x, 0);
 

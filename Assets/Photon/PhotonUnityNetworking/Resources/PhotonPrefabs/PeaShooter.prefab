@@ -972,7 +972,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 1682069977254087157, guid: bbd913e25bdad664eafc09d68621edff,
     type: 3}
+  GunTip: {fileID: 7114869453976708637}
   shotSpeed: 3000
+  MouseSensitivityY: 10
+  MouseSensitivityX: 10
 --- !u!114 &4595979783101676552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,7 +1055,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &4595979783101676571
 MonoBehaviour:
@@ -1644,7 +1647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7114869453976708637}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.433, y: 1.26, z: 0.572}
+  m_LocalPosition: {x: 0.32, y: 0.54, z: 0.72}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 3784118729774114494}
