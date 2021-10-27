@@ -32,7 +32,7 @@ public class Builder : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (InputManager.GetButtonDown("Right Mouse") && blocktimer <= 0 && CurrentBlockStorage > 0)
+            if (InputManager.GetButtonDown("Right Mouse") && !movement.isCrouching && blocktimer <= 0 && CurrentBlockStorage > 0)
             {
                 if (GetComponent<PlayerMovement>().OnGround)
                 {
@@ -66,7 +66,7 @@ public class Builder : MonoBehaviour
             {
                 StopAnimation("BuildingAir");
             }
-            if (InputManager.GetButtonDown("Left Mouse"))
+            if (InputManager.GetButtonDown("Right Mouse") && movement.isCrouching)
             {
                 digTimer = MaxDigTimer;
                 digging = true;
@@ -81,8 +81,9 @@ public class Builder : MonoBehaviour
                     digTimer = MaxDigTimer;
                 }
             }
-            if (InputManager.GetButtonUp("Left Mouse") && !pause.isPaused
-                || CurrentBlockStorage >= MaxSpawnableBlocks && !pause.isPaused)
+            if (InputManager.GetButtonUp("Right Mouse") && !pause.isPaused
+                || CurrentBlockStorage >= MaxSpawnableBlocks && !pause.isPaused 
+                || !movement.isCrouching && !pause.isPaused)
             {
                 StopAnimation("Digging");
                 movement.CantMove = false;

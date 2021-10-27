@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool OnFloor;
 
-    bool isCrouching;
+    public bool isCrouching;
     bool blobert, handman;
 
     //Wall Jump Helpers
