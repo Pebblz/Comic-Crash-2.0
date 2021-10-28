@@ -148,7 +148,7 @@ public class MainCamera : MonoBehaviour
     {
         transform.position = startPos;
     }
-
+    //🗿 🗿 🗿 🗿 🗿 🗿 
     public static float ClampAngle(float angle, float min, float max)
     {
         if (angle < -360F)
