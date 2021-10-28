@@ -13,6 +13,9 @@ public class MainCamera : MonoBehaviour
 
     [HideInInspector]
     public bool ShootingMode;
+    float originalYMin;
+
+    float NewYMin = -30;
 
     private float prevDistance;
     private bool onlyOnce;
@@ -91,7 +94,7 @@ public class MainCamera : MonoBehaviour
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
         y = angles.x;
-
+        originalYMin = yMinLimit;
         rigidbody = GetComponent<Rigidbody>();
 
         // Make the rigid body not change rotation
@@ -103,7 +106,7 @@ public class MainCamera : MonoBehaviour
             RenderSettings.fog = false;
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (target != null)
         {
@@ -223,7 +226,14 @@ public class MainCamera : MonoBehaviour
                         }
                     }
                     if (ShootingMode)
-                        distance = 3;
+                    {
+                        distance = 2;
+                        yMinLimit = NewYMin;
+                    }
+                    else
+                    {
+                        yMinLimit = originalYMin;
+                    }
                     if (InputManager.GetAxisRaw("Scroll Wheel") != 0)
                     {
                         onlyOnce = false;

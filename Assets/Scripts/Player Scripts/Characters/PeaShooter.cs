@@ -34,6 +34,8 @@ public class PeaShooter : MonoBehaviour
     PlayerMovement movement;
 
     Pause pause;
+
+    float originalDistance;
     #region MonoBehaviours
     void Start()
     {
@@ -55,24 +57,19 @@ public class PeaShooter : MonoBehaviour
             {
                 if (InputManager.GetButton("Right Mouse") && movement.OnGround)
                 {
+
                     GetComponent<PlayerMovement>().CantMove = true;
 
                     transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, 
                         camera.transform.localEulerAngles.y, transform.localEulerAngles.z);
 
                     GunTip.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, 0 , camera.transform.localEulerAngles.z);
-                    camera.ySpeed = MouseSensitivityY;
-                    camera.xSpeed = MouseSensitivityX;
-                    camera.ShootingMode = true;
-                    PlayAnimation("Aiming");
+                    SetCamera();
                 }
                 if (InputManager.GetButtonUp("Right Mouse") || !movement.OnGround)
                 {
                     GetComponent<PlayerMovement>().CantMove = false;
-                    camera.ySpeed = originalMouseSensitivityY;
-                    camera.xSpeed = originalMouseSensitivityX;
-                    camera.ShootingMode = false;
-                    StopAnimation("Aiming");
+                    UnSetCamera();
                 }
 
                 if (InputManager.GetButton("Left Mouse") && NextAttack <= 0)
@@ -85,7 +82,34 @@ public class PeaShooter : MonoBehaviour
     }
     #endregion
 
+    void SetCamera()
+    {
+        if(originalDistance == 0)
+            originalDistance = camera.distance;
 
+        camera.ySpeed = MouseSensitivityY;
+        camera.xSpeed = MouseSensitivityX;
+        camera.ShootingMode = true;
+
+        PlayAnimation("Aiming");
+    }
+    void UnSetCamera()
+    {
+        camera.ySpeed = originalMouseSensitivityY;
+        camera.xSpeed = originalMouseSensitivityX;
+        camera.ShootingMode = false;
+
+        if(originalDistance != 0)
+            camera.distance = originalDistance;
+
+        originalDistance = 0;
+        StopAnimation("Aiming");
+    }
+
+    private void OnDestroy()
+    {
+        UnSetCamera();
+    }
     void PlayAnimation(string animName)
     {
         anim.SetBool(animName, true);
