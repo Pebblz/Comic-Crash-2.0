@@ -144,11 +144,13 @@ public class Glider : MonoBehaviour
 
     void SetGravity()
     {
+        movement.Gliding = true;
         gravityPlane.gravity = glidingGravity;
         body.mass = glidingMass;
     }
     void unSetGravity()
     {
+        movement.Gliding = false;
         gravityPlane.gravity = originalGravity;
         body.mass = originalMass;
     }
