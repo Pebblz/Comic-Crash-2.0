@@ -179,23 +179,24 @@ public class MainCamera : MonoBehaviour
 
                 Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-                if(!ShootingMode)
+                if (!ShootingMode)
                     distance = Mathf.Clamp(distance - InputManager.GetAxis("Scroll Wheel") * 5, distanceMin, distanceMax);
-                    
-                RaycastHit hit;
+
+                RaycastHit hit, hit2;
 
                 if (Physics.Linecast(target.position, transform.position, out hit, obstructionMask))
                 {
                     //this if statements here so the camera doesn't bug out when colliding with a wall
                     if (distance > distanceMin)
                     {
+
                         if (hit.point != prevHitPoint)
                         {
                             //this records the point that the raycast collided with an object
                             prevHitPoint = hit.point;
                             DontZoomOut = false;
                         }
-                        else
+                        if (hit.point == prevHitPoint || Vector3.Distance(new Vector3(hit.point.x, hit.point.y), new Vector3(prevHitPoint.x, prevHitPoint.y)) == 0)
                         {
                             DontZoomOut = true;
                         }
@@ -206,24 +207,50 @@ public class MainCamera : MonoBehaviour
                             onlyOnce = true;
                         }
                         //this moves the camera closer to the player when the raycast hits an object
-                        distance -= 3 * collisionZoomSpeed * Time.deltaTime;
+                        distance -= 2 * collisionZoomSpeed * Time.deltaTime;
                     }
 
                 }
                 else
                 {
+                    if (Physics.SphereCast(transform.position, 2, Vector3.zero, out hit2))
+                    {
+                        DontZoomOut = true;
+                    }
+                    else
+                    {
+                        if (DontZoomOut)
+                        {
+                            if (transform.rotation.x < -4)
+                            {
+                                if (hit2.collider == null && InputManager.GetAxis("LookVertical") != 0)
+                                {
+                                    DontZoomOut = false;
+                                }
+                            }
+                            else
+                            {
+                                if (hit2.collider == null && InputManager.GetAxis("LookHorizontal") != 0)
+                                {
+                                    DontZoomOut = false;
+                                }
+                            }
+                        }
+                    }
+
                     if (onlyOnce && hit.collider == null && !DontZoomOut && InputManager.GetAxisRaw("Scroll Wheel") == 0)
                     {
                         if (distance < prevDistance && Vector3.Distance(transform.position, prevHitPoint) > 1.5f)
                         {
                             //this moves the camera back to it's prev location when it's far enough away from it's last hit point
-                            distance += (collisionZoomSpeed + collisionZoomOutSpeed) * Time.deltaTime;
+                            distance += collisionZoomOutSpeed * Time.deltaTime;
                         }
                         if (distance > prevDistance)
                         {
                             onlyOnce = false;
                         }
                     }
+
                     if (ShootingMode)
                     {
                         distance = 2;
