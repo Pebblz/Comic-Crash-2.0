@@ -186,7 +186,6 @@ public class MainCamera : MonoBehaviour
 
                 if (Physics.Linecast(target.position, transform.position, out hit, obstructionMask))
                 {
-
                     //this if statements here so the camera doesn't bug out when colliding with a wall
                     if (distance > distanceMin)
                     {
@@ -207,7 +206,7 @@ public class MainCamera : MonoBehaviour
                             onlyOnce = true;
                         }
                         //this moves the camera closer to the player when the raycast hits an object
-                        distance -= hit.distance * collisionZoomSpeed * Time.deltaTime;
+                        distance -= 3 * collisionZoomSpeed * Time.deltaTime;
                     }
 
                 }
