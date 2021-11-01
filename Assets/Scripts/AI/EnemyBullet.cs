@@ -55,6 +55,7 @@ public class EnemyBullet : MonoBehaviour
         {
             collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(damage);
         }
+        
     }
 
     [PunRPC]

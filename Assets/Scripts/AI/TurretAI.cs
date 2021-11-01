@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using System.IO;
 
-public class WallShooter : MonoBehaviour
+public class TurretAI : Enemy
 {
     enum SEARCH_METHOD
     {
