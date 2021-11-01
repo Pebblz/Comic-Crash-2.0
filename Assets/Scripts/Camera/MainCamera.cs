@@ -213,6 +213,8 @@ public class MainCamera : MonoBehaviour
                 }
                 else
                 {
+                    //this is here so if the angle of the camera hits a object but at the same time
+                    //doesn't it wont glitch out 
                     if (Physics.SphereCast(transform.position, 2, Vector3.zero, out hit2))
                     {
                         DontZoomOut = true;
