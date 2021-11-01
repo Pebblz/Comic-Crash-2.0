@@ -123,7 +123,7 @@ public class WallShooter : MonoBehaviour
     {
         string name = Path.Combine("PhotonPrefabs", this.projectile.name);
         var obj = PhotonNetwork.Instantiate(name, this.bullet_spawn_point.position, new Quaternion());
-        obj.GetComponent<BulletScript>().target = target;
+        obj.GetComponent<EnemyBullet>().target = target;
     }
     private void move_to_rotation_clamped(Vector3 target_angles)
     {
