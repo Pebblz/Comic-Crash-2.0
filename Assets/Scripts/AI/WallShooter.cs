@@ -23,6 +23,14 @@ public class WallShooter : MonoBehaviour
 
 
     [SerializeField]
+    [Tooltip("The point at which the chair rotates")]
+    Transform pivot_point;
+
+    [SerializeField]
+    [Tooltip("The point where bullet are spawned from the turret")]
+    Transform bullet_spawn_point;
+
+    [SerializeField]
     [Tooltip("The search method for the AI to use")]
     SEARCH_METHOD method = SEARCH_METHOD.RANDOM_SEARCH;
 
@@ -114,8 +122,8 @@ public class WallShooter : MonoBehaviour
     private void shoot(GameObject target)
     {
         string name = Path.Combine("PhotonPrefabs", this.projectile.name);
-        var obj = PhotonNetwork.Instantiate(name, this.transform.position, new Quaternion());
-        obj.GetComponent<BulletScript>().target = target;
+        var obj = PhotonNetwork.Instantiate(name, this.bullet_spawn_point.position, new Quaternion());
+        obj.GetComponent<EnemyBullet>().target = target;
     }
     private void move_to_rotation_clamped(Vector3 target_angles)
     {
