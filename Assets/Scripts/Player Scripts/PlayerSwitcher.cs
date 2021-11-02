@@ -106,7 +106,10 @@ public class PlayerSwitcher : MonoBehaviourPun
                 TempPlayerMovement.jumpPhase = 5;
 
                 Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
-
+                if(currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") && currentPlayerMovement.OnGround)
+                {
+                    TempPlayerMovement.PlayAnimation("idle");
+                }
                 if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
                     TempPlayerMovement.PlayAnimation("Run");
