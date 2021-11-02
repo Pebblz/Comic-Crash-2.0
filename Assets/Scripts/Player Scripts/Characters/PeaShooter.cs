@@ -36,6 +36,8 @@ public class PeaShooter : MonoBehaviour
     Pause pause;
 
     float originalDistance;
+
+    [SerializeField] GameObject spine;
     #region MonoBehaviours
     void Start()
     {
@@ -43,13 +45,12 @@ public class PeaShooter : MonoBehaviour
         camera = FindObjectOfType<MainCamera>();
         originalMouseSensitivityY = camera.ySpeed;
         originalMouseSensitivityX = camera.xSpeed;
-        anim = GetComponent<Animator>();
         photonView = GetComponent<PhotonView>();
         movement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (photonView.IsMine)
         {
@@ -64,6 +65,7 @@ public class PeaShooter : MonoBehaviour
                         camera.transform.localEulerAngles.y, transform.localEulerAngles.z);
 
                     GunTip.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, 0 , camera.transform.localEulerAngles.z);
+                    spine.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, spine.transform.localEulerAngles.y,spine.transform.localEulerAngles.z);
                     SetCamera();
                 }
                 if (InputManager.GetButtonUp("Right Mouse") || !movement.OnGround)
@@ -91,7 +93,7 @@ public class PeaShooter : MonoBehaviour
         camera.xSpeed = MouseSensitivityX;
         camera.ShootingMode = true;
 
-        PlayAnimation("Aiming");
+        movement.PlayAnimation("Aiming");
     }
     void UnSetCamera()
     {
@@ -103,20 +105,21 @@ public class PeaShooter : MonoBehaviour
             camera.distance = originalDistance;
 
         originalDistance = 0;
-        StopAnimation("Aiming");
+        movement.StopAnimation("Aiming");
     }
-
+    Quaternion lookAtSlowly(Transform t, Vector3 target, float speed)
+    {
+        Vector3 relativePos = target - t.position;
+        Quaternion toRotation = Quaternion.LookRotation(relativePos);
+        return Quaternion.Lerp(t.rotation, toRotation, speed * Time.deltaTime);
+    }
+    Quaternion lookAtSlowly(Transform t, Quaternion targetRot, float speed)
+    {
+        return Quaternion.Lerp(t.rotation, targetRot, speed * Time.deltaTime);
+    }
     private void OnDestroy()
     {
         UnSetCamera();
-    }
-    void PlayAnimation(string animName)
-    {
-        anim.SetBool(animName, true);
-    }
-    void StopAnimation(string animName)
-    {
-        anim.SetBool(animName, false);
     }
     void Attack()
     {
