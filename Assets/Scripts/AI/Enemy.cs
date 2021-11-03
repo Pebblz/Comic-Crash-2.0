@@ -6,9 +6,23 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView), typeof(PhotonTransformView))]
 public abstract class Enemy : MonoBehaviour
 {
+    public enum STATE
+    {
+        IDLE,
+        CHASE,
+        ATTACK,
+        FLEE,
+        DEAD
+
+    }
+
+    protected Transform target;
+    public STATE current_state = STATE.IDLE;
+    public float attack_range = 2f;
     [Tooltip("The amount of health an enemy has")]
-    public float health;
+    public int health;
     PhotonView photonView;
+    public int enemy_damage = 1;
 
     protected void Awake()
     {
@@ -21,7 +35,15 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-    public void damage(float amount)
+    public void Update()
+    {
+        if(this.health <= 0)
+        {
+            this.current_state = STATE.DEAD;
+        }
+    }
+
+    public void damage(int amount)
     {
         photonView.RPC("take_damage", RpcTarget.All, amount );
     }
@@ -48,7 +70,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     [PunRPC]
-    public void take_damage(float amount)
+    public void take_damage(int amount)
     {
         if (amount == null)
         {
@@ -59,5 +81,34 @@ public abstract class Enemy : MonoBehaviour
     }
     #endregion
 
+    protected void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            this.current_state = STATE.CHASE;
+        }
+    }
 
+    protected void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (Vector3.Distance(this.transform.position, other.transform.position) <= attack_range)
+            {
+                this.current_state = STATE.ATTACK;
+            }
+            else
+            {
+                this.current_state = STATE.CHASE;
+            }
+        }
+    }
+
+    protected void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            this.current_state = STATE.IDLE;
+        }
+    }
 }
