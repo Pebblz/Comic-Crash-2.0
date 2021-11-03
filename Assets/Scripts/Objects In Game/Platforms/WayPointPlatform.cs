@@ -32,7 +32,8 @@ public class WayPointPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if(active)
+            Move();
     }
     private void Move()
     {
@@ -71,30 +72,30 @@ public class WayPointPlatform : MonoBehaviour
             AtDestination = false;
         }
     }
-    private void MoveBack()
-    {
-        if (!AtDestination)
-        {
-            if (Vector3.Distance(transform.position, NextPlatform.transform.position) > .1f)
-            {
-                float step = speed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, NextPlatform.transform.position, step);
-            }
-            else
-            {
-                AtDestination = true;
-            }
-        }
-        else
-        {
-            if (ArrayIndex != 0)
-            {
-                NextPlatform = WaypointsToGoTo[ArrayIndex];
-            }
-            ArrayIndex--;
-            AtDestination = false;
-        }
-    }
+    //private void MoveBack()
+    //{
+    //    if (!AtDestination)
+    //    {
+    //        if (Vector3.Distance(transform.position, NextPlatform.transform.position) > .1f)
+    //        {
+    //            float step = speed * Time.deltaTime;
+    //            transform.position = Vector3.MoveTowards(transform.position, NextPlatform.transform.position, step);
+    //        }
+    //        else
+    //        {
+    //            AtDestination = true;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (ArrayIndex != 0)
+    //        {
+    //            NextPlatform = WaypointsToGoTo[ArrayIndex];
+    //        }
+    //        ArrayIndex--;
+    //        AtDestination = false;
+    //    }
+    //}
     void GoBackward()
     {
         System.Array.Reverse(WaypointsToGoTo);
@@ -115,16 +116,17 @@ public class WayPointPlatform : MonoBehaviour
         if (col.gameObject.tag == "Player" && StepOnToActivate
             && col.transform.position.y > transform.position.y)
         {
-            isSteppedOn = true;
+            //isSteppedOn = true;
+            active = true;
         }
 
     }
-    private void OnCollisionExit(Collision col)
-    {
-        if (col.gameObject.tag == "Player" && StepOnToActivate)
-        {
-            isSteppedOn = false;
-        }
-    }
+    //private void OnCollisionExit(Collision col)
+    //{
+    //    if (col.gameObject.tag == "Player" && StepOnToActivate)
+    //    {
+    //        isSteppedOn = false;
+    //    }
+    //}
     #endregion
 }
