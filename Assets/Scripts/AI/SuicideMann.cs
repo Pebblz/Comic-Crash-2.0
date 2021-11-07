@@ -144,12 +144,18 @@ public class SuicideMann : Enemy
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        if(other.gameObject.tag == "Player")
+        {
+            this.current_state = STATE.ATTACK;
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        
+        if (other.gameObject.tag == "Player")
+        {
+            this.current_state = STATE.ATTACK;
+        }
     }
 
 }
