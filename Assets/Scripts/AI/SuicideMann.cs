@@ -13,22 +13,78 @@ public class SuicideMann : Enemy
     [SerializeField]
     [Tooltip("The layers which get exploded")]
     LayerMask layer;
-    
+
+
+
+    private Vector3 start_pos;
+    private Vector3 target_pos;
+
+    [SerializeField]
+    [Tooltip("The amount of time to wait before an enemy moves to a new position in idle state")]
+    public float rest_timeout = 0.5f;
+    private float init_rest_timeout;
+
+    [SerializeField]
+    [Range(1, 10)]
+    float max_x;
+    [SerializeField]
+    [Range(1, 10)]
+    float max_y;
+    [SerializeField]
+    [Range(1, 10)]
+    float max_z;
+    [SerializeField]
+    [Range(-10, -1)]
+    float min_x;
+    [SerializeField]
+    [Range(-10, -1)]
+    float min_y;
+    [SerializeField]
+    [Range(-10, -1)]
+    float min_z;
+
+
+
     void Start()
     {
         this.attack_range = this.GetComponent<SphereCollider>().radius;
+        start_pos = this.transform.position;
+        this.init_rest_timeout = rest_timeout;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        base.Update();
+        switch (this.current_state)
+        {
+            case STATE.IDLE:
+                idle();
+                break;
+            case STATE.ATTACK:
+                attack();
+                break;
+            
+        }
     }
 
     void idle()
     {
+        rest_timeout -= Time.deltaTime;
 
+        if (target_pos == null || rest_timeout <= 0f)
+        {
+            target_pos = start_pos + EnemyUtils.randomVector3(min_x, max_x, min_y, max_y, min_z, max_z);
+            rest_timeout = init_rest_timeout;
+
+        }
+        else
+        {
+            Vector3 new_pos =  Vector3.Lerp(this.transform.position, target_pos, Time.deltaTime);
+            this.transform.position = new_pos;
+        }
     }
+
 
     void attack()
     {
@@ -86,5 +142,14 @@ public class SuicideMann : Enemy
         
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        
+    }
 
 }
