@@ -2,31 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SuicideMann : Enemy
+public class SuicideMann : Enemy, IRespawnable
 {
     // Start is called before the first frame update
     [Tooltip("The time the enemy takes to aim at a player")]
-    public float look_timer = 1f;
+    public float look_timeout = 1f;
     [Tooltip("The time before the enemy launches")]
-    public float pause_timer = 0.5f;
+    public float pause_timeout = 0.5f;
+    
+    [SerializeField]
+    [Tooltip("The amount of time to wait before an enemy moves to a new position in idle state")]
+    public float rest_timeout = 0.5f;
+    
+    [SerializeField]
+    [Tooltip("amount of time for the enemy to detonate")]
+    float detonation_time = 2.5f;
 
     [SerializeField]
     [Tooltip("The layers which get exploded")]
     LayerMask layer;
-
-
-
-    private Vector3 start_pos;
-    private Vector3 target_pos;
-
-    [SerializeField]
-    [Tooltip("The amount of time to wait before an enemy moves to a new position in idle state")]
-    public float rest_timeout = 0.5f;
-    private float init_rest_timeout;
-
-    [SerializeField]
-    [Tooltip("amount of time for the enemy to detonate")]
-    float detonation_time = 2.5f;
 
     [SerializeField]
     [Tooltip("Speed at which the enemy chases player")]
@@ -51,20 +45,45 @@ public class SuicideMann : Enemy
     [Range(-10, -1)]
     float min_z;
 
+    private Vector3 start_pos;
+    private Vector3 target_pos;
+    private float init_look_timeout;
+    private float init_rest_timeout;
+    private float init_pause_timeout;
+    private float init_det_timeout;
+    private int init_health;
+
     Rigidbody body;
     bool exploding = false;
     bool zoomed = false;
+    
+    public void reset_data()
+    {
+        exploding = false;
+        zoomed = false;
+        body.velocity = Vector3.zero;
+        body.angularVelocity = Vector3.zero;
+        this.transform.position = start_pos;
+        this.target_pos = start_pos;
+        this.current_state = STATE.IDLE;
+        this.health = init_health;
+        this.rest_timeout = init_rest_timeout;
+        this.look_timeout = init_look_timeout;
+        this.pause_timeout = init_pause_timeout;
+        this.detonation_time = init_det_timeout;
+    }
 
     private void Awake()
     {
         this.target_pos = this.transform.position;
-        body = this.GetComponent<Rigidbody>();
-    }
-    void Start()
-    {
-        this.attack_range = this.GetComponent<SphereCollider>().radius;
-        start_pos = this.transform.position;
+        this.init_look_timeout = look_timeout;
+        this.init_pause_timeout = pause_timeout;
         this.init_rest_timeout = rest_timeout;
+        this.init_det_timeout = detonation_time;
+        this.init_health = this.health;
+        start_pos = this.transform.position;
+        this.attack_range = this.GetComponent<SphereCollider>().radius;
+        body = this.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -79,7 +98,6 @@ public class SuicideMann : Enemy
             case STATE.ATTACK:
                 attack();
                 break;
-
         }
     }
 
@@ -103,14 +121,14 @@ public class SuicideMann : Enemy
 
     void attack()
     {
-        look_timer -= Time.deltaTime;
-        if (look_timer > 0f)
+        look_timeout -= Time.deltaTime;
+        if (look_timeout > 0f)
         {
             this.transform.LookAt(target);
         }
-        else if (pause_timer >= 0f)
+        else if (pause_timeout >= 0f)
         {
-            pause_timer -= Time.deltaTime;
+            pause_timeout -= Time.deltaTime;
         }
         else
         {
@@ -211,4 +229,5 @@ public class SuicideMann : Enemy
             this.target = other.gameObject.transform;
         }
     }
+
 }
