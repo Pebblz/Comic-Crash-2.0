@@ -35,7 +35,10 @@ public class RespawnPoint : MonoBehaviour
         }
         if (respawning)
         {
-            respawn_timeout -= Time.deltaTime;
+            if (players_out_of_range())
+            {
+                respawn_timeout -= Time.deltaTime;
+            }
             if(respawn_timeout <= 0f)
             {
                 target.SetActive(true);
