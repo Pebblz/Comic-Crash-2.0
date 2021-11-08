@@ -38,14 +38,15 @@ public class RespawnPoint : MonoBehaviour
             if (players_out_of_range())
             {
                 respawn_timeout -= Time.deltaTime;
-            }
-            if(respawn_timeout <= 0f)
-            {
-                target.SetActive(true);
-                IRespawnable script = (IRespawnable)target.GetComponent(typeof(IRespawnable));
-                script.reset_data();
-                respawn_timeout = init_respawn_timeout;
-                respawning = false;
+
+                if (respawn_timeout <= 0f)
+                {
+                    target.SetActive(true);
+                    IRespawnable script = (IRespawnable)target.GetComponent(typeof(IRespawnable));
+                    script.reset_data();
+                    respawn_timeout = init_respawn_timeout;
+                    respawning = false;
+                }
             }
         }
     }
