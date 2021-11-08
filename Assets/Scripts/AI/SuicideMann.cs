@@ -25,6 +25,14 @@ public class SuicideMann : Enemy
     private float init_rest_timeout;
 
     [SerializeField]
+    [Tooltip("amount of time for the enemy to detonate")]
+    float detonation_time = 2.5f;
+
+    [SerializeField]
+    [Tooltip("Speed at which the enemy chases player")]
+    float zoom_speed = 5f;
+
+    [SerializeField]
     [Range(1, 10)]
     float max_x;
     [SerializeField]
@@ -43,8 +51,15 @@ public class SuicideMann : Enemy
     [Range(-10, -1)]
     float min_z;
 
+    Rigidbody body;
+    bool exploding = false;
+    bool zoomed = false;
 
-
+    private void Awake()
+    {
+        this.target_pos = this.transform.position;
+        body = this.GetComponent<Rigidbody>();
+    }
     void Start()
     {
         this.attack_range = this.GetComponent<SphereCollider>().radius;
@@ -53,7 +68,7 @@ public class SuicideMann : Enemy
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
         base.Update();
         switch (this.current_state)
@@ -64,7 +79,7 @@ public class SuicideMann : Enemy
             case STATE.ATTACK:
                 attack();
                 break;
-            
+
         }
     }
 
@@ -80,7 +95,7 @@ public class SuicideMann : Enemy
         }
         else
         {
-            Vector3 new_pos =  Vector3.Lerp(this.transform.position, target_pos, Time.deltaTime);
+            Vector3 new_pos = Vector3.Lerp(this.transform.position, target_pos, Time.deltaTime);
             this.transform.position = new_pos;
         }
     }
@@ -89,28 +104,48 @@ public class SuicideMann : Enemy
     void attack()
     {
         look_timer -= Time.deltaTime;
-        if(look_timer > 0f)
+        if (look_timer > 0f)
         {
             this.transform.LookAt(target);
-        } else if(pause_timer >= 0f)
+        }
+        else if (pause_timer >= 0f)
         {
             pause_timer -= Time.deltaTime;
-        } else
+        }
+        else
         {
-            explode();
+            if (detonation_time <= 0f)
+            {
+                explode();
+            }
+            else
+            {
+                if (!zoomed)
+                {
+                    body.AddForce(this.transform.forward * zoom_speed, ForceMode.Impulse);
+                    zoomed = true;
+                }
+                detonation_time -= Time.deltaTime;
+            }
         }
     }
 
+
     public void explode()
     {
-      
-      RaycastHit[] hits =  Physics.SphereCastAll(this.transform.position, 
-                                                 attack_range, 
-                                                 Vector3.up, 
-                                                 attack_range, 
-                                                 layer);
+        if (exploding == true)
+        {
+            return;
+        }
+        exploding = true;
 
-     foreach(var hit in hits)
+        RaycastHit[] hits = Physics.SphereCastAll(this.transform.position,
+                                                   attack_range,
+                                                   Vector3.up,
+                                                   attack_range,
+                                                   layer);
+
+        foreach (var hit in hits)
         {
             string tag = hit.collider.gameObject.tag;
             switch (tag)
@@ -123,12 +158,13 @@ public class SuicideMann : Enemy
                     if (mann != null)
                     {
                         mann.explode();
-                    }  else
+                    }
+                    else
                     {
                         var comps = hit.collider.gameObject.GetComponents(typeof(Component));
-                        for(int i =0; i< comps.Length; i++)
+                        for (int i = 0; i < comps.Length; i++)
                         {
-                            if(comps[i] is Enemy)
+                            if (comps[i] is Enemy)
                             {
                                 Enemy en = (Enemy)comps[i];
                                 en.damage(this.enemy_damage);
@@ -139,14 +175,17 @@ public class SuicideMann : Enemy
                     break;
             }
         }
-        
+
+        die();
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
             this.current_state = STATE.ATTACK;
+            this.target = other.gameObject.transform;
         }
     }
 
@@ -155,7 +194,21 @@ public class SuicideMann : Enemy
         if (other.gameObject.tag == "Player")
         {
             this.current_state = STATE.ATTACK;
+            this.target = other.gameObject.transform;
+            ;
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        this.explode();
+    }
+
+    protected override void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            this.target = other.gameObject.transform;
+        }
+    }
 }

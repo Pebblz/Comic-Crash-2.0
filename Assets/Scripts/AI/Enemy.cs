@@ -31,15 +31,22 @@ public abstract class Enemy : MonoBehaviour
 
     public void die()
     {
-        photonView.RPC("DestroyGameObject", RpcTarget.All);
+        this.current_state = STATE.DEAD;
+        //photonView.RPC("DestroyGameObject", RpcTarget.All);
 
     }
 
-    public void Update()
+    public virtual void Update()
     {
         if(this.health <= 0)
         {
             this.current_state = STATE.DEAD;
+        }
+
+        if(this.current_state == STATE.DEAD)
+        {
+
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -81,7 +88,7 @@ public abstract class Enemy : MonoBehaviour
     }
     #endregion
 
-    protected void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
@@ -89,7 +96,7 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    protected void OnTriggerStay(Collider other)
+    protected virtual void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
@@ -104,7 +111,7 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    protected void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
