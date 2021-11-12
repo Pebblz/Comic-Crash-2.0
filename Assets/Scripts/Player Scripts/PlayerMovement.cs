@@ -442,7 +442,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
                 }
-                else if (InWater)
+                else if (InWater )
                 {
                     jumpPhase = 0;
                     StopAnimation("Falling");
@@ -503,10 +503,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     EvaluateSubmergence(water);
                 }
-
+                //this is used to determine if the player should air bar should be refilled when at top of water
                 if (water != null)
                 {
-                    if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - 1 < transform.position.y)
+                    if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - .8f < transform.position.y)
                     {
                         AtTheTopOfWater = true;
                     }

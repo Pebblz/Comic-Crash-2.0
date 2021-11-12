@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5031439279232782715}
   - component: {fileID: -5919124242403265624}
   - component: {fileID: 6205845848001999910}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FallingPlatforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 6205845848001999910}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

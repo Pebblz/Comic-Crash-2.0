@@ -1111,9 +1111,6 @@ AnimatorStateTransition:
     m_ConditionEvent: SwimmingDown
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: Sinking
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
     m_ConditionEvent: SwimmingUp
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -2184,6 +2181,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: SwimLeftOrRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimmingUp
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8516575102790146009}
@@ -3651,9 +3651,6 @@ AnimatorStateTransition:
     m_ConditionEvent: SwimmingUp
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: SwimmingUp
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
     m_ConditionEvent: SwimLeftOrRight
     m_EventTreshold: 0
   - m_ConditionMode: 2
@@ -3711,6 +3708,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: SwimLeftOrRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SwimmingUp
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 449351081339102080}
@@ -5914,7 +5914,7 @@ AnimatorStateMachine:
     m_Position: {x: -1360, y: 1090, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4734949910488154689}
-    m_Position: {x: -1370, y: 280, z: 0}
+    m_Position: {x: -1360, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8239029685517143628}
     m_Position: {x: -1329.258, y: 1366.988, z: 0}
@@ -7068,9 +7068,6 @@ AnimatorStateTransition:
     m_ConditionEvent: SwimmingUp
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: Sinking
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
     m_ConditionEvent: SwimLeftOrRight
     m_EventTreshold: 0
   - m_ConditionMode: 2
@@ -8150,9 +8147,6 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: SwimLeftOrRight
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Sinking
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: SwimmingUp
