@@ -80,7 +80,12 @@ public class PlayerHealth : MonoBehaviour
                 if (WaterUI.airBar.enabled)
                     WaterUI.DisableSlider();
             }
+            if (currentHealth <= 0)
+            {
+                GetComponent<PlayerDeath>().isdead = true;
+            }
         }
+
         currentAir = WaterUI.airLeft;
     }
     public void GainAir(int amount)

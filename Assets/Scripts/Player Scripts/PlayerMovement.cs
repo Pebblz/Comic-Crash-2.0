@@ -146,7 +146,6 @@ public class PlayerMovement : MonoBehaviour
     float turnSmoothVelocity;
     //this will be for judging if you should play fall animation
     private float FallTimer = 2;
-    private bool HoldingSpace;
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
@@ -351,16 +350,16 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    if (Isrunning && !isCrouching && !CheckSteepContacts())
-                    {
-                        CurrentSpeed = RunUnderWaterSpeed;
-                        SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
-                    }
-                    if (!Isrunning && !isCrouching || CheckSteepContacts())
-                    {
-                        CurrentSpeed = WalkUnderWaterSpeed;
-                        SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
-                    }
+                        if (Isrunning && !isCrouching && !CheckSteepContacts())
+                        {
+                            CurrentSpeed = RunUnderWaterSpeed;
+                            SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
+                        }
+                        if (!Isrunning && !isCrouching || CheckSteepContacts())
+                        {
+                            CurrentSpeed = WalkUnderWaterSpeed;
+                            SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
+                        }
                 }
                 if (isCrouching)
                 {
