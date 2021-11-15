@@ -88,8 +88,8 @@ public class TurretAI : Enemy
 
     private PlayerSight player_sight;
 
-    
-
+    [SerializeField]
+    Animator anim;
     private void Awake()
     {
         sight = transform.GetChild(0).gameObject;
@@ -121,6 +121,7 @@ public class TurretAI : Enemy
 
     private void shoot(GameObject target)
     {
+        anim.SetBool("Shooting", true);
         string name = Path.Combine("PhotonPrefabs", this.projectile.name);
         var obj = PhotonNetwork.Instantiate(name, this.bullet_spawn_point.position, new Quaternion());
         obj.GetComponent<EnemyBullet>().target = target;
@@ -203,6 +204,7 @@ public class TurretAI : Enemy
     
     private void execute_random_search()
     {
+        anim.SetBool("Shooting", false);
         if (rest_timeout <= 0f)
         {
             target_rot = random_look_rot();
@@ -236,6 +238,7 @@ public class TurretAI : Enemy
 
     private void execute_constant_rotate()
     {
+        anim.SetBool("Shooting", false);
         if (player_sight.hasPlayer())
         {
             execute_follow_player();

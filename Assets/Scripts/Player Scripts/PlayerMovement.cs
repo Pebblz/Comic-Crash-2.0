@@ -675,10 +675,7 @@ public class PlayerMovement : MonoBehaviour
         foreach (ContactPoint contact in collision.contacts)
         {
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding
-                || 
-                !OnGround && TimerToWallJump <= 0 && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButton("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
+                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
             {
                 //JustWallJumped = true;
                 unSetGravity();
@@ -743,10 +740,7 @@ public class PlayerMovement : MonoBehaviour
         foreach (ContactPoint contact in collision.contacts)
         {
             if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding
-                ||
-                !OnGround && TimerToWallJump <= 0 && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButton("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
+                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
             {
                 //JustWallJumped = true;
                 unSetGravity();
