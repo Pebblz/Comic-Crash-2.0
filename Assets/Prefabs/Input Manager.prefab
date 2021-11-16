@@ -355,10 +355,10 @@ MonoBehaviour:
         m_gamepadButton: 0
         m_gamepadAxis: 0
         m_gamepadIndex: 0
-    - m_name: 3
+    - m_name: -45 Degree
       m_description: 
       m_bindings:
-      - m_positive: 51
+      - m_positive: 0
         m_negative: 0
         m_deadZoneType: 0
         m_deadZone: 0
@@ -373,10 +373,10 @@ MonoBehaviour:
         m_gamepadButton: 0
         m_gamepadAxis: 0
         m_gamepadIndex: 0
-    - m_name: 4
+    - m_name: 45 Degree
       m_description: 
       m_bindings:
-      - m_positive: 52
+      - m_positive: 0
         m_negative: 0
         m_deadZoneType: 0
         m_deadZone: 0
@@ -390,6 +390,42 @@ MonoBehaviour:
         m_joystick: 0
         m_gamepadButton: 0
         m_gamepadAxis: 0
+        m_gamepadIndex: 0
+    - m_name: 180 Degree
+      m_description: 
+      m_bindings:
+      - m_positive: 0
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
+    - m_name: reset Camera
+      m_description: 
+      m_bindings:
+      - m_positive: 0
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 7
         m_gamepadIndex: 0
     - m_name: Dpad Horizontal
       m_description: 
@@ -726,7 +762,7 @@ MonoBehaviour:
     - m_name: Jump
       m_description: 
       m_bindings:
-      - m_positive: 351
+      - m_positive: 350
         m_negative: 0
         m_deadZoneType: 0
         m_deadZone: 0
@@ -795,10 +831,10 @@ MonoBehaviour:
         m_gamepadButton: 0
         m_gamepadAxis: 0
         m_gamepadIndex: 0
-    - m_name: Crouch
+    - m_name: Right Mouse
       m_description: 
       m_bindings:
-      - m_positive: 354
+      - m_positive: 353
         m_negative: 0
         m_deadZoneType: 0
         m_deadZone: 0
@@ -816,7 +852,7 @@ MonoBehaviour:
     - m_name: Sprint
       m_description: 
       m_bindings:
-      - m_positive: 353
+      - m_positive: 0
         m_negative: 0
         m_deadZoneType: 0
         m_deadZone: 0
@@ -852,7 +888,7 @@ MonoBehaviour:
     - m_name: Interact
       m_description: 
       m_bindings:
-      - m_positive: 353
+      - m_positive: 352
         m_negative: 0
         m_deadZoneType: 0
         m_deadZone: 0
@@ -881,6 +917,78 @@ MonoBehaviour:
         m_invert: 0
         m_type: 0
         m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
+    - m_name: Left Mouse
+      m_description: 
+      m_bindings:
+      - m_positive: 352
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 7
+        m_gamepadIndex: 0
+    - m_name: -45 Degree
+      m_description: 
+      m_bindings:
+      - m_positive: 354
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
+    - m_name: 45 Degree
+      m_description: 
+      m_bindings:
+      - m_positive: 355
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
+    - m_name: reset Camera
+      m_description: 
+      m_bindings:
+      - m_positive: 359
+        m_negative: 0
+        m_deadZoneType: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_scale: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 5
+        m_axis: 8
         m_joystick: 0
         m_gamepadButton: 0
         m_gamepadAxis: 0
@@ -921,25 +1029,7 @@ MonoBehaviour:
         m_gamepadButton: 0
         m_gamepadAxis: 0
         m_gamepadIndex: 0
-    - m_name: Left Mouse
-      m_description: 
-      m_bindings:
-      - m_positive: 352
-        m_negative: 0
-        m_deadZoneType: 0
-        m_deadZone: 0
-        m_gravity: 1
-        m_sensitivity: 1
-        m_scale: 1
-        m_snap: 0
-        m_invert: 0
-        m_type: 0
-        m_axis: 0
-        m_joystick: 0
-        m_gamepadButton: 0
-        m_gamepadAxis: 7
-        m_gamepadIndex: 0
-    - m_name: Right Mouse
+    - m_name: Crouch
       m_description: 
       m_bindings:
       - m_positive: 324
