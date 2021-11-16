@@ -88,7 +88,6 @@ public class PlayerSwitcher : MonoBehaviourPun
                 PlayerTransform = CurrentPlayer.transform;
                 PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
 
-                //currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
 
                 if (CurrentPlayer.GetComponent<HandMan>())
                 {
