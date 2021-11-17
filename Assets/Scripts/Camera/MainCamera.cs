@@ -88,6 +88,7 @@ public class MainCamera : MonoBehaviour
 
     Vector2 startingPos;
     float startingDist;
+    float cameraResetTimer;
     #region MonoBehaviours
     void Start()
     {
@@ -232,12 +233,14 @@ public class MainCamera : MonoBehaviour
                     //{
                     //    x += 180;
                     //}
-                    if (InputManager.GetButton("reset Camera"))
+                    if (InputManager.GetButton("reset Camera") && cameraResetTimer <= 0)
                     {
+                        cameraResetTimer = .3f;
                         x = target.eulerAngles.y;
                         y = startingPos.y;
                         distance = startingDist;
                     }
+                    cameraResetTimer -= Time.deltaTime;
                     #endregion
                     //this is here so if the angle of the camera hits a object but at the same time
                     //doesn't it wont glitch out 

@@ -361,9 +361,9 @@ public class PlayerMovement : MonoBehaviour
                             if (x != 0 && y != 0)
                             {
                                 if (x > y)
-                                    SetAnimatorFloat("WalkMultiplier", playerInput.x);
+                                    SetAnimatorFloat("WalkMultiplier", x);
                                 if (x <= y)
-                                    SetAnimatorFloat("WalkMultiplier", playerInput.y);
+                                    SetAnimatorFloat("WalkMultiplier", y);
                             }
                         }
                     }
