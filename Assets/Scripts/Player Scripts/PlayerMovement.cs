@@ -4,6 +4,7 @@ using UnityEngine;
 using Luminosity.IO;
 using Photon.Realtime;
 using Photon.Pun;
+
 public class PlayerMovement : MonoBehaviour
 {
     #region serializedFields
@@ -160,6 +161,8 @@ public class PlayerMovement : MonoBehaviour
     float TimerToWallJump;
     bool IsWallSliding;
 
+    Luminosity.IO.Examples.GamepadToggle toggle;
+
     PhotonView photonView;
 
     GravityPlane gravityPlane;
@@ -180,6 +183,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+
         photonView = GetComponent<PhotonView>();
 
         if (anim == null)
@@ -207,6 +211,8 @@ public class PlayerMovement : MonoBehaviour
         originalGravity = gravityPlane.gravity;
 
         originalMass = body.mass;
+
+        toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
 
         OnValidate();
     }
@@ -331,10 +337,38 @@ public class PlayerMovement : MonoBehaviour
                         desiredJump = false;
 
                     desiresClimbing = InputManager.GetButton("Climb");
-                    Isrunning = InputManager.GetButton("Sprint");
+                    if (!toggle.m_gamepadOn)
+                    {
+                        SetAnimatorFloat("WalkMultiplier", 1);
+                        Isrunning = InputManager.GetButton("Sprint");
+                    }
+                    else
+                    {
+                        if (playerInput.x > .7f || playerInput.x < -.7f || playerInput.y > .7f || playerInput.y < -.7f)
+                        {
+                            SetAnimatorFloat("WalkMultiplier", 1);
+                            Isrunning = true;
+                        }
+                        else
+                        {
+                            Isrunning = false;
+                            if (playerInput.x == 0 && playerInput.y == 0)
+                            {
+                                SetAnimatorFloat("WalkMultiplier", 1);
+                            }
+                            float x = Mathf.Abs(playerInput.x);
+                            float y = Mathf.Abs(playerInput.y);
+                            if (x != 0 && y != 0)
+                            {
+                                if (x > y)
+                                    SetAnimatorFloat("WalkMultiplier", x);
+                                if (x <= y)
+                                    SetAnimatorFloat("WalkMultiplier", y);
+                            }
+                        }
+                    }
 
                 }
-                
                 if (!inWaterAndFloor)
                 {
                     if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
@@ -345,21 +379,21 @@ public class PlayerMovement : MonoBehaviour
                     if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
                     {
                         CurrentSpeed = WalkSpeed;
-                        SetAnimatorFloat("WalkMultiplier", 1);
+                        //SetAnimatorFloat("WalkMultiplier", 1);
                     }
                 }
                 else
                 {
-                        if (Isrunning && !isCrouching && !CheckSteepContacts())
-                        {
-                            CurrentSpeed = RunUnderWaterSpeed;
-                            SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
-                        }
-                        if (!Isrunning && !isCrouching || CheckSteepContacts())
-                        {
-                            CurrentSpeed = WalkUnderWaterSpeed;
-                            SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
-                        }
+                    if (Isrunning && !isCrouching && !CheckSteepContacts())
+                    {
+                        CurrentSpeed = RunUnderWaterSpeed;
+                        SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
+                    }
+                    if (!Isrunning && !isCrouching || CheckSteepContacts())
+                    {
+                        CurrentSpeed = WalkUnderWaterSpeed;
+                        SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
+                    }
                 }
                 if (isCrouching)
                 {
@@ -441,7 +475,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
                 }
-                else if (InWater )
+                else if (InWater)
                 {
                     jumpPhase = 0;
                     StopAnimation("Falling");
@@ -692,7 +726,7 @@ public class PlayerMovement : MonoBehaviour
                 LastWallJumpedOn = collision.gameObject;
             }
             if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && 
+                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 &&
                 !IsWallSliding && collision.gameObject.layer != 16 &&
                 LastWallJumpedOn != collision.gameObject)
             {
@@ -892,7 +926,7 @@ public class PlayerMovement : MonoBehaviour
             xAxis = rightAxis;
             zAxis = forwardAxis;
         }
-        //this is temp code 
+
         if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
         {
             maxClimbSpeed = RunSpeed;
@@ -901,6 +935,7 @@ public class PlayerMovement : MonoBehaviour
         {
             maxClimbSpeed = WalkSpeed;
         }
+
         if (wallJumpTimer <= 0)
         {
             xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
@@ -923,19 +958,19 @@ public class PlayerMovement : MonoBehaviour
             //used to smooth the angle needed to move to avoid snapping to directions
             float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-                //rotate player
-                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
-            
+            //rotate player
+            transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+
         }
         if (CheckSteepContacts())
         {
 
-                //rotate player
-                transform.rotation = Quaternion.Euler(0f, velocity.y, 0f);
-            
+            //rotate player
+            transform.rotation = Quaternion.Euler(0f, velocity.y, 0f);
+
         }
         //------------------------
-            velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
+        velocity += xAxis * (newX - currentX) + zAxis * (newZ - currentZ);
 
         if (velocity.x != 0 && !InWater ||
             velocity.z != 0 && !InWater)

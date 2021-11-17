@@ -23,6 +23,7 @@ public class PlayerSwitcher : MonoBehaviourPun
     public GameObject[] AllCharactersInGame = new GameObject[10];
     Pause pause;
     UnderwaterAirUI ui;
+    int currentCharacter;
     void Awake()
     {
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -41,19 +42,27 @@ public class PlayerSwitcher : MonoBehaviourPun
             {
                 if (InputManager.GetButton("1"))
                 {
-                    SwitchCharacter(0);
+                    if(currentCharacter > 0)
+                    {
+                        currentCharacter--;
+                    }
+                    else
+                    {
+                        currentCharacter = 2;
+                    }
+                    SwitchCharacter(currentCharacter);
                 }
                 if (InputManager.GetButton("2"))
                 {
-                    SwitchCharacter(1);
-                }
-                if (InputManager.GetButton("3"))
-                {
-                    SwitchCharacter(2);
-                }
-                if (InputManager.GetButton("4"))
-                {
-                    SwitchCharacter(3);
+                    if (currentCharacter < 2)
+                    {
+                        currentCharacter++;
+                    }
+                    else
+                    {
+                        currentCharacter = 0;
+                    }
+                    SwitchCharacter(currentCharacter);
                 }
             }
         }
@@ -79,7 +88,6 @@ public class PlayerSwitcher : MonoBehaviourPun
                 PlayerTransform = CurrentPlayer.transform;
                 PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
 
-                //currentPlayerMovement.transferOwnership(CurrentPlayer.GetComponent<PhotonView>());
 
                 if (CurrentPlayer.GetComponent<HandMan>())
                 {

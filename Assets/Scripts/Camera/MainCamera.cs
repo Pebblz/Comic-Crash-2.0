@@ -85,6 +85,10 @@ public class MainCamera : MonoBehaviour
     public bool StopCamera;
 
     public bool UnderWaterFog = false;
+
+    Vector2 startingPos;
+    float startingDist;
+    float cameraResetTimer;
     #region MonoBehaviours
     void Start()
     {
@@ -104,6 +108,9 @@ public class MainCamera : MonoBehaviour
         }
         if (UnderWaterFog)
             RenderSettings.fog = false;
+
+        startingPos = new Vector2(x, y);
+        startingDist = distance;
     }
 
     void Update()
@@ -213,6 +220,28 @@ public class MainCamera : MonoBehaviour
                 }
                 else
                 {
+                    #region MightWork
+                    if (InputManager.GetButton("45 Degree"))
+                    {
+                        x += 15;
+                    }
+                    if (InputManager.GetButton("-45 Degree"))
+                    {
+                        x -= 15;
+                    }
+                    //if (InputManager.GetButton("180 Degree"))
+                    //{
+                    //    x += 180;
+                    //}
+                    if (InputManager.GetButton("reset Camera") && cameraResetTimer <= 0)
+                    {
+                        cameraResetTimer = .3f;
+                        x = target.eulerAngles.y;
+                        y = startingPos.y;
+                        distance = startingDist;
+                    }
+                    cameraResetTimer -= Time.deltaTime;
+                    #endregion
                     //this is here so if the angle of the camera hits a object but at the same time
                     //doesn't it wont glitch out 
                     if (Physics.SphereCast(transform.position, 2, Vector3.zero, out hit2))
