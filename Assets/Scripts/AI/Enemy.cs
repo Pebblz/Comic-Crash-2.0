@@ -24,7 +24,7 @@ public abstract class Enemy : MonoBehaviour
     PhotonView photonView;
     public int enemy_damage = 1;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         this.photonView = GetComponent<PhotonView>();
     }
@@ -36,7 +36,7 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-    public virtual void Update()
+    protected virtual void Update()
     {
         if(this.health <= 0)
         {
