@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Plopmann : Enemy, IRespawnable
 {
 
@@ -18,18 +19,6 @@ public class Plopmann : Enemy, IRespawnable
     [Tooltip("How fast he launch")]
     float launch_speed = 5f;
 
-    [SerializeField]
-    [Tooltip("Random Horizontal range")]
-    float hori_range = 2f;
-
-    [SerializeField]
-    [Tooltip("Random Vertical range")]
-    float vert_range = 2f;
-
-    [SerializeField]
-    [Tooltip("Timeout before he finds a new position in idle state")]
-    float idle_timeout;
-    float init_idle_timeout;
 
     public bool gravity = true;
 
@@ -37,7 +26,6 @@ public class Plopmann : Enemy, IRespawnable
 
 
     Vector3 starting_pos; // position the enemy first spawned at;
-    Vector3 current_pos; // position the enemy is currently sticking to
 
     Vector3 target_pos;
 
@@ -46,6 +34,7 @@ public class Plopmann : Enemy, IRespawnable
     bool on_ceiling;
     bool on_ground;
     bool touched_surface;
+    bool position_locked = false;
 
     protected override void Awake()
     {
@@ -54,9 +43,19 @@ public class Plopmann : Enemy, IRespawnable
         this.starting_pos = this.transform.position;
         this.touched_surface = true;
         this.init_charge_up = charge_up;
-        this.init_idle_timeout = idle_timeout;
+     
 
 
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        if (this.position_locked)
+        {
+            body.constraints = RigidbodyConstraints.FreezeRotation;
+            position_locked = false;
+        }
     }
 
     public void reset_data()
@@ -68,30 +67,21 @@ public class Plopmann : Enemy, IRespawnable
         this.body.velocity = Vector3.zero;
         this.body.angularVelocity = Vector3.zero;
         this.charge_up = init_charge_up;
-        this.idle_timeout = init_idle_timeout;
-        
+        this.position_locked = false;
+        body.constraints = RigidbodyConstraints.FreezeRotation;
+
+
     }
 
     void idle()
     {
-        idle_timeout -= Time.deltaTime;
-        if(idle_timeout <= 0f)
-        {
-            idle_timeout = init_idle_timeout;
-            if (on_the_ground())
-            {
-                Vector3 new_pos = EnemyUtils.randomVector3(this.hori_range, 0f, this.vert_range);
-            }
-            else if (this.on_ceiling)
-            {
-
-            }
-            else if (this.on_wall)
-            {
-
-            }
-        }
+      
    
+    }
+
+    void attack()
+    {
+
     }
 
     void launch()
@@ -115,7 +105,6 @@ public class Plopmann : Enemy, IRespawnable
         {
             this.touched_surface = true;
             this.body.useGravity = false;
-            this.current_pos = this.transform.position;
         }
     }
 
@@ -125,14 +114,7 @@ public class Plopmann : Enemy, IRespawnable
     {
         Vector3 end = this.transform.position;
         end.y -= 1;
-        return Physics.Linecast(this.transform.position, end);
-    }
-
-    bool on_the_ceiling()
-    {
-        Vector3 end = this.transform.position;
-        end.y += 1;
-        return Physics.Linecast(this.transform.position, end);
+        return !Physics.Linecast(this.transform.position, end);
     }
 
     
@@ -143,26 +125,37 @@ public class Plopmann : Enemy, IRespawnable
             collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
         }
 
-        foreach (ContactPoint point in collision.contacts)
+        if(collision.contactCount > 0)
         {
+            ContactPoint point = collision.contacts[0];
+            body.constraints = RigidbodyConstraints.FreezePosition;
+            this.position_locked = true;
             float dist = Vector3.Distance(this.transform.position, point.point) + 0.5f;
+            Vector3 dir = (point.point - this.transform.position).normalized;
+            Debug.DrawRay(this.transform.position, dir, Color.red, 40f);
+            RaycastHit hit;
+            Physics.Raycast(this.transform.position, dir, out hit);
+            //Quaternion rot = Quaternion.FromToRotation(transform.forward, hit.normal);
+            Quaternion rot = Quaternion.LookRotation(this.transform.position, point.normal);
+            //var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            //obj.transform.position = point.point;
+            //this.transform.LookAt(obj.transform);
+            //Destroy(obj);
+            //this.transform.position = point.point;
 
-            Debug.DrawRay(this.transform.position, point.normal, Color.red, 4f);
-            RaycastHit hit; 
-            Physics.Raycast(this.transform.position, point.normal, out hit);
-            Quaternion rot = Quaternion.FromToRotation(Vector3.forward, point.normal);
-            this.transform.position = point.point;
-            transform.rotation = rot;
-            body.angularVelocity = Vector3.zero;
-            body.velocity = Vector3.zero;
+            //body.angularVelocity = Vector3.zero;
+            //body.velocity = Vector3.zero;
 
             //figure out where object is in relation to current transform
             var angle = Vector3.SignedAngle(this.transform.position, point.point, Vector3.up);
 
             //figure out where the boy be sticking to
             Debug.Log(Mathf.Rad2Deg * angle);
-            
 
-        }
+        } 
+
+
+
+
     }
 }
