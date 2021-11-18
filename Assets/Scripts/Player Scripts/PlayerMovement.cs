@@ -364,11 +364,15 @@ public class PlayerMovement : MonoBehaviour
                             }
                         }
                     }
-
+                    if(LongJumpTimer <= 0 && OnGround || InWater)
+                    {
+                        StopAnimation("LongJump");
+                    }
                     if (Isrunning && OnGround && LongJumpTimer <= 0)
                     {
                         if (InputManager.GetButton("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
                         {
+                            PlayAnimation("LongJump");
                             desiredLongJump = true;
                             LongJumpTimer = .5f;
                             longJumpCoolDown = .5f;
