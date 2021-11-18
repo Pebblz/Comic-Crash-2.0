@@ -117,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Tooltip("The length of time for collecting a collectible")]
     float collectibleTimer;
     float currentCollectibleTimer;
-    float originalMass;
     public bool InWater => submergence > 0f;
     #endregion
     #region private fields
@@ -215,8 +214,6 @@ public class PlayerMovement : MonoBehaviour
         gravityPlane = FindObjectOfType<GravityPlane>();
 
         originalGravity = gravityPlane.gravity;
-
-        originalMass = body.mass;
 
         toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
 
@@ -367,13 +364,14 @@ public class PlayerMovement : MonoBehaviour
                             }
                         }
                     }
+
                     if (Isrunning && OnGround && LongJumpTimer <= 0)
                     {
                         if (InputManager.GetButton("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
                         {
                             desiredLongJump = true;
                             LongJumpTimer = .5f;
-                            longJumpCoolDown = 1.5f;
+                            longJumpCoolDown = .5f;
                         }
                         else
                         {
@@ -764,50 +762,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        //RycastHit ray;
-
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            //Vector3 dir = (contact.point - this.transform.position).normalized;
-            //Physics.Raycast(transform.position, dir, out ray, 4, 0);
-
-
-
-            if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") && 
-                collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
-            {
-                unSetGravity();
-                Vector3 _velocity = contact.normal;
-
-                _velocity.y = WallJumpHeight * WallJumpIntensifire;
-
-                body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (4 * wallJumpSpeed));
-
-                transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
-
-                PreventSnapToGround();
-
-                LastWallJumpedOn = collision.gameObject;
-            }
-            //this makes you wall slide
-            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 &&
-                !IsWallSliding && collision.gameObject.layer != 16 &&
-                LastWallJumpedOn != collision.gameObject)
-            {
-                SetGravity();
-            }
-            if (LastWallJumpedOn == collision.gameObject)
-            {
-                unSetGravity();
-            }
-        }
-
         EvaluateCollision(collision);
-        if (LastWallJumpedOn == collision.gameObject)
-            return;
     }
     void OnCollisionStay(Collision collision)
     {
@@ -818,15 +773,33 @@ public class PlayerMovement : MonoBehaviour
         else
             onBlock = false;
 
-        //RaycastHit ray;
+        RaycastHit ray;
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            //Vector3 dir = (contact.point - this.transform.position).normalized;
-            //Physics.Raycast(transform.position, dir, out ray, 4, 0);
+            //this makes you wall slide
+            if (!OnGround)
+            {
+                Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
+                if (Physics.Raycast(transform.position, dir, out ray, 4))
+                {
+                    if (ray.collider.gameObject == collision.gameObject)
+                    {
+                        SetGravity();
+                    }
+                }
+                else
+                {
+                    unSetGravity();
+                }
+            }
+            else
+            {
+                unSetGravity();
+            }
 
             if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") 
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
+                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
             {
                 unSetGravity();
                 Vector3 _velocity = contact.normal;
@@ -836,6 +809,7 @@ public class PlayerMovement : MonoBehaviour
                 body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
                     _velocity.y, _velocity.z * (4 * wallJumpSpeed));
 
+                //faces direction on jump
                 transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
                     _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
 
@@ -854,13 +828,11 @@ public class PlayerMovement : MonoBehaviour
         velocity = Vector3.zero;
         body.velocity = Vector3.zero;
         gravityPlane.gravity = SlidingGravity;
-        //body.mass = SlidingMass;
     }
     void unSetGravity()
     {
         IsWallSliding = false;
         gravityPlane.gravity = originalGravity;
-        //body.mass = originalMass;
     }
     #endregion
     private void OnDestroy()
