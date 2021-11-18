@@ -105,9 +105,22 @@ public class PlayerHealth : MonoBehaviour
             {
                 GetComponent<PlayerDeath>().isdead = true;
             }
-            IFrameTimer = 2;
+            IFrameTimer = 1;
         }
     }
+    //public void HurtPlayer(int amount, Vector3 knockBackDir)
+    //{
+    //    if (IFrameTimer <= 0)
+    //    {
+    //        currentHealth -= amount;
+
+    //        if (currentHealth <= 0)
+    //        {
+    //            GetComponent<PlayerDeath>().isdead = true;
+    //        }
+    //        IFrameTimer = 1;
+    //    }
+    //}
     public void ResetHealth()
     {
         currentHealth = maxHealth;

@@ -24,7 +24,10 @@ public class PlayerMovement : MonoBehaviour
     float WalkAnimationSpeed = .5f, RunAnimationSpeed = .5f;
     [SerializeField, Range(10f, 50f), Tooltip("How fast you shoot forward when diving")]
     float AirDiveSpeed = 10f;
-
+    [SerializeField]
+    float longJumpHeight = 3;
+    [SerializeField]
+    float longJumpSpeed = 10;
     [Header("Acceleration"), Space(2)]
     [SerializeField, Range(0f, 100f)]
     float maxAcceleration = 10f, maxAirAcceleration = 1f, maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
@@ -126,6 +129,8 @@ public class PlayerMovement : MonoBehaviour
     Vector3 connectionVelocity;
     Rigidbody body, connectedBody, previousConnectedBody;
     bool desiredJump, desiresClimbing;
+    [HideInInspector]
+    public bool desiredLongJump;
     public bool OnGround => groundContactCount > 0;
 
     public bool Swimming => submergence >= swimThreshold;
@@ -155,10 +160,11 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isCrouching;
     bool blobert, handman;
-
+    [HideInInspector]
+    public float LongJumpTimer;
+    float longJumpCoolDown;
     //Wall Jump Helpers
     float wallJumpTimer;
-    float TimerToWallJump;
     bool IsWallSliding;
 
     Luminosity.IO.Examples.GamepadToggle toggle;
@@ -223,12 +229,10 @@ public class PlayerMovement : MonoBehaviour
             if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
             {
                 wallJumpTimer -= Time.deltaTime;
-                TimerToWallJump -= Time.deltaTime;
                 if (OnGround || InWater)
                 {
                     LastWallJumpedOn = null;
                     wallJumpTimer = 0;
-                    TimerToWallJump = 0;
                     unSetGravity();
 
                 }
@@ -284,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("IsLanded");
                 }
                 minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-                if (wallJumpTimer <= 0)
+                if (LongJumpTimer <= 0)
                 {
                     playerInput.x = InputManager.GetAxis("Horizontal");
                     playerInput.y = InputManager.GetAxis("Vertical");
@@ -328,13 +332,9 @@ public class PlayerMovement : MonoBehaviour
                         if (blobert)
                             StopAnimation("Drowning");
                     }
-                    if (OnGround)
-                        isCrouching = InputManager.GetButton("Crouch");
 
-                    if (!IsWallSliding)
-                        desiredJump |= InputManager.GetButtonDown("Jump");
-                    else
-                        desiredJump = false;
+
+
 
                     desiresClimbing = InputManager.GetButton("Climb");
                     if (!toggle.m_gamepadOn)
@@ -367,7 +367,38 @@ public class PlayerMovement : MonoBehaviour
                             }
                         }
                     }
+                    if (Isrunning && OnGround && LongJumpTimer <= 0)
+                    {
+                        if (InputManager.GetButton("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
+                        {
+                            desiredLongJump = true;
+                            LongJumpTimer = .5f;
+                            longJumpCoolDown = 1.5f;
+                        }
+                        else
+                        {
+                            if (OnGround)
+                                isCrouching = InputManager.GetButton("Crouch");
 
+                            if (!IsWallSliding)
+                                desiredJump |= InputManager.GetButtonDown("Jump");
+                            else
+                                desiredJump = false;
+                        }
+                    }
+                    else
+                    {
+                        if (LongJumpTimer <= 0)
+                        {
+                            if (OnGround)
+                                isCrouching = InputManager.GetButton("Crouch");
+
+                            if (!IsWallSliding)
+                                desiredJump |= InputManager.GetButtonDown("Jump");
+                            else
+                                desiredJump = false;
+                        }
+                    }
                 }
                 if (!inWaterAndFloor)
                 {
@@ -443,6 +474,8 @@ public class PlayerMovement : MonoBehaviour
                 GotCollectible();
             }
             currentCollectibleTimer -= Time.deltaTime;
+            LongJumpTimer -= Time.deltaTime;
+            longJumpCoolDown -= Time.deltaTime;
         }
     }
 
@@ -467,6 +500,11 @@ public class PlayerMovement : MonoBehaviour
                     Jump(gravity);
                     desiredJump = false;
                 }
+                if(desiredLongJump)
+                {
+                    LongJump(gravity);
+                    desiredLongJump = false;
+                }    
                 if (Climbing)
                 {
                     velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
@@ -679,6 +717,27 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Floor")
+        {
+            OnFloor = false;
+        }
+        if (collision.gameObject.tag == "WalkableUnderWater")
+        {
+            OnFloor = false;
+        }
+
+        if (!OnGround && IsWallSliding && collision.gameObject.layer != 9
+        && collision.gameObject.layer != 10)
+        {
+            unSetGravity();
+        }
+
+    }
     private void OnTriggerExit(Collider other)
     {
         if (photonView.IsMine)
@@ -705,13 +764,18 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+        //RycastHit ray;
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
+            //Vector3 dir = (contact.point - this.transform.position).normalized;
+            //Physics.Raycast(transform.position, dir, out ray, 4, 0);
+
+
+
+            if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") && 
+                collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
             {
-                //JustWallJumped = true;
                 unSetGravity();
                 Vector3 _velocity = contact.normal;
 
@@ -722,9 +786,12 @@ public class PlayerMovement : MonoBehaviour
 
                 transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
                     _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
+
                 PreventSnapToGround();
+
                 LastWallJumpedOn = collision.gameObject;
             }
+            //this makes you wall slide
             if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
                 && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 &&
                 !IsWallSliding && collision.gameObject.layer != 16 &&
@@ -742,26 +809,6 @@ public class PlayerMovement : MonoBehaviour
         if (LastWallJumpedOn == collision.gameObject)
             return;
     }
-
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Floor")
-        {
-            OnFloor = false;
-        }
-        if (collision.gameObject.tag == "WalkableUnderWater")
-        {
-            OnFloor = false;
-        }
-
-        if (!OnGround && IsWallSliding && collision.gameObject.layer != 9
-        && collision.gameObject.layer != 10)
-        {
-            unSetGravity();
-        }
-
-    }
     void OnCollisionStay(Collision collision)
     {
 
@@ -771,12 +818,16 @@ public class PlayerMovement : MonoBehaviour
         else
             onBlock = false;
 
+        //RaycastHit ray;
+
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (!OnGround && contact.normal.y < 0.1f && LastWallJumpedOn != collision.gameObject &&
-                InputManager.GetButtonDown("Jump") && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
+            //Vector3 dir = (contact.point - this.transform.position).normalized;
+            //Physics.Raycast(transform.position, dir, out ray, 4, 0);
+
+            if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") 
+                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
             {
-                //JustWallJumped = true;
                 unSetGravity();
                 Vector3 _velocity = contact.normal;
 
@@ -787,29 +838,31 @@ public class PlayerMovement : MonoBehaviour
 
                 transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
                     _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
+
                 PreventSnapToGround();
+
                 LastWallJumpedOn = collision.gameObject;
             }
         }
     }
     #endregion
+    #region Gravity Menipulation
     void SetGravity()
     {
-
         wallJumpTimer = .1f;
-        TimerToWallJump = .6f;
         IsWallSliding = true;
         velocity = Vector3.zero;
         body.velocity = Vector3.zero;
         gravityPlane.gravity = SlidingGravity;
-        body.mass = SlidingMass;
+        //body.mass = SlidingMass;
     }
     void unSetGravity()
     {
         IsWallSliding = false;
         gravityPlane.gravity = originalGravity;
-        body.mass = originalMass;
+        //body.mass = originalMass;
     }
+    #endregion
     private void OnDestroy()
     {
         unSetGravity();
@@ -998,6 +1051,7 @@ public class PlayerMovement : MonoBehaviour
         //    velocity += upAxis * (newY - currentY);
         //}
     }
+    #region Collectibles
     public void GotCollectible()
     {
         CantMove = true;
@@ -1013,6 +1067,8 @@ public class PlayerMovement : MonoBehaviour
         playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
         StopAnimation("Collected");
     }
+    #endregion
+    #region LongJump and Jump
     void Jump(Vector3 gravity)
     {
         if (!Swimming || !InWater)
@@ -1095,6 +1151,62 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+    void LongJump(Vector3 gravity)
+    {
+        if (!Swimming || !InWater)
+        {
+
+            Vector3 jumpDirection;
+            if (OnGround)
+            {
+                jumpDirection = contactNormal;
+            }
+            else if (OnSteep)
+            {
+                jumpDirection = steepNormal;
+            }
+            else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
+            {
+
+                jumpDirection = contactNormal;
+            }
+            else
+            {
+                return;
+            }
+
+            stepsSinceLastJump = 0;
+
+            float LongjumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * longJumpHeight);
+            print(LongjumpSpeed);
+            if (InWater)
+            {
+                LongjumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+            }
+            jumpDirection = (jumpDirection + upAxis).normalized;
+            float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+            if (alignedSpeed > 0f)
+            {
+                if (jumpPhase == 0)
+                    LongjumpSpeed = Mathf.Max(LongjumpSpeed - alignedSpeed, 0f);
+                else
+                    LongjumpSpeed = Mathf.Max(LongjumpSpeed / 2 - alignedSpeed, 0f);
+            }
+            if (LongjumpSpeed < 10)
+            {
+                jumpDirection.z = 0;
+                LongjumpSpeed = 16;
+            }
+            velocity += jumpDirection * LongjumpSpeed;
+            Vector3 LongJumpDir = transform.forward * longJumpSpeed;
+            velocity = new Vector3(LongJumpDir.x, velocity.y, LongJumpDir.z);
+            jumpPhase = 5;
+            //velocity.y = Mathf.Clamp(velocity.y, -30, maxJumpSpeed);
+
+        }
+    }
+    #endregion
+    #region Checks
     bool CheckClimbing()
     {
         if (Climbing)
@@ -1128,6 +1240,7 @@ public class PlayerMovement : MonoBehaviour
     {
         stepsSinceLastJump = -1;
     }
+    #endregion
     #region Bounce Functions
     public void jumpOnEnemy()
     {
@@ -1142,7 +1255,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GroundPound()
     {
-        body.velocity = new Vector3(0, -20, 0);
+        body.velocity = new Vector3(0, -30, 0);
         //this is here to ensure you wont double jump
         jumpPhase = 20;
     }

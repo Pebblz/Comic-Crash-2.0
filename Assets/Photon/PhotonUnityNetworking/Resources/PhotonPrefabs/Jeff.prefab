@@ -1968,6 +1968,8 @@ MonoBehaviour:
   WalkAnimationSpeed: 0.3
   RunAnimationSpeed: 0.3
   AirDiveSpeed: 10
+  longJumpHeight: 3
+  longJumpSpeed: 50
   maxAcceleration: 60
   maxAirAcceleration: 3
   maxClimbAcceleration: 40
@@ -2021,10 +2023,12 @@ MonoBehaviour:
   SlidingMass: 2
   collectibleTimer: 3
   playerInput: {x: 0, y: 0, z: 0}
+  desiredLongJump: 0
   submergence: 0
   Gliding: 0
   OnFloor: 0
   isCrouching: 0
+  LongJumpTimer: 0
   walkingPartical1: {fileID: 1569390576350669840}
   walkingPartical2: {fileID: 1569390578323801742}
   walkingPartical3: {fileID: 1569390576279674195}
