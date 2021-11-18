@@ -28,7 +28,7 @@ public class PlayerGroundPound : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming)
+            if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming && pm.LongJumpTimer <= 0)
             {
                 GroundPounding = true;
                 pm.CantMove = true;
