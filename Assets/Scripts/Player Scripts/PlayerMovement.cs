@@ -370,7 +370,7 @@ public class PlayerMovement : MonoBehaviour
                         {
                             desiredLongJump = true;
                             LongJumpTimer = .5f;
-                            longJumpCoolDown = 1.5f;
+                            longJumpCoolDown = .5f;
                         }
                         else
                         {
@@ -767,9 +767,8 @@ public class PlayerMovement : MonoBehaviour
         {
             //Vector3 dir = (contact.point - this.transform.position).normalized;
             //Physics.Raycast(transform.position, dir, out ray, 4, 0);
-
-
-
+            
+                                
             if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") && 
                 collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
             {
@@ -789,10 +788,9 @@ public class PlayerMovement : MonoBehaviour
                 LastWallJumpedOn = collision.gameObject;
             }
             //this makes you wall slide
-            if (!OnGround && contact.normal.y < 0.1f && !InputManager.GetButtonDown("Jump")
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 &&
-                !IsWallSliding && collision.gameObject.layer != 16 &&
-                LastWallJumpedOn != collision.gameObject)
+            if (!OnGround && !InputManager.GetButtonDown("Jump")&& collision.gameObject.layer != 9 
+                && collision.gameObject.layer != 10 && !IsWallSliding && collision.gameObject.layer != 16 
+                && LastWallJumpedOn != collision.gameObject)
             {
                 SetGravity();
             }
