@@ -87,7 +87,7 @@ public class SuicideMann : Enemy, IRespawnable
     }
 
     // Update is called once per frame
-    public override void Update()
+    protected override void Update()
     {
         base.Update();
         switch (this.current_state)
