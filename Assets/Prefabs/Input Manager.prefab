@@ -46,7 +46,7 @@ MonoBehaviour:
   m_controlSchemes:
   - m_name: KeyBoard
     m_description: 
-    m_isExpanded: 1
+    m_isExpanded: 0
     m_uniqueID: c82dd7d9bafe44d1aa61096d105eee1d
     m_actions:
     - m_name: Horizontal
@@ -720,7 +720,7 @@ MonoBehaviour:
         m_gamepadIndex: 0
   - m_name: GamePad
     m_description: 
-    m_isExpanded: 0
+    m_isExpanded: 1
     m_uniqueID: 50ac688ea80e4d0b8b049cf95941e1c7
     m_actions:
     - m_name: Horizontal
@@ -780,8 +780,8 @@ MonoBehaviour:
     - m_name: UpDown
       m_description: 
       m_bindings:
-      - m_positive: 351
-        m_negative: 354
+      - m_positive: 350
+        m_negative: 351
         m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 6

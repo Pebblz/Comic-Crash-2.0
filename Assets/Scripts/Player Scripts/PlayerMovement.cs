@@ -364,6 +364,7 @@ public class PlayerMovement : MonoBehaviour
                             }
                         }
                     }
+
                     if (Isrunning && OnGround && LongJumpTimer <= 0)
                     {
                         if (InputManager.GetButton("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
@@ -761,48 +762,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        //RycastHit ray;
-
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            //Vector3 dir = (contact.point - this.transform.position).normalized;
-            //Physics.Raycast(transform.position, dir, out ray, 4, 0);
-            
-                                
-            if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") && 
-                collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
-            {
-                unSetGravity();
-                Vector3 _velocity = contact.normal;
-
-                _velocity.y = WallJumpHeight * WallJumpIntensifire;
-
-                body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (4 * wallJumpSpeed));
-
-                transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
-
-                PreventSnapToGround();
-
-                LastWallJumpedOn = collision.gameObject;
-            }
-            //this makes you wall slide
-            if (!OnGround && !InputManager.GetButtonDown("Jump")&& collision.gameObject.layer != 9 
-                && collision.gameObject.layer != 10 && !IsWallSliding && collision.gameObject.layer != 16 
-                && LastWallJumpedOn != collision.gameObject)
-            {
-                SetGravity();
-            }
-            if (LastWallJumpedOn == collision.gameObject)
-            {
-                unSetGravity();
-            }
-        }
-
         EvaluateCollision(collision);
-        if (LastWallJumpedOn == collision.gameObject)
-            return;
     }
     void OnCollisionStay(Collision collision)
     {
@@ -813,15 +773,33 @@ public class PlayerMovement : MonoBehaviour
         else
             onBlock = false;
 
-        //RaycastHit ray;
+        RaycastHit ray;
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            //Vector3 dir = (contact.point - this.transform.position).normalized;
-            //Physics.Raycast(transform.position, dir, out ray, 4, 0);
+            //this makes you wall slide
+            if (!OnGround)
+            {
+                Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
+                if (Physics.Raycast(transform.position, dir, out ray, 4))
+                {
+                    if (ray.collider.gameObject == collision.gameObject)
+                    {
+                        SetGravity();
+                    }
+                }
+                else
+                {
+                    unSetGravity();
+                }
+            }
+            else
+            {
+                unSetGravity();
+            }
 
             if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") 
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10 && !Gliding)
+                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
             {
                 unSetGravity();
                 Vector3 _velocity = contact.normal;
@@ -831,6 +809,7 @@ public class PlayerMovement : MonoBehaviour
                 body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
                     _velocity.y, _velocity.z * (4 * wallJumpSpeed));
 
+                //faces direction on jump
                 transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
                     _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
 
