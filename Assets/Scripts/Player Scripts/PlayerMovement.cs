@@ -117,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Tooltip("The length of time for collecting a collectible")]
     float collectibleTimer;
     float currentCollectibleTimer;
-    float originalMass;
     public bool InWater => submergence > 0f;
     #endregion
     #region private fields
@@ -215,8 +214,6 @@ public class PlayerMovement : MonoBehaviour
         gravityPlane = FindObjectOfType<GravityPlane>();
 
         originalGravity = gravityPlane.gravity;
-
-        originalMass = body.mass;
 
         toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
 
@@ -854,13 +851,11 @@ public class PlayerMovement : MonoBehaviour
         velocity = Vector3.zero;
         body.velocity = Vector3.zero;
         gravityPlane.gravity = SlidingGravity;
-        //body.mass = SlidingMass;
     }
     void unSetGravity()
     {
         IsWallSliding = false;
         gravityPlane.gravity = originalGravity;
-        //body.mass = originalMass;
     }
     #endregion
     private void OnDestroy()
