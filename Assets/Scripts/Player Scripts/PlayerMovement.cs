@@ -156,7 +156,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 ColliderCenter;
     [HideInInspector]
     public bool OnFloor;
-
     public bool isCrouching;
     bool blobert, handman;
     [HideInInspector]
@@ -364,7 +363,7 @@ public class PlayerMovement : MonoBehaviour
                             }
                         }
                     }
-                    if(LongJumpTimer <= 0 && OnGround || InWater)
+                    if (LongJumpTimer <= 0 && OnGround || InWater)
                     {
                         StopAnimation("LongJump");
                     }
@@ -454,6 +453,47 @@ public class PlayerMovement : MonoBehaviour
                 {
                     body.velocity = new Vector3(0, body.velocity.y, 0);
                 }
+                RaycastHit ray;
+
+                //this makes you wall slide
+                if (!OnGround)
+                {
+                    Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
+                    if (Physics.Raycast(transform.position, dir, out ray, .7f))
+                    {
+                        if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject)
+                        {
+                            SetGravity();
+                        }
+                        if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
+                            && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10)
+                        {
+                            unSetGravity();
+                            Vector3 _velocity = -dir.normalized;
+
+                            _velocity.y = WallJumpHeight * WallJumpIntensifire;
+
+                            body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
+                                _velocity.y, _velocity.z * (4 * wallJumpSpeed));
+
+                            //faces direction on jump
+                            transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
+                                _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
+
+                            PreventSnapToGround();
+
+                            LastWallJumpedOn = ray.collider.gameObject;
+                        }
+                    }
+                    else
+                    {
+                        unSetGravity();
+                    }
+                }
+                else
+                {
+                    unSetGravity();
+                }
             }
             else
             {
@@ -502,11 +542,11 @@ public class PlayerMovement : MonoBehaviour
                     Jump(gravity);
                     desiredJump = false;
                 }
-                if(desiredLongJump)
+                if (desiredLongJump)
                 {
                     LongJump(gravity);
                     desiredLongJump = false;
-                }    
+                }
                 if (Climbing)
                 {
                     velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
@@ -770,58 +810,11 @@ public class PlayerMovement : MonoBehaviour
     }
     void OnCollisionStay(Collision collision)
     {
-
         EvaluateCollision(collision);
         if (collision.gameObject.tag == "BuilderBlock")
             onBlock = true;
         else
             onBlock = false;
-
-        RaycastHit ray;
-
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            //this makes you wall slide
-            if (!OnGround)
-            {
-                Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
-                if (Physics.Raycast(transform.position, dir, out ray, 4))
-                {
-                    if (ray.collider.gameObject == collision.gameObject)
-                    {
-                        SetGravity();
-                    }
-                }
-                else
-                {
-                    unSetGravity();
-                }
-            }
-            else
-            {
-                unSetGravity();
-            }
-
-            if (!OnGround && LastWallJumpedOn != collision.gameObject && InputManager.GetButtonDown("Jump") 
-                && collision.gameObject.layer != 9 && collision.gameObject.layer != 10)
-            {
-                unSetGravity();
-                Vector3 _velocity = contact.normal;
-
-                _velocity.y = WallJumpHeight * WallJumpIntensifire;
-
-                body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (4 * wallJumpSpeed));
-
-                //faces direction on jump
-                transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
-                    _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
-
-                PreventSnapToGround();
-
-                LastWallJumpedOn = collision.gameObject;
-            }
-        }
     }
     #endregion
     #region Gravity Menipulation
