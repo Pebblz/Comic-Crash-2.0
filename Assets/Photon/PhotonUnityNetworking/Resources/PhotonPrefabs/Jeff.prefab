@@ -1968,8 +1968,8 @@ MonoBehaviour:
   WalkAnimationSpeed: 0.3
   RunAnimationSpeed: 0.3
   AirDiveSpeed: 10
-  longJumpHeight: 3
-  longJumpSpeed: 50
+  longJumpHeight: 4
+  longJumpSpeed: 57
   maxAcceleration: 60
   maxAirAcceleration: 3
   maxClimbAcceleration: 40
@@ -2171,6 +2171,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: Collected
+  - Type: 4
+    SynchronizeType: 0
+    Name: LongJump
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
