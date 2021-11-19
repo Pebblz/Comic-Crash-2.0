@@ -12,29 +12,25 @@ public class Plopmann : Enemy, IRespawnable
     float init_charge_up;
 
     [SerializeField]
-    [Tooltip("The layers the enemy makes contact with")]
-    LayerMask mask;
+    [Tooltip("Attack cooldown rate")]
+    float attack_cooldown = 1f;
+    float init_attack_cooldown;
+
 
     [SerializeField]
     [Tooltip("How fast he launch")]
     float launch_speed = 5f;
+    bool attached_to_moving = false;
 
 
     public bool gravity = true;
-
-
+    bool launching = false;
 
 
     Vector3 starting_pos; // position the enemy first spawned at;
 
-    Vector3 target_pos;
-
     Rigidbody body;
-    bool on_wall;
-    bool on_ceiling;
-    bool on_ground;
     bool touched_surface;
-    bool position_locked = false;
 
     protected override void Awake()
     {
@@ -43,18 +39,23 @@ public class Plopmann : Enemy, IRespawnable
         this.starting_pos = this.transform.position;
         this.touched_surface = true;
         this.init_charge_up = charge_up;
-     
-
-
+        init_attack_cooldown = attack_cooldown;
+        this.body.useGravity = gravity;
+        attached_to_moving = false;
     }
 
     protected override void Update()
     {
         base.Update();
-        if (this.position_locked)
+
+        if (this.current_state == STATE.IDLE)
         {
-            body.constraints = RigidbodyConstraints.FreezeRotation;
-            position_locked = false;
+            idle();
+        }
+
+        if (this.current_state == STATE.ATTACK)
+        {
+            launch();
         }
     }
 
@@ -67,95 +68,118 @@ public class Plopmann : Enemy, IRespawnable
         this.body.velocity = Vector3.zero;
         this.body.angularVelocity = Vector3.zero;
         this.charge_up = init_charge_up;
-        this.position_locked = false;
         body.constraints = RigidbodyConstraints.FreezeRotation;
+        attack_cooldown = init_attack_cooldown;
+        launching = false;
 
 
     }
 
+    // empty for now  but he'll have an animation eventually
     void idle()
-    {
-      
-   
-    }
+    { }
 
-    void attack()
-    {
 
-    }
 
     void launch()
     {
+        if (launching)
+            return;
         charge_up -= Time.deltaTime;
         if (charge_up > 0f)
-            return; 
+            return;
 
         body.useGravity = true;
         this.transform.LookAt(target.position);
         this.body.AddForce(this.transform.forward * launch_speed, ForceMode.Impulse);
         touched_surface = false;
-        on_wall = false;
-        on_ceiling = false;
+        charge_up = init_charge_up;
+        launching = true;
+
     }
 
 
     void stick_to_surface()
     {
+        Debug.Log("Sticking");
         if (!touched_surface)
         {
             this.touched_surface = true;
             this.body.useGravity = false;
+            launching = false;
         }
     }
-
-
 
     bool on_the_ground()
     {
-        Vector3 end = this.transform.position;
-        end.y -= 1;
-        return !Physics.Linecast(this.transform.position, end);
+
+        bool on_ground = true;
+        RaycastHit hit;
+
+        Physics.Raycast(this.transform.position, Vector3.down, out hit, 0.2f, ~LayerMask.GetMask("Enemy"));
+        if (hit.collider.gameObject != this.gameObject)
+        {
+            on_ground = false;
+        }
+        if (hit.point == null)
+        {
+            on_ground = false;
+        }
+        return on_ground;
     }
 
-    
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnCollisionStay(Collision collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
+            attack_cooldown -= Time.deltaTime;
+            if(attack_cooldown <= 0f)
+            {
+                attack_cooldown = init_attack_cooldown;
+                collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
+            }
         }
+    }
 
-        if(collision.contactCount > 0)
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.contactCount > 0)
         {
             ContactPoint point = collision.contacts[0];
-            body.constraints = RigidbodyConstraints.FreezePosition;
-            this.position_locked = true;
             float dist = Vector3.Distance(this.transform.position, point.point) + 0.5f;
             Vector3 dir = (point.point - this.transform.position).normalized;
-            Debug.DrawRay(this.transform.position, dir, Color.red, 40f);
             RaycastHit hit;
             Physics.Raycast(this.transform.position, dir, out hit);
-            //Quaternion rot = Quaternion.FromToRotation(transform.forward, hit.normal);
-            Quaternion rot = Quaternion.LookRotation(this.transform.position, point.normal);
-            //var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //obj.transform.position = point.point;
-            //this.transform.LookAt(obj.transform);
-            //Destroy(obj);
-            //this.transform.position = point.point;
 
-            //body.angularVelocity = Vector3.zero;
-            //body.velocity = Vector3.zero;
+            stick_to_surface();
 
-            //figure out where object is in relation to current transform
-            var angle = Vector3.SignedAngle(this.transform.position, point.point, Vector3.up);
+        }
 
-            //figure out where the boy be sticking to
-            Debug.Log(Mathf.Rad2Deg * angle);
+    }
 
-        } 
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (!launching)
+            {
+                target = other.gameObject.transform;
+                this.current_state = STATE.ATTACK;
+            }
+        }
 
+    }
 
-
-
+    protected override void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (!launching)
+            {
+                target = other.gameObject.transform;
+                this.current_state = STATE.ATTACK;
+            }
+        }
     }
 }
