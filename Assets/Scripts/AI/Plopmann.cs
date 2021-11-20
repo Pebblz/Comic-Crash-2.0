@@ -8,7 +8,7 @@ public class Plopmann : Enemy, IRespawnable
 
     [SerializeField]
     [Tooltip("The amount of time before the enemy launches")]
-    float charge_up = 0.5f;
+    float charge_up = 2f;
     float init_charge_up;
 
     [SerializeField]
@@ -19,7 +19,7 @@ public class Plopmann : Enemy, IRespawnable
 
     [SerializeField]
     [Tooltip("How fast he launch")]
-    float launch_speed = 5f;
+    float launch_speed = 10f;
     bool attached_to_moving = false;
 
 
@@ -90,7 +90,8 @@ public class Plopmann : Enemy, IRespawnable
             return;
 
         body.useGravity = true;
-        this.transform.LookAt(target.position);
+        Vector3 temp = target.position + new Vector3(0, 3, 0);
+        this.transform.LookAt(temp);
         this.body.AddForce(this.transform.forward * launch_speed, ForceMode.Impulse);
         touched_surface = false;
         charge_up = init_charge_up;
@@ -140,6 +141,8 @@ public class Plopmann : Enemy, IRespawnable
                 collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
             }
         }
+        stick_to_surface();
+
     }
 
     private void OnCollisionEnter(Collision collision)
