@@ -26,11 +26,16 @@ public abstract class Enemy : MonoBehaviour
     public int enemy_damage = 1;
     public float stun_timer = 2f;
     private float init_stun_timer;
+    public float iframes = 1f;
+    private float init_iframes;
+    public bool hit = false;
 
     protected virtual void Awake()
     {
         this.photonView = GetComponent<PhotonView>();
         init_stun_timer = stun_timer;
+        init_iframes = iframes;
+        hit = false;
     }
 
     public void die()
@@ -42,6 +47,9 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
+
+
+
         if(this.current_state == STATE.STUN)
         {
             this.current_state = STATE.STUN;
@@ -53,7 +61,16 @@ public abstract class Enemy : MonoBehaviour
             }
 
         }
+        if (hit)
+        {
+            this.iframes -= Time.deltaTime;
+            if(iframes <= 0)
+            {
+                this.hit = false;
+                iframes = init_iframes;
+            }
 
+        }
         if(this.health <= 0)
         {
             this.current_state = STATE.DEAD;
@@ -70,7 +87,13 @@ public abstract class Enemy : MonoBehaviour
 
     public void damage(int amount)
     {
+        if(hit == true)
+        {
+            return;
+        }
+        Debug.Log("Calling damage RPC");
         photonView.RPC("take_damage", RpcTarget.All, amount );
+        hit = true;
     }
 
 

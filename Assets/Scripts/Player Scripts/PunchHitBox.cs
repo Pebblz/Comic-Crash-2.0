@@ -3,6 +3,7 @@ using Photon.Pun;
 public class PunchHitBox : MonoBehaviour
 {
     float DestroyTimer = .4f;
+    int damage = 2;
 
     PhotonView photonView;
     private void Start()
@@ -41,6 +42,12 @@ public class PunchHitBox : MonoBehaviour
 
                 col.GetComponent<BullyAI>().HitBack(pushDir, col.GetComponent<BullyAI>().KnockBackBullyPower);
             }
+        }
+
+        if(col.gameObject.tag == "Enemy")
+        {
+            Enemy enemy = (Enemy)col.gameObject.GetComponent(typeof(Enemy));
+            enemy.damage(damage);
         }
     }
 }
