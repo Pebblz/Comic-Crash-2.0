@@ -102,13 +102,10 @@ public class Plopmann : Enemy, IRespawnable
 
     void stick_to_surface()
     {
-        Debug.Log("Sticking");
-        if (!touched_surface)
-        {
-            this.touched_surface = true;
-            this.body.useGravity = false;
-            launching = false;
-        }
+        this.touched_surface = true;
+        this.body.useGravity = false;
+        launching = false;
+        
     }
 
     bool on_the_ground()
@@ -132,6 +129,10 @@ public class Plopmann : Enemy, IRespawnable
 
     private void OnCollisionStay(Collision collision)
     {
+        if(this.current_state == STATE.STUN)
+        {
+            return;
+        }
         if(collision.gameObject.tag == "Player")
         {
             attack_cooldown -= Time.deltaTime;
@@ -141,12 +142,16 @@ public class Plopmann : Enemy, IRespawnable
                 collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
             }
         }
-        stick_to_surface();
+        if(collision.gameObject.tag != "Shot") {
+            stick_to_surface();
+        }
 
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
+        base.OnCollisionEnter(collision);
+       
         if (collision.contactCount > 0)
         {
             ContactPoint point = collision.contacts[0];
@@ -155,7 +160,11 @@ public class Plopmann : Enemy, IRespawnable
             RaycastHit hit;
             Physics.Raycast(this.transform.position, dir, out hit);
 
-            stick_to_surface();
+            if(collision.gameObject.tag != "Shot")
+            {
+                stick_to_surface();
+            }
+            
 
         }
 
@@ -163,6 +172,11 @@ public class Plopmann : Enemy, IRespawnable
 
     protected override void OnTriggerEnter(Collider other)
     {
+        if (this.current_state == STATE.STUN)
+        {
+            return;
+        }
+
         if (other.gameObject.tag == "Player")
         {
             if (!launching)
@@ -176,6 +190,10 @@ public class Plopmann : Enemy, IRespawnable
 
     protected override void OnTriggerStay(Collider other)
     {
+        if (this.current_state == STATE.STUN)
+        {
+            return;
+        }
         if (other.gameObject.tag == "Player")
         {
             if (!launching)

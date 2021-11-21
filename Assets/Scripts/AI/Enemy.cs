@@ -12,7 +12,8 @@ public abstract class Enemy : MonoBehaviour
         CHASE,
         ATTACK,
         FLEE,
-        DEAD
+        DEAD, 
+        STUN
 
     }
 
@@ -23,10 +24,13 @@ public abstract class Enemy : MonoBehaviour
     public int health;
     PhotonView photonView;
     public int enemy_damage = 1;
+    public float stun_timer = 2f;
+    private float init_stun_timer;
 
     protected virtual void Awake()
     {
         this.photonView = GetComponent<PhotonView>();
+        init_stun_timer = stun_timer;
     }
 
     public void die()
@@ -38,6 +42,18 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
+        if(this.current_state == STATE.STUN)
+        {
+            this.current_state = STATE.STUN;
+            stun_timer -= Time.deltaTime;
+            if(stun_timer <= 0f)
+            {
+                this.current_state = STATE.IDLE;
+                this.stun_timer = init_stun_timer;
+            }
+
+        }
+
         if(this.health <= 0)
         {
             this.current_state = STATE.DEAD;
@@ -49,6 +65,8 @@ public abstract class Enemy : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
+
+    
 
     public void damage(int amount)
     {
@@ -94,6 +112,7 @@ public abstract class Enemy : MonoBehaviour
         {
             this.current_state = STATE.CHASE;
         }
+ 
     }
 
     protected virtual void OnTriggerStay(Collider other)
@@ -113,9 +132,21 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void OnTriggerExit(Collider other)
     {
+        if (this.current_state == STATE.STUN)
+        {
+            return;
+        }
         if (other.gameObject.tag == "Player")
         {
             this.current_state = STATE.IDLE;
+        }
+    }
+
+    protected virtual void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Shot")
+        {
+            this.current_state = STATE.STUN;
         }
     }
 }

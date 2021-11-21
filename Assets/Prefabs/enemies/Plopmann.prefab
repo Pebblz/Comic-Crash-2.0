@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6426662524466078651}
   - component: {fileID: 6426662524466078648}
   - component: {fileID: 6426662524466078640}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Plopmann
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -169,6 +169,7 @@ MonoBehaviour:
   attack_range: 2
   health: 65
   enemy_damage: 1
+  stun_timer: 2
   charge_up: 0.5
   attack_cooldown: 1
   launch_speed: 5

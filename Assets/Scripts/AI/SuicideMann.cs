@@ -63,6 +63,7 @@ public class SuicideMann : Enemy, IRespawnable
         zoomed = false;
         body.velocity = Vector3.zero;
         body.angularVelocity = Vector3.zero;
+        body.useGravity = false;
         this.transform.position = start_pos;
         this.target_pos = start_pos;
         this.current_state = STATE.IDLE;
@@ -73,8 +74,9 @@ public class SuicideMann : Enemy, IRespawnable
         this.detonation_time = init_det_timeout;
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         this.target_pos = this.transform.position;
         this.init_look_timeout = look_timeout;
         this.init_pause_timeout = pause_timeout;
@@ -198,8 +200,12 @@ public class SuicideMann : Enemy, IRespawnable
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnTriggerEnter(Collider other)
     {
+        if (this.current_state == STATE.STUN)
+        {
+            return;
+        }
         if (other.gameObject.tag == "Player")
         {
             this.current_state = STATE.ATTACK;
@@ -207,8 +213,12 @@ public class SuicideMann : Enemy, IRespawnable
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    protected override void OnTriggerStay(Collider other)
     {
+        if (this.current_state == STATE.STUN)
+        {
+            return;
+        }
         if (other.gameObject.tag == "Player")
         {
             this.current_state = STATE.ATTACK;
@@ -217,9 +227,17 @@ public class SuicideMann : Enemy, IRespawnable
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
-        this.explode();
+        base.OnCollisionEnter(collision);
+        if (collision.gameObject.tag == "Shot")
+        {
+            body.useGravity = true;
+        }
+        else
+        {
+            this.explode();
+        }
     }
 
     protected override void OnTriggerExit(Collider other)
