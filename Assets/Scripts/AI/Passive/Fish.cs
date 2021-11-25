@@ -15,6 +15,7 @@ public class Fish : MonoBehaviour
 
     public float x_range;
     public float z_range;
+    public float y_range;
 
     public int stamina;
     private int max_stamina;
@@ -29,21 +30,27 @@ public class Fish : MonoBehaviour
 
     public Vector3 catch_position;
 
+
     private float time_on_hook = 0f;
     private Vector3 target_pos;
-
+    private Vector3 starting_pos;
+    private bool looking_at_target = false;
     // Start is called before the first frame update
     private void Awake()
     {
         this.current_state = STATE.IDLE;
         max_stamina = stamina;
         init_idle_timer = idle_rest_timer;
+        starting_pos = this.transform.position;
+        this.target_pos = starting_pos + EnemyUtils.randomVector3(-1 * x_range, x_range, 0, 0, -1 * z_range, z_range);
+        looking_at_target = false;
 
-    }
+
+}
 
 
-    // Update is called once per frame
-    void Update()
+// Update is called once per frame
+void Update()
     {
         switch (current_state)
         {
@@ -56,23 +63,28 @@ public class Fish : MonoBehaviour
 
     private void swim_idle()
     {
-        RaycastHit hit;
-        Physics.Raycast(this.transform.position, this.transform.forward, out hit, 3f);
-        if (hit.point != null)
-        {
-            random_rotate();
-        }
-
         idle_rest_timer -= Time.deltaTime;
-        if (idle_rest_timer >= 0)
-            return;
-
-        idle_rest_timer = init_idle_timer;
-
-        if (target_pos == null || idle_rest_timer <= 0)
+        if (target_pos == null || idle_rest_timer <= 0 )
         {
-            this.target_pos = EnemyUtils.randomVector3(-1 * x_range, x_range, 0, 0, -1 * z_range, z_range);
+            idle_rest_timer = init_idle_timer;
+            this.target_pos = starting_pos + EnemyUtils.randomVector3(-1 * x_range, x_range, 0, 0, -1 * z_range, z_range);
+            looking_at_target = false;
+        } else
+        {
+            Vector3 new_pos = Vector3.Lerp(this.transform.position, target_pos, Time.deltaTime/2);
+
+            if (!looking_at_target)
+            {
+                transform.LookAt(new_pos);
+                looking_at_target = true;
+            }
+            this.transform.position = new_pos;
         }
+     
+    
+
+
+
     }
 
     private void random_rotate()
