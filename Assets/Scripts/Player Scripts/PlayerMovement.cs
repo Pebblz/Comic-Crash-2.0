@@ -363,43 +363,6 @@ public class PlayerMovement : MonoBehaviour
                             }
                         }
                     }
-                    if (LongJumpTimer <= 0 && OnGround || InWater)
-                    {
-                        StopAnimation("LongJump");
-                    }
-                    if (Isrunning && OnGround && LongJumpTimer <= 0)
-                    {
-                        if (InputManager.GetButton("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
-                        {
-                            PlayAnimation("LongJump");
-                            desiredLongJump = true;
-                            LongJumpTimer = .5f;
-                            longJumpCoolDown = .5f;
-                        }
-                        else
-                        {
-                            if (OnGround)
-                                isCrouching = InputManager.GetButton("Crouch");
-
-                            if (!IsWallSliding)
-                                desiredJump |= InputManager.GetButtonDown("Jump");
-                            else
-                                desiredJump = false;
-                        }
-                    }
-                    else
-                    {
-                        if (LongJumpTimer <= 0)
-                        {
-                            if (OnGround)
-                                isCrouching = InputManager.GetButton("Crouch");
-
-                            if (!IsWallSliding)
-                                desiredJump |= InputManager.GetButtonDown("Jump");
-                            else
-                                desiredJump = false;
-                        }
-                    }
                 }
                 if (!inWaterAndFloor)
                 {
@@ -628,7 +591,43 @@ public class PlayerMovement : MonoBehaviour
                         AtTheTopOfWater = false;
                     }
                 }
+                if (LongJumpTimer <= 0 && OnGround || InWater)
+                {
+                    StopAnimation("LongJump");
+                }
+                if (Isrunning && OnGround && LongJumpTimer <= 0)
+                {
+                    if (InputManager.GetButtonDown("Crouch") && InputManager.GetButtonDown("Jump") && longJumpCoolDown <= 0 && !isCrouching && jumpPhase == 0)
+                    {
+                        PlayAnimation("LongJump");
+                        desiredLongJump = true;
+                        LongJumpTimer = .5f;
+                        longJumpCoolDown = .5f;
+                    }
+                    else
+                    {
+                        if (OnGround)
+                            isCrouching = InputManager.GetButton("Crouch");
 
+                        if (!IsWallSliding)
+                            desiredJump |= InputManager.GetButtonDown("Jump");
+                        else
+                            desiredJump = false;
+                    }
+                }
+                else
+                {
+                    if (LongJumpTimer <= 0)
+                    {
+                        if (OnGround)
+                            isCrouching = InputManager.GetButton("Crouch");
+
+                        if (!IsWallSliding)
+                            desiredJump |= InputManager.GetButtonDown("Jump");
+                        else
+                            desiredJump = false;
+                    }
+                }
                 if (OnGround)
                     body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
                 body.velocity = velocity;
