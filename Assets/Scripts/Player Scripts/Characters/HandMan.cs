@@ -16,6 +16,8 @@ public class HandMan : MonoBehaviour
     PlayerMovement movement;
     PlayerAttack pAttack;
     PhotonView photonView;
+    [SerializeField]
+    float HeavyObjectPushSpeed = .5f;
     void Awake()
     {
         Anim = GetComponent<Animator>();
@@ -96,7 +98,7 @@ public class HandMan : MonoBehaviour
     }
     void ThrowGameObject()
     {
-        if(Camera == null)
+        if (Camera == null)
         {
             Camera = FindObjectOfType<Camera>().gameObject.transform;
         }
@@ -107,6 +109,27 @@ public class HandMan : MonoBehaviour
             PickUp.GetComponent<PickUpables>().Drop();
             isHoldingOBJ = false;
             PickUp = null;
+        }
+    }
+    private void OnCollisionStay(Collision col)
+    {
+        if (col.gameObject.tag == "HeavyObject")
+        {
+            RaycastHit hit;
+            for (float x = -.5f; x <= .5f; x += .5f)
+            {
+                for (float y = -4; y <= 4; y += .6f)
+                {
+                    if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, .5f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f))
+                    {
+                        if (hit.collider.gameObject.tag == "HeavyObject")
+                        {
+                            //play push animation
+                            hit.collider.gameObject.transform.Translate(Vector3.forward * HeavyObjectPushSpeed);
+                        }
+                    }
+                }
+            }
         }
     }
 }
