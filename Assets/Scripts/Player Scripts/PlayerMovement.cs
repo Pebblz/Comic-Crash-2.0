@@ -363,43 +363,6 @@ public class PlayerMovement : MonoBehaviour
                             }
                         }
                     }
-                    if (LongJumpTimer <= 0 && OnGround || InWater)
-                    {
-                        StopAnimation("LongJump");
-                    }
-                    if (Isrunning && OnGround && LongJumpTimer <= 0)
-                    {
-                        if (InputManager.GetButton("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
-                        {
-                            PlayAnimation("LongJump");
-                            desiredLongJump = true;
-                            LongJumpTimer = .5f;
-                            longJumpCoolDown = .5f;
-                        }
-                        else
-                        {
-                            if (OnGround)
-                                isCrouching = InputManager.GetButton("Crouch");
-
-                            if (!IsWallSliding)
-                                desiredJump |= InputManager.GetButtonDown("Jump");
-                            else
-                                desiredJump = false;
-                        }
-                    }
-                    else
-                    {
-                        if (LongJumpTimer <= 0)
-                        {
-                            if (OnGround)
-                                isCrouching = InputManager.GetButton("Crouch");
-
-                            if (!IsWallSliding)
-                                desiredJump |= InputManager.GetButtonDown("Jump");
-                            else
-                                desiredJump = false;
-                        }
-                    }
                 }
                 if (!inWaterAndFloor)
                 {
@@ -493,6 +456,44 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     unSetGravity();
+                }
+                if (LongJumpTimer <= 0 && OnGround || InWater)
+                {
+                    StopAnimation("LongJump");
+                }
+                if (Isrunning && OnGround && LongJumpTimer <= 0)
+                {
+                    if (InputManager.GetButtonDown("Crouch") && InputManager.GetButtonDown("Jump") 
+                        && longJumpCoolDown <= 0 && !isCrouching && jumpPhase == 0)
+                    {
+                        PlayAnimation("LongJump");
+                        desiredLongJump = true;
+                        LongJumpTimer = .4f;
+                        longJumpCoolDown = .3f;
+                    }
+                    else
+                    {
+                        if (OnGround)
+                            isCrouching = InputManager.GetButton("Crouch");
+
+                        if (!IsWallSliding)
+                            desiredJump |= InputManager.GetButtonDown("Jump");
+                        else
+                            desiredJump = false;
+                    }
+                }
+                else
+                {
+                    if (LongJumpTimer <= 0)
+                    {
+                        if (OnGround)
+                            isCrouching = InputManager.GetButton("Crouch");
+
+                        if (!IsWallSliding)
+                            desiredJump |= InputManager.GetButtonDown("Jump");
+                        else
+                            desiredJump = false;
+                    }
                 }
             }
             else
@@ -628,7 +629,7 @@ public class PlayerMovement : MonoBehaviour
                         AtTheTopOfWater = false;
                     }
                 }
-
+                
                 if (OnGround)
                     body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
                 body.velocity = velocity;
@@ -1050,7 +1051,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f)
             {
                 PlayAnimation("Dive");
-                Vector3 DiveDir = transform.forward * AirDiveSpeed;
+                Vector3 DiveDir = transform.forward * AirDiveSpeed * 1.5f;
                 velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
                 jumpPhase = 5;
             }
@@ -1170,8 +1171,6 @@ public class PlayerMovement : MonoBehaviour
             Vector3 LongJumpDir = transform.forward * longJumpSpeed;
             velocity = new Vector3(LongJumpDir.x, velocity.y, LongJumpDir.z);
             jumpPhase = 5;
-            //velocity.y = Mathf.Clamp(velocity.y, -30, maxJumpSpeed);
-
         }
     }
     #endregion

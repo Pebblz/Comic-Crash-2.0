@@ -7,7 +7,7 @@ public class PlayerGroundPound : MonoBehaviour
     private Animator anim;
     PlayerMovement pm;
     [SerializeField, Range(.1f, 6f)]
-    float timeToSquish;
+    float timeToSquish, groundpoundWaitTimer;
     private Vector3 origanalScale;
     private bool squishTime;
     private bool doneSquishing;
@@ -28,8 +28,17 @@ public class PlayerGroundPound : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming && pm.LongJumpTimer <= 0)
+            if (pm.OnGround)
             {
+                groundpoundWaitTimer = .3f;
+            }
+            else
+            {
+                groundpoundWaitTimer -= Time.deltaTime;
+            }
+            if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming && pm.LongJumpTimer <= 0 && groundpoundWaitTimer <= 0)
+            {
+                groundpoundWaitTimer = .3f;
                 GroundPounding = true;
                 pm.CantMove = true;
                 GroundPound();
