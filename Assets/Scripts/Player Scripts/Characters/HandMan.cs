@@ -125,7 +125,7 @@ public class HandMan : MonoBehaviour
                         if (hit.collider.gameObject.tag == "HeavyObject")
                         {
                             //play push animation
-                            hit.collider.gameObject.transform.Translate(Vector3.forward * HeavyObjectPushSpeed);
+                            hit.collider.transform.Translate(Vector3.forward * 20 * Time.deltaTime);
                         }
                     }
                 }
