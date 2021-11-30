@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6738673855915887795}
   - component: {fileID: 6864601312605533579}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,8 +32,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281106636398414655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.043077, y: -0.041054, z: -0.0094213}
+  m_LocalScale: {x: 0.287435, y: 0.287435, z: 0.2882628}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -96,8 +96,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.46076584
-  m_Center: {x: 0.20265388, y: -0.19313383, z: -0.06570816}
+  m_Radius: 0.4929143
+  m_Center: {x: -0.0037684876, y: -0.0031343063, z: 0.0093342}
 --- !u!54 &1281106636398414625
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,7 +148,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 6738673855915887795}
+  - {fileID: 6864601312605533579}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

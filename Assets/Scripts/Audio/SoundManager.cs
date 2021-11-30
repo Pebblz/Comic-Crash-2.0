@@ -40,7 +40,10 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         AudioMixer mixer = Resources.Load("Sounds/Mixer") as AudioMixer;
-        normal.TransitionTo(0.1f);
+
+        if(normal != null)
+            normal.TransitionTo(0.1f);
+
         if (mixer != null)
         {
             //only one of each group will be found, it just likes to return an array

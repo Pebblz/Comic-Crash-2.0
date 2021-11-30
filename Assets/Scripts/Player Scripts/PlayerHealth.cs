@@ -52,16 +52,24 @@ public class PlayerHealth : MonoBehaviour
         {
             if (movement.InWater || movement.inWaterAndFloor)
             {
-                if (!WaterUI.airBar.enabled)
-                    WaterUI.EnableSlider();
+
                 if (movement.AtTheTopOfWater)
                 {
                     WaterUI.ReFillAirBar = true;
+
+                    if (WaterUI.airLeft == MaxAirTimer)
+                    {
+                        if (WaterUI.airBar.enabled)
+                            WaterUI.DisableSlider();
+                    }
                 }
                 else
                 {
                     if (!pause.isPaused)
                     {
+                        if (!WaterUI.airBar.enabled)
+                            WaterUI.EnableSlider();
+
                         WaterUI.airLeft -= Time.deltaTime;
                     }
                 }

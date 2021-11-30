@@ -20,7 +20,6 @@ public class PlayerSwitcher : MonoBehaviourPun
     float timer;
     [SerializeField] float maxSwitchTimer = .5f;
     public bool CanSwitch;
-    public GameObject[] AllCharactersInGame = new GameObject[10];
     Pause pause;
     UnderwaterAirUI ui;
     int currentCharacter;
@@ -38,7 +37,7 @@ public class PlayerSwitcher : MonoBehaviourPun
         if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
             //arrays start at zero so i have to make it one less 
-            if (timer < 0)
+            if (timer < 0 && !pause.isPaused)
             {
                 if (InputManager.GetButton("1"))
                 {

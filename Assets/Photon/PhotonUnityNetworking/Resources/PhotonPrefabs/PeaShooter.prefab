@@ -1845,7 +1845,7 @@ MonoBehaviour:
   SwimmingDownSpeed: 1
   WalkAnimationSpeed: 0.5
   RunAnimationSpeed: 0.5
-  AirDiveSpeed: 30
+  AirDiveSpeed: 50
   longJumpHeight: 3
   longJumpSpeed: 50
   maxAcceleration: 60
@@ -1897,8 +1897,8 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   AtTheTopOfWater: 0
   CollectibleGotten: 0
-  SlidingGravity: 2
-  SlidingMass: 2
+  SlidingGravity: 4
+  SlidingMass: 4
   collectibleTimer: 3
   playerInput: {x: 0, y: 0, z: 0}
   desiredLongJump: 0
