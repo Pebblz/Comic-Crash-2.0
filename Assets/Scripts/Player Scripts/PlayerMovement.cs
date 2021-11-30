@@ -426,11 +426,14 @@ public class PlayerMovement : MonoBehaviour
                     {
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject)
                         {
+                            PlayAnimation("Wall Slide");
                             SetGravity();
                         }
                         if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
                             && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10)
                         {
+                            PlayAnimation("Wall Jump");
+                            StopAnimation("Wall Slide");
                             unSetGravity();
                             Vector3 _velocity = -dir.normalized;
 
@@ -450,12 +453,14 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else
                     {
+                        StopAnimation("Wall Slide");
                         unSetGravity();
                     }
                 }
                 else
                 {
                     unSetGravity();
+                    StopAnimation("Wall Jump");
                 }
                 if (LongJumpTimer <= 0 && OnGround || InWater)
                 {
