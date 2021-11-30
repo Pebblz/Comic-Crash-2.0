@@ -10,7 +10,6 @@ public class HandMan : MonoBehaviour
     [HideInInspector] public bool isHoldingOBJ = false;
     [SerializeField] int ThrowForce;
     private Transform Camera;
-    Animator Anim;
     float pickUpTimer;
     PlayerSquish squish;
     PlayerMovement movement;
@@ -20,7 +19,6 @@ public class HandMan : MonoBehaviour
     float HeavyObjectPushSpeed = .5f;
     void Awake()
     {
-        Anim = GetComponent<Animator>();
         movement = GetComponent<PlayerMovement>();
         squish = GetComponent<PlayerSquish>();
         pAttack = GetComponent<PlayerAttack>();
@@ -124,13 +122,20 @@ public class HandMan : MonoBehaviour
                     {
                         if (hit.collider.gameObject.tag == "HeavyObject")
                         {
-                            //play push animation
+                            movement.PlayAnimation("Pushing");
                             var pushDir = transform.forward;
                             hit.collider.attachedRigidbody.velocity = pushDir * HeavyObjectPushSpeed;
                         }
                     }
                 }
             }
+        }
+    }
+    private void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.tag == "HeavyObject")
+        {
+            movement.StopAnimation("Pushing");
         }
     }
 }
