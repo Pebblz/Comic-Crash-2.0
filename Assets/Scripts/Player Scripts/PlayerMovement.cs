@@ -118,6 +118,12 @@ public class PlayerMovement : MonoBehaviour
     float collectibleTimer;
     float currentCollectibleTimer;
     public bool InWater => submergence > 0f;
+
+    [Header("Particles")]
+    [SerializeField] ParticleSystem walkingPartical1;
+    [SerializeField] ParticleSystem walkingPartical2;
+    [SerializeField] ParticleSystem walkingPartical3;
+    [SerializeField] ParticleSystem walkingPartical4;
     #endregion
     #region private fields
     float CurrentSpeed;
@@ -171,11 +177,8 @@ public class PlayerMovement : MonoBehaviour
 
     GravityPlane gravityPlane;
 
-    [Header("Particles")]
-    [SerializeField] ParticleSystem walkingPartical1;
-    [SerializeField] ParticleSystem walkingPartical2;
-    [SerializeField] ParticleSystem walkingPartical3;
-    [SerializeField] ParticleSystem walkingPartical4;
+    float JustWallJumpedTimer;
+
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -432,6 +435,7 @@ public class PlayerMovement : MonoBehaviour
                         if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
                             && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10)
                         {
+                            JustWallJumpedTimer = .2f;
                             PlayAnimation("Wall Jump");
                             StopAnimation("Wall Slide");
                             unSetGravity();
@@ -480,7 +484,7 @@ public class PlayerMovement : MonoBehaviour
                         if (OnGround)
                             isCrouching = InputManager.GetButton("Crouch");
 
-                        if (!IsWallSliding)
+                        if (!IsWallSliding && JustWallJumpedTimer <= 0)
                             desiredJump |= InputManager.GetButtonDown("Jump");
                         else
                             desiredJump = false;
@@ -493,7 +497,7 @@ public class PlayerMovement : MonoBehaviour
                         if (OnGround)
                             isCrouching = InputManager.GetButton("Crouch");
 
-                        if (!IsWallSliding)
+                        if (!IsWallSliding && JustWallJumpedTimer <= 0)
                             desiredJump |= InputManager.GetButtonDown("Jump");
                         else
                             desiredJump = false;
@@ -520,9 +524,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 GotCollectible();
             }
+            
             currentCollectibleTimer -= Time.deltaTime;
             LongJumpTimer -= Time.deltaTime;
             longJumpCoolDown -= Time.deltaTime;
+            JustWallJumpedTimer -= Time.deltaTime;
         }
     }
 
@@ -1051,8 +1057,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = false;
             }
-            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f ||
-                jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f)
+            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f && !IsWallSliding ||
+                jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f && !IsWallSliding)
             {
                 PlayAnimation("Dive");
                 Vector3 DiveDir = transform.forward * AirDiveSpeed * 1.5f;
@@ -1060,7 +1066,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpPhase = 5;
             }
 
-            if (canJump)
+            if (canJump && !IsWallSliding)
             {
                 StopAnimation("Dive");
                 Vector3 jumpDirection;
