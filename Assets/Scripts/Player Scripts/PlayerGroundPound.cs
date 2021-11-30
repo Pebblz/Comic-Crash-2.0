@@ -36,7 +36,8 @@ public class PlayerGroundPound : MonoBehaviour
             {
                 groundpoundWaitTimer -= Time.deltaTime;
             }
-            if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming && pm.LongJumpTimer <= 0 && groundpoundWaitTimer <= 0)
+            if (InputManager.GetButton("Crouch") && !pm.OnGround && !pm.Swimming && pm.LongJumpTimer <= 0 && groundpoundWaitTimer <= 0
+                && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump"))
             {
                 groundpoundWaitTimer = .3f;
                 GroundPounding = true;
