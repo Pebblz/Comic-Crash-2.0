@@ -1900,6 +1900,10 @@ MonoBehaviour:
   SlidingGravity: 4
   SlidingMass: 4
   collectibleTimer: 3
+  walkingPartical1: {fileID: 477770468372329194}
+  walkingPartical2: {fileID: 477770469193209972}
+  walkingPartical3: {fileID: 477770468284548009}
+  walkingPartical4: {fileID: 477770469115838024}
   playerInput: {x: 0, y: 0, z: 0}
   desiredLongJump: 0
   submergence: 0
@@ -1907,10 +1911,6 @@ MonoBehaviour:
   OnFloor: 0
   isCrouching: 0
   LongJumpTimer: 0
-  walkingPartical1: {fileID: 477770468372329194}
-  walkingPartical2: {fileID: 477770469193209972}
-  walkingPartical3: {fileID: 477770468284548009}
-  walkingPartical4: {fileID: 477770469115838024}
 --- !u!114 &-7688661775723245965
 MonoBehaviour:
   m_ObjectHideFlags: 0
