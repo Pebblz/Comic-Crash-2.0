@@ -457,6 +457,10 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else
                     {
+                        if(anim.GetCurrentAnimatorStateInfo(0).IsName("WallSlide") && !OnGround)
+                        {
+                            PlayFallingAnimation();
+                        }
                         StopAnimation("Wall Slide");
                         unSetGravity();
                     }
@@ -465,6 +469,11 @@ public class PlayerMovement : MonoBehaviour
                 {
                     unSetGravity();
                     StopAnimation("Wall Jump");
+                }
+                if(InWater)
+                {
+                    StopAnimation("Wall Jump");
+                    StopAnimation("Wall Slide");
                 }
                 if (LongJumpTimer <= 0 && OnGround || InWater)
                 {
@@ -1009,7 +1018,7 @@ public class PlayerMovement : MonoBehaviour
             velocity.z != 0 && !InWater)
         {
             PlayAnimation("Walk");
-            if (Isrunning)
+            if (Isrunning && OnGround)
             {
                 PlayAnimation("Run");
             }
@@ -1018,7 +1027,7 @@ public class PlayerMovement : MonoBehaviour
                 StopAnimation("Run");
             }
         }
-        if (InWater || velocity.magnitude < 1f)
+        if (InWater || velocity.magnitude < 1f || !OnGround)
         {
             StopAnimation("Run");
             StopAnimation("Walk");
