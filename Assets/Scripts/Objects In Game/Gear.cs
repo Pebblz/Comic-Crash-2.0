@@ -5,11 +5,23 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Gear : MonoBehaviour
 {
+    [Header("X rotation")]
     public bool RotateOnX;
-    public bool RotateOnY;
     Rigidbody body;
+    [SerializeField]
+    float maxRotationX, minRotationX;
+
+    [Space(3)]
+
+    [Header("X rotation")]
+    public bool RotateOnY;
+    [SerializeField]
+    float maxRotationY, minRotationY;
     void Start()
     {
+        if (GetComponent<MeshCollider>())
+            GetComponent<MeshCollider>().convex = true;
+
         body = GetComponent<Rigidbody>();
 
         body.constraints = RigidbodyConstraints.FreezeAll;
