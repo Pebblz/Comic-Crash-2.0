@@ -521,8 +521,8 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   AtTheTopOfWater: 0
   CollectibleGotten: 0
-  SlidingGravity: 20
-  SlidingMass: 6
+  SlidingGravity: 100
+  SlidingMass: 3
   collectibleTimer: 3
   walkingPartical1: {fileID: 6044490633680549245}
   walkingPartical2: {fileID: 6044490633389514723}
@@ -3262,7 +3262,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f18621afba91e0944a7ea101dd4dcd9e, type: 2}
-  - {fileID: 2100000, guid: 6ad2d866a1a345049a2b3f4a5ac51576, type: 2}
+  - {fileID: 2100000, guid: 14455aaad7eecb64f974d073f4df2eea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
