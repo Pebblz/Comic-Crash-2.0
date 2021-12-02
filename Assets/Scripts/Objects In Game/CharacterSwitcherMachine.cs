@@ -28,7 +28,7 @@ public class CharacterSwitcherMachine : MonoBehaviour
 
     private void Start()
     {
-        camera = FindObjectOfType<MainCamera>().gameObject;
+        camera = GameObject.FindGameObjectWithTag("MainCamera");
         Ps = FindObjectOfType<PlayerSwitcher>();
         otherMachines = FindObjectsOfType<CharacterSwitcherMachine>();
     }
