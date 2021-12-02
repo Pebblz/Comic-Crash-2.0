@@ -1386,7 +1386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4020649660379478796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.008, y: -0.003, z: 0.18}
+  m_LocalPosition: {x: -0.008, y: -0.003, z: 0.036}
   m_LocalScale: {x: 1.12, y: 1.12, z: 1.12}
   m_Children:
   - {fileID: 1658218135659297140}
@@ -1503,6 +1503,15 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: Collected
+  - Type: 4
+    SynchronizeType: 0
+    Name: LongJump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Wall Slide
+  - Type: 4
+    SynchronizeType: 0
+    Name: Wall Jump
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
@@ -1897,8 +1906,8 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   AtTheTopOfWater: 0
   CollectibleGotten: 0
-  SlidingGravity: 4
-  SlidingMass: 4
+  SlidingGravity: 100
+  SlidingMass: 3
   collectibleTimer: 3
   walkingPartical1: {fileID: 477770468372329194}
   walkingPartical2: {fileID: 477770469193209972}
