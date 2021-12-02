@@ -1070,6 +1070,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f && !IsWallSliding)
             {
                 PlayAnimation("Dive");
+                StopAnimation("Wall Jump");
                 Vector3 DiveDir = transform.forward * AirDiveSpeed * 1.5f;
                 velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
                 jumpPhase = 5;
@@ -1078,6 +1079,7 @@ public class PlayerMovement : MonoBehaviour
             if (canJump && !IsWallSliding)
             {
                 StopAnimation("Dive");
+                StopAnimation("Wall Jump");
                 Vector3 jumpDirection;
                 if (OnGround)
                 {
