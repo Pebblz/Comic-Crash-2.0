@@ -481,12 +481,12 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Isrunning && OnGround && LongJumpTimer <= 0)
                 {
-                    if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 && !isCrouching && jumpPhase == 0)
+                    if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
                     {
                         PlayAnimation("LongJump");
                         desiredLongJump = true;
-                        LongJumpTimer = .4f;
-                        longJumpCoolDown = .3f;
+                        LongJumpTimer = .5f;
+                        longJumpCoolDown = .4f;
                     }
                     else
                     {
