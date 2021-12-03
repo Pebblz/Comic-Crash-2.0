@@ -430,7 +430,8 @@ public class PlayerMovement : MonoBehaviour
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject)
                         {
                             PlayAnimation("Wall Slide");
-                            SetGravity();
+                            if (gravityPlane.gravity != SlidingGravity)
+                                SetGravity();
                         }
                         if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
                             && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10)
@@ -438,7 +439,8 @@ public class PlayerMovement : MonoBehaviour
                             JustWallJumpedTimer = .2f;
                             PlayAnimation("Wall Jump");
                             StopAnimation("Wall Slide");
-                            unSetGravity();
+                            if (gravityPlane.gravity != originalGravity)
+                                unSetGravity();
                             Vector3 _velocity = -dir.normalized;
 
                             _velocity.y = WallJumpHeight * WallJumpIntensifire;
@@ -462,12 +464,14 @@ public class PlayerMovement : MonoBehaviour
                             PlayFallingAnimation();
                         }
                         StopAnimation("Wall Slide");
-                        unSetGravity();
+                        if(gravityPlane.gravity != originalGravity)
+                            unSetGravity();
                     }
                 }
                 else
                 {
-                    unSetGravity();
+                    if (gravityPlane.gravity != originalGravity)
+                        unSetGravity();
                     StopAnimation("Wall Jump");
                 }
                 if(InWater)
@@ -1066,12 +1070,14 @@ public class PlayerMovement : MonoBehaviour
             {
                 canJump = false;
             }
-            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f && !IsWallSliding ||
-                jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f && !IsWallSliding)
+            if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f ||
+                jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f)
             {
                 PlayAnimation("Dive");
                 StopAnimation("Wall Jump");
-                Vector3 DiveDir = transform.forward * AirDiveSpeed * 1.5f;
+                Vector3 DiveDir = new Vector3(body.velocity.x,0,body.velocity.z) * AirDiveSpeed ;
+                Mathf.Clamp(DiveDir.x, -15, 15);
+                Mathf.Clamp(DiveDir.z, -15, 15);
                 velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
                 jumpPhase = 5;
             }
