@@ -4,10 +4,19 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Gear : MonoBehaviour
-{
+{ 
+    [Header("Random Booleans")]
+    public bool StopRotationAtMax;
+
+    public bool AtMaxRotation;
+
+    public bool AtMinRotation;
+
+    public bool SpawnedItem;
+    [Space(3)]
+
     [Header("X rotation")]
     public bool RotateOnX;
-    Rigidbody body;
     [SerializeField]
     float maxRotationX, minRotationX;
 
@@ -17,6 +26,9 @@ public class Gear : MonoBehaviour
     public bool RotateOnY;
     [SerializeField]
     float maxRotationY, minRotationY;
+
+    Rigidbody body;
+
     void Start()
     {
         if (GetComponent<MeshCollider>())
@@ -26,6 +38,56 @@ public class Gear : MonoBehaviour
 
         body.constraints = RigidbodyConstraints.FreezeAll;
     }
+    private void Update()
+    {
+        #region Y Bounds
+        if (RotateOnY)
+        {
+            if(transform.rotation.y < minRotationY)
+            {
+                transform.rotation = new Quaternion(transform.rotation.x, minRotationY, transform.rotation.z, transform.rotation.w);
+                AtMinRotation = true;
+            }
+            else
+            {
+                AtMinRotation = false;
+            }
+            if(transform.rotation.y > maxRotationX)
+            {
+                transform.rotation = new Quaternion(transform.rotation.x, maxRotationY, transform.rotation.z, transform.rotation.w);
+                AtMaxRotation = true;
+            }
+            else
+            {
+                AtMaxRotation = false;
+            }
+        }
+        #endregion
+        #region X Bounds
+        if (RotateOnX)
+        {
+            if (transform.rotation.x < minRotationX)
+            {
+                transform.rotation = new Quaternion(minRotationX,transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                AtMinRotation = true;
+            }
+            else
+            {
+                AtMinRotation = false;
+            }
+            if (transform.rotation.x > maxRotationX)
+            {
+                transform.rotation = new Quaternion(maxRotationX, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+                AtMaxRotation = true;
+            }
+            else
+            {
+                AtMaxRotation = false;
+            }
+        }
+        #endregion
+    }
+    #region Collision
     private void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Player")
@@ -67,4 +129,5 @@ public class Gear : MonoBehaviour
                 col.gameObject.GetComponent<PlayerMovement>().StopAnimation("Pushing");
         }
     }
+    #endregion
 }

@@ -427,7 +427,8 @@ public class PlayerMovement : MonoBehaviour
                     Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
                     {
-                        if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject)
+                        if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject &&
+                            ray.collider.gameObject.layer != 9)
                         {
                             PlayAnimation("Wall Slide");
                             if (gravityPlane.gravity != SlidingGravity)
