@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
 
     GravityPlane gravityPlane;
 
-    float JustWallJumpedTimer;
+    float JustWallJumpedTimer, timerBeforeWallSlide;
 
     #endregion
     #region MonoBehaviors
@@ -424,18 +424,19 @@ public class PlayerMovement : MonoBehaviour
                 //this makes you wall slide
                 if (!OnGround)
                 {
+                    timerBeforeWallSlide -= Time.deltaTime;
                     Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
                     {
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject &&
-                            ray.collider.gameObject.layer != 9)
+                            ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0)
                         {
                             PlayAnimation("Wall Slide");
                             if (gravityPlane.gravity != SlidingGravity)
                                 SetGravity();
                         }
                         if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
-                            && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10)
+                            && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10 && timerBeforeWallSlide <= 0)
                         {
                             JustWallJumpedTimer = .2f;
                             PlayAnimation("Wall Jump");
@@ -473,6 +474,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (gravityPlane.gravity != originalGravity)
                         unSetGravity();
+                    timerBeforeWallSlide = .4f;
                     StopAnimation("Wall Jump");
                 }
                 if(InWater)
