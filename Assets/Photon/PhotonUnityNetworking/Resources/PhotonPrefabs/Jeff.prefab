@@ -2020,7 +2020,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   AtTheTopOfWater: 0
   CollectibleGotten: 0
-  SlidingGravity: 100
+  SlidingGravity: 4
   SlidingMass: 3
   collectibleTimer: 3
   walkingPartical1: {fileID: 1569390576350669840}
@@ -2175,6 +2175,12 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: LongJump
+  - Type: 4
+    SynchronizeType: 0
+    Name: Wall Slide
+  - Type: 4
+    SynchronizeType: 0
+    Name: Wall Jump
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

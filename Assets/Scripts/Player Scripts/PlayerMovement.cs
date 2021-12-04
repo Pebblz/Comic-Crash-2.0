@@ -477,7 +477,7 @@ public class PlayerMovement : MonoBehaviour
                     timerBeforeWallSlide = .4f;
                     StopAnimation("Wall Jump");
                 }
-                if(InWater)
+                if(InWater || OnGround)
                 {
                     StopAnimation("Wall Jump");
                     StopAnimation("Wall Slide");
