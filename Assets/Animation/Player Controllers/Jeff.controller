@@ -3561,9 +3561,6 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: Wall Jump
-    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: Wall Slide
     m_EventTreshold: 0
@@ -9271,7 +9268,7 @@ AnimatorStateMachine:
     m_Position: {x: -110, y: 1500, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5747917710916371017}
-    m_Position: {x: 550, y: 1930, z: 0}
+    m_Position: {x: 530, y: 1940, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4764150763295600898}
     m_Position: {x: 980, y: 1770, z: 0}
