@@ -435,6 +435,14 @@ public class PlayerMovement : MonoBehaviour
                             if (gravityPlane.gravity != SlidingGravity)
                                 SetGravity();
                         }
+                        else
+                        {
+                            if (anim.GetCurrentAnimatorStateInfo(0).IsName("WallSlide") && !OnGround)
+                            {
+                                PlayFallingAnimation();
+                            }
+                            StopAnimation("Wall Slide");
+                        }
                         if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
                             && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10 && timerBeforeWallSlide <= 0)
                         {
