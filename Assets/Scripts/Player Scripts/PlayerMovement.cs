@@ -424,6 +424,14 @@ public class PlayerMovement : MonoBehaviour
                 //this makes you wall slide
                 if (!OnGround)
                 {
+                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || 
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("idle") || 
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("Run") ||
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") ||
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle"))
+                    {
+                        PlayFallingAnimation();
+                    }
                     timerBeforeWallSlide -= Time.deltaTime;
                     Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
@@ -480,6 +488,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
+
                     if (gravityPlane.gravity != originalGravity)
                         unSetGravity();
                     timerBeforeWallSlide = .4f;
@@ -496,12 +505,13 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Isrunning && OnGround && LongJumpTimer <= 0)
                 {
-                    if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 && !isCrouching)
+                    if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 && 
+                        !isCrouching && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump"))
                     {
                         PlayAnimation("LongJump");
                         desiredLongJump = true;
                         LongJumpTimer = .5f;
-                        longJumpCoolDown = .4f;
+                        longJumpCoolDown = .5f;
                     }
                     else
                     {
@@ -1033,7 +1043,7 @@ public class PlayerMovement : MonoBehaviour
             velocity.z != 0 && !InWater)
         {
             PlayAnimation("Walk");
-            if (Isrunning && OnGround)
+            if (Isrunning)
             {
                 PlayAnimation("Run");
             }
@@ -1042,7 +1052,7 @@ public class PlayerMovement : MonoBehaviour
                 StopAnimation("Run");
             }
         }
-        if (InWater || velocity.magnitude < 1f || !OnGround)
+        if (InWater || velocity.magnitude < 1f || !OnGround && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump"))
         {
             StopAnimation("Run");
             StopAnimation("Walk");
