@@ -56,7 +56,7 @@ public class Pet : MonoBehaviour
 
 
             StopAnimation("Walking");
-                SetUpIdle();
+            SetUpIdle();
             }
             if (currentState == States.Running)
             {
