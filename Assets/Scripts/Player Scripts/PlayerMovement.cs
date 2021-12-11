@@ -143,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
     public float submergence;
 
     [HideInInspector]
-    public bool Gliding;
+    public bool Gliding, Sliding;
 
     Collider water;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
@@ -225,7 +225,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove && !Sliding)
             {
                 wallJumpTimer -= Time.deltaTime;
                 if (OnGround || InWater)
@@ -544,6 +544,9 @@ public class PlayerMovement : MonoBehaviour
                     body.velocity = Vector3.zero;
                 else
                     body.velocity = new Vector3(0, body.velocity.y, 0);
+
+                if(Sliding)
+                    desiredJump |= InputManager.GetButtonDown("Jump");
             }
             if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove)
             {
@@ -1018,7 +1021,7 @@ public class PlayerMovement : MonoBehaviour
         float newZ = Mathf.MoveTowards(currentZ, playerInput.y * speed, maxSpeedChange);
 
         //rotation
-        if (!Climbing && !CheckSteepContacts() && playerInput.x != 0f || !Climbing && !CheckSteepContacts() && playerInput.y != 0f)
+        if (!Climbing && !CheckSteepContacts() && playerInput.x != 0f || !Climbing && !CheckSteepContacts() && playerInput.y != 0f && !Sliding)
         {
             float targetAngle = Mathf.Atan2(newX, newZ) * Mathf.Rad2Deg + playerInputSpace.localEulerAngles.y;
 
@@ -1220,6 +1223,18 @@ public class PlayerMovement : MonoBehaviour
             velocity = new Vector3(LongJumpDir.x, velocity.y, LongJumpDir.z);
             jumpPhase = 5;
         }
+    }
+    public void AttackSlide(float SlideSpeed)
+    {
+        if (!Swimming || !InWater)
+        {
+            Sliding = true;
+            Vector3 Slide = new Vector3(velocity.x * SlideSpeed, body.velocity.y, velocity.z * SlideSpeed);
+            
+            body.velocity = new Vector3(Slide.x, velocity.y, Slide.z);
+        }
+        else
+            return;
     }
     #endregion
     #region Checks

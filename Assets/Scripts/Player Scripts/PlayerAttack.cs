@@ -11,11 +11,15 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] GameObject[] PunchHitBoxes;
     [SerializeField] float[] AttackTimers = new float[3];
     [SerializeField] float AirAttackTimer;
+    [SerializeField] float SlideAttackTimer;
     [SerializeField] float[] MoveForward = new float[3];
+    [SerializeField] float slideSpeed;
+    [SerializeField] float SlideTime;
     private Animator anim;
     private int AttacksPreformed = 1;
     private float TimeTillnextAttack;
     private float TimeTillAttackReset;
+    private float TimeTillSlideDone;
     private bool AttackAgian;
     [HideInInspector] public bool CanAttack;
     [HideInInspector] public bool AirAttacked;
@@ -45,32 +49,14 @@ public class PlayerAttack : MonoBehaviour
         if (photonView.IsMine)
         {
             if (!anim.GetBool("Jump"))
-            { // Ground Punch
-                if (handman == null)
+            {
+                if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
-                    if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
-                       && !Input.GetKey(KeyCode.C))
+                    // Ground Punch
+                    if (handman == null)
                     {
-                        punch(AttacksPreformed);
-                    }
-                    //this basically queues up the next attack for the player
-                    if (InputManager.GetButtonDown("Left Mouse") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
-                    {
-                        AttackAgian = true;
-                    }
-                    //this waits for the animation to be done before going to the next punch
-                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
-                        anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
-                    {
-                        punch(AttacksPreformed);
-                    }
-                }
-                else
-                {
-                    if (!handman.isHoldingOBJ)
-                    {
-                        if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 &&
-                            TimeTillnextAttack <= 0 && !Input.GetKey(KeyCode.C))
+                        if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0
+                           && !Input.GetKey(KeyCode.C))
                         {
                             punch(AttacksPreformed);
                         }
@@ -85,6 +71,36 @@ public class PlayerAttack : MonoBehaviour
                         {
                             punch(AttacksPreformed);
                         }
+                    }
+                    else
+                    {
+                        if (!handman.isHoldingOBJ)
+                        {
+                            if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 &&
+                                TimeTillnextAttack <= 0 && !Input.GetKey(KeyCode.C))
+                            {
+                                punch(AttacksPreformed);
+                            }
+                            //this basically queues up the next attack for the player
+                            if (InputManager.GetButtonDown("Left Mouse") && AmountOfAttacks >= AttacksPreformed && !Input.GetKey(KeyCode.C) && TimeTillnextAttack <= 0)
+                            {
+                                AttackAgian = true;
+                            }
+                            //this waits for the animation to be done before going to the next punch
+                            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Punch" + (AttacksPreformed - 1)) &&
+                                anim.GetCurrentAnimatorStateInfo(0).normalizedTime < .90f && AttackAgian)
+                            {
+                                punch(AttacksPreformed);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //slide attack
+                    if (InputManager.GetButtonDown("Left Mouse") && TimeTillSlideDone <= 0)
+                    {
+                        SlideAttack();
                     }
                 }
             }
@@ -119,7 +135,6 @@ public class PlayerAttack : MonoBehaviour
                 movement.enabled = false;
                 body.velocity = Vector3.zero;
             }
-
             if (TimeTillAttackReset <= 0 && movement.OnGround)
             {
                 StopAnimationInt("Attack");
@@ -140,14 +155,34 @@ public class PlayerAttack : MonoBehaviour
                 movement.PlayFallingAnimation();
             }
         }
+        if (TimeTillSlideDone > 0)
+        {
+            if (InputManager.GetButtonDown("Jump") || !movement.OnGround)
+            {
+                TimeTillSlideDone = 0;
+            }
+            float temp = Time.deltaTime;
+            if (temp == 0)
+            {
+                movement.AttackSlide(slideSpeed * .1f);
+            }
+            else
+                movement.AttackSlide(slideSpeed * Time.deltaTime);
+        }
+        else
+        {
+            movement.Sliding = false;
+            StopAnimationBool("SlideAttack");
+        }
         TimeTillAttackReset -= Time.deltaTime;
         TimeTillnextAttack -= Time.deltaTime;
+        TimeTillSlideDone -= Time.deltaTime;
     }
     void PunchAir()
     {
-        if(handman)
+        if (handman)
         {
-            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[0].name), transform.position + new Vector3(0,.6f,0) + transform.forward * 1.1f, Quaternion.identity);
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[0].name), transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
             temp.GetComponent<PhotonView>().ViewID = photonView.ViewID;
             temp.transform.parent = transform;
         }
@@ -163,6 +198,18 @@ public class PlayerAttack : MonoBehaviour
         TimeTillAttackReset = AirAttackTimer;
         AttacksPreformed = 2;
         AirAttacked = true;
+        TimeTillnextAttack = .1f;
+    }
+    void SlideAttack()
+    {
+        GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[0].name), transform.position + transform.forward * 1.1f, Quaternion.identity);
+        temp.GetComponent<PhotonView>().ViewID = photonView.ViewID;
+        temp.transform.parent = transform;
+
+        PlayAnimation("SlideAttack");
+        TimeTillSlideDone = SlideTime;
+        TimeTillAttackReset = SlideAttackTimer;
+        AttacksPreformed = 2;
         TimeTillnextAttack = .1f;
     }
     void punch(int attackNumber)

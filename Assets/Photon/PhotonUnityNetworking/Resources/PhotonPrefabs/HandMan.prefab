@@ -532,6 +532,7 @@ MonoBehaviour:
   desiredLongJump: 0
   submergence: 0
   Gliding: 0
+  Sliding: 0
   OnFloor: 0
   isCrouching: 0
   LongJumpTimer: 0
@@ -623,10 +624,13 @@ MonoBehaviour:
   - 0.7
   - 0.85
   AirAttackTimer: 0.5
+  SlideAttackTimer: 0.3
   MoveForward:
   - 0
   - 0
   - 0
+  slideSpeed: 8
+  SlideTime: 2
   CanAttack: 0
   AirAttacked: 0
 --- !u!114 &-7128637376864548726
