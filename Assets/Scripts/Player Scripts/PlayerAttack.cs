@@ -157,17 +157,14 @@ public class PlayerAttack : MonoBehaviour
         }
         if (TimeTillSlideDone > 0)
         {
+            float temp = 2;
+            
             if (InputManager.GetButtonDown("Jump") || !movement.OnGround)
             {
                 TimeTillSlideDone = 0;
             }
-            float temp = Time.deltaTime;
-            if (temp == 0)
-            {
-                movement.AttackSlide(slideSpeed * .1f);
-            }
-            else
-                movement.AttackSlide(slideSpeed * Time.deltaTime);
+            movement.AttackSlide(slideSpeed * (temp * .15f));
+            temp -= Time.deltaTime;
         }
         else
         {
