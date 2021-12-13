@@ -41,7 +41,8 @@ public class PlayerSwitcher : MonoBehaviourPun
             {
                 if (InputManager.GetButton("1"))
                 {
-                    if(currentCharacter > 0)
+
+                    if (currentCharacter > 0)
                     {
                         currentCharacter--;
                     }
@@ -50,9 +51,11 @@ public class PlayerSwitcher : MonoBehaviourPun
                         currentCharacter = 2;
                     }
                     SwitchCharacter(currentCharacter);
+
                 }
                 if (InputManager.GetButton("2"))
                 {
+
                     if (currentCharacter < 2)
                     {
                         currentCharacter++;
@@ -62,6 +65,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                         currentCharacter = 0;
                     }
                     SwitchCharacter(currentCharacter);
+
                 }
             }
         }
@@ -73,7 +77,7 @@ public class PlayerSwitcher : MonoBehaviourPun
     }
     public void SwitchToFirstCharacter()
     {
-        if(CharactersToSwitchTo[0] != null)
+        if (CharactersToSwitchTo[0] != null)
             SwitchCharacter(0);
     }
     void SwitchCharacter(int i)
@@ -83,68 +87,70 @@ public class PlayerSwitcher : MonoBehaviourPun
             if (CharactersToSwitchTo[i] != null && CanSwitch)
             {
                 CurrentPlayer = PhotonFindCurrentClient();
-
-                PlayerTransform = CurrentPlayer.transform;
-                PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
-
-
-                if (CurrentPlayer.GetComponent<HandMan>())
+                if (!CurrentPlayer.GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible"))
                 {
-                    if (CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
+                    PlayerTransform = CurrentPlayer.transform;
+                    PlayerMovement currentPlayerMovement = CurrentPlayer.GetComponent<PlayerMovement>();
+
+
+                    if (CurrentPlayer.GetComponent<HandMan>())
                     {
-                        CurrentPlayer.GetComponent<HandMan>().PickUp.GetComponent<PickUpables>().DropInFront();
+                        if (CurrentPlayer.GetComponent<HandMan>().isHoldingOBJ)
+                        {
+                            CurrentPlayer.GetComponent<HandMan>().PickUp.GetComponent<PickUpables>().DropInFront();
+                        }
                     }
-                }
 
-                GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name),
-                    PlayerTransform.position, PlayerTransform.rotation, 0);
+                    GameObject Temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", CharactersToSwitchTo[i].name),
+                        PlayerTransform.position, PlayerTransform.rotation, 0);
 
-                Temp.GetComponent<PlayerHealth>().currentHealth = CurrentPlayer.GetComponent<PlayerHealth>().currentHealth;
+                    Temp.GetComponent<PlayerHealth>().currentHealth = CurrentPlayer.GetComponent<PlayerHealth>().currentHealth;
 
-                Temp.GetComponent<PhotonView>().ViewID = CurrentPlayer.GetComponent<PhotonView>().ViewID;
-                PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
+                    Temp.GetComponent<PhotonView>().ViewID = CurrentPlayer.GetComponent<PhotonView>().ViewID;
+                    PlayerMovement TempPlayerMovement = Temp.GetComponent<PlayerMovement>();
 
-                Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
-                ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
+                    Temp.GetComponent<PlayerHealth>().currentAir = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
+                    ui.airLeft = CurrentPlayer.GetComponent<PlayerHealth>().currentAir;
 
-                Temp.GetComponent<Player>().respawnPoint =
-                    CurrentPlayer.GetComponent<Player>().respawnPoint;
+                    Temp.GetComponent<Player>().respawnPoint =
+                        CurrentPlayer.GetComponent<Player>().respawnPoint;
 
-                TempPlayerMovement.jumpPhase = 5;
+                    TempPlayerMovement.jumpPhase = 5;
 
-                Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
-                if(currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") && currentPlayerMovement.OnGround)
-                {
-                    TempPlayerMovement.PlayAnimation("idle");
-                }
-                if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
-                {
-                    TempPlayerMovement.PlayAnimation("Run");
-                }
-                else
-                {
-                    if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                    Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
+                    if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") && currentPlayerMovement.OnGround)
                     {
-                        TempPlayerMovement.PlayAnimation("Walk");
+                        TempPlayerMovement.PlayAnimation("idle");
                     }
-                    if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
+                    if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                     {
-                        TempPlayerMovement.PlayFallingAnimation();
+                        TempPlayerMovement.PlayAnimation("Run");
                     }
+                    else
+                    {
+                        if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+                        {
+                            TempPlayerMovement.PlayAnimation("Walk");
+                        }
+                        if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
+                        {
+                            TempPlayerMovement.PlayFallingAnimation();
+                        }
+                    }
+                    TempPlayerMovement.OnFloor = currentPlayerMovement.OnFloor;
+                    if (currentPlayerMovement.InWater)
+                    {
+                        TempPlayerMovement.submergence = currentPlayerMovement.submergence;
+                    }
+                    TempPlayerMovement.CanWallJump = false;
+                    PlayerTransform = Temp.transform;
+                    Camera.transform.parent = null;
+                    Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
+                    Camera.GetComponent<MainCamera>().target = Temp.transform;
+                    PhotonNetwork.Destroy(CurrentPlayer);
+                    CurrentPlayer = Temp;
+                    timer = maxSwitchTimer;
                 }
-                TempPlayerMovement.OnFloor = currentPlayerMovement.OnFloor;
-                if(currentPlayerMovement.InWater)
-                {
-                    TempPlayerMovement.submergence = currentPlayerMovement.submergence;
-                }
-                TempPlayerMovement.CanWallJump = false;
-                PlayerTransform = Temp.transform;
-                Camera.transform.parent = null;
-                Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
-                Camera.GetComponent<MainCamera>().target = Temp.transform;
-                PhotonNetwork.Destroy(CurrentPlayer);
-                CurrentPlayer = Temp;
-                timer = maxSwitchTimer;
             }
         }
     }

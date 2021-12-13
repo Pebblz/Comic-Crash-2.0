@@ -3038,6 +3038,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Falling
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4454243314089766941}
   m_Solo: 0
@@ -3176,6 +3179,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: LongJump
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4454243314089766941}
