@@ -424,11 +424,11 @@ public class PlayerMovement : MonoBehaviour
                 //this makes you wall slide
                 if (!OnGround)
                 {
-                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") || 
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("idle") || 
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("Run") ||
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") ||
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle"))
+                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk")  && !InWater || 
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !InWater || 
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && !InWater ||
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") && !InWater ||
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle") && !InWater)
                     {
                         PlayFallingAnimation();
                     }
@@ -437,7 +437,7 @@ public class PlayerMovement : MonoBehaviour
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
                     {
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject &&
-                            ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0)
+                            ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0 && !InWater)
                         {
                             PlayAnimation("Wall Slide");
                             if (gravityPlane.gravity != SlidingGravity)
@@ -452,7 +452,8 @@ public class PlayerMovement : MonoBehaviour
                             StopAnimation("Wall Slide");
                         }
                         if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
-                            && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10 && timerBeforeWallSlide <= 0)
+                            && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10 && timerBeforeWallSlide <= 0
+                            && !InWater)
                         {
                             JustWallJumpedTimer = .2f;
                             PlayAnimation("Wall Jump");
@@ -477,7 +478,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else
                     {
-                        if(anim.GetCurrentAnimatorStateInfo(0).IsName("WallSlide") && !OnGround)
+                        if(anim.GetCurrentAnimatorStateInfo(0).IsName("WallSlide") && !OnGround && !InWater)
                         {
                             PlayFallingAnimation();
                         }
@@ -1088,7 +1089,7 @@ public class PlayerMovement : MonoBehaviour
     #region LongJump and Jump
     void Jump(Vector3 gravity)
     {
-        if (!Swimming || !InWater)
+        if (!Swimming && !InWater)
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
             {
