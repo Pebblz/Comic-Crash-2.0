@@ -2056,7 +2056,7 @@ MonoBehaviour:
   - 0.5
   - 0.85
   - 0.85
-  AirAttackTimer: 0.3
+  AirAttackTimer: 0.6
   SlideAttackTimer: 0.3
   MoveForward:
   - 0
@@ -2064,6 +2064,7 @@ MonoBehaviour:
   - 0
   slideSpeed: 10
   SlideTime: 0.5
+  TimeTillnextAttack: 0
   CanAttack: 0
   AirAttacked: 0
 --- !u!114 &2844136882551048526
@@ -2185,6 +2186,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: Wall Jump
+  - Type: 4
+    SynchronizeType: 0
+    Name: SlideAttack
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

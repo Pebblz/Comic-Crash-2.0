@@ -623,7 +623,7 @@ MonoBehaviour:
   - 0.5
   - 0.7
   - 0.85
-  AirAttackTimer: 0.5
+  AirAttackTimer: 0.6
   SlideAttackTimer: 0.3
   MoveForward:
   - 0
@@ -631,6 +631,7 @@ MonoBehaviour:
   - 0
   slideSpeed: 8
   SlideTime: 0.5
+  TimeTillnextAttack: 0
   CanAttack: 0
   AirAttacked: 0
 --- !u!114 &-7128637376864548726
@@ -782,6 +783,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: Pushing
+  - Type: 4
+    SynchronizeType: 0
+    Name: SlideAttack
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

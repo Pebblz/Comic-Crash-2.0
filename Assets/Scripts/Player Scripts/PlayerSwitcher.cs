@@ -132,7 +132,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                         {
                             TempPlayerMovement.PlayAnimation("Walk");
                         }
-                        if (!currentPlayerMovement.OnGround && !currentPlayerMovement.Swimming)
+                        if (!currentPlayerMovement.OnGround && !currentPlayerMovement.InWater)
                         {
                             TempPlayerMovement.PlayFallingAnimation();
                         }
@@ -141,6 +141,8 @@ public class PlayerSwitcher : MonoBehaviourPun
                     if (currentPlayerMovement.InWater)
                     {
                         TempPlayerMovement.submergence = currentPlayerMovement.submergence;
+                        if(Temp.GetComponent<PlayerAttack>())
+                            Temp.GetComponent<PlayerAttack>().TimeTillnextAttack = .3f;
                     }
                     TempPlayerMovement.CanWallJump = false;
                     PlayerTransform = Temp.transform;
