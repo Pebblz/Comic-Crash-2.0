@@ -237,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (OnGround && !inWaterAndFloor)
                 {
-                    FallTimer = 2;
+                    FallTimer = .1f;
                     if (walkingPartical1 != null && walkingPartical1.isStopped)
                         walkingPartical1.Play();
                     if (walkingPartical2 != null && walkingPartical2.isStopped)
@@ -278,7 +278,11 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("DoubleJump");
                     }
                 }
-                if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !Swimming && !InWater)
+                if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && !OnGround && !Bounce && FallTimer < 0 && !InWater ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !InWater ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && !OnGround && !Bounce && FallTimer < 0 && !InWater ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") && !OnGround && !Bounce && FallTimer < 0 && !InWater ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle") && !OnGround && !Bounce && FallTimer < 0 && !InWater)
                 {
                     PlayFallingAnimation();
                 }
@@ -424,14 +428,6 @@ public class PlayerMovement : MonoBehaviour
                 //this makes you wall slide
                 if (!OnGround)
                 {
-                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk")  && !InWater || 
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !InWater || 
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && !InWater ||
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") && !InWater ||
-                        anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle") && !InWater)
-                    {
-                        PlayFallingAnimation();
-                    }
                     timerBeforeWallSlide -= Time.deltaTime;
                     Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
@@ -478,12 +474,12 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else
                     {
-                        if(anim.GetCurrentAnimatorStateInfo(0).IsName("WallSlide") && !OnGround && !InWater)
+                        if (anim.GetCurrentAnimatorStateInfo(0).IsName("WallSlide") && !OnGround && !InWater)
                         {
                             PlayFallingAnimation();
                         }
                         StopAnimation("Wall Slide");
-                        if(gravityPlane.gravity != originalGravity)
+                        if (gravityPlane.gravity != originalGravity)
                             unSetGravity();
                     }
                 }
@@ -495,7 +491,7 @@ public class PlayerMovement : MonoBehaviour
                     timerBeforeWallSlide = .4f;
                     StopAnimation("Wall Jump");
                 }
-                if(InWater || OnGround)
+                if (InWater || OnGround)
                 {
                     StopAnimation("Wall Jump");
                     StopAnimation("Wall Slide");
@@ -506,7 +502,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Isrunning && OnGround && LongJumpTimer <= 0)
                 {
-                    if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 && 
+                    if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 &&
                         !isCrouching && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump"))
                     {
                         PlayAnimation("LongJump");
@@ -546,8 +542,13 @@ public class PlayerMovement : MonoBehaviour
                 else
                     body.velocity = new Vector3(0, body.velocity.y, 0);
 
-                if(Sliding)
+                if (Sliding)
+                {
+                    if (OnGround)
+                        isCrouching = InputManager.GetButton("Crouch");
+
                     desiredJump |= InputManager.GetButtonDown("Jump");
+                }
             }
             if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove)
             {
@@ -562,7 +563,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 GotCollectible();
             }
-            
+
             currentCollectibleTimer -= Time.deltaTime;
             LongJumpTimer -= Time.deltaTime;
             longJumpCoolDown -= Time.deltaTime;
@@ -677,7 +678,7 @@ public class PlayerMovement : MonoBehaviour
                         AtTheTopOfWater = false;
                     }
                 }
-                
+
                 if (OnGround)
                     body.gameObject.GetComponent<PlayerMovement>().Bounce = false;
                 body.velocity = velocity;
@@ -1100,7 +1101,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlayAnimation("Dive");
                 StopAnimation("Wall Jump");
-                Vector3 DiveDir = new Vector3(body.velocity.x,0,body.velocity.z) * AirDiveSpeed ;
+                Vector3 DiveDir = new Vector3(body.velocity.x, 0, body.velocity.z) * AirDiveSpeed;
                 Mathf.Clamp(DiveDir.x, -15, 15);
                 Mathf.Clamp(DiveDir.z, -15, 15);
                 velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
@@ -1231,7 +1232,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Sliding = true;
             Vector3 Slide = new Vector3(velocity.x * SlideSpeed, body.velocity.y, velocity.z * SlideSpeed);
-            
+
             body.velocity = new Vector3(Slide.x, velocity.y, Slide.z);
         }
         else

@@ -129,14 +129,22 @@ public class PlayerAttack : MonoBehaviour
                     }
                 }
             }
-            #endregion
-            //this is so the player can't swing around like a crazy person and kill everything around him
-            if (TimeTillAttackReset > 0 && movement.OnGround)
+            if (anim.GetBool("Sinking") || anim.GetBool("SwimmingUp") || anim.GetBool("SwimmingDown") || anim.GetBool("SwimLeftOrRight"))
+            {
+                if (InputManager.GetButtonDown("Left Mouse") && AttacksPreformed == 1 && TimeTillnextAttack <= 0)
+                {
+                    PunchAir();
+                }
+            }
+                #endregion
+                //this is so the player can't swing around like a crazy person and kill everything around him
+                if (TimeTillAttackReset > 0 && movement.OnGround)
             {
                 movement.enabled = false;
                 body.velocity = Vector3.zero;
             }
-            if (TimeTillAttackReset <= 0 && movement.OnGround)
+            if (TimeTillAttackReset <= 0 && movement.OnGround ||
+                TimeTillAttackReset <= 0 && movement.InWater)
             {
                 StopAnimationInt("Attack");
                 StopAnimationBool("AirAttack");
@@ -158,14 +166,13 @@ public class PlayerAttack : MonoBehaviour
         }
         if (TimeTillSlideDone > 0)
         {            
-            if (InputManager.GetButtonDown("Jump") || !movement.OnGround)
+            if (InputManager.GetButton("Jump") || !movement.OnGround || InputManager.GetButton("Crouch") || anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible"))
             {
                 TimeTillSlideDone = 0;
             }
             movement.AttackSlide(slideSpeed * (slowDownSlide * .15f));
-            print(slideSpeed * (slowDownSlide * .15f));
 
-            TimeTillSlideDone -= Time.deltaTime;
+            TimeTillSlideDone -= Time.deltaTime;  
         }
         else
         {
