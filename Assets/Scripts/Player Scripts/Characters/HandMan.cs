@@ -116,9 +116,9 @@ public class HandMan : MonoBehaviour
             RaycastHit hit;
             for (float x = -.5f; x <= .5f; x += .5f)
             {
-                for (float y = -4; y <= 4; y += .6f)
+                for (float y = -2; y <= 2; y += .4f)
                 {
-                    if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, .5f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f))
+                    if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, 2f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f))
                     {
                         if (hit.collider.gameObject.tag == "HeavyObject")
                         {
