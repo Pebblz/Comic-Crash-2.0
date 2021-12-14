@@ -20,6 +20,7 @@ public class PlayerAttack : MonoBehaviour
     private float TimeTillnextAttack;
     private float TimeTillAttackReset;
     private float TimeTillSlideDone;
+    private float slowDownSlide;
     private bool AttackAgian;
     [HideInInspector] public bool CanAttack;
     [HideInInspector] public bool AirAttacked;
@@ -156,24 +157,26 @@ public class PlayerAttack : MonoBehaviour
             }
         }
         if (TimeTillSlideDone > 0)
-        {
-            float temp = 2;
-            
+        {            
             if (InputManager.GetButtonDown("Jump") || !movement.OnGround)
             {
                 TimeTillSlideDone = 0;
             }
-            movement.AttackSlide(slideSpeed * (temp * .15f));
-            temp -= Time.deltaTime;
+            movement.AttackSlide(slideSpeed * (slowDownSlide * .15f));
+            print(slideSpeed * (slowDownSlide * .15f));
+
+            TimeTillSlideDone -= Time.deltaTime;
         }
         else
         {
             movement.Sliding = false;
             StopAnimationBool("SlideAttack");
         }
+        if(slowDownSlide > 0)
+            slowDownSlide -= (Time.deltaTime  * 4f);
+
         TimeTillAttackReset -= Time.deltaTime;
         TimeTillnextAttack -= Time.deltaTime;
-        TimeTillSlideDone -= Time.deltaTime;
     }
     void PunchAir()
     {
@@ -207,6 +210,7 @@ public class PlayerAttack : MonoBehaviour
         TimeTillSlideDone = SlideTime;
         TimeTillAttackReset = SlideAttackTimer;
         AttacksPreformed = 2;
+        slowDownSlide = 2;
         TimeTillnextAttack = .1f;
     }
     void punch(int attackNumber)
