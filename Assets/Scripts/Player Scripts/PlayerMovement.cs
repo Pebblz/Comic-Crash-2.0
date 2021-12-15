@@ -137,7 +137,6 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool desiredLongJump;
     public bool OnGround => groundContactCount > 0;
-
     public bool Swimming => submergence >= swimThreshold;
     [HideInInspector]
     public float submergence;
@@ -225,7 +224,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove && !Sliding)
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
             {
                 wallJumpTimer -= Time.deltaTime;
                 if (OnGround || InWater)
@@ -291,11 +290,11 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("IsLanded");
                 }
                 minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-                if (LongJumpTimer <= 0)
+                if (LongJumpTimer <= 0 && !Sliding)
                 {
                     playerInput.x = InputManager.GetAxis("Horizontal");
                     playerInput.y = InputManager.GetAxis("Vertical");
-                }
+                }  
                 playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
                 playerInput = Vector3.ClampMagnitude(playerInput, 1f);
                 if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
@@ -309,15 +308,18 @@ public class PlayerMovement : MonoBehaviour
                     CurrentSpeed = CrouchSpeed;
                     isCrouching = true;
                 }
-                if (playerInputSpace)
+                if (!Sliding)
                 {
-                    rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
-                    forwardAxis = ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
-                }
-                else
-                {
-                    rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
-                    forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
+                    if (playerInputSpace)
+                    {
+                        rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
+                        forwardAxis = ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
+                    }
+                    else
+                    {
+                        rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
+                        forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
+                    }
                 }
                 if (Swimming)
                 {
@@ -335,9 +337,6 @@ public class PlayerMovement : MonoBehaviour
                         if (blobert)
                             StopAnimation("Drowning");
                     }
-
-
-
 
                     desiresClimbing = InputManager.GetButton("Climb");
                     if (!toggle.m_gamepadOn)
@@ -542,13 +541,6 @@ public class PlayerMovement : MonoBehaviour
                 else
                     body.velocity = new Vector3(0, body.velocity.y, 0);
 
-                if (Sliding)
-                {
-                    if (OnGround)
-                        isCrouching = InputManager.GetButton("Crouch");
-
-                    desiredJump |= InputManager.GetButtonDown("Jump");
-                }
             }
             if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove)
             {
@@ -1201,7 +1193,6 @@ public class PlayerMovement : MonoBehaviour
             stepsSinceLastJump = 0;
 
             float LongjumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * longJumpHeight);
-            print(LongjumpSpeed);
             if (InWater)
             {
                 LongjumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
@@ -1231,12 +1222,10 @@ public class PlayerMovement : MonoBehaviour
         if (!Swimming || !InWater)
         {
             Sliding = true;
-            Vector3 Slide = new Vector3(velocity.x * SlideSpeed, body.velocity.y, velocity.z * SlideSpeed);
+            Vector3 Slide = new Vector3(velocity.x * SlideSpeed, velocity.y, velocity.z * SlideSpeed);
 
             body.velocity = new Vector3(Slide.x, velocity.y, Slide.z);
         }
-        else
-            return;
     }
     #endregion
     #region Checks
