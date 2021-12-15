@@ -192,7 +192,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SlideAttack
-  m_Speed: 1
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -626950770109446130}
@@ -216,7 +216,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 1827226128182048838, guid: fff413c3d11b1ed4c832827b21f3969d,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -886,7 +887,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: 88af2ac9779432645b77681765d14f37,
+  m_Motion: {fileID: 1827226128182048838, guid: 67b390454d503434e890df2e8582dfbd,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -1094,7 +1095,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.04
+  m_TransitionDuration: 0.092936285
   m_TransitionOffset: 0
   m_ExitTime: 0.5161291
   m_HasExitTime: 0
@@ -9433,9 +9434,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.06
-  m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_TransitionDuration: 0.25801763
+  m_TransitionOffset: 0.09523805
+  m_ExitTime: 0.74263424
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 0
