@@ -56,10 +56,15 @@ public class MovingPlatforms : MonoBehaviour
     Vector3 lastPosition, lastMove;
     float stopTimer;
     bool once;
+    List<Rigidbody> rigidbodies = new List<Rigidbody>();
+    Vector3 lastPos;
+    Transform _transform;
     #region MonoBehaviour functions
     void Start()
     {
-        StartPoint = transform.position;
+        _transform = transform;
+        StartPoint = _transform.position;
+        lastPos = _transform.position;
         if (MoveY)
             EndPointY = StartPoint.y + DistanceToMoveY;
 
@@ -94,6 +99,28 @@ public class MovingPlatforms : MonoBehaviour
                 resetPosition();
             }
 
+            if (rigidbodies.Count > 0)
+            {
+                for (int i = 0; i < rigidbodies.Count; i++)
+                {
+                    Rigidbody rb = rigidbodies[i];
+                    Vector3 vel = Vector3.zero;
+                    if (MoveY)
+                    {
+                        vel = new Vector3(rb.velocity.x * Time.deltaTime, _transform.position.y - lastPos.y, rb.velocity.z * Time.deltaTime);
+                    }
+                    if (MoveX)
+                    {
+                        vel = new Vector3(_transform.position.x - lastPos.x, rb.velocity.y * Time.deltaTime, rb.velocity.z * Time.deltaTime);
+                    }
+                    if (MoveZ)
+                    {
+                        vel = new Vector3(rb.velocity.x * Time.deltaTime, rb.velocity.y * Time.deltaTime, _transform.position.z - lastPos.z);
+                    }
+                    rb.transform.Translate(vel, transform);
+                }
+            }
+            lastPos = _transform.position;
         }
     }
     #endregion
@@ -122,7 +149,7 @@ public class MovingPlatforms : MonoBehaviour
             {
                 FrontToBack();
             }
-            if(MoveX)
+            if (MoveX)
             {
                 LeftToRight();
             }
@@ -136,7 +163,7 @@ public class MovingPlatforms : MonoBehaviour
             if (GoBackX)
             {
 
-                if (this.gameObject.transform.position.x <= StartPoint.x)
+                if (_transform.position.x <= StartPoint.x)
                 {
                     GoBackX = false;
                     if (!once && stopTimer <= 0)
@@ -147,14 +174,14 @@ public class MovingPlatforms : MonoBehaviour
                 }
                 else
                 {
-                    if(stopTimer <= 0)
-                        this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
+                    if (stopTimer <= 0)
+                        _transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
             else
             {
 
-                if (this.gameObject.transform.position.x >= EndPointX)
+                if (_transform.position.x >= EndPointX)
                 {
                     GoBackX = true;
                     if (!once && stopTimer <= 0)
@@ -166,7 +193,7 @@ public class MovingPlatforms : MonoBehaviour
                 else
                 {
                     if (stopTimer <= 0)
-                        this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
+                        _transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
         }
@@ -175,7 +202,7 @@ public class MovingPlatforms : MonoBehaviour
             if (GoBackX)
             {
 
-                if (this.gameObject.transform.position.x >= StartPoint.x)
+                if (_transform.position.x >= StartPoint.x)
                 {
                     GoBackX = false;
                     if (!once && stopTimer <= 0)
@@ -187,13 +214,13 @@ public class MovingPlatforms : MonoBehaviour
                 else
                 {
                     if (stopTimer <= 0)
-                        this.gameObject.transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
+                        _transform.Translate(new Vector3(1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
             else
             {
 
-                if (this.gameObject.transform.position.x <= EndPointX)
+                if (_transform.position.x <= EndPointX)
                 {
                     GoBackX = true;
                     if (!once && stopTimer <= 0)
@@ -205,7 +232,7 @@ public class MovingPlatforms : MonoBehaviour
                 else
                 {
                     if (stopTimer <= 0)
-                        this.gameObject.transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
+                        _transform.Translate(new Vector3(-1 * Time.deltaTime * speed, 0, 0), Space.World);
                 }
             }
         }
@@ -217,7 +244,7 @@ public class MovingPlatforms : MonoBehaviour
             if (GoBackZ)
             {
 
-                if (this.gameObject.transform.position.z <= StartPoint.z)
+                if (_transform.position.z <= StartPoint.z)
                 {
                     GoBackZ = false;
                     if (!once && stopTimer <= 0)
@@ -229,12 +256,12 @@ public class MovingPlatforms : MonoBehaviour
                 else
                 {
                     if (stopTimer <= 0)
-                        this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
+                        _transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
                 }
             }
             else
             {
-                if (this.gameObject.transform.position.z >= EndPointZ)
+                if (_transform.position.z >= EndPointZ)
                 {
                     GoBackZ = true;
                     if (!once && stopTimer <= 0)
@@ -247,7 +274,7 @@ public class MovingPlatforms : MonoBehaviour
                 {
                     if (stopTimer <= 0)
                     {
-                        this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                        _transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
                         once = false;
                     }
                 }
@@ -258,7 +285,7 @@ public class MovingPlatforms : MonoBehaviour
             if (GoBackZ)
             {
 
-                if (this.gameObject.transform.position.z >= StartPoint.z)
+                if (_transform.position.z >= StartPoint.z)
                 {
                     GoBackZ = false;
                     if (!once && stopTimer <= 0)
@@ -271,14 +298,14 @@ public class MovingPlatforms : MonoBehaviour
                 {
                     if (stopTimer <= 0)
                     {
-                        this.gameObject.transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
+                        _transform.Translate(new Vector3(0, 0, 1 * Time.deltaTime * speed), Space.World);
                         once = false;
                     }
                 }
             }
             else
             {
-                if (this.gameObject.transform.position.z <= EndPointZ)
+                if (_transform.position.z <= EndPointZ)
                 {
                     GoBackZ = true;
                     if (!once && stopTimer <= 0)
@@ -291,7 +318,7 @@ public class MovingPlatforms : MonoBehaviour
                 {
                     if (stopTimer <= 0)
                     {
-                        this.gameObject.transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
+                        _transform.Translate(new Vector3(0, 0, -1 * Time.deltaTime * speed), Space.World);
                         once = false;
                     }
                 }
@@ -304,7 +331,7 @@ public class MovingPlatforms : MonoBehaviour
         {
             if (GoBackY)
             {
-                if (this.gameObject.transform.position.y <= StartPoint.y)
+                if (_transform.position.y <= StartPoint.y)
                 {
                     GoBackY = false;
                     if (!once && stopTimer <= 0)
@@ -317,14 +344,14 @@ public class MovingPlatforms : MonoBehaviour
                 {
                     if (stopTimer <= 0)
                     {
-                        this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                        _transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
                         once = false;
                     }
                 }
             }
             else
             {
-                if (this.gameObject.transform.position.y >= EndPointY)
+                if (_transform.position.y >= EndPointY)
                 {
                     GoBackY = true;
                     if (!once && stopTimer <= 0)
@@ -337,7 +364,7 @@ public class MovingPlatforms : MonoBehaviour
                 {
                     if (stopTimer <= 0)
                     {
-                        this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                        _transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
                         once = false;
                     }
                 }
@@ -347,7 +374,7 @@ public class MovingPlatforms : MonoBehaviour
         {
             if (GoBackY)
             {
-                if (this.gameObject.transform.position.y >= StartPoint.y)
+                if (_transform.position.y >= StartPoint.y)
                 {
                     GoBackY = false;
                     if (!once && stopTimer <= 0)
@@ -360,14 +387,14 @@ public class MovingPlatforms : MonoBehaviour
                 {
                     if (stopTimer <= 0)
                     {
-                        this.gameObject.transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
+                        _transform.Translate(new Vector3(0, 1 * Time.deltaTime * speed, 0), Space.World);
                         once = false;
                     }
                 }
             }
             else
             {
-                if (this.gameObject.transform.position.y <= EndPointY)
+                if (_transform.position.y <= EndPointY)
                 {
                     GoBackY = true;
                     if (!once && stopTimer <= 0)
@@ -380,7 +407,7 @@ public class MovingPlatforms : MonoBehaviour
                 {
                     if (stopTimer <= 0)
                     {
-                        this.gameObject.transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
+                        _transform.Translate(new Vector3(0, -1 * Time.deltaTime * speed, 0), Space.World);
                         once = false;
                     }
                 }
@@ -389,8 +416,8 @@ public class MovingPlatforms : MonoBehaviour
     }
     void resetPosition()
     {
-        transform.position = Vector3.MoveTowards(transform.position, StartPoint, speed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, StartPoint) < .1)
+        _transform.position = Vector3.MoveTowards(_transform.position, StartPoint, speed * Time.deltaTime);
+        if (Vector3.Distance(_transform.position, StartPoint) < .1)
         {
             GoBackToStart = false;
         }
@@ -399,20 +426,38 @@ public class MovingPlatforms : MonoBehaviour
     #region collision functions
     private void OnCollisionEnter(Collision col)
     {
-
-        if (col.gameObject.tag == "Player" && StepOnToActivate 
-            && col.transform.position.y > transform.position.y)
+        Rigidbody rb = col.collider.GetComponent<Rigidbody>();
+        if (col.gameObject.tag == "Player" && StepOnToActivate
+            && col.transform.position.y > _transform.position.y)
         {
             isSteppedOn = true;
         }
-
+        if (rb != null)
+        {
+            Add(rb);
+        }
     }
     private void OnCollisionExit(Collision col)
     {
+        Rigidbody rb = col.collider.GetComponent<Rigidbody>();
         if (col.gameObject.tag == "Player" && StepOnToActivate)
         {
             isSteppedOn = false;
         }
+        if (rb != null)
+        {
+            Remove(rb);
+        }
+    }
+    void Add(Rigidbody rb)
+    {
+        if (!rigidbodies.Contains(rb))
+            rigidbodies.Add(rb);
+    }
+    void Remove(Rigidbody rb)
+    {
+        if (rigidbodies.Contains(rb))
+            rigidbodies.Remove(rb);
     }
     #endregion
 }
