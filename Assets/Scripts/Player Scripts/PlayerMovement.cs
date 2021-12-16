@@ -1241,9 +1241,9 @@ public class PlayerMovement : MonoBehaviour
         if (!Swimming || !InWater)
         {
             Sliding = true;
-            Vector3 Slide = new Vector3(velocity.x * SlideSpeed, velocity.y, velocity.z * SlideSpeed);
+            Vector3 Slide = new Vector3(velocity.x * SlideSpeed, body.velocity.y, velocity.z * SlideSpeed);
 
-            body.velocity = new Vector3(Slide.x, velocity.y, Slide.z);
+            body.velocity = new Vector3(Slide.x, body.velocity.y, Slide.z);
         }
     }
     #endregion

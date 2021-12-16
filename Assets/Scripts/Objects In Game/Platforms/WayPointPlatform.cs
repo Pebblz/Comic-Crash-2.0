@@ -48,7 +48,7 @@ public class WayPointPlatform : MonoBehaviour
                     //Vector3 vel = Vector3.zero;
 
                     Vector3 vel = new Vector3((_transform.position.x - lastPos.x) + ((rb.velocity.x * Time.deltaTime) / 2), 
-                        (_transform.position.y - lastPos.y),
+                        (_transform.position.y - lastPos.y) + ((rb.velocity.y * Time.deltaTime) / 2),
                         (_transform.position.z - lastPos.z) + ((rb.velocity.z * Time.deltaTime) / 2));
 
                     rb.transform.Translate(vel, transform);
