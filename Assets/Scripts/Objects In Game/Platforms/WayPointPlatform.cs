@@ -24,16 +24,39 @@ public class WayPointPlatform : MonoBehaviour
     int ArrayIndex = 0;
     private bool isSteppedOn;
     bool AtDestination = true;
+    List<Rigidbody> rigidbodies = new List<Rigidbody>();
+    Vector3 lastPos;
+    Transform _transform;
     void Start()
     {
+        _transform = transform;
         GoToFirstWayPoint();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(active)
+        if (active)
+        {
             Move();
+
+            if (rigidbodies.Count > 0)
+            {
+                for (int i = 0; i < rigidbodies.Count; i++)
+                {
+                    Rigidbody rb = rigidbodies[i];
+                    //Vector3 vel = Vector3.zero;
+
+                    Vector3 vel = new Vector3((_transform.position.x - lastPos.x) + ((rb.velocity.x * Time.deltaTime) / 2), 
+                        (_transform.position.y - lastPos.y) + ((rb.velocity.y * Time.deltaTime) / 2),
+                        (_transform.position.z - lastPos.z) + ((rb.velocity.z * Time.deltaTime) / 2));
+
+                    rb.transform.Translate(vel, transform);
+                }
+            }
+            lastPos = _transform.position;
+
+        }
     }
     private void Move()
     {
@@ -119,7 +142,30 @@ public class WayPointPlatform : MonoBehaviour
             //isSteppedOn = true;
             active = true;
         }
+        Rigidbody rb = col.collider.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            Add(rb);
+        }
+    }
+    private void OnCollisionExit(Collision col)
+    {
+        Rigidbody rb = col.collider.GetComponent<Rigidbody>();
 
+        if (rb != null)
+        {
+            Remove(rb);
+        }
+    }
+    void Add(Rigidbody rb)
+    {
+        if (!rigidbodies.Contains(rb))
+            rigidbodies.Add(rb);
+    }
+    void Remove(Rigidbody rb)
+    {
+        if (rigidbodies.Contains(rb))
+            rigidbodies.Remove(rb);
     }
     //private void OnCollisionExit(Collision col)
     //{
