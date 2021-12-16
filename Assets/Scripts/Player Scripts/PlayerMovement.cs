@@ -294,7 +294,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     playerInput.x = InputManager.GetAxis("Horizontal");
                     playerInput.y = InputManager.GetAxis("Vertical");
-                }  
+                }
                 playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
                 playerInput = Vector3.ClampMagnitude(playerInput, 1f);
                 if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
@@ -599,12 +599,14 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (InWater)
                 {
+                    #region Swimming
                     jumpPhase = 0;
                     StopAnimation("Falling");
                     if (!blobert)
                     {
+
                         //If your not holding space or crouch
-                        if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0)
+                        if (playerInput.z == 0 && playerInput.x == 0 && playerInput.y == 0 && !InputManager.GetButton("Crouch"))
                         {
                             PlayAnimation("Sinking");
                             StopAnimation("SwimmingDown");
@@ -613,13 +615,28 @@ public class PlayerMovement : MonoBehaviour
                             //velocity -= gravity * ((-SlowlyFloatDownSpeed - buoyancy * submergence) * Time.deltaTime);
                         }
                         //If your holding crouch
-                        if (playerInput.z < 0)
+                        if (!toggle.m_gamepadOn)
                         {
-                            PlayAnimation("SwimmingDown");
-                            StopAnimation("SwimmingUp");
-                            StopAnimation("Sinking");
-                            StopAnimation("SwimLeftOrRight");
-                            velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                            if (playerInput.z < 0)
+                            {
+                                PlayAnimation("SwimmingDown");
+                                StopAnimation("SwimmingUp");
+                                StopAnimation("Sinking");
+                                StopAnimation("SwimLeftOrRight");
+                                velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                            }
+                        }
+                        else
+                        {
+                            //If your holding crouch
+                            if (InputManager.GetButton("Crouch"))
+                            {
+                                PlayAnimation("SwimmingDown");
+                                StopAnimation("SwimmingUp");
+                                StopAnimation("Sinking");
+                                StopAnimation("SwimLeftOrRight");
+                                velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
+                            }
                         }
                         //If your holding space 
                         if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y) > transform.position.y)
@@ -639,12 +656,14 @@ public class PlayerMovement : MonoBehaviour
                             StopAnimation("SwimmingUp");
                         }
                     }
+
                     else
                     {
                         PlayAnimation("Drowning");
                         if (Swimming)
                             velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
                     }
+                    #endregion
                 }
                 else if (desiresClimbing && OnGround)
                 {
