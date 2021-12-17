@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     float SwimmingDownSpeed = 4f;
     [SerializeField, Range(.1f, 1), Tooltip("The speed of underwater Animations")]
     float WalkAnimationSpeed = .5f, RunAnimationSpeed = .5f;
-    [SerializeField, Range(10f, 50f), Tooltip("How fast you shoot forward when diving")]
+    [SerializeField, Range(10f, 100f), Tooltip("How fast you shoot forward when diving")]
     float AirDiveSpeed = 10f;
     [SerializeField]
     float longJumpHeight = 3;
@@ -1112,10 +1112,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlayAnimation("Dive");
                 StopAnimation("Wall Jump");
-                Vector3 DiveDir = new Vector3(body.velocity.x, 0, body.velocity.z) * AirDiveSpeed;
-                Mathf.Clamp(DiveDir.x, -15, 15);
-                Mathf.Clamp(DiveDir.z, -15, 15);
-                velocity = new Vector3(DiveDir.x, 0, DiveDir.z);
+
+                Dive(gravity);
                 jumpPhase = 5;
             }
 
@@ -1184,6 +1182,38 @@ public class PlayerMovement : MonoBehaviour
                 velocity.y = Mathf.Clamp(velocity.y, -30, maxJumpSpeed);
             }
         }
+    }
+    void Dive(Vector3 gravity)
+    {
+        Vector3 jumpDirection;
+        jumpDirection = transform.forward;
+
+        stepsSinceLastJump = 0;
+
+        float LongjumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * AirDiveSpeed);
+        if (InWater)
+        {
+            LongjumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+        }
+        jumpDirection = (jumpDirection + upAxis).normalized;
+        float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+        if (alignedSpeed > 0f)
+        {
+            if (jumpPhase == 0)
+                LongjumpSpeed = Mathf.Max(LongjumpSpeed - alignedSpeed, 0f);
+            else
+                LongjumpSpeed = Mathf.Max(LongjumpSpeed / 2 - alignedSpeed, 0f);
+        }
+        if (LongjumpSpeed < 10)
+        {
+            jumpDirection.z = 0;
+            LongjumpSpeed = 16;
+        }
+        velocity += jumpDirection * LongjumpSpeed;
+        Vector3 LongJumpDir = transform.forward * longJumpSpeed;
+        velocity = new Vector3(LongJumpDir.x, velocity.y, LongJumpDir.z);
+        jumpPhase = 5;
+
     }
     void LongJump(Vector3 gravity)
     {
