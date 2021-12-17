@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     float SwimmingDownSpeed = 4f;
     [SerializeField, Range(.1f, 1), Tooltip("The speed of underwater Animations")]
     float WalkAnimationSpeed = .5f, RunAnimationSpeed = .5f;
-    [SerializeField, Range(10f, 100f), Tooltip("How fast you shoot forward when diving")]
+    [SerializeField, Range(1f, 100f), Tooltip("How fast you shoot forward when diving")]
     float AirDiveSpeed = 10f;
     [SerializeField]
     float longJumpHeight = 3;
@@ -1210,8 +1210,8 @@ public class PlayerMovement : MonoBehaviour
             LongjumpSpeed = 16;
         }
         velocity += jumpDirection * LongjumpSpeed;
-        Vector3 LongJumpDir = transform.forward * longJumpSpeed;
-        velocity = new Vector3(LongJumpDir.x, velocity.y, LongJumpDir.z);
+        Vector3 LongJumpDir = transform.forward * (longJumpSpeed / 1.5f);
+        velocity = new Vector3(LongJumpDir.x, velocity.y / 2, LongJumpDir.z);
         jumpPhase = 5;
 
     }
