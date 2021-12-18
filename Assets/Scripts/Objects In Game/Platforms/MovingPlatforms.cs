@@ -39,8 +39,8 @@ public class MovingPlatforms : MonoBehaviour
     [SerializeField, Range(1f, 10f), Tooltip("The speed at which the platform moves")]
     float speed = 2;
 
-    [SerializeField, Tooltip("If you want it to activate when step on")]
-    bool StepOnToActivate;
+    [Tooltip("If you want it to activate when step on")]
+    public bool StepOnToActivate;
 
     [Tooltip("If this is true the moving platforms active and moving")]
     public bool active = true;
@@ -51,7 +51,8 @@ public class MovingPlatforms : MonoBehaviour
 
     private bool GoBackY, GoBackX, GoBackZ, GoBackToStart;
 
-    private bool isSteppedOn;
+    [HideInInspector]
+    public bool isSteppedOn;
 
     Vector3 lastPosition, lastMove;
     float stopTimer;
@@ -433,11 +434,6 @@ public class MovingPlatforms : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
         Rigidbody rb = col.collider.GetComponent<Rigidbody>();
-        if (col.gameObject.tag == "Player" && StepOnToActivate
-            && col.transform.position.y > _transform.position.y)
-        {
-            isSteppedOn = true;
-        }
         if (rb != null)
         {
             Add(rb);
@@ -454,10 +450,6 @@ public class MovingPlatforms : MonoBehaviour
     private void OnCollisionExit(Collision col)
     {
         Rigidbody rb = col.collider.GetComponent<Rigidbody>();
-        if (col.gameObject.tag == "Player" && StepOnToActivate)
-        {
-            isSteppedOn = false;
-        }
         if (rb != null)
         {
             Remove(rb);

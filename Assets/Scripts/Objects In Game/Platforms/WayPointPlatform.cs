@@ -22,7 +22,8 @@ public class WayPointPlatform : MonoBehaviour
     GameObject[] WaypointsToGoTo;
     GameObject NextPlatform;
     int ArrayIndex = 0;
-    private bool isSteppedOn;
+    [HideInInspector]
+    public bool isSteppedOn;
     bool AtDestination = true;
     List<Rigidbody> rigidbodies = new List<Rigidbody>();
     Vector3 lastPos;
