@@ -17,8 +17,6 @@ public class PlayerSwitcher : MonoBehaviourPun
 
     [SerializeField]
     GameObject CurrentPlayer;
-    float timer;
-    [SerializeField] float maxSwitchTimer = .5f;
     public bool CanSwitch;
     Pause pause;
     UnderwaterAirUI ui;
@@ -37,9 +35,9 @@ public class PlayerSwitcher : MonoBehaviourPun
         if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
             //arrays start at zero so i have to make it one less 
-            if (timer < 0 && !pause.isPaused)
+            if (!pause.isPaused)
             {
-                if (InputManager.GetButton("1"))
+                if (InputManager.GetButtonDown("1"))
                 {
 
                     if (currentCharacter > 0)
@@ -53,7 +51,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                     SwitchCharacter(currentCharacter);
 
                 }
-                if (InputManager.GetButton("2"))
+                if (InputManager.GetButtonDown("2"))
                 {
 
                     if (currentCharacter < 2)
@@ -69,7 +67,6 @@ public class PlayerSwitcher : MonoBehaviourPun
                 }
             }
         }
-        timer -= Time.deltaTime;
     }
     public void ChangeSelectedCharacters(int index, GameObject Character)
     {
@@ -151,7 +148,6 @@ public class PlayerSwitcher : MonoBehaviourPun
                     Camera.GetComponent<MainCamera>().target = Temp.transform;
                     PhotonNetwork.Destroy(CurrentPlayer);
                     CurrentPlayer = Temp;
-                    timer = maxSwitchTimer;
                 }
             }
         }
