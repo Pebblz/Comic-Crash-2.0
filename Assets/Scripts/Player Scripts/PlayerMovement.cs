@@ -1189,7 +1189,7 @@ public class PlayerMovement : MonoBehaviour
         jumpDirection = transform.forward;
 
         stepsSinceLastJump = 0;
-
+        velocity.y = 0;
         float LongjumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * AirDiveSpeed);
         if (InWater)
         {
