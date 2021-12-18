@@ -1158,7 +1158,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 stepsSinceLastJump = 0;
                 jumpPhase += 1;
-
+                velocity.y = 0;
                 float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
                 if (InWater)
                 {
