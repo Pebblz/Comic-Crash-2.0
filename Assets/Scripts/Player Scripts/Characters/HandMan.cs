@@ -60,6 +60,9 @@ public class HandMan : MonoBehaviour
                 }
 
             }
+            if(!movement.OnGround)
+                movement.StopAnimation("Pushing");
+
             if (PickUp == null)
             {
                 squish.enabled = true;
@@ -111,7 +114,7 @@ public class HandMan : MonoBehaviour
     }
     private void OnCollisionStay(Collision col)
     {
-        if (col.gameObject.tag == "HeavyObject")
+        if (col.gameObject.tag == "HeavyObject" && movement.OnGround)
         {
             RaycastHit hit;
             for (float x = -.5f; x <= .5f; x += .5f)
