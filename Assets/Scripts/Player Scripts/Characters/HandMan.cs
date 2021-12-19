@@ -60,7 +60,7 @@ public class HandMan : MonoBehaviour
                 }
 
             }
-            if(!movement.OnGround)
+            if (!movement.OnGround)
                 movement.StopAnimation("Pushing");
 
             if (PickUp == null)
@@ -117,20 +117,19 @@ public class HandMan : MonoBehaviour
         if (col.gameObject.tag == "HeavyObject" && movement.OnGround)
         {
             RaycastHit hit;
-            for (float x = -.5f; x <= .5f; x += .5f)
+
+            if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, 2f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, 2, 0), out hit, 1.1f))
             {
-                for (float y = -2; y <= 2; y += .4f)
+                if (hit.collider.gameObject.tag == "HeavyObject")
                 {
-                    if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, 2f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(x, y / 8, 0), out hit, 3.5f))
-                    {
-                        if (hit.collider.gameObject.tag == "HeavyObject")
-                        {
-                            movement.PlayAnimation("Pushing");
-                            var pushDir = transform.forward;
-                            hit.collider.attachedRigidbody.velocity = pushDir * HeavyObjectPushSpeed;
-                        }
-                    }
+                    movement.PlayAnimation("Pushing");
+                    var pushDir = transform.forward;
+                    hit.collider.attachedRigidbody.velocity = pushDir * HeavyObjectPushSpeed;
                 }
+            }
+            else
+            {
+                movement.StopAnimation("Pushing");
             }
         }
     }
