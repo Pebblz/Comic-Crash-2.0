@@ -178,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
 
     float JustWallJumpedTimer, timerBeforeWallSlide;
 
+    int consecutiveWallJump;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -232,7 +233,7 @@ public class PlayerMovement : MonoBehaviour
                     LastWallJumpedOn = null;
                     wallJumpTimer = 0;
                     unSetGravity();
-
+                    consecutiveWallJump = 0;
                 }
                 if (OnGround && !inWaterAndFloor)
                 {
@@ -456,18 +457,28 @@ public class PlayerMovement : MonoBehaviour
                             if (gravityPlane.gravity != originalGravity)
                                 unSetGravity();
                             Vector3 _velocity = -dir.normalized;
+                            if (consecutiveWallJump < 5)
+                            {
+                                _velocity.y = WallJumpHeight * WallJumpIntensifire;
 
-                            _velocity.y = WallJumpHeight * WallJumpIntensifire;
+                                body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
+                                    _velocity.y, _velocity.z * (4 * wallJumpSpeed));
+                            }
+                            else
+                            {
+                                float amountToDecrease = (consecutiveWallJump - 4) / 3f;
 
-                            body.velocity = new Vector3(_velocity.x * (4 * wallJumpSpeed),
-                                _velocity.y, _velocity.z * (4 * wallJumpSpeed));
+                                _velocity.y = (WallJumpHeight - amountToDecrease) * WallJumpIntensifire;
 
+                                body.velocity = new Vector3(_velocity.x * ((4 - amountToDecrease) * wallJumpSpeed),
+                                    _velocity.y, _velocity.z * ((4 - amountToDecrease) * wallJumpSpeed));
+                            }
                             //faces direction on jump
                             transform.rotation = Quaternion.LookRotation(new Vector3(_velocity.x * (4 * wallJumpSpeed),
                                 _velocity.y, _velocity.z * (4 * wallJumpSpeed)));
 
                             PreventSnapToGround();
-
+                            consecutiveWallJump++;
                             LastWallJumpedOn = ray.collider.gameObject;
                         }
                     }
