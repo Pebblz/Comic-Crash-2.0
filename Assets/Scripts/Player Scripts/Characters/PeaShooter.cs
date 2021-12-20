@@ -24,6 +24,9 @@ public class PeaShooter : MonoBehaviour
     public float MouseSensitivityY;
     public float MouseSensitivityX;
 
+    public float ControllerSensitivityY;
+    public float ControllerSensitivityX;
+
     float originalMouseSensitivityY;
     float originalMouseSensitivityX;
 
@@ -99,8 +102,8 @@ public class PeaShooter : MonoBehaviour
         }
         else
         {
-            camera.ySpeed = originalMouseSensitivityY;
-            camera.xSpeed = originalMouseSensitivityX;
+            camera.ySpeed = ControllerSensitivityY;
+            camera.xSpeed = ControllerSensitivityX;
         }
         camera.ShootingMode = true;
 
