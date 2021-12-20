@@ -89,6 +89,8 @@ public class MainCamera : MonoBehaviour
     Vector2 startingPos;
     float startingDist;
     float cameraResetTimer;
+
+    Luminosity.IO.Examples.GamepadToggle toggle;
     #region MonoBehaviours
     void Start()
     {
@@ -111,6 +113,8 @@ public class MainCamera : MonoBehaviour
 
         startingPos = new Vector2(x, y);
         startingDist = distance;
+
+        toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
     }
 
     void Update()
@@ -179,9 +183,16 @@ public class MainCamera : MonoBehaviour
         {
             if (transform.position.y > fallLookAtPosition)
             {
-                x += InputManager.GetAxis("LookHorizontal") * xSpeed * distance * 0.02f;
-                y -= InputManager.GetAxis("LookVertical") * ySpeed * 0.02f;
-
+                if (ShootingMode && toggle.m_gamepadOn)
+                {
+                    x += InputManager.GetAxis("Horizontal") * xSpeed * distance * 0.02f;
+                    y -= InputManager.GetAxis("Vertical") * ySpeed * 0.02f;
+                }
+                else
+                {
+                    x += InputManager.GetAxis("LookHorizontal") * xSpeed * distance * 0.02f;
+                    y -= InputManager.GetAxis("LookVertical") * ySpeed * 0.02f;
+                }
                 y = ClampAngle(y, yMinLimit, yMaxLimit);
 
                 Quaternion rotation = Quaternion.Euler(y, x, 0);

@@ -38,6 +38,8 @@ public class PeaShooter : MonoBehaviour
     float originalDistance;
 
     [SerializeField] GameObject spine;
+
+    Luminosity.IO.Examples.GamepadToggle toggle;
     #region MonoBehaviours
     void Start()
     {
@@ -47,6 +49,8 @@ public class PeaShooter : MonoBehaviour
         originalMouseSensitivityX = camera.xSpeed;
         photonView = GetComponent<PhotonView>();
         movement = GetComponent<PlayerMovement>();
+
+        toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
     }
 
     // Update is called once per frame
@@ -88,9 +92,16 @@ public class PeaShooter : MonoBehaviour
     {
         if(originalDistance == 0)
             originalDistance = camera.distance;
-
-        camera.ySpeed = MouseSensitivityY;
-        camera.xSpeed = MouseSensitivityX;
+        if (!toggle.m_gamepadOn)
+        {
+            camera.ySpeed = MouseSensitivityY;
+            camera.xSpeed = MouseSensitivityX;
+        }
+        else
+        {
+            camera.ySpeed = originalMouseSensitivityY;
+            camera.xSpeed = originalMouseSensitivityX;
+        }
         camera.ShootingMode = true;
 
         movement.PlayAnimation("Aiming");
