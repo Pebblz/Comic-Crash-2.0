@@ -1691,6 +1691,7 @@ GameObject:
   - component: {fileID: -8085507067613581319}
   - component: {fileID: 2072207450079509612}
   - component: {fileID: -8425118103234205011}
+  - component: {fileID: 441679854295368468}
   m_Layer: 10
   m_Name: PeaShooter
   m_TagString: Player
@@ -1915,6 +1916,7 @@ MonoBehaviour:
   walkingPartical2: {fileID: 477770469193209972}
   walkingPartical3: {fileID: 477770468284548009}
   walkingPartical4: {fileID: 477770469115838024}
+  originalGravity: 0
   playerInput: {x: 0, y: 0, z: 0}
   desiredLongJump: 0
   submergence: 0
@@ -1996,6 +1998,38 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &441679854295368468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4595979783101676548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d7e79684eb94949815248c86823405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AmountOfAttacks: 3
+  PunchHitBoxes:
+  - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
+  - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
+  - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
+  AttackTimers:
+  - 0.5
+  - 0.85
+  - 0.85
+  AirAttackTimer: 0.6
+  SlideAttackTimer: 0.3
+  MoveForward:
+  - 0
+  - 0
+  - 0
+  slideSpeed: 10
+  SlideTime: 0.5
+  TimeTillnextAttack: 0
+  CanAttack: 0
+  AirAttacked: 0
 --- !u!1 &4774354038728924701
 GameObject:
   m_ObjectHideFlags: 0
@@ -3155,12 +3189,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b1342aa52b91ac40b422de484c92cac, type: 3}
---- !u!4 &477770467827398300 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8432600094113097603, guid: 8b1342aa52b91ac40b422de484c92cac,
-    type: 3}
-  m_PrefabInstance: {fileID: 8333907460222832927}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &477770468372329194 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8432600094641906677, guid: 8b1342aa52b91ac40b422de484c92cac,
@@ -3182,6 +3210,12 @@ ParticleSystem:
 --- !u!198 &477770469115838024 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8432600094982631255, guid: 8b1342aa52b91ac40b422de484c92cac,
+    type: 3}
+  m_PrefabInstance: {fileID: 8333907460222832927}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &477770467827398300 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8432600094113097603, guid: 8b1342aa52b91ac40b422de484c92cac,
     type: 3}
   m_PrefabInstance: {fileID: 8333907460222832927}
   m_PrefabAsset: {fileID: 0}
