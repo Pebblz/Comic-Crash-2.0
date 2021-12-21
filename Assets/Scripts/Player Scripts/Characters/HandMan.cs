@@ -94,34 +94,32 @@ public class HandMan : MonoBehaviour
                 }
             }
         }
-        //if (InputManager.GetAxis("Horizontal") != 0 && movement.OnGround ||
-        //    InputManager.GetAxis("Vertical") != 0 && movement.OnGround)
-        //{
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, 2f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, 2, 0), out hit, 1.1f))
-        //    {
-        //        if (hit.collider.gameObject.tag == "HeavyGearRight")
-        //        {
-        //            print("right");
-        //            movement.PlayAnimation("Pushing");
-        //            Transform hitTransform = hit.collider.transform.parent;
-        //            hitTransform.Rotate(hitTransform.rotation.x,
-        //                hitTransform.rotation.y + 2, hitTransform.rotation.z);
-        //        }
-        //        if (hit.collider.gameObject.tag == "HeavyGearLeft")
-        //        {
-        //            print("Left");
-        //            movement.PlayAnimation("Pushing");
-        //            Transform hitTransform = hit.collider.transform.parent;
-        //            hitTransform.Rotate(hitTransform.rotation.x,
-        //                hitTransform.rotation.y - 2, hitTransform.rotation.z);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        movement.StopAnimation("Pushing");
-        //    }
-        //}
+        if (InputManager.GetAxis("Horizontal") != 0 && movement.OnGround ||
+            InputManager.GetAxis("Vertical") != 0 && movement.OnGround)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, .3f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, .3f, 0), out hit, .7f))
+            {
+                if (hit.collider.gameObject.tag == "HeavyGearRight" && hit.collider.transform.parent.eulerAngles.y + 2 <= 356)
+                {
+                    movement.PlayAnimation("Pushing");
+                    Transform hitTransform = hit.collider.transform.parent;
+                    hitTransform.Rotate(hitTransform.rotation.x,
+                        hitTransform.rotation.y + 2, hitTransform.rotation.z);
+                }
+                if (hit.collider.gameObject.tag == "HeavyGearLeft" && hit.collider.transform.parent.eulerAngles.y - 2 > 0)
+                {
+                    movement.PlayAnimation("Pushing");
+                    Transform hitTransform = hit.collider.transform.parent;
+                    hitTransform.Rotate(hitTransform.rotation.x,
+                        hitTransform.rotation.y - 2, hitTransform.rotation.z);
+                }
+            }
+            else
+            {
+                movement.StopAnimation("Pushing");
+            }
+        }
 
     }
     void ThrowGameObject()
@@ -144,29 +142,13 @@ public class HandMan : MonoBehaviour
         if (col.gameObject.tag == "HeavyObject" && movement.OnGround)
         {
             RaycastHit hit;
-            if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, 1f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, 1, 0), out hit, 1f))
+            if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, .3f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, .3f, 0), out hit, 1f))
             {
                 if (hit.collider.gameObject.tag == "HeavyObject")
                 {
                     movement.PlayAnimation("Pushing");
                     var pushDir = transform.forward;
                     hit.collider.attachedRigidbody.velocity = pushDir * HeavyObjectPushSpeed;
-                }
-                if(hit.collider.gameObject.tag == "HeavyGearRight")
-                {
-                    print("right");
-                    movement.PlayAnimation("Pushing");
-                    Transform hitTransform = hit.collider.transform.parent;
-                    hitTransform.Rotate(hitTransform.rotation.x,
-                        hitTransform.rotation.y + 2, hitTransform.rotation.z);
-                }
-                if (hit.collider.gameObject.tag == "HeavyGearLeft")
-                {
-                    print("Left");
-                    movement.PlayAnimation("Pushing");
-                    Transform hitTransform = hit.collider.transform.parent;
-                    hitTransform.Rotate(hitTransform.rotation.x,
-                        hitTransform.rotation.y - 2, hitTransform.rotation.z);
                 }
             }
             else
