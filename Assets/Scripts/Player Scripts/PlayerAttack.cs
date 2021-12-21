@@ -33,7 +33,11 @@ public class PlayerAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
+        if (GetComponent<Animator>())
+            anim = GetComponent<Animator>();
+        else
+            anim = transform.GetChild(0).GetComponent<Animator>();
+
         body = GetComponent<Rigidbody>();
         movement = GetComponent<PlayerMovement>();
         if (GetComponent<HandMan>())

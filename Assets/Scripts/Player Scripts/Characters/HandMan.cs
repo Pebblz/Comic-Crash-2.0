@@ -94,7 +94,34 @@ public class HandMan : MonoBehaviour
                 }
             }
         }
-
+        //if (InputManager.GetAxis("Horizontal") != 0 && movement.OnGround ||
+        //    InputManager.GetAxis("Vertical") != 0 && movement.OnGround)
+        //{
+        //    RaycastHit hit;
+        //    if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, 2f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, 2, 0), out hit, 1.1f))
+        //    {
+        //        if (hit.collider.gameObject.tag == "HeavyGearRight")
+        //        {
+        //            print("right");
+        //            movement.PlayAnimation("Pushing");
+        //            Transform hitTransform = hit.collider.transform.parent;
+        //            hitTransform.Rotate(hitTransform.rotation.x,
+        //                hitTransform.rotation.y + 2, hitTransform.rotation.z);
+        //        }
+        //        if (hit.collider.gameObject.tag == "HeavyGearLeft")
+        //        {
+        //            print("Left");
+        //            movement.PlayAnimation("Pushing");
+        //            Transform hitTransform = hit.collider.transform.parent;
+        //            hitTransform.Rotate(hitTransform.rotation.x,
+        //                hitTransform.rotation.y - 2, hitTransform.rotation.z);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        movement.StopAnimation("Pushing");
+        //    }
+        //}
 
     }
     void ThrowGameObject()
@@ -114,9 +141,7 @@ public class HandMan : MonoBehaviour
     }
     private void OnCollisionStay(Collision col)
     {
-        if (col.gameObject.tag == "HeavyObject" && movement.OnGround ||
-            col.gameObject.tag == "HeavyGearRight" && movement.OnGround ||
-            col.gameObject.tag == "HeavyGearLeft" && movement.OnGround)
+        if (col.gameObject.tag == "HeavyObject" && movement.OnGround)
         {
             RaycastHit hit;
             if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, 1f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, 1, 0), out hit, 1f))
