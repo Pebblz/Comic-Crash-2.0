@@ -111,6 +111,7 @@ public class PlayerSwitcher : MonoBehaviourPun
 
                     Temp.GetComponent<Player>().respawnPoint =
                         CurrentPlayer.GetComponent<Player>().respawnPoint;
+                    Temp.GetComponent<PlayerMovement>().originalGravity = CurrentPlayer.GetComponent<PlayerMovement>().originalGravity;
 
                     TempPlayerMovement.jumpPhase = 5;
 

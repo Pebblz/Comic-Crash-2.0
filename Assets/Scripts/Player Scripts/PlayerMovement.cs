@@ -128,7 +128,8 @@ public class PlayerMovement : MonoBehaviour
     #region private fields
     float CurrentSpeed;
     bool Isrunning;
-    float originalGravity;
+    [HideInInspector]
+    public float originalGravity;
     [HideInInspector]
     public Vector3 playerInput;
     Vector3 connectionVelocity;
@@ -216,10 +217,15 @@ public class PlayerMovement : MonoBehaviour
         gravityPlane = FindObjectOfType<GravityPlane>();
 
         originalGravity = gravityPlane.gravity;
-
         toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
 
         OnValidate();
+    }
+    private void Awake()
+    {
+        gravityPlane = FindObjectOfType<GravityPlane>();
+        originalGravity = 20;
+        unSetGravity();
     }
     void Update()
     {
