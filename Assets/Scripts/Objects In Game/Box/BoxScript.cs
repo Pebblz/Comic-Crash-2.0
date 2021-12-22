@@ -31,7 +31,7 @@ public class BoxScript : MonoBehaviour
             cam = FindObjectOfType<MainCamera>();
             cam.GetComponent<MainCamera>().Shake(.1f, .1f);
         }
-        soundManager.playBoxBreak();
+        soundManager.playBoxBreak(this.transform.position);
        // photonView.TransferOwnership(PhotonFindCurrentClient().GetComponent<PhotonView>().ViewID);
     }
     private void OnCollisionEnter(Collision col)

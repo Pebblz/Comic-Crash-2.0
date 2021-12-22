@@ -14,7 +14,7 @@ public class SoundManager : MonoBehaviour
 
     private const string musicVol = "MusicVol";
     private const string sfxVol = "SFXVol";
-    private const string ambVol = "AMBVol";
+    private const string ambVol = "AmbVol";
 
     [SerializeField]
     [Tooltip("The length of the transition to and from water")]
@@ -30,13 +30,20 @@ public class SoundManager : MonoBehaviour
     AudioMixerSnapshot normal;
 
 
-    #region sounds
+    #region SFX
     [SerializeField] AudioSource boing;
-    [SerializeField] AudioSource ocean;
     [SerializeField] AudioSource box_break;
-
+    [SerializeField] AudioSource coin_get;
+    [SerializeField] AudioSource move_obj;
+    [SerializeField] AudioSource wall_slide;
+    [SerializeField] AudioSource thud;
     #endregion
 
+
+    #region Ambience
+    [SerializeField] AudioSource ocean;
+
+    #endregion
     private void Awake()
     {
         AudioMixer mixer = Resources.Load("Sounds/Mixer") as AudioMixer;
@@ -123,17 +130,29 @@ public class SoundManager : MonoBehaviour
         this.ocean.Play();
     }
 
-    public void playBoingSound()
+    public void playBoingSound(Vector3 world_point)
     {
-        if (boing.isPlaying) return;
 
+        boing.gameObject.transform.position = world_point;
         this.boing.Play();
     }
 
-    public void playBoxBreak()
+    public void playBoxBreak(Vector3 world_point)
     {
-        if (box_break.isPlaying) return;
+        box_break.gameObject.transform.position = world_point;
         this.box_break.Play();
+    }
+
+    public void playThud(Vector3 world_point)
+    {
+        thud.gameObject.transform.position = world_point;
+        thud.Play();
+    }
+
+    public void playCoin(Vector3 world_point)
+    {
+        coin_get.gameObject.transform.position = world_point;
+        coin_get.Play();
     }
     #endregion
 
