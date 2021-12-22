@@ -16,32 +16,54 @@ public class SoundManager : MonoBehaviour
     private const string sfxVol = "SFXVol";
     private const string ambVol = "AmbVol";
 
+
+    [Header("-----------------------------------------------------------------------------------------------------")]
+    [Header("Filters")]
+    [Header("-----------------------------------------------------------------------------------------------------")]
     [SerializeField]
     [Tooltip("The length of the transition to and from water")]
     float waterTimeout = 0.3f;
-
     [SerializeField]
     [Tooltip("The Filter for the underwater section")]
     AudioMixerSnapshot underwater;
-
-
     [SerializeField]
     [Tooltip("The default filter section")]
     AudioMixerSnapshot normal;
-
+    [SerializeField]
+    [Tooltip("The Filter for the Pause menu")]
+    AudioMixerSnapshot pauseFilter;
+    [SerializeField]
+    [Tooltip("The length of the transition to and from pauseMenu")]
+    float pauseTimeout = 0.3f;
 
     #region SFX
-    [SerializeField] AudioSource boing;
-    [SerializeField] AudioSource box_break;
-    [SerializeField] AudioSource coin_get;
-    [SerializeField] AudioSource move_obj;
-    [SerializeField] AudioSource wall_slide;
-    [SerializeField] AudioSource thud;
+    [Header("-----------------------------------------------------------------------------------------------------")]
+    [Header("OneShots")]
+    [Header("-----------------------------------------------------------------------------------------------------")]
+    [SerializeField] GameObject boing;
+    [SerializeField] GameObject box_break;
+    [SerializeField] GameObject coin_get;
+    [SerializeField] GameObject thud;
+
+    [Header("-----------------------------------------------------------------------------------------------------")]
+    [Header("State Based SFX")]
+    [Header("-----------------------------------------------------------------------------------------------------")]
+
+    [SerializeField] GameObject move_obj;
+    [SerializeField] GameObject wall_slide;
     #endregion
 
+    [Header("-----------------------------------------------------------------------------------------------------")]
+    [Header("Ambience")]
+    [Header("-----------------------------------------------------------------------------------------------------")]
 
     #region Ambience
-    [SerializeField] AudioSource ocean;
+    [SerializeField] GameObject ocean;
+
+    [Header("-----------------------------------------------------------------------------------------------------")]
+    [Header("Music")]
+    [Header("-----------------------------------------------------------------------------------------------------")]
+    [SerializeField] GameObject CoolCPU;
 
     #endregion
     private void Awake()
@@ -121,38 +143,30 @@ public class SoundManager : MonoBehaviour
 
     #endregion
 
-    #region play_pause_methods
-    public void playOceanSounds()
-    {
-        if (ocean.isPlaying) return;
-
-        this.ocean.loop = true;
-        this.ocean.Play();
-    }
+    #region ONE_SHOTS_IN_WORLDSPACE
 
     public void playBoingSound(Vector3 world_point)
     {
-
-        boing.gameObject.transform.position = world_point;
-        this.boing.Play();
+        var obj = Instantiate(boing);
+        obj.transform.position = world_point;
     }
 
     public void playBoxBreak(Vector3 world_point)
     {
-        box_break.gameObject.transform.position = world_point;
-        this.box_break.Play();
+        var obj = Instantiate(box_break);
+        obj.transform.position = world_point;
     }
 
     public void playThud(Vector3 world_point)
     {
-        thud.gameObject.transform.position = world_point;
-        thud.Play();
+        var obj = Instantiate(thud);
+        obj.transform.position = world_point;
     }
 
     public void playCoin(Vector3 world_point)
     {
-        coin_get.gameObject.transform.position = world_point;
-        coin_get.Play();
+        var obj = Instantiate(coin_get);
+        obj.transform.position = world_point;
     }
     #endregion
 
@@ -166,6 +180,16 @@ public class SoundManager : MonoBehaviour
     public void to_normal_from_water()
     {
         normal.TransitionTo(waterTimeout);
+    }
+
+    public void to_pause_menu()
+    {
+        pauseFilter.TransitionTo(pauseTimeout);
+    }
+
+    public void to_normal_from_pause()
+    {
+        normal.TransitionTo(pauseTimeout);
     }
     
     #endregion
