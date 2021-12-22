@@ -2010,10 +2010,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d7e79684eb94949815248c86823405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountOfAttacks: 3
+  AmountOfAttacks: 1
   PunchHitBoxes:
-  - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
-  - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   - {fileID: 8615140145854606015, guid: 1a91c3d795185884888278275f14af2c, type: 3}
   AttackTimers:
   - 0.5
@@ -2026,7 +2024,7 @@ MonoBehaviour:
   - 0
   - 0
   slideSpeed: 10
-  SlideTime: 0.5
+  SlideTime: 0.3
   TimeTillnextAttack: 0
   CanAttack: 0
   AirAttacked: 0
