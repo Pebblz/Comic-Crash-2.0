@@ -350,14 +350,13 @@ public class MainCamera : MonoBehaviour
     {
         if (distance > CollectibleDistance)
         {
-            Quaternion rotation = Quaternion.Euler(y, x, 0);
-
-            distance -= 10 * Time.deltaTime;
-
-            Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-            Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
-            transform.SetPositionAndRotation(position, rotation);
+            distance -= 10 * Time.deltaTime;       
         }
+        Quaternion rotation = Quaternion.Euler(y, x, 0);
+        Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+        Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
+        transform.SetPositionAndRotation(position, rotation);
+        transform.LookAt(target);
     }
 
     #endregion
