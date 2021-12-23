@@ -148,7 +148,7 @@ MonoBehaviour:
   ySpeed: 85
   yMinLimit: -40
   yMaxLimit: 80
-  distanceMin: 3
+  distanceMin: 1
   distanceMax: 15
   CollectibleDistance: 15
   fallLookAtPosition: -50
@@ -157,7 +157,6 @@ MonoBehaviour:
   thirdPersonCamera: 1
   collectibleCamera: 0
   MouseSensitivity: 90
-  CrossHair: {fileID: 0}
   obstructionMask:
     serializedVersion: 2
     m_Bits: 22819
