@@ -123,7 +123,7 @@ public class MainCamera : MonoBehaviour
         {
             if (target.GetComponent<PhotonView>().IsMine)
             {
-                if (!isShaking && !pause.isPaused && !StopCamera)
+                if (!isShaking  && !StopCamera)
                 {
                     if (!collectibleCamera)
                     {
@@ -183,15 +183,18 @@ public class MainCamera : MonoBehaviour
         {
             if (transform.position.y > fallLookAtPosition)
             {
-                if (ShootingMode && toggle.m_gamepadOn)
+                if (!pause.isPaused)
                 {
-                    x += InputManager.GetAxis("Horizontal") * xSpeed * distance * 0.02f;
-                    y -= InputManager.GetAxis("Vertical") * ySpeed * 0.02f;
-                }
-                else
-                {
-                    x += InputManager.GetAxis("LookHorizontal") * xSpeed * distance * 0.02f;
-                    y -= InputManager.GetAxis("LookVertical") * ySpeed * 0.02f;
+                    if (ShootingMode && toggle.m_gamepadOn)
+                    {
+                        x += InputManager.GetAxis("Horizontal") * xSpeed * distance * 0.02f;
+                        y -= InputManager.GetAxis("Vertical") * ySpeed * 0.02f;
+                    }
+                    else
+                    {
+                        x += InputManager.GetAxis("LookHorizontal") * xSpeed * distance * 0.02f;
+                        y -= InputManager.GetAxis("LookVertical") * ySpeed * 0.02f;
+                    }
                 }
                 y = ClampAngle(y, yMinLimit, yMaxLimit);
 
@@ -350,14 +353,13 @@ public class MainCamera : MonoBehaviour
     {
         if (distance > CollectibleDistance)
         {
-            Quaternion rotation = Quaternion.Euler(y, x, 0);
-
-            distance -= 10 * Time.deltaTime;
-
-            Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-            Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
-            transform.SetPositionAndRotation(position, rotation);
+            distance -= 10 * Time.deltaTime;       
         }
+        Quaternion rotation = Quaternion.Euler(y, x, 0);
+        Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+        Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
+        transform.SetPositionAndRotation(position, rotation);
+        transform.LookAt(target);
     }
 
     #endregion
