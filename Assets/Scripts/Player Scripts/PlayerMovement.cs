@@ -1347,6 +1347,14 @@ public class PlayerMovement : MonoBehaviour
         //this is here to ensure you wont double jump
         jumpPhase = 20;
     }
+    public void SlowDown(int SlowDownBy)
+    {
+
+    }
+    public void ResetSpeed()
+    {
+
+    }
     #endregion
     #region Animation
     /// <summary>

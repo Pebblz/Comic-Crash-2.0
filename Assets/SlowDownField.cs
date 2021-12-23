@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class SlowDownField : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    int SlowDownBy = 1;
+    private void OnTriggerEnter(Collider col)
     {
-        
+        if (col.gameObject.tag == "Player")
+            col.gameObject.GetComponent<PlayerMovement>().SlowDown(SlowDownBy);
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerStay(Collider col)
     {
-        
+        if (col.gameObject.tag == "Player")
+            col.gameObject.GetComponent<PlayerMovement>().SlowDown(SlowDownBy);
+    }
+    private void OnTriggerExit(Collider col)
+    {
+        if (col.gameObject.tag == "Player")
+            col.gameObject.GetComponent<PlayerMovement>().ResetSpeed();
     }
 }
