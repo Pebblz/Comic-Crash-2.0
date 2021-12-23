@@ -15,6 +15,7 @@ public class PlayerGroundPound : MonoBehaviour
     public bool GroundPounding;
     bool doingSquish;
     SoundManager sound;
+    bool hit_the_ground;
 
     PhotonView photonView;
     void Start()
@@ -24,6 +25,7 @@ public class PlayerGroundPound : MonoBehaviour
         pm = GetComponent<PlayerMovement>();
         photonView = GetComponent<PhotonView>();
         sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        hit_the_ground = false;
     }
 
     // Update is called once per frame
@@ -51,7 +53,11 @@ public class PlayerGroundPound : MonoBehaviour
             {
                 StopAnimation("GroundPound");
                 PlayAnimation("GroundPoundImpact");
-                sound.playThud(this.transform.position);
+                if (hit_the_ground == false)
+                {
+                    sound.playThud(this.transform.position);
+                    hit_the_ground = true;
+                }
 
                 Squish();
             }
@@ -95,6 +101,7 @@ public class PlayerGroundPound : MonoBehaviour
             else
             {
                 doneSquishing = true;
+
             }
         }
         else
@@ -111,7 +118,9 @@ public class PlayerGroundPound : MonoBehaviour
                 GroundPounding = false;
                 doneSquishing = false;
                 squishTime = false;
+                hit_the_ground = false;
             }
+            
         }
     }
     #region Animation

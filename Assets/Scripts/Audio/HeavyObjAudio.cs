@@ -8,9 +8,11 @@ public class HeavyObjAudio : PlayByState
 {
     // Start is called before the first frame update
     Rigidbody body;
-    private void Awake()
+    public override void Awake()
     {
         body = GetComponentInParent<Rigidbody>();
+        base.Awake();
+
     }
     public override bool determine_if_play()
     {

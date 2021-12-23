@@ -7,7 +7,7 @@ public abstract class PlayByState : MonoBehaviour
 {
     
     AudioSource src;
-    private void Awake()
+    public virtual void Awake()
     {
         src = GetComponent<AudioSource>();
     }
