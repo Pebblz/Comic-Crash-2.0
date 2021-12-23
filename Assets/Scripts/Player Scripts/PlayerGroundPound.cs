@@ -4,6 +4,7 @@ using Photon.Realtime;
 using Photon.Pun;
 public class PlayerGroundPound : MonoBehaviour
 {
+
     private Animator anim;
     PlayerMovement pm;
     [SerializeField, Range(.1f, 6f)]
@@ -13,6 +14,7 @@ public class PlayerGroundPound : MonoBehaviour
     private bool doneSquishing;
     public bool GroundPounding;
     bool doingSquish;
+    SoundManager sound;
 
     PhotonView photonView;
     void Start()
@@ -21,6 +23,7 @@ public class PlayerGroundPound : MonoBehaviour
         anim = GetComponent<Animator>();
         pm = GetComponent<PlayerMovement>();
         photonView = GetComponent<PhotonView>();
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -48,6 +51,8 @@ public class PlayerGroundPound : MonoBehaviour
             {
                 StopAnimation("GroundPound");
                 PlayAnimation("GroundPoundImpact");
+                sound.playThud(this.transform.position);
+
                 Squish();
             }
 

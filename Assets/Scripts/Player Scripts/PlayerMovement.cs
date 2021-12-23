@@ -169,7 +169,8 @@ public class PlayerMovement : MonoBehaviour
     float longJumpCoolDown;
     //Wall Jump Helpers
     float wallJumpTimer;
-    bool IsWallSliding;
+    [HideInInspector]
+    public bool IsWallSliding;
 
     Luminosity.IO.Examples.GamepadToggle toggle;
 

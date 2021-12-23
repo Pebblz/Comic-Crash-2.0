@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7144052512855223786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7144052512855223784}
+  - component: {fileID: 7144052512855223785}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7144052512855223784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7144052512855223786}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7144052512855223785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7144052512855223786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d42778272eac9ac4b821cff3c59dcc65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterTimeout: 0.3
+  underwater: {fileID: -1222764655369357526, guid: 4100912ecde44e144b47dd2c67f01f73,
+    type: 2}
+  normal: {fileID: 24500006, guid: 4100912ecde44e144b47dd2c67f01f73, type: 2}
+  pauseFilter: {fileID: -5485757188605229371, guid: 4100912ecde44e144b47dd2c67f01f73,
+    type: 2}
+  pauseTimeout: 0.3
+  boing: {fileID: 844935931409388094, guid: 47e1456a82197324dab8b6d8ee6a2801, type: 3}
+  box_break: {fileID: 7661806434674981952, guid: 7896f9d9ee0d2a54fbf5796e5e4399d0,
+    type: 3}
+  coin_get: {fileID: 2792744117312007627, guid: e8e3738bb3fe29b4ab867bf7afc57da5,
+    type: 3}
+  thud: {fileID: 3230066435751776539, guid: 954ca096274961e4584144bd85af34cd, type: 3}
+  move_obj: {fileID: 4170733839669058631, guid: eb41e71074bda9349b81271e2e86adca,
+    type: 3}
+  wall_slide: {fileID: 9050367920788362366, guid: 9a42e64b382b6144eb33400b52f3884d,
+    type: 3}
+  ocean: {fileID: 0}
+  CoolCPU: {fileID: 3681726769257708930, guid: c2fccb7d51e4a57428631b3b943c0404, type: 3}

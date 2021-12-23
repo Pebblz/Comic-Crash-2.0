@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -68,6 +70,9 @@ public class SoundManager : MonoBehaviour
     #endregion
     private void Awake()
     {
+        DontDestroyOnLoad(this);
+        SceneManager.sceneLoaded += on_scene_loaded;
+
         AudioMixer mixer = Resources.Load("Sounds/Mixer") as AudioMixer;
 
         if(normal != null)
@@ -191,6 +196,32 @@ public class SoundManager : MonoBehaviour
     {
         normal.TransitionTo(pauseTimeout);
     }
-    
+
     #endregion
+
+    void on_scene_loaded(Scene scene, LoadSceneMode mode)
+    {
+        GameObject player = PhotonFindCurrentClient();
+        if(player != null)
+            attach_sounds_to_player(player);
+    }
+
+    public void attach_sounds_to_player(GameObject player)
+    {
+        
+        Instantiate(wall_slide, player.transform);
+    }
+    
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
+    }
+
 }
