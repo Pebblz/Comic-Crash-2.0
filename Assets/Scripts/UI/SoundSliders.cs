@@ -5,16 +5,89 @@ using UnityEngine.UI;
 
 public class SoundSliders : MonoBehaviour
 {
-    [SerializeField] Slider SFXSlider;
-    [SerializeField] Slider MusicSlider;
-    void Start()
+    public enum TargetMixer
     {
-        
+        SFX = 1,
+        MUSIC
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool loadingSettingsValue;
+    SoundManager manager;
+    [SerializeField]
+    TargetMixer mixer;
+    [SerializeField]
+    Slider slider;
+
+    private void Start()
     {
-        
+        if(manager == null)
+        {
+            manager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        }
+        if(slider == null)
+        {
+            slider = GetComponent<Slider>();
+        }
+    }
+
+    private void Update()
+    {
+        if (manager == null)
+        {
+            manager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        }
+        if (slider == null)
+        {
+            slider = GetComponent<Slider>();
+        }
+    }
+
+    public void SetLevel(float level)
+    {
+        //ignore this function call if loading programmatically
+        if (loadingSettingsValue)
+        {
+            return;
+        }
+        switch (mixer)
+        {
+            case TargetMixer.MUSIC:
+                manager.setMusicVol(level);
+                break;
+            case TargetMixer.SFX:
+                manager.setSFXVol(level);
+                break;
+            default:
+                Debug.LogWarning("No mixer selected for volume control");
+                break;
+        }
+    }
+
+    public void setVolumeLevel()
+    {
+        if (manager == null)
+        {
+            manager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        }
+        if (slider == null)
+        {
+            slider = GetComponent<Slider>();
+        }
+        loadingSettingsValue = true;
+        switch (mixer)
+        {
+            case TargetMixer.MUSIC:
+                slider.value = manager.getMusicVol();
+                break;
+            case TargetMixer.SFX:
+                float value = manager.getSFXVol();
+                slider.value = value;
+                break;
+            default:
+                Debug.LogWarning("No mixer selected for volume control");
+                break;
+        }
+
+        loadingSettingsValue = false;
     }
 }

@@ -77,6 +77,7 @@ public class Pause : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(PauseFirstButton);
             }
 
+            setSliderValue();
 
         }
         else
@@ -84,6 +85,16 @@ public class Pause : MonoBehaviour
             player.GetComponent<PlayerMovement>().CantMove = false;
             Gm.lockCursor();
             PausePage.SetActive(false);
+        }
+    }
+
+
+    private void setSliderValue()
+    {
+        GameObject[] sliders = GameObject.FindGameObjectsWithTag("SoundSlider");
+        for (int i = 0; i < sliders.Length; i++)
+        {
+            sliders[i].GetComponent<SoundSliders>().setVolumeLevel();
         }
     }
 }

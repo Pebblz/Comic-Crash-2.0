@@ -204,6 +204,9 @@ public class SoundManager : MonoBehaviour
     {
         GameObject player = PhotonFindCurrentClient();
         Debug.Log("On scene loaded");
+        AudioSource temp = CoolCPU.GetComponent<AudioSource>();
+        temp.loop = true;
+        temp.Play();
         if(player != null)
             attach_sounds_to_player(player);
     }
