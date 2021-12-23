@@ -69,6 +69,7 @@ public class Pause : MonoBehaviour
         if (pause)
         {
             player.GetComponent<PlayerMovement>().CantMove = true;
+            player.GetComponent<PlayerMovement>().StopAllAnimations();
             Gm.unlockCursor();
             PausePage.SetActive(true);
             if (EventSystem.current != PauseFirstButton)

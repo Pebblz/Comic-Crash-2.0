@@ -1385,6 +1385,18 @@ public class PlayerMovement : MonoBehaviour
     {
         anim.SetBool(BoolName, true);
     }
+    public void StopAllAnimations()
+    {
+        StopAnimation("Run");
+        StopAnimation("Walk");
+        StopAnimation("SwimmingDown");
+        StopAnimation("SwimmingUp");
+        StopAnimation("SwimLeftOrRight");
+        StopAnimation("Crouching");
+        StopAnimation("SlideAttack");
+        anim.SetInteger("Attack", 0);
+        StopAnimation("Falling");
+    }
     /// <summary>
     /// Call this for anytime you need to stop an animation
     /// </summary>
