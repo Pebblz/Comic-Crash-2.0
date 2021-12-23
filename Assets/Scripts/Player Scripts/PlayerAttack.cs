@@ -161,6 +161,8 @@ public class PlayerAttack : MonoBehaviour
             {
                 StopAnimationBool("AirAttack");
                 StopAnimationBool("Jump");
+                TimeTillAttackReset = 0;
+                AirAttacked = false;
             }
             if (TimeTillAttackReset <= 0 && !movement.OnGround && AirAttacked)
             {
