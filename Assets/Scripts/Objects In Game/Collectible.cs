@@ -14,8 +14,13 @@ public class Collectible : MonoBehaviour
     [SerializeField, Range(0, 100)] float RotationSpeed;
 
     GameObject player;
-
+    SoundManager sound;
     PhotonView photonView;
+
+    private void Start()
+    {
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+    }
     void Update()
     {
         if (player == null)
@@ -33,6 +38,7 @@ public class Collectible : MonoBehaviour
 
             if (collect == collectible.Coin)
             {
+                sound.playCoin(this.transform.position);
                 gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
                 photonView.RPC("DestroyThis", RpcTarget.All);
             }

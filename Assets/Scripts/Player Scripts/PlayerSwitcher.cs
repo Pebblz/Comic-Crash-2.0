@@ -21,12 +21,16 @@ public class PlayerSwitcher : MonoBehaviourPun
     Pause pause;
     UnderwaterAirUI ui;
     int currentCharacter;
+
+    SoundManager sound;
+
     void Awake()
     {
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
         ui = FindObjectOfType<UnderwaterAirUI>();
         pause = GetComponent<Pause>();
         CanSwitch = true;
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -149,6 +153,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                     Camera.GetComponent<MainCamera>().target = Temp.transform;
                     PhotonNetwork.Destroy(CurrentPlayer);
                     CurrentPlayer = Temp;
+                    sound.attach_sounds_to_player(CurrentPlayer);
                 }
             }
         }
