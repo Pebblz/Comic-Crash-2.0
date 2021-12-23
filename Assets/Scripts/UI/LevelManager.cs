@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField]
@@ -19,6 +20,11 @@ public class LevelManager : MonoBehaviour
         if(Time.timeScale == 0)
         {
             Time.timeScale = 1;
+        }
+        if(sceneIndex == 0)
+        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LeaveLobby();
         }
         StartCoroutine(LoadAsynchronously(sceneIndex));
     }
