@@ -141,7 +141,7 @@ public class PlayerMovement : MonoBehaviour
     public bool Swimming => submergence >= swimThreshold;
     [HideInInspector]
     public float submergence;
-
+    bool InSlowDownField;
     [HideInInspector]
     public bool Gliding, Sliding;
 
@@ -377,30 +377,33 @@ public class PlayerMovement : MonoBehaviour
                         }
                     }
                 }
-                if (!inWaterAndFloor)
+                if (!InSlowDownField)
                 {
-                    if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+                    if (!inWaterAndFloor)
                     {
-                        CurrentSpeed = RunSpeed;
-                        SetAnimatorFloat("RunMultiplier", 1);
+                        if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+                        {
+                            CurrentSpeed = RunSpeed;
+                            SetAnimatorFloat("RunMultiplier", 1);
+                        }
+                        if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+                        {
+                            CurrentSpeed = WalkSpeed;
+                            //SetAnimatorFloat("WalkMultiplier", 1);
+                        }
                     }
-                    if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+                    else
                     {
-                        CurrentSpeed = WalkSpeed;
-                        //SetAnimatorFloat("WalkMultiplier", 1);
-                    }
-                }
-                else
-                {
-                    if (Isrunning && !isCrouching && !CheckSteepContacts())
-                    {
-                        CurrentSpeed = RunUnderWaterSpeed;
-                        SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
-                    }
-                    if (!Isrunning && !isCrouching || CheckSteepContacts())
-                    {
-                        CurrentSpeed = WalkUnderWaterSpeed;
-                        SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
+                        if (Isrunning && !isCrouching && !CheckSteepContacts())
+                        {
+                            CurrentSpeed = RunUnderWaterSpeed;
+                            SetAnimatorFloat("RunMultiplier", RunAnimationSpeed);
+                        }
+                        if (!Isrunning && !isCrouching || CheckSteepContacts())
+                        {
+                            CurrentSpeed = WalkUnderWaterSpeed;
+                            SetAnimatorFloat("WalkMultiplier", WalkAnimationSpeed);
+                        }
                     }
                 }
                 if (isCrouching)
@@ -1349,11 +1352,27 @@ public class PlayerMovement : MonoBehaviour
     }
     public void SlowDown(int SlowDownBy)
     {
-
+        InSlowDownField = true;
+        if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+        {
+            if (RunSpeed - SlowDownBy > 0)
+                CurrentSpeed = RunSpeed - SlowDownBy;
+            else
+                CurrentSpeed = 2;
+            SetAnimatorFloat("RunMultiplier", 1);
+        }
+        if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+        {
+            if(WalkSpeed - SlowDownBy > 0)
+                CurrentSpeed = WalkSpeed - SlowDownBy;
+            else
+                CurrentSpeed = 1;
+            //SetAnimatorFloat("WalkMultiplier", 1);
+        }
     }
     public void ResetSpeed()
     {
-
+        InSlowDownField = false;
     }
     #endregion
     #region Animation
