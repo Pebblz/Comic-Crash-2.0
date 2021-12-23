@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class SoundManager : MonoBehaviour
 {
@@ -71,7 +71,7 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
-        SceneManager.sceneLoaded += on_scene_loaded;
+        
 
         AudioMixer mixer = Resources.Load("Sounds/Mixer") as AudioMixer;
 
@@ -199,9 +199,11 @@ public class SoundManager : MonoBehaviour
 
     #endregion
 
-    void on_scene_loaded(Scene scene, LoadSceneMode mode)
+
+    public void on_scene_loaded()
     {
         GameObject player = PhotonFindCurrentClient();
+        Debug.Log("On scene loaded");
         if(player != null)
             attach_sounds_to_player(player);
     }
