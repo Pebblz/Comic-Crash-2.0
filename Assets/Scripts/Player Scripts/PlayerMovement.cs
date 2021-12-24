@@ -568,6 +568,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentCollectibleTimer = collectibleTimer;
             }
+            if (CollectibleGotten)
+                body.velocity = new Vector3(0, body.velocity.y, 0);
             if (CollectibleGotten && currentCollectibleTimer <= 0 && CantMove)
             {
                 DoneWithCollectible();
@@ -877,6 +879,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!blobert)
         {
+            if (collision.gameObject.GetComponent<CollideWithHeavyBlock>())
+            {
+                Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), collision.collider);
+            }
             if (collision.gameObject.tag == "Floor")
             {
                 OnFloor = true;
@@ -1361,7 +1367,7 @@ public class PlayerMovement : MonoBehaviour
                 CurrentSpeed = RunSpeed - SlowDownBy;
             else
                 CurrentSpeed = 2;
-            SetAnimatorFloat("RunMultiplier", 1);
+            SetAnimatorFloat("RunMultiplier", .5f);
         }
         if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
         {
@@ -1369,7 +1375,7 @@ public class PlayerMovement : MonoBehaviour
                 CurrentSpeed = WalkSpeed - SlowDownBy;
             else
                 CurrentSpeed = 1;
-            //SetAnimatorFloat("WalkMultiplier", 1);
+            SetAnimatorFloat("WalkMultiplier", .5f);
         }
     }
     public void ResetSpeed()
