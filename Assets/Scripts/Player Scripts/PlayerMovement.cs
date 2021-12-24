@@ -563,7 +563,8 @@ public class PlayerMovement : MonoBehaviour
                     body.velocity = new Vector3(0, body.velocity.y, 0);
 
             }
-            if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove)
+            if (CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove && OnGround ||
+                CollectibleGotten && currentCollectibleTimer <= 0 && !CantMove && InWater)
             {
                 currentCollectibleTimer = collectibleTimer;
             }
