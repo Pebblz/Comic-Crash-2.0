@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 public class PauseMenu : MonoBehaviour
 {
     Pause pause;
-    public GameObject PauseScreen, controlBindsMenu, ControllerBindMenu, KeyboardBindMenu;
+    public GameObject PauseScreen, controlBindsMenu, ControllerBindMenu, KeyboardBindMenu,
+        SettingsScreen;
 
     //all these are to navigate the pause menu with controller. the closed buttons are for 
     //when you close that tag it'll put the xbox navigation over the button to go to the menu
@@ -14,7 +15,7 @@ public class PauseMenu : MonoBehaviour
     [Header ("For xbox navigation")]
     public GameObject BindingFirstButton, KeyBoardBindingFirstButton,
         ControllerBindingFirstButton, bindingClosedButton, KetBoardClosedButton, 
-        ControllerClosedButton;
+        ControllerClosedButton, SettingsFirstButton, SettingsClosedButton;
 
 
     void Start()
@@ -40,17 +41,31 @@ public class PauseMenu : MonoBehaviour
     }
     public void OpenControlBinds()
     {
-        PauseScreen.SetActive(false);
+        SettingsScreen.SetActive(false);
         controlBindsMenu.SetActive(true);
 
         SetEventSystem(BindingFirstButton);
     }
     public void ControlBindBackButton()
     {
-        PauseScreen.SetActive(true);
+        SettingsScreen.SetActive(true);
         controlBindsMenu.SetActive(false);
 
         SetEventSystem(bindingClosedButton);
+    }
+    public void OpenSettings()
+    {
+        PauseScreen.SetActive(false);
+        SettingsScreen.SetActive(true);
+
+        SetEventSystem(SettingsFirstButton);
+    }
+    public void SettingsBackButton()
+    {
+        PauseScreen.SetActive(true);
+        SettingsScreen.SetActive(false);
+
+        SetEventSystem(SettingsClosedButton);
     }
     public void EditKeyBoardControls()
     {

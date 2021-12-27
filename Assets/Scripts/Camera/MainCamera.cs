@@ -123,7 +123,7 @@ public class MainCamera : MonoBehaviour
         {
             if (target.GetComponent<PhotonView>().IsMine)
             {
-                if (!isShaking  && !StopCamera)
+                if (!isShaking  && !StopCamera && !pause.isPaused)
                 {
                     if (!collectibleCamera)
                     {
