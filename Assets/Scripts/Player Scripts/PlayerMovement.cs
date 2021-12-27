@@ -285,6 +285,7 @@ public class PlayerMovement : MonoBehaviour
                         StopAnimation("DoubleJump");
                     }
                 }
+                #region ignoreThis
                 if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && !OnGround && !Bounce && FallTimer < 0 && !InWater ||
                     anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround && !Bounce && FallTimer < 0 && !InWater ||
                     anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && !OnGround && !Bounce && FallTimer < 0 && !InWater ||
@@ -292,8 +293,17 @@ public class PlayerMovement : MonoBehaviour
                     anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle") && !OnGround && !Bounce && FallTimer < 0 && !InWater)
                 {
                     PlayFallingAnimation();
+                }
+                if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && !OnGround ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround|| 
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && !OnGround || 
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") && !OnGround || 
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle") && !OnGround ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("SlideAttack") && !OnGround)
+                {
                     jumpPhase = 1;
                 }
+                #endregion
                 if (!OnGround || jumpPhase == 0)
                 {
                     StopAnimation("IsLanded");
@@ -1185,7 +1195,8 @@ public class PlayerMovement : MonoBehaviour
                         return;
                     }
                     PlayAnimation("DoubleJump");
-
+                    if (!CanDive)
+                        canJump = false;
                 }
                 stepsSinceLastJump = 0;
                 jumpPhase += 1;
@@ -1302,9 +1313,9 @@ public class PlayerMovement : MonoBehaviour
         if (!Swimming || !InWater)
         {
             Sliding = true;
-            Vector3 Slide = new Vector3(velocity.x * SlideSpeed, body.velocity.y, velocity.z * SlideSpeed);
+            Vector3 Slide = new Vector3(velocity.x * SlideSpeed, -6, velocity.z * SlideSpeed);
 
-            body.velocity = new Vector3(Slide.x, body.velocity.y, Slide.z);
+            body.velocity = new Vector3(Slide.x, Slide.y, Slide.z);
         }
     }
     #endregion
