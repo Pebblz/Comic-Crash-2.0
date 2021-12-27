@@ -41,7 +41,7 @@ public class MainCamera : MonoBehaviour
     [SerializeField, Range(.5f, 5f), Tooltip("The min distance for scrolling in")]
     float distanceMin = .5f;
 
-    [SerializeField, Range(10f, 20f), Tooltip("The max distance away for scrolling out")]
+    [SerializeField, Range(1f, 20f), Tooltip("The max distance away for scrolling out")]
     float distanceMax = 15f;
 
     [SerializeField, Range(3f, 10f), Tooltip("The max distance away from player while getting a collectible")]
