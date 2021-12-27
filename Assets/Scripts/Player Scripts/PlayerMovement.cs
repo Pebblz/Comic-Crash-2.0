@@ -292,6 +292,7 @@ public class PlayerMovement : MonoBehaviour
                     anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle") && !OnGround && !Bounce && FallTimer < 0 && !InWater)
                 {
                     PlayFallingAnimation();
+                    jumpPhase = 1;
                 }
                 if (!OnGround || jumpPhase == 0)
                 {

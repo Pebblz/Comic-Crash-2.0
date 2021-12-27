@@ -175,6 +175,10 @@ public class PlayerAttack : MonoBehaviour
         {
             if (InputManager.GetButton("Jump") || !movement.OnGround || InputManager.GetButton("Crouch") || anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible"))
             {
+                if(!movement.OnGround)
+                {
+                    movement.jumpPhase = 1;
+                }
                 TimeTillSlideDone = 0;
             }
             movement.AttackSlide(slideSpeed * (slowDownSlide * .15f));
