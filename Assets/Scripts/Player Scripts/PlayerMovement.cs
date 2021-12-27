@@ -1175,6 +1175,8 @@ public class PlayerMovement : MonoBehaviour
                 if (jumpPhase == 1 && !handman)
                 {
                     PlayAnimation("DoubleJump");
+                    if(!CanDive)
+                        canJump = false;
                 }
                 if (jumpPhase == 1 && handman)
                 {
