@@ -9,6 +9,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
     [SerializeField] GameObject SinglePlayerBTN;
     [SerializeField] GameObject MultiPlayerBTN;
     bool singlePlayer;
+    bool joined;
+    bool once;
     [SerializeField] GameObject MultiPlayerMenu;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject LobbyController;
@@ -35,14 +37,13 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             RoomOptions roomOps = new RoomOptions() { IsVisible = false, IsOpen = false, MaxPlayers = 1 };
             string s = "SinglePlayer " + Random.Range(0, 10000);
-            PhotonNetwork.CreateRoom(s, roomOps);
-            PhotonNetwork.JoinRoom(s);
+            PhotonNetwork.CreateRoom(s, roomOps);    
         }
     }
     public override void OnJoinedRoom()
     {
         if (singlePlayer)
-            PhotonNetwork.LoadLevel("void 2");
+            joined = true;
     }
     public void Multiplayer()
     {
@@ -52,6 +53,18 @@ public class MainMenu : MonoBehaviourPunCallbacks
             RoomController.SetActive(true);
             mainMenu.SetActive(false);
             MultiPlayerMenu.SetActive(true);
+        }
+    }
+    private void Update()
+    {
+        if(singlePlayer && joined)
+        {
+            if (PhotonNetwork.NetworkClientState == ClientState.Joined)
+                if (!once)
+                {
+                    PhotonNetwork.LoadLevel("void 2");
+                    once = true;
+                }
         }
     }
 }
