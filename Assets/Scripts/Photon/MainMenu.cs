@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
     bool singlePlayer;
     [SerializeField] GameObject MultiPlayerMenu;
     [SerializeField] GameObject mainMenu;
+    [SerializeField] GameObject LobbyController;
+    [SerializeField] GameObject RoomController;
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -46,6 +48,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         if (!singlePlayer)
         {
+            LobbyController.SetActive(true);
+            RoomController.SetActive(true);
             mainMenu.SetActive(false);
             MultiPlayerMenu.SetActive(true);
         }

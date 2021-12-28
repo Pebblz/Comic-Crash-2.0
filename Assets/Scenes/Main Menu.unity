@@ -3239,6 +3239,8 @@ MonoBehaviour:
   MultiPlayerBTN: {fileID: 1112483938}
   MultiPlayerMenu: {fileID: 2035869182}
   mainMenu: {fileID: 1024156612}
+  LobbyController: {fileID: 1602012522}
+  RoomController: {fileID: 1694618829}
 --- !u!4 &1524793288
 Transform:
   m_ObjectHideFlags: 0
@@ -3269,7 +3271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1602012523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3397,7 +3399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1694618830
 MonoBehaviour:
   m_ObjectHideFlags: 0
