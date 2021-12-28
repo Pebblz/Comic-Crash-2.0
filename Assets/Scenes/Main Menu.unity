@@ -2998,7 +2998,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1192909741}
   m_OnClick:
     m_PersistentCalls:
@@ -3449,6 +3449,7 @@ MonoBehaviour:
   MultiPlayerMenu: {fileID: 2035869182}
   mainMenu: {fileID: 1024156612}
   RoomController: {fileID: 1694618829}
+  MultiPlayerFirstBTN: {fileID: 0}
 --- !u!4 &1524793288
 Transform:
   m_ObjectHideFlags: 0
