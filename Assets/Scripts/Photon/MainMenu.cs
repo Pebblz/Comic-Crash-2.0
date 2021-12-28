@@ -3,7 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.EventSystems;
 public class MainMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject SinglePlayerBTN;
@@ -14,14 +14,19 @@ public class MainMenu : MonoBehaviourPunCallbacks
     [SerializeField] GameObject MultiPlayerMenu;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject RoomController;
+    //all these are to navigate the pause menu with controller. the closed buttons are for 
+    //when you close that tag it'll put the xbox navigation over the button to go to the menu
+    //just closed 
+    [Header("For xbox navigation")]
+    public GameObject MultiPlayerFirstBTN;
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
     }
     public override void OnConnectedToMaster()
     {
-        SinglePlayerBTN.SetActive(true);
-        MultiPlayerBTN.SetActive(true);
+        SinglePlayerBTN.GetComponent<Button>().interactable = true;
+        MultiPlayerBTN.GetComponent<Button>().interactable = true;
     }
     public void SinglePlayer()
     {
@@ -36,7 +41,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             RoomOptions roomOps = new RoomOptions() { IsVisible = false, IsOpen = false, MaxPlayers = 1 };
             string s = "SinglePlayer " + Random.Range(0, 10000);
-            PhotonNetwork.CreateRoom(s, roomOps);    
+            PhotonNetwork.CreateRoom(s, roomOps);
         }
     }
     public override void OnJoinedRoom()
@@ -46,16 +51,18 @@ public class MainMenu : MonoBehaviourPunCallbacks
     }
     public void Multiplayer()
     {
-        if (!singlePlayer)
-        {
-            RoomController.SetActive(true);
-            mainMenu.SetActive(false);
-            MultiPlayerMenu.SetActive(true);
-        }
+        RoomController.SetActive(true);
+        mainMenu.SetActive(false);
+        MultiPlayerMenu.SetActive(true);
+        SetEventSystem(MultiPlayerFirstBTN);
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
     private void Update()
     {
-        if(singlePlayer && joined)
+        if (singlePlayer && joined)
         {
             if (PhotonNetwork.NetworkClientState == ClientState.Joined)
                 if (!once)
@@ -64,5 +71,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
                     once = true;
                 }
         }
+    }
+    void SetEventSystem(GameObject button)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(button);
     }
 }
