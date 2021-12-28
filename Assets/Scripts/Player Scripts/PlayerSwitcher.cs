@@ -120,30 +120,31 @@ public class PlayerSwitcher : MonoBehaviourPun
                     TempPlayerMovement.jumpPhase = 5;
 
                     Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
-                    if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") && currentPlayerMovement.OnGround)
+                    //if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") && currentPlayerMovement.OnGround)
+                    //{
+                    //    TempPlayerMovement.PlayAnimation("idle");
+                    //}
+                    //if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && InputManager.GetAxis("Horizontal") != 0 ||
+                    //    currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && InputManager.GetAxis("Vertical") != 0)
+                    //{
+                    //    TempPlayerMovement.PlayAnimation("Run");
+                    //}
+
+                    //if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && InputManager.GetAxis("Horizontal") != 0 ||
+                    //    currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && InputManager.GetAxis("Vertical") != 0)
+                    //{
+                    //    TempPlayerMovement.PlayAnimation("Walk");
+                    //}
+                    if (!currentPlayerMovement.OnGround && !currentPlayerMovement.InWater)
                     {
-                        TempPlayerMovement.PlayAnimation("idle");
+                        TempPlayerMovement.PlayFallingAnimation();
                     }
-                    if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
-                    {
-                        TempPlayerMovement.PlayAnimation("Run");
-                    }
-                    else
-                    {
-                        if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
-                        {
-                            TempPlayerMovement.PlayAnimation("Walk");
-                        }
-                        if (!currentPlayerMovement.OnGround && !currentPlayerMovement.InWater)
-                        {
-                            TempPlayerMovement.PlayFallingAnimation();
-                        }
-                    }
+
                     TempPlayerMovement.OnFloor = currentPlayerMovement.OnFloor;
                     if (currentPlayerMovement.InWater)
                     {
                         TempPlayerMovement.submergence = currentPlayerMovement.submergence;
-                        if(Temp.GetComponent<PlayerAttack>())
+                        if (Temp.GetComponent<PlayerAttack>())
                             Temp.GetComponent<PlayerAttack>().TimeTillnextAttack = .3f;
                     }
                     TempPlayerMovement.CanWallJump = false;
