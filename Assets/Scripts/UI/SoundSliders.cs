@@ -44,6 +44,14 @@ public class SoundSliders : MonoBehaviour
 
     public void SetLevel(float level)
     {
+        if (manager == null)
+        {
+            manager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        }
+        if (slider == null)
+        {
+            slider = GetComponent<Slider>();
+        }
         //ignore this function call if loading programmatically
         if (loadingSettingsValue)
         {
@@ -62,7 +70,10 @@ public class SoundSliders : MonoBehaviour
                 break;
         }
     }
-
+    private void OnEnable()
+    {
+        setVolumeLevel();
+    }
     public void setVolumeLevel()
     {
         if (manager == null)
