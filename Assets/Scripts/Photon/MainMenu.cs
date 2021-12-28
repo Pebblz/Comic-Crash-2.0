@@ -13,7 +13,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
     bool once;
     [SerializeField] GameObject MultiPlayerMenu;
     [SerializeField] GameObject mainMenu;
-    [SerializeField] GameObject LobbyController;
     [SerializeField] GameObject RoomController;
     private void Start()
     {
@@ -49,7 +48,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         if (!singlePlayer)
         {
-            LobbyController.SetActive(true);
             RoomController.SetActive(true);
             mainMenu.SetActive(false);
             MultiPlayerMenu.SetActive(true);
