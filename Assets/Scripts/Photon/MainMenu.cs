@@ -8,37 +8,46 @@ public class MainMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject SinglePlayerBTN;
     [SerializeField] GameObject MultiPlayerBTN;
+    bool singlePlayer;
+    [SerializeField] GameObject MultiPlayerMenu;
+    [SerializeField] GameObject mainMenu;
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
     }
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinLobby();
-    }
-    public void SinglePlayer()
-    {
-        RoomOptions roomOps = new RoomOptions() { IsVisible = false, IsOpen = false, MaxPlayers = 1 };
-        string s = "SinglePlayer " + Random.Range(0, 10000);
-        PhotonNetwork.CreateRoom(s, roomOps);
-        PhotonNetwork.JoinRoom(s);
-        //PhotonNetwork.OfflineMode = true;
-    }
-    public override void OnJoinedLobby()
-    {
         SinglePlayerBTN.SetActive(true);
         MultiPlayerBTN.SetActive(true);
     }
+    public void SinglePlayer()
+    {
+        singlePlayer = true;
+        PhotonNetwork.JoinLobby();
+        SinglePlayerBTN.GetComponent<Button>().interactable = false;
+        MultiPlayerBTN.GetComponent<Button>().interactable = false;
+    }
+    public override void OnJoinedLobby()
+    {
+        if (singlePlayer)
+        {
+            RoomOptions roomOps = new RoomOptions() { IsVisible = false, IsOpen = false, MaxPlayers = 1 };
+            string s = "SinglePlayer " + Random.Range(0, 10000);
+            PhotonNetwork.CreateRoom(s, roomOps);
+            PhotonNetwork.JoinRoom(s);
+        }
+    }
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("void 2");
+        if (singlePlayer)
+            PhotonNetwork.LoadLevel("void 2");
     }
     public void Multiplayer()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (!singlePlayer)
         {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LoadLevel(3);
+            mainMenu.SetActive(false);
+            MultiPlayerMenu.SetActive(true);
         }
     }
 }

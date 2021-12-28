@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class MatchMakingRoomController : MonoBehaviourPunCallbacks
 {
-    [SerializeField]
-    private int multiPlayerSceneIndex;
 
     [SerializeField]
     private int JoshSceneIndex;
@@ -21,8 +19,6 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject roomPanel;
 
-    [SerializeField]
-    private GameObject startButton;
 
     [SerializeField]
     private GameObject JoshButton;
@@ -63,13 +59,11 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
         roomNameDisplay.text = PhotonNetwork.CurrentRoom.Name;
         if(PhotonNetwork.IsMasterClient)
         {
-            startButton.SetActive(true);
             JoshButton.SetActive(true);
             PatButton.SetActive(true);
         }
         else
         {
-            startButton.SetActive(false);
             JoshButton.SetActive(false);
             PatButton.SetActive(false);
         }
@@ -85,18 +79,12 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
     {
         ClearPlayerListings();
         ListPlayers();
-        if(PhotonNetwork.IsMasterClient)
-        {
-            startButton.SetActive(true);
-            startButton.SetActive(true);
-        }
     }
     public void StartGame()
     {
         if(PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LoadLevel(multiPlayerSceneIndex);
         }
     }
     public void StartJoshGame()
