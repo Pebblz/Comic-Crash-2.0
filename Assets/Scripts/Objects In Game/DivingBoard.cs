@@ -17,11 +17,13 @@ public class DivingBoard : MonoBehaviour
     bool StartCountdown;
     int HitRings;
     float waitALittle;
+    float Falling;
     void Update()
     {
         if(playerOnTop && InputManager.GetButtonDown("Jump"))
         {
             PlayAnimation("Wiggle");
+            Falling = 20;
         }
         if (!playerOnTop)
             StopAnimation("Wiggle");
@@ -33,6 +35,7 @@ public class DivingBoard : MonoBehaviour
                 if (Rings[i].Hit)
                 {
                     HitRings += 1;
+                    Rings[i].gameObject.SetActive(false);
                     if (HitRings == i + 1)
                     {
                         CollectibleToSpawn.SetActive(true);
@@ -40,12 +43,22 @@ public class DivingBoard : MonoBehaviour
                 }
             }
         }
+        if(Falling <= 0 && HitRings > 0)
+        {
+            for (int i = 0; i < Rings.Length; i++)
+            {
+                Rings[i].Hit = false;
+                Rings[i].gameObject.SetActive(true);
+            }
+            HitRings = 0;
+        }
         if(waitALittle <= 0 && StartCountdown)
         {
             playerOnTop = false;
             StartCountdown = false;
         }
         waitALittle -= Time.deltaTime;
+        Falling -= Time.deltaTime;
     }
     private void OnTriggerEnter(Collider col)
     {
