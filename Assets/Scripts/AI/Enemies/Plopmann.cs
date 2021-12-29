@@ -105,6 +105,7 @@ public class Plopmann : Enemy, IRespawnable
         this.touched_surface = true;
         this.body.useGravity = false;
         launching = false;
+        this.body.velocity = Vector3.zero;
         
     }
 
