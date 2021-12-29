@@ -52,16 +52,24 @@ namespace Luminosity.IO.Examples
             if (m_gamepadOn)
             {
 				if (InputManager.GetAxis("MLookHorizontal") != 0 || InputManager.GetAxis("MLookVertical") != 0 ||
-					InputManager.GetAxis("MHorizontal") != 0 || InputManager.GetAxis("MVertical") != 0)
+					InputManager.GetAxis("MHorizontal") != 0 || InputManager.GetAxis("MVertical") != 0 ||
+					InputManager.GetButtonDown("MJump") || InputManager.GetButtonDown("M1") || 
+					InputManager.GetButtonDown("M2") || InputManager.GetButtonDown("MCrouch") || InputManager.GetButtonDown("MSprint") ||
+					InputManager.GetButtonDown("MUpDown") || InputManager.GetButtonDown("MLeft Mouse") || InputManager.GetButtonDown("MRight Mouse")
+					|| InputManager.GetButtonDown("MPause"))
 				{
 					InputManager.SetControlScheme(m_keyboardScheme, PlayerID.One);
 					m_gamepadOn = false;
 				}
+				
 			}
             else
             {
 				if(InputManager.GetAxis("GLookHorizontal") != 0 || InputManager.GetAxis("GLookVertical") != 0 || 
-				   InputManager.GetAxis("GHorizontal") != 0 || InputManager.GetAxis("GVertical") != 0)
+				   InputManager.GetAxis("GHorizontal") != 0 || InputManager.GetAxis("GVertical") != 0 ||
+					InputManager.GetButton("GJump") || InputManager.GetButtonDown("G1") ||
+					InputManager.GetButtonDown("G2") || InputManager.GetButton("GCrouch") || InputManager.GetButtonDown("GRight Mouse") ||
+					InputManager.GetButtonDown("GLeft Mouse") || InputManager.GetButtonDown("GUpDown") || InputManager.GetButtonDown("GPause"))
                 {
 					InputManager.SetControlScheme(m_gamepadScheme, PlayerID.One);
 					m_gamepadOn = true;
