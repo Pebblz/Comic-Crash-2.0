@@ -21,7 +21,7 @@ public class PlayerDeath : MonoBehaviour
 
         if (isdead)
         {
-            GetComponent<Animator>().SetBool("Dead", true);
+            GetComponent<PlayerMovement>().anim.SetBool("Dead", true);
             Death();
         }
     }
@@ -39,7 +39,7 @@ public class PlayerDeath : MonoBehaviour
             {
                 Fader.GetComponent<Fading_Screen>().FadeIn();
                 GetComponent<PlayerHealth>().ResetHealth();
-                GetComponent<Animator>().SetBool("Dead", false);
+                GetComponent<PlayerMovement>().anim.SetBool("Dead", false);
                 isdead = false;
             }
         }
