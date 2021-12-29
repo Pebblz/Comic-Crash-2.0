@@ -26,6 +26,7 @@ public class Plopmann : Enemy, IRespawnable
     public bool gravity = true;
     bool launching = false;
 
+    int starting_health;
 
     Vector3 starting_pos; // position the enemy first spawned at;
 
@@ -42,6 +43,7 @@ public class Plopmann : Enemy, IRespawnable
         init_attack_cooldown = attack_cooldown;
         this.body.useGravity = gravity;
         attached_to_moving = false;
+        starting_health = this.health;
     }
 
     protected override void Update()
@@ -61,6 +63,7 @@ public class Plopmann : Enemy, IRespawnable
 
     public void reset_data()
     {
+        this.health = starting_health;
         this.transform.position = starting_pos;
         this.body.useGravity = true;
         this.touched_surface = true;
