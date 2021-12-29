@@ -25,8 +25,10 @@ public class DivingBoard : MonoBehaviour
             PlayAnimation("Wiggle");
             Falling = 20;
         }
-        if (!playerOnTop)
+        else
+        {
             StopAnimation("Wiggle");
+        }
 
         if (Rings[0].Hit)
         {
