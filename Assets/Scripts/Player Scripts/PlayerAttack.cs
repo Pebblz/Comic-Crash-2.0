@@ -228,6 +228,15 @@ public class PlayerAttack : MonoBehaviour
         slowDownSlide = 2;
         TimeTillnextAttack = .1f;
     }
+    public void GroundPoundAttack()
+    {
+        GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[3].name), transform.position + transform.up * -1f, Quaternion.identity);
+        temp.GetComponent<PhotonView>().ViewID = photonView.ViewID;
+        temp.transform.parent = transform;
+        TimeTillSlideDone = SlideTime;
+        TimeTillAttackReset = SlideAttackTimer;
+        AttacksPreformed = 2;
+    }
     void punch(int attackNumber)
     {
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[attackNumber - 1].name),

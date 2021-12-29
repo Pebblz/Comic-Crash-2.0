@@ -4,20 +4,48 @@ public class PunchHitBox : MonoBehaviour
 {
     float DestroyTimer = .4f;
     int damage = 2;
-
+    public bool GroundPound;
     PhotonView photonView;
+    GameObject player;
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
     }
     void Update()
     {
-        DestroyTimer -= Time.deltaTime;
-        if (photonView.IsMine)
+        if (!GroundPound)
         {
-            if (DestroyTimer <= 0)
-                PhotonNetwork.Destroy(gameObject);
+            DestroyTimer -= Time.deltaTime;
+            if (photonView.IsMine)
+            {
+                if (DestroyTimer <= 0)
+                    PhotonNetwork.Destroy(gameObject);
+            }
         }
+        else
+        {
+            if (photonView.IsMine)
+            {
+                if (player == null)
+                    player = PhotonFindCurrentClient();
+                else
+                {
+                    if(player.GetComponent<PlayerMovement>().OnGround || player.GetComponent<PlayerMovement>().InWater)
+                        PhotonNetwork.Destroy(gameObject);
+                }
+            }
+        }
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
     private void OnTriggerEnter(Collider col)
     {
@@ -32,7 +60,7 @@ public class PunchHitBox : MonoBehaviour
             if (Vector3.Dot(-col.gameObject.transform.forward, direction) > 0)
             {
                 col.GetComponent<BullyAI>().StartDeath();
-            } 
+            }
             else
             {
                 col.GetComponent<BullyAI>().Stumble();
@@ -44,7 +72,7 @@ public class PunchHitBox : MonoBehaviour
             }
         }
 
-        if(col.gameObject.tag == "Enemy")
+        if (col.gameObject.tag == "Enemy")
         {
             Enemy enemy = (Enemy)col.gameObject.GetComponent(typeof(Enemy));
             enemy.damage(damage);

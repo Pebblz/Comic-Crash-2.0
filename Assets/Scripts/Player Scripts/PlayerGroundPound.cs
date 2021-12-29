@@ -85,6 +85,7 @@ public class PlayerGroundPound : MonoBehaviour
     void GroundPound()
     {
         pm.GroundPound();
+        GetComponent<PlayerAttack>().GroundPoundAttack();
         squishTime = true;
         PlayAnimation("GroundPound");
         StopAnimation("GroundPoundImpact");
