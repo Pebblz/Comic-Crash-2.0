@@ -455,7 +455,8 @@ public class PlayerMovement : MonoBehaviour
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
                     {
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject &&
-                            ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0 && !InWater)
+                            ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0 && !InWater &&
+                            ray.collider.gameObject.layer != 17)
                         {
                             PlayAnimation("Wall Slide");
                             if (gravityPlane.gravity != SlidingGravity)
@@ -471,7 +472,7 @@ public class PlayerMovement : MonoBehaviour
                         }
                         if (!OnGround && LastWallJumpedOn != ray.collider.gameObject && InputManager.GetButtonDown("Jump")
                             && ray.collider.gameObject.layer != 9 && ray.collider.gameObject.layer != 10 && timerBeforeWallSlide <= 0
-                            && !InWater)
+                            && !InWater && ray.collider.gameObject.layer != 17)
                         {
                             JustWallJumpedTimer = .2f;
                             PlayAnimation("Wall Jump");
@@ -861,6 +862,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
+
         if (collision.gameObject.tag == "Floor")
         {
             OnFloor = false;
