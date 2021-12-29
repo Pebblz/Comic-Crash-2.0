@@ -37,7 +37,7 @@ public class DivingBoard : MonoBehaviour
                 if (Rings[i].Hit)
                 {
                     HitRings += 1;
-                    Rings[i].gameObject.SetActive(false);
+                    Rings[i].gameObject.transform.parent.gameObject.SetActive(false);
                     if (HitRings == i + 1)
                     {
                         CollectibleToSpawn.SetActive(true);
@@ -50,7 +50,7 @@ public class DivingBoard : MonoBehaviour
             for (int i = 0; i < Rings.Length; i++)
             {
                 Rings[i].Hit = false;
-                Rings[i].gameObject.SetActive(true);
+                Rings[i].gameObject.transform.parent.gameObject.SetActive(true);
             }
             HitRings = 0;
         }
@@ -85,7 +85,7 @@ public class DivingBoard : MonoBehaviour
         {
             col.GetComponent<PlayerMovement>().OnDivingBoard = false;
             StartCountdown = true;
-            waitALittle = 2f;
+            waitALittle = 1f;
         }
     }
     #region anim
