@@ -30,18 +30,16 @@ public class DivingBoard : MonoBehaviour
             StopAnimation("Wiggle");
         }
 
-        if (Rings[0].Hit)
+        if (Rings[0].Hit && RingsBeenThrough.Count < Rings.Length)
         {
             for (int i = 0; i < Rings.Length; i++)
             {
                 if (Rings[i].Hit)
                 {
-                    Rings[i].gameObject.transform.parent.gameObject.SetActive(false);
-
-                    if (!RingsBeenThrough.Contains(Rings[i].gameObject))
+                    if (!RingsBeenThrough.Contains(Rings[i].gameObject.transform.parent.gameObject))
                     {
-                        RingsBeenThrough.Add(Rings[i].gameObject);
-
+                        RingsBeenThrough.Add(Rings[i].gameObject.transform.parent.gameObject);
+                        Rings[i].gameObject.transform.parent.gameObject.SetActive(false);
                     }
                     if (Rings.Length == RingsBeenThrough.Count)
                     {
