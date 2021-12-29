@@ -49,11 +49,11 @@ public class PlayerGroundPound : MonoBehaviour
                 pm.CantMove = true;
                 GroundPound();
             }
-            if (squishTime && pm.OnGround || squishTime && pm.OnGround)
+            if (squishTime && pm.OnGround)
             {
                 StopAnimation("GroundPound");
                 PlayAnimation("GroundPoundImpact");
-                if (hit_the_ground == false)
+                if (!hit_the_ground)
                 {
                     sound.playThud(this.transform.position);
                     hit_the_ground = true;

@@ -10,12 +10,12 @@ public class DivingBoard : MonoBehaviour
 
     [SerializeField] Rings[] Rings;
 
+    List<GameObject> RingsBeenThrough;
 
     [SerializeField] GameObject CollectibleToSpawn;
 
     bool playerOnTop;
     bool StartCountdown;
-    int HitRings;
     float waitALittle;
     float Falling;
     void Update()
@@ -23,7 +23,7 @@ public class DivingBoard : MonoBehaviour
         if(playerOnTop && InputManager.GetButtonDown("Jump"))
         {
             PlayAnimation("Wiggle");
-            Falling = 20;
+            Falling = 7;
         }
         else
         {
@@ -36,23 +36,28 @@ public class DivingBoard : MonoBehaviour
             {
                 if (Rings[i].Hit)
                 {
-                    HitRings += 1;
                     Rings[i].gameObject.transform.parent.gameObject.SetActive(false);
-                    if (HitRings == i + 1)
+
+                    if (!RingsBeenThrough.Contains(Rings[i].gameObject))
+                    {
+                        RingsBeenThrough.Add(Rings[i].gameObject);
+
+                    }
+                    if (Rings.Length == RingsBeenThrough.Count)
                     {
                         CollectibleToSpawn.SetActive(true);
                     }
                 }
             }
         }
-        if(Falling <= 0 && HitRings > 0)
+        if(Falling <= 0 && RingsBeenThrough.Count < Rings.Length)
         {
             for (int i = 0; i < Rings.Length; i++)
             {
                 Rings[i].Hit = false;
                 Rings[i].gameObject.transform.parent.gameObject.SetActive(true);
             }
-            HitRings = 0;
+            RingsBeenThrough.Clear();
         }
         if(waitALittle <= 0 && StartCountdown)
         {
@@ -85,7 +90,7 @@ public class DivingBoard : MonoBehaviour
         {
             col.GetComponent<PlayerMovement>().OnDivingBoard = false;
             StartCountdown = true;
-            waitALittle = 1f;
+            waitALittle = .2f;
         }
     }
     #region anim
