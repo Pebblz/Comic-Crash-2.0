@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     //when you close that tag it'll put the xbox navigation over the button to go to the menu
     //just closed 
     [Header("For xbox navigation")]
-    public GameObject MultiPlayerFirstBTN;
+    public GameObject MultiPlayerFirstBTN, FirstMenuBTN;
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -55,6 +55,13 @@ public class MainMenu : MonoBehaviourPunCallbacks
         mainMenu.SetActive(false);
         MultiPlayerMenu.SetActive(true);
         SetEventSystem(MultiPlayerFirstBTN);
+    }
+    public void MultiplayerBackBTN()
+    {
+        RoomController.SetActive(false);
+        mainMenu.SetActive(true);
+        MultiPlayerMenu.SetActive(false);
+        SetEventSystem(FirstMenuBTN);
     }
     public void QuitGame()
     {

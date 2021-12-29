@@ -24,6 +24,12 @@ public class MatchMakingLobbyController : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject roomListingPrefab;
 
+    //all these are to navigate the pause menu with controller. the closed buttons are for 
+    //when you close that tag it'll put the xbox navigation over the button to go to the menu
+    //just closed 
+    [Header("For xbox navigation")]
+    public GameObject FirstBTN, FirstBTNBack, FirstBTNInNextPage;
+
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -57,6 +63,7 @@ public class MatchMakingLobbyController : MonoBehaviourPunCallbacks
         mainPanel.SetActive(false);
         lobbyPanel.SetActive(true);
         PhotonNetwork.JoinLobby();
+        SetEventSystem(FirstBTN);
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
@@ -121,6 +128,7 @@ public class MatchMakingLobbyController : MonoBehaviourPunCallbacks
         mainPanel.SetActive(true);
         lobbyPanel.SetActive(false);
         PhotonNetwork.LeaveLobby();
+        SetEventSystem(FirstBTNBack);
     }
     void SetEventSystem(GameObject button)
     {

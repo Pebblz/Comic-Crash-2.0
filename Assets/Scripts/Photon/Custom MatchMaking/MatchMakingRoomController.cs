@@ -3,7 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.EventSystems;
 public class MatchMakingRoomController : MonoBehaviourPunCallbacks
 {
 
@@ -35,6 +35,11 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
     [SerializeField]
     private Text roomNameDisplay;
 
+    //all these are to navigate the pause menu with controller. the closed buttons are for 
+    //when you close that tag it'll put the xbox navigation over the button to go to the menu
+    //just closed 
+    [Header("For xbox navigation")]
+    public GameObject FirstBTN, FirstBTNBack;
     void ClearPlayerListings()
     {
         for (int i = playersContainer.childCount - 1; i >= 0; i--)
@@ -56,6 +61,7 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
     {
         roomPanel.SetActive(true);
         lobbyPanel.SetActive(false);
+        SetEventSystem(FirstBTN);
         roomNameDisplay.text = PhotonNetwork.CurrentRoom.Name;
         if(PhotonNetwork.IsMasterClient)
         {
@@ -106,6 +112,7 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
     IEnumerator rejoinLobby()
     {
         yield return new WaitForSeconds(1);
+        SetEventSystem(FirstBTN);
         PhotonNetwork.JoinLobby();
     }
     public void BackOnClick()
@@ -114,6 +121,12 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
         roomPanel.SetActive(false);
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LeaveLobby();
+        SetEventSystem(FirstBTNBack);
         StartCoroutine(rejoinLobby());
+    }
+    void SetEventSystem(GameObject button)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(button);
     }
 }
