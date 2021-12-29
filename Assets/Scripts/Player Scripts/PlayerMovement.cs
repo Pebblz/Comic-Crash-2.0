@@ -171,7 +171,8 @@ public class PlayerMovement : MonoBehaviour
     float wallJumpTimer;
     [HideInInspector]
     public bool IsWallSliding;
-
+    [HideInInspector]
+    public bool OnDivingBoard;
     Luminosity.IO.Examples.GamepadToggle toggle;
 
     PhotonView photonView;
@@ -1201,24 +1202,50 @@ public class PlayerMovement : MonoBehaviour
                 stepsSinceLastJump = 0;
                 jumpPhase += 1;
                 velocity.y = 0;
-                float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-                if (InWater)
+                float jumpSpeed;
+                if (!OnDivingBoard)
                 {
-                    jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+                    jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+                    if (InWater)
+                    {
+                        jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+                    }
+                    jumpDirection = (jumpDirection + upAxis).normalized;
+                    float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+                    if (alignedSpeed > 0f)
+                    {
+                        if (jumpPhase == 0)
+                            jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                        else
+                            jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+                    }
+                    if (jumpSpeed < 10)
+                    {
+                        jumpDirection.z = 0;
+                        jumpSpeed = 16;
+                    }
                 }
-                jumpDirection = (jumpDirection + upAxis).normalized;
-                float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
-                if (alignedSpeed > 0f)
+                else
                 {
-                    if (jumpPhase == 0)
-                        jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
-                    else
-                        jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
-                }
-                if (jumpSpeed < 10)
-                {
-                    jumpDirection.z = 0;
-                    jumpSpeed = 16;
+                    jumpSpeed = Mathf.Sqrt(5f * gravity.magnitude * jumpHeight);
+                    if (InWater)
+                    {
+                        jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+                    }
+                    jumpDirection = (jumpDirection + upAxis).normalized;
+                    float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+                    if (alignedSpeed > 0f)
+                    {
+                        if (jumpPhase == 0)
+                            jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+                        else
+                            jumpSpeed = Mathf.Max(jumpSpeed / 2 - alignedSpeed, 0f);
+                    }
+                    if (jumpSpeed < 10)
+                    {
+                        jumpDirection.z = 0;
+                        jumpSpeed = 16;
+                    }
                 }
                 velocity += jumpDirection * jumpSpeed;
                 velocity.y = Mathf.Clamp(velocity.y, -30, maxJumpSpeed);
@@ -1406,6 +1433,15 @@ public class PlayerMovement : MonoBehaviour
     {
         anim.SetBool(BoolName, true);
     }
+
+    /// <summary>
+    /// Call this for anytime you need to stop an animation
+    /// </summary>
+    /// <param name="BoolName"></param>
+    public void StopAnimation(string BoolName)
+    {
+        anim.SetBool(BoolName, false);
+    }
     public void StopAllAnimations()
     {
         StopAnimation("Run");
@@ -1417,14 +1453,6 @@ public class PlayerMovement : MonoBehaviour
         StopAnimation("SlideAttack");
         anim.SetInteger("Attack", 0);
         StopAnimation("Falling");
-    }
-    /// <summary>
-    /// Call this for anytime you need to stop an animation
-    /// </summary>
-    /// <param name="BoolName"></param>
-    public void StopAnimation(string BoolName)
-    {
-        anim.SetBool(BoolName, false);
     }
     public void SetAnimatorFloat(string FloatName, float speed)
     {
