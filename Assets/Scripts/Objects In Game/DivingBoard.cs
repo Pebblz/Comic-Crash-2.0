@@ -10,14 +10,20 @@ public class DivingBoard : MonoBehaviour
 
     [SerializeField] Rings[] Rings;
 
-    List<GameObject> RingsBeenThrough;
+    bool[] RingsBeenThrough;
 
     [SerializeField] GameObject CollectibleToSpawn;
 
     bool playerOnTop;
+    bool ChallengeDone;
     bool StartCountdown;
+    int ringsGot;
     float waitALittle;
     float Falling;
+    private void Start()
+    {
+        RingsBeenThrough = new bool[Rings.Length];
+    }
     void Update()
     {
         if(playerOnTop && InputManager.GetButtonDown("Jump"))
@@ -30,32 +36,36 @@ public class DivingBoard : MonoBehaviour
             StopAnimation("Wiggle");
         }
 
-        if (Rings[0].Hit && RingsBeenThrough.Count < Rings.Length)
+        if (Rings[0].Hit && !ChallengeDone)
         {
             for (int i = 0; i < Rings.Length; i++)
             {
                 if (Rings[i].Hit)
                 {
-                    if (!RingsBeenThrough.Contains(Rings[i].gameObject.transform.parent.gameObject))
+                    if (!RingsBeenThrough[i])
                     {
-                        RingsBeenThrough.Add(Rings[i].gameObject.transform.parent.gameObject);
+                        RingsBeenThrough[i] = true;
                         Rings[i].gameObject.transform.parent.gameObject.SetActive(false);
+                        ringsGot++;
                     }
-                    if (Rings.Length == RingsBeenThrough.Count)
+                    if (ringsGot == Rings.Length)
                     {
                         CollectibleToSpawn.SetActive(true);
+                        ChallengeDone = true;
                     }
                 }
             }
         }
-        if(Falling <= 0 && RingsBeenThrough.Count < Rings.Length)
+        if(Falling <= 0 && !ChallengeDone && ringsGot > 0)
         {
             for (int i = 0; i < Rings.Length; i++)
             {
                 Rings[i].Hit = false;
                 Rings[i].gameObject.transform.parent.gameObject.SetActive(true);
+                if (RingsBeenThrough[i])
+                    RingsBeenThrough[i] = false;
             }
-            RingsBeenThrough.Clear();
+            ringsGot = 0;
         }
         if(waitALittle <= 0 && StartCountdown)
         {
