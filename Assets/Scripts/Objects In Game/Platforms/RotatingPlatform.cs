@@ -13,7 +13,9 @@ public class RotatingPlatform : MonoBehaviour
     [Tooltip("if active is true it'll work")]
     public bool active = true;
 
-    [SerializeField] bool RoationOnX;
+    [SerializeField] bool RotaionOnX;
+
+    [SerializeField] bool RotaionOnZ;
     void LateUpdate()
     {
         if (active)
@@ -21,15 +23,20 @@ public class RotatingPlatform : MonoBehaviour
     }
     private void OnCollisionStay(Collision collision)
     {
-        if (!RoationOnX)
+        if (!RotaionOnX && !RotaionOnZ)
         {
             if (collision.gameObject.tag == "Player")
                 collision.collider.transform.RotateAround(transform.position, direction, RotationSpeed * Time.deltaTime);
         }
-        else
+        if(RotaionOnX)
         {
             if (collision.gameObject.tag == "Player")
-                collision.collider.transform.RotateAround(transform.position, new Vector3(1,0,0), RotationSpeed * Time.deltaTime);
+                collision.collider.transform.RotateAround(transform.position, new Vector3(direction.y, 0,0), RotationSpeed * Time.deltaTime);
+        }
+        if (RotaionOnZ)
+        {
+            if (collision.gameObject.tag == "Player")
+                collision.collider.transform.RotateAround(transform.position, new Vector3(0, 0, direction.y), RotationSpeed * Time.deltaTime);
         }
     }
 }
