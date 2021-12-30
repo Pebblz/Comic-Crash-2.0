@@ -12,6 +12,8 @@ public class PlayerDeath : MonoBehaviour
 
     PhotonView photonView;
 
+    float TimerTillTHeUndead;
+    bool Dead;
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
@@ -22,13 +24,30 @@ public class PlayerDeath : MonoBehaviour
         if (isdead)
         {
             GetComponent<PlayerMovement>().anim.SetBool("Dead", true);
-            Death();
+            GetComponent<PlayerHealth>().ResetHealth();
+
+            if (GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).normalizedTime > .9f && 
+                GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && 
+                TimerTillTHeUndead <= 0 && !Dead)
+            {
+                TimerTillTHeUndead = 5f;
+                Dead = true;
+            }
+            if(TimerTillTHeUndead <= 0 && Dead)
+            {
+                GetComponent<PlayerMovement>().anim.SetBool("Dead", false);
+                Death();
+                Dead = false;
+                isdead = false;
+            }
+            TimerTillTHeUndead -= Time.deltaTime;
         }
     }
     public void Death()
     {
         if (photonView.IsMine)
         {
+
             GetComponent<Player>().RepoPlayer();
             if (Fader == null)
             {
@@ -39,9 +58,10 @@ public class PlayerDeath : MonoBehaviour
             {
                 Fader.GetComponent<Fading_Screen>().FadeIn();
                 GetComponent<PlayerHealth>().ResetHealth();
-                GetComponent<PlayerMovement>().anim.SetBool("Dead", false);
+
                 isdead = false;
             }
+
         }
     }
 }

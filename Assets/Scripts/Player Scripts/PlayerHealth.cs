@@ -107,7 +107,7 @@ public class PlayerHealth : MonoBehaviour
     }
     public void HurtPlayer(int amount)
     {
-        if (IFrameTimer <= 0)
+        if (IFrameTimer <= 0 && !GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             currentHealth -= amount;
             FindObjectOfType<HealthBar>().FindNewHealthBar();
