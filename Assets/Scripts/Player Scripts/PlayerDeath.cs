@@ -30,7 +30,7 @@ public class PlayerDeath : MonoBehaviour
                 GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && 
                 TimerTillTHeUndead <= 0 && !Dead)
             {
-                TimerTillTHeUndead = 5f;
+                TimerTillTHeUndead = 3f;
                 Dead = true;
             }
             if(TimerTillTHeUndead <= 0 && Dead)
