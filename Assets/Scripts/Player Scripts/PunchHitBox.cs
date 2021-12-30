@@ -7,9 +7,11 @@ public class PunchHitBox : MonoBehaviour
     public bool GroundPound;
     PhotonView photonView;
     GameObject player;
+    SoundManager soundManager;
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
+        soundManager = GetComponent<SoundManager>();
     }
     void Update()
     {
@@ -71,7 +73,11 @@ public class PunchHitBox : MonoBehaviour
                 col.GetComponent<BullyAI>().HitBack(pushDir, col.GetComponent<BullyAI>().KnockBackBullyPower);
             }
         }
-
+        if(col.gameObject.tag == "BoxBreak")
+        {
+            soundManager.playBoxBreak(transform.position);
+            Destroy(col.gameObject);
+        }
         if (col.gameObject.tag == "Enemy" && !col.isTrigger)
         {
             Enemy enemy = (Enemy)col.gameObject.GetComponent(typeof(Enemy));
