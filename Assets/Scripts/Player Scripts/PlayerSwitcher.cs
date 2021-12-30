@@ -40,7 +40,8 @@ public class PlayerSwitcher : MonoBehaviourPun
         if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
             //arrays start at zero so i have to make it one less 
-            if (!pause.isPaused)
+            if (!pause.isPaused &&
+                !PhotonFindCurrentClient().GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
             {
                 if (InputManager.GetButtonDown("1"))
                 {
