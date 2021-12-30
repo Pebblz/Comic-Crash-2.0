@@ -28,25 +28,25 @@ public class LightHouse : MonoBehaviour
         progress = LightHouseTopY - LightHouseBottemY;
 
         progress /= 350;
-        if (!AtTop)
-        {
-            transform.position = new Vector3(transform.position.x, LightHouseBottemY, transform.position.z);
-            for (int i = 0; i < ObjectToTurnOn.Length; i++)
-            {
-                ObjectToTurnOn[i].SetActive(false);
-            }
-        }
-        else
-        {
-            transform.position = new Vector3(transform.position.x, LightHouseTopY, transform.position.z);
-            for (int i = 0; i < ObjectToTurnOn.Length; i++)
-            {
-                if (ObjectToTurnOn[i] != null)
-                    ObjectToTurnOn[i].SetActive(true);
-                if (i == ObjectToTurnOn.Length)
-                    DoneTurningOn = true;
-            }
-        }
+        //if (!AtTop)
+        //{
+        //    transform.position = new Vector3(transform.position.x, LightHouseBottemY, transform.position.z);
+        //    for (int i = 0; i < ObjectToTurnOn.Length; i++)
+        //    {
+        //        ObjectToTurnOn[i].SetActive(false);
+        //    }
+        //}
+        //else
+        //{
+        //    transform.position = new Vector3(transform.position.x, LightHouseTopY, transform.position.z);
+        //    for (int i = 0; i < ObjectToTurnOn.Length; i++)
+        //    {
+        //        if (ObjectToTurnOn[i] != null)
+        //            ObjectToTurnOn[i].SetActive(true);
+        //        if (i == ObjectToTurnOn.Length)
+        //            DoneTurningOn = true;
+        //    }
+        //}
     }
 
     // Update is called once per frame
