@@ -72,7 +72,7 @@ public class PunchHitBox : MonoBehaviour
             }
         }
 
-        if (col.gameObject.tag == "Enemy")
+        if (col.gameObject.tag == "Enemy" && !col.isTrigger)
         {
             Enemy enemy = (Enemy)col.gameObject.GetComponent(typeof(Enemy));
             enemy.damage(damage);
