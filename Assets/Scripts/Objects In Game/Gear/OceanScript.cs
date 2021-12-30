@@ -52,22 +52,22 @@ public class OceanScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (AtTop)
-        {
-            transform.position = new Vector3(transform.position.x, OceanTopY, transform.position.z);
-            if (!DoneTurningOn)
-            {
-                for (int i = 0; i < ObjectToTurnOn.Length; i++)
-                {
-                    if (ObjectToTurnOn[i] != null)
-                        ObjectToTurnOn[i].SetActive(true);
-                    if (i == ObjectToTurnOn.Length)
-                        DoneTurningOn = true;
-                }
-            }
-        }
-        else
-        {
+        //if (AtTop)
+        //{
+            //transform.position = new Vector3(transform.position.x, OceanTopY, transform.position.z);
+            //if (!DoneTurningOn)
+            //{
+                //for (int i = 0; i < ObjectToTurnOn.Length; i++)
+                //{
+                    //if (ObjectToTurnOn[i] != null)
+                     //   ObjectToTurnOn[i].SetActive(true);
+                   // if (i == ObjectToTurnOn.Length)
+                     ///   DoneTurningOn = true;
+                //}
+            //}
+       // }
+        //else
+       // {
             if (Gear.eulerAngles.y >= 350)
             {
                 AtTop = true;
@@ -82,6 +82,6 @@ public class OceanScript : MonoBehaviour
                 transform.position = Vector3.Lerp(new Vector3(transform.position.x, OceanBottemY, transform.position.z),
                    new Vector3(transform.position.x, OceanTopY, transform.position.z), progress);
             }
-        }
+        //}
     }
 }
