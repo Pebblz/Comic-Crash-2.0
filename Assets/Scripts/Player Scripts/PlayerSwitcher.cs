@@ -23,7 +23,7 @@ public class PlayerSwitcher : MonoBehaviourPun
     int currentCharacter;
 
     SoundManager sound;
-
+    PlayerIcons playerIcon;
     void Awake()
     {
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -31,6 +31,7 @@ public class PlayerSwitcher : MonoBehaviourPun
         pause = GetComponent<Pause>();
         CanSwitch = true;
         sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        playerIcon = GameObject.FindObjectOfType<PlayerIcons>();
     }
 
     // Update is called once per frame
@@ -52,6 +53,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 2;
                     }
+                    playerIcon.MoveLeft();
                     SwitchCharacter(currentCharacter);
 
                 }
@@ -66,6 +68,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 0;
                     }
+                    playerIcon.MoveRight();
                     SwitchCharacter(currentCharacter);
 
                 }

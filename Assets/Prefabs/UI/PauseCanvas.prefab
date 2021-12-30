@@ -14868,6 +14868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1894770111049677720}
   - component: {fileID: 6382331163926057682}
+  - component: {fileID: 847065186487180914}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -14913,7 +14914,32 @@ MonoBehaviour:
   - {fileID: 8933788627520007184}
   - {fileID: 1422921735827202832}
   - {fileID: 6762760348943732631}
-  currentHealthBar: {fileID: 6762760348943732631}
+--- !u!114 &847065186487180914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237538545185139137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f027b7c56f5d449bed4fa4ec549733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Icons:
+  - {fileID: 2517760051533009051}
+  - {fileID: 4325057447943399070}
+  - {fileID: 4574983039824459731}
+  Main: {fileID: 2198170406651351912}
+  Small: {fileID: 7349930366986994096}
+  iconPositions:
+  - {fileID: 2198170406651351912}
+  - {fileID: 7349930366986994096}
+  - {fileID: 8381508850987292027}
+  iconCurrentPositions:
+  - {fileID: 2198170406651351912}
+  - {fileID: 7349930366986994096}
+  - {fileID: 8381508850987292027}
 --- !u!1 &7871001109149520633
 GameObject:
   m_ObjectHideFlags: 0
