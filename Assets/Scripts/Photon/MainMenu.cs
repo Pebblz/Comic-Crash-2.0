@@ -74,7 +74,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
             if (PhotonNetwork.NetworkClientState == ClientState.Joined)
                 if (!once)
                 {
-                    PhotonNetwork.LoadLevel("void 2");
+                    PhotonNetwork.LoadLevel(3);
                     once = true;
                 }
         }
