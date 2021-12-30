@@ -25,6 +25,8 @@ public class PlayerHealth : MonoBehaviour
     private Pause pause;
 
     PhotonView photonView;
+
+
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
@@ -108,7 +110,7 @@ public class PlayerHealth : MonoBehaviour
         if (IFrameTimer <= 0)
         {
             currentHealth -= amount;
-
+            FindObjectOfType<HealthBar>().FindNewHealthBar();
             if (currentHealth <= 0)
             {
                 GetComponent<PlayerDeath>().isdead = true;
@@ -129,6 +131,7 @@ public class PlayerHealth : MonoBehaviour
     //        IFrameTimer = 1;
     //    }
     //}
+
     public void ResetHealth()
     {
         currentHealth = maxHealth;
