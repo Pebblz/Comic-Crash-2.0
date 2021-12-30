@@ -163,6 +163,7 @@ public abstract class Enemy : MonoBehaviour
         {
             this.current_state = STATE.IDLE;
         }
+        target = null;
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
