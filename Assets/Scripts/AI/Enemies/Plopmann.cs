@@ -68,7 +68,7 @@ public class Plopmann : Enemy, IRespawnable
 
         if (this.current_state == STATE.ATTACK)
         {
-            launch();
+            aggro();
         }
        
     }
@@ -93,6 +93,30 @@ public class Plopmann : Enemy, IRespawnable
     void idle()
     { }
 
+    void aggro()
+    {
+        if (target == null)
+            return;
+        if (Vector3.Distance(target.transform.position, this.transform.position) <= this.attack_range)
+        {
+            attack();
+            launch();
+        }
+        else
+        {
+            launch();
+        }
+    }
+
+    void attack()
+    {
+        attack_cooldown -= Time.deltaTime;
+        if (attack_cooldown <= 0f)
+        {
+            attack_cooldown = init_attack_cooldown;
+            target.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
+        }
+    }
 
     void launch()
     {
@@ -148,15 +172,6 @@ public class Plopmann : Enemy, IRespawnable
         {
             return;
         }
-        if (collision.gameObject.tag == "Player")
-        {
-            attack_cooldown -= Time.deltaTime;
-            if (attack_cooldown <= 0f)
-            {
-                attack_cooldown = init_attack_cooldown;
-                collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
-            }
-        }
         if (collision.gameObject.tag != "Shot")
         {
             stick_to_surface();
@@ -169,17 +184,6 @@ public class Plopmann : Enemy, IRespawnable
 
         base.OnCollisionEnter(collision);
 
-        if (collision.contactCount > 0)
-        {
-            /*
-            ContactPoint point = collision.contacts[0];
-            float dist = Vector3.Distance(this.transform.position, point.point) + 0.5f;
-            Vector3 dir = (point.point - this.transform.position).normalized;
-            RaycastHit hit;
-            Physics.Raycast(this.transform.position, dir, out hit);
-            */
-
-        }
         if (collision.gameObject.tag != "Shot")
         {
             stick_to_surface();
