@@ -901,7 +901,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 OnFloor = true;
             }
-            if (collision.gameObject.tag == "WalkableUnderWater")
+            if (collision.gameObject.tag == "WalkableUnderWater" && InWater)
             {
                 if (collision.gameObject.transform.GetChild(0).GetComponent<UnderWaterSurfaces>().walkingOn)
                 {
@@ -1288,7 +1288,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void LongJump(Vector3 gravity)
     {
-        if (!Swimming || !InWater)
+        if (!Swimming && !InWater && !inWaterAndFloor)
         {
 
             Vector3 jumpDirection;
