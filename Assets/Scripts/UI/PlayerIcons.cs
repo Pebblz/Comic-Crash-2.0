@@ -1,72 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerIcons : MonoBehaviour
 {
-    [SerializeField] GameObject[] Icons = new GameObject[3];
-    [SerializeField] Transform Main;
-    Vector3 MainScale;
-    Vector3 SmallScale;
-    [SerializeField] Transform Small;
-    [SerializeField] Transform[] iconPositions = new Transform[3];
-    [SerializeField] Transform[] iconCurrentPositions = new Transform[3];
-
-    int MiddleCurrentIndex;
-    private void Start()
-    {
-        MainScale = Main.localScale;
-        SmallScale = Small.localScale;
-    }
+    [SerializeField] Image[] Images = new Image[3];
+    [SerializeField] Image[] temp = new Image[3];
     public void MoveLeft()
     {
-        //Transform[] temp = iconCurrentPositions;
-        //if(MiddleCurrentIndex == 0)
-        //{
-        //    MiddleCurrentIndex = 2;
-        //}
-        //else
-        //    MiddleCurrentIndex--;
+        temp = Images;
 
-        
-        //iconCurrentPositions[0] = temp[2];
-
-        //iconCurrentPositions[1] = temp[0];
-
-        //iconCurrentPositions[2] = temp[1];
-
-        //Icons[2].transform.position = iconPositions[1].position;
-        //Icons[2].transform.localScale = SmallScale;
-
-        //Icons[1].transform.position = iconPositions[0].position;
-        //Icons[1].transform.localScale = MainScale;
-
-
-        //Icons[0].transform.position = iconPositions[2].position;
-        //Icons[0].transform.localScale = SmallScale;
+        Images[2].sprite = temp[0].sprite;
+        Images[0].sprite = temp[1].sprite;
+        Images[1].sprite = temp[2].sprite;
 
     }
     public void MoveRight()
     {
-        //Transform[] temp = iconCurrentPositions;
-        //if(MiddleCurrentIndex == 2)
-        //{
-        //    MiddleCurrentIndex = 0;
-        //}
-        //else
-        //    MiddleCurrentIndex++;
-        //iconCurrentPositions[2] = temp[0];
-        //iconCurrentPositions[1] = temp[2];
-        //iconCurrentPositions[0] = temp[1];
 
-        //Icons[0].transform.position = iconPositions[1].position;
-        //Icons[0].transform.localScale = MainScale;
-
-        //Icons[2].transform.position = iconPositions[0].position;
-        //Icons[2].transform.localScale = SmallScale;
-
-        //Icons[1].transform.position = iconPositions[2].position;
-        //Icons[1].transform.localScale = MainScale;
+        Image[] temp = Images;
+        //Icons[1].GetComponentInChildren<Image>().sprite = temp[2].GetComponentInChildren<Image>().sprite;
+        //Icons[0].GetComponentInChildren<Image>().sprite = temp[1].GetComponentInChildren<Image>().sprite;
+        //Icons[2].GetComponentInChildren<Image>().sprite = temp[0].GetComponentInChildren<Image>().sprite;
 
     }
 }

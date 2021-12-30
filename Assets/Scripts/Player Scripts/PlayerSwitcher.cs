@@ -44,7 +44,7 @@ public class PlayerSwitcher : MonoBehaviourPun
             {
                 if (InputManager.GetButtonDown("1"))
                 {
-
+                    playerIcon.MoveLeft();
                     if (currentCharacter > 0)
                     {
                         currentCharacter--;
@@ -53,13 +53,13 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 2;
                     }
-                    playerIcon.MoveLeft();
+                    
                     SwitchCharacter(currentCharacter);
 
                 }
                 if (InputManager.GetButtonDown("2"))
                 {
-
+                    playerIcon.MoveRight();
                     if (currentCharacter < 2)
                     {
                         currentCharacter++;
@@ -68,7 +68,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 0;
                     }
-                    playerIcon.MoveRight();
+
                     SwitchCharacter(currentCharacter);
 
                 }
