@@ -20,10 +20,21 @@ public class Plopmann : Enemy, IRespawnable
     [SerializeField]
     [Tooltip("How fast he launch")]
     float launch_speed = 10f;
+
+    [SerializeField]
+    [Tooltip("Make go up more")]
+    float verticle_bias = 5f;
     bool attached_to_moving = false;
 
 
-    public bool gravity = true;
+
+    [SerializeField]
+    Transform explosion_point;
+
+    [Tooltip("allows the toggling of gravity to happen")]
+    public bool use_gravity = true;
+
+    private bool init_gravity = true;
     bool launching = false;
 
     int starting_health;
@@ -38,12 +49,12 @@ public class Plopmann : Enemy, IRespawnable
         base.Awake();
         this.body = GetComponent<Rigidbody>();
         this.starting_pos = this.transform.position;
-        this.touched_surface = true;
         this.init_charge_up = charge_up;
         init_attack_cooldown = attack_cooldown;
-        this.body.useGravity = gravity;
+        this.body.useGravity = init_gravity;
         attached_to_moving = false;
         starting_health = this.health;
+        touched_surface = true;
     }
 
     protected override void Update()
@@ -59,6 +70,7 @@ public class Plopmann : Enemy, IRespawnable
         {
             launch();
         }
+       
     }
 
     public void reset_data()
@@ -66,12 +78,11 @@ public class Plopmann : Enemy, IRespawnable
         this.health = starting_health;
         this.transform.position = starting_pos;
         this.body.useGravity = true;
-        this.touched_surface = true;
         this.current_state = STATE.IDLE;
         this.body.velocity = Vector3.zero;
         this.body.angularVelocity = Vector3.zero;
         this.charge_up = init_charge_up;
-        body.constraints = RigidbodyConstraints.FreezeRotation;
+        body.constraints = RigidbodyConstraints.FreezeRotationX & RigidbodyConstraints.FreezeRotationZ;
         attack_cooldown = init_attack_cooldown;
         launching = false;
 
@@ -83,70 +94,71 @@ public class Plopmann : Enemy, IRespawnable
     { }
 
 
-
     void launch()
     {
         if (launching)
             return;
+        if (!on_the_ground())
+            return;
         charge_up -= Time.deltaTime;
+        Quaternion look_rot = Quaternion.LookRotation(target.position - transform.position);
+        Quaternion new_rot = Quaternion.LerpUnclamped(new Quaternion(0, look_rot.y, 0, look_rot.w), 
+                                                      this.transform.rotation,
+                                                      Time.deltaTime);
+        this.transform.rotation = new_rot;
         if (charge_up > 0f)
             return;
 
-        body.useGravity = true;
-        Vector3 temp = target.position + new Vector3(0, 3, 0);
-        this.transform.LookAt(temp);
-        this.body.AddForce(this.transform.forward * launch_speed, ForceMode.Impulse);
-        touched_surface = false;
         charge_up = init_charge_up;
+        body.useGravity = true;
+        this.body.AddExplosionForce(launch_speed, explosion_point.transform.position, 3, verticle_bias);
         launching = true;
+        touched_surface = false;
 
     }
 
 
     void stick_to_surface()
     {
-        this.touched_surface = true;
-        this.body.useGravity = false;
+        //this is for you pat naatz
+        if (touched_surface)
+            return;
+
         launching = false;
-        this.body.velocity = Vector3.zero;
-        
+        touched_surface = true;
+        if (!this.use_gravity)
+        {
+            this.body.useGravity = false;
+            this.body.velocity = Vector3.zero;
+        }
+
     }
 
     bool on_the_ground()
     {
-
-        bool on_ground = true;
         RaycastHit hit;
-
-        Physics.Raycast(this.transform.position, Vector3.down, out hit, 0.2f, ~LayerMask.GetMask("Enemy"));
-        if (hit.collider.gameObject != this.gameObject)
-        {
-            on_ground = false;
-        }
-        if (hit.point == null)
-        {
-            on_ground = false;
-        }
-        return on_ground;
+        //Debug.DrawRay(this.transform.position, Vector3.down * 0.4f, Color.green, 4f);
+        return Physics.Raycast(this.transform.position, Vector3.down, out hit, 0.4f, ~LayerMask.GetMask("Enemy"));
     }
 
 
     private void OnCollisionStay(Collision collision)
     {
-        if(this.current_state == STATE.STUN)
+        if (this.current_state == STATE.STUN)
         {
             return;
         }
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             attack_cooldown -= Time.deltaTime;
-            if(attack_cooldown <= 0f)
+            if (attack_cooldown <= 0f)
             {
                 attack_cooldown = init_attack_cooldown;
                 collision.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
             }
         }
-        if(collision.gameObject.tag != "Shot") {
+        if (collision.gameObject.tag != "Shot")
+        {
             stick_to_surface();
         }
 
@@ -154,22 +166,23 @@ public class Plopmann : Enemy, IRespawnable
 
     protected override void OnCollisionEnter(Collision collision)
     {
+
         base.OnCollisionEnter(collision);
-       
+
         if (collision.contactCount > 0)
         {
+            /*
             ContactPoint point = collision.contacts[0];
             float dist = Vector3.Distance(this.transform.position, point.point) + 0.5f;
             Vector3 dir = (point.point - this.transform.position).normalized;
             RaycastHit hit;
             Physics.Raycast(this.transform.position, dir, out hit);
+            */
 
-            if(collision.gameObject.tag != "Shot")
-            {
-                stick_to_surface();
-            }
-            
-
+        }
+        if (collision.gameObject.tag != "Shot")
+        {
+            stick_to_surface();
         }
 
     }
