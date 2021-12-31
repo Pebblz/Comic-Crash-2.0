@@ -24,6 +24,8 @@ public class PlayerSwitcher : MonoBehaviourPun
 
     SoundManager sound;
     PlayerIcons playerIcon;
+
+    int inAirSwitches;
     void Awake()
     {
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -42,7 +44,8 @@ public class PlayerSwitcher : MonoBehaviourPun
             //arrays start at zero so i have to make it one less 
             if (!pause.isPaused &&
                 !PhotonFindCurrentClient().GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Death") &&
-                !PhotonFindCurrentClient().GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible"))
+                !PhotonFindCurrentClient().GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible")
+                && inAirSwitches < 2)
             {
                 if (InputManager.GetButtonDown("1"))
                 {
@@ -55,7 +58,8 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 2;
                     }
-                    
+                    if (!PhotonFindCurrentClient().GetComponent<PlayerMovement>().OnGround)
+                        inAirSwitches += 1;
                     SwitchCharacter(currentCharacter);
 
                 }
@@ -70,11 +74,14 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 0;
                     }
-
+                    if (!PhotonFindCurrentClient().GetComponent<PlayerMovement>().OnGround)
+                        inAirSwitches += 1;
                     SwitchCharacter(currentCharacter);
 
                 }
             }
+            if (PhotonFindCurrentClient().GetComponent<PlayerMovement>().OnGround)
+                inAirSwitches = 0;
         }
     }
     public void ChangeSelectedCharacters(int index, GameObject Character)
