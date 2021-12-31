@@ -75,13 +75,14 @@ public class OceanScript : MonoBehaviour
             else
             {
                 //rotation
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, Gear.eulerAngles.y * 2, transform.eulerAngles.z);
+                //transform.eulerAngles = new Vector3(transform.eulerAngles.x, Gear.eulerAngles.y * 2, transform.eulerAngles.z);
                 //Going up
                 progress = .00286f * Gear.eulerAngles.y;
                 Mathf.Clamp(progress, 0, 1);
-                transform.position = Vector3.Lerp(new Vector3(transform.position.x, OceanBottemY, transform.position.z),
-                   new Vector3(transform.position.x, OceanTopY, transform.position.z), progress);
-            }
+
+            transform.position = Vector3.Lerp(new Vector3(transform.position.x, OceanBottemY, transform.position.z),
+               new Vector3(transform.position.x, OceanTopY, transform.position.z), progress);
+        }
         //}
     }
 }

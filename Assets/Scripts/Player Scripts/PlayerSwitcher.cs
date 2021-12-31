@@ -58,7 +58,8 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 2;
                     }
-                    if (!PhotonFindCurrentClient().GetComponent<PlayerMovement>().OnGround)
+                    if (!PhotonFindCurrentClient().GetComponent<PlayerMovement>().OnGround && 
+                        !PhotonFindCurrentClient().GetComponent<PlayerMovement>().InWater)
                         inAirSwitches += 1;
                     SwitchCharacter(currentCharacter);
 
@@ -74,7 +75,8 @@ public class PlayerSwitcher : MonoBehaviourPun
                     {
                         currentCharacter = 0;
                     }
-                    if (!PhotonFindCurrentClient().GetComponent<PlayerMovement>().OnGround)
+                    if (!PhotonFindCurrentClient().GetComponent<PlayerMovement>().OnGround &&
+                        !PhotonFindCurrentClient().GetComponent<PlayerMovement>().InWater)
                         inAirSwitches += 1;
                     SwitchCharacter(currentCharacter);
 
