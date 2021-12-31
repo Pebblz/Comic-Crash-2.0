@@ -145,7 +145,7 @@ public class HandMan : MonoBehaviour
                         movement.PlayAnimation("Pushing");
                         Transform hitTransform = hit.collider.transform.parent;
                         hitTransform.Rotate(hitTransform.rotation.x,
-                            hitTransform.rotation.y - .5f, hitTransform.rotation.z);
+                            hitTransform.rotation.y - 1f, hitTransform.rotation.z);
                     }
                 }
                 else
