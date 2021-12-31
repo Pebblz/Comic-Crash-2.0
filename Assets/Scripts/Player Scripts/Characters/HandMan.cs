@@ -17,6 +17,7 @@ public class HandMan : MonoBehaviour
     PhotonView photonView;
     [SerializeField]
     float HeavyObjectPushSpeed = .5f;
+
     void Awake()
     {
         movement = GetComponent<PlayerMovement>();
@@ -121,6 +122,38 @@ public class HandMan : MonoBehaviour
             }
         }
 
+    }
+    private void FixedUpdate()
+    {
+        if (photonView.IsMine)
+        {
+            if (InputManager.GetAxis("Horizontal") != 0 && movement.OnGround ||
+                InputManager.GetAxis("Vertical") != 0 && movement.OnGround)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(this.gameObject.transform.position + new Vector3(0, .3f, 0), transform.TransformDirection(Vector3.forward) + new Vector3(0, .3f, 0), out hit, .7f))
+                {
+                    if (hit.collider.gameObject.tag == "HeavyGearRight" && hit.collider.transform.parent.eulerAngles.y + .5f <= 350)
+                    {
+                        movement.PlayAnimation("Pushing");
+                        Transform hitTransform = hit.collider.transform.parent;
+                        hitTransform.Rotate(hitTransform.rotation.x,
+                            hitTransform.rotation.y + .5f, hitTransform.rotation.z);
+                    }
+                    if (hit.collider.gameObject.tag == "HeavyGearLeft" && hit.collider.transform.parent.eulerAngles.y - .5f > 0)
+                    {
+                        movement.PlayAnimation("Pushing");
+                        Transform hitTransform = hit.collider.transform.parent;
+                        hitTransform.Rotate(hitTransform.rotation.x,
+                            hitTransform.rotation.y - .5f, hitTransform.rotation.z);
+                    }
+                }
+                else
+                {
+                    movement.StopAnimation("Pushing");
+                }
+            }
+        }
     }
     void ThrowGameObject()
     {
