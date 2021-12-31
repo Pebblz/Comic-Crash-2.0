@@ -8,9 +8,6 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
 {
 
     [SerializeField]
-    private int JoshSceneIndex;
-
-    [SerializeField]
     private int PatSceneIndex;
 
     [SerializeField]
@@ -18,10 +15,6 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
 
     [SerializeField]
     private GameObject roomPanel;
-
-
-    [SerializeField]
-    private GameObject JoshButton;
 
     [SerializeField]
     private GameObject PatButton;
@@ -65,12 +58,10 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
         roomNameDisplay.text = PhotonNetwork.CurrentRoom.Name;
         if(PhotonNetwork.IsMasterClient)
         {
-            JoshButton.SetActive(true);
             PatButton.SetActive(true);
         }
         else
         {
-            JoshButton.SetActive(false);
             PatButton.SetActive(false);
         }
         ClearPlayerListings();
@@ -91,14 +82,6 @@ public class MatchMakingRoomController : MonoBehaviourPunCallbacks
         if(PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-        }
-    }
-    public void StartJoshGame()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LoadLevel(JoshSceneIndex);
         }
     }
     public void StartPatGame()
