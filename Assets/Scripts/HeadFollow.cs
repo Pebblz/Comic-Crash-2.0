@@ -21,16 +21,19 @@ public class HeadFollow : MonoBehaviour
             //this needs to be here because the player can switch characters
             player = PhotonFindCurrentClient();
         }
-        if (player.GetComponent<PhotonView>().IsMine)
+        else
         {
-            //this checks if any of the rays hit an object with pickupables script
-            if (lookAt)
+            if (player.GetComponent<PhotonView>().IsMine)
             {
-                head.transform.rotation = lookAtSlowly(head.transform, player.transform.position + new Vector3(0, HeadYOffset, 0), rotateSpeed);
-            }
-            else
-            {
-                head.transform.rotation = lookAtSlowly(head.transform, headStartingRot, rotateSpeed);
+                //this checks if any of the rays hit an object with pickupables script
+                if (lookAt)
+                {
+                    head.transform.rotation = lookAtSlowly(head.transform, player.transform.position + new Vector3(0, HeadYOffset, 0), rotateSpeed);
+                }
+                else
+                {
+                    head.transform.rotation = lookAtSlowly(head.transform, headStartingRot, rotateSpeed);
+                }
             }
         }
 
