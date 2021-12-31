@@ -46,18 +46,18 @@ public class NPCTalkable : MonoBehaviour
             {
                 if (Vector3.Distance(transform.position, player.transform.position) < Talkdistance)
                 {
-                    if (InputManager.GetButtonDown("Interact") && !talking)
+                    if (InputManager.GetButton("Interact") && !talking)
                     {
                         TriggerDialogue();
                         Timer = .5f;
                     }
                     //this is a way for the player to skip dialogue if he's talking to the npc
-                    if (InputManager.GetButtonDown("Pause") && talking)
+                    if (InputManager.GetButton("Pause") && talking)
                     {
                         EndDialogue();
                     }
                     //return means enter
-                    if (talking && InputManager.GetButtonDown("Enter") && Timer < 0)
+                    if (talking && InputManager.GetButton("Enter") && Timer < 0)
                     {
                         manager.DisplayNextSentence();
                         Timer = .5f;
