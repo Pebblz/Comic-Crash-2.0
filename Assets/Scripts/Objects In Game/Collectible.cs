@@ -19,7 +19,7 @@ public class Collectible : MonoBehaviour
 
     private void Start()
     {
-        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+            sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
     void Update()
     {
