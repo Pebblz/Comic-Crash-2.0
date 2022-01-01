@@ -64,21 +64,24 @@ public class WaterDamage : MonoBehaviour
     }
     private void OnTriggerStay(Collider col)
     {
-        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
+        if (col.gameObject.tag == "Player")
         {
-            if (damageOnHit)
+            if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
             {
-                if (col.gameObject.GetComponent<BlobBert>())
+                if (damageOnHit)
                 {
-                    col.GetComponent<PlayerHealth>().HurtPlayer(damage);
+                    if (col.gameObject.GetComponent<BlobBert>())
+                    {
+                        col.GetComponent<PlayerHealth>().HurtPlayer(damage);
+                    }
                 }
-            }
-            else
-            {
-                if (col.gameObject.GetComponent<BlobBert>())
+                else
                 {
-                    Player = col.gameObject;
-                    startTimer = true;
+                    if (col.gameObject.GetComponent<BlobBert>())
+                    {
+                        Player = col.gameObject;
+                        startTimer = true;
+                    }
                 }
             }
         }

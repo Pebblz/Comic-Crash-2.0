@@ -43,7 +43,7 @@ public class OceanScript : MonoBehaviour
         //    lastProgress = progress;
         //}
         progress = .00286f * Gear.eulerAngles.y;
-                Mathf.Clamp(progress, -1, 1);
+                Mathf.Clamp(progress, 0, 1);
         //if (!GoingUp)
         //{
             transform.position = Vector3.Lerp(new Vector3(transform.position.x, OceanBottemY, transform.position.z),
