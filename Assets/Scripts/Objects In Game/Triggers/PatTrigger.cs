@@ -7,10 +7,15 @@ public class PatTrigger : MonoBehaviour
 {
     [SerializeField] int LevelIndex;
 
-
-    private void OnTriggerStay(Collider col)
+    private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.tag == "Player")
-            PhotonNetwork.LoadLevel(LevelIndex);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (col.gameObject.tag == "Player")
+            {
+                PhotonNetwork.LoadLevel(LevelIndex);
+                this.gameObject.SetActive(false);
+            }
+        }
     }
 }
