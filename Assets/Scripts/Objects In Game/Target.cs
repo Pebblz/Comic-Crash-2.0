@@ -15,7 +15,7 @@ public class Target : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (collision.gameObject.GetComponent<PlayerAttack>() ||
+            if (collision.gameObject.GetComponent<PunchHitBox>() ||
             collision.gameObject.GetComponent<Bullet>())
             {
                 photonView.RPC("DestroyGameObject", RpcTarget.All);
@@ -26,7 +26,7 @@ public class Target : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (collision.gameObject.GetComponent<PlayerAttack>() ||
+            if (collision.gameObject.GetComponent<PunchHitBox>() ||
                 collision.gameObject.GetComponent<Bullet>())
             {
                 photonView.RPC("DestroyGameObject", RpcTarget.All);
