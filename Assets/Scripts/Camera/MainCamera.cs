@@ -123,7 +123,7 @@ public class MainCamera : MonoBehaviour
         {
             if (target.GetComponent<PhotonView>().IsMine)
             {
-                if (!isShaking  && !StopCamera && !pause.isPaused)
+                if (!isShaking && !StopCamera && !pause.isPaused)
                 {
                     if (!collectibleCamera)
                     {
@@ -310,9 +310,11 @@ public class MainCamera : MonoBehaviour
                         onlyOnce = false;
                     }
                 }
+
                 Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
                 Vector3 position = rotation * negDistance + new Vector3(target.position.x, target.position.y + 1, target.position.z);
                 transform.SetPositionAndRotation(position, rotation);
+
                 //transform.rotation = rotation;
                 //transform.position = position;
             }
@@ -353,7 +355,7 @@ public class MainCamera : MonoBehaviour
     {
         if (distance > CollectibleDistance)
         {
-            distance -= 10 * Time.deltaTime;       
+            distance -= 10 * Time.deltaTime;
         }
         Quaternion rotation = Quaternion.Euler(y, x, 0);
         Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
