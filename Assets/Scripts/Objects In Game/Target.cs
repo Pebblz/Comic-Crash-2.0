@@ -10,24 +10,23 @@ public class Target : MonoBehaviour
     {
         photonView = GetComponent<PhotonView>();
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (photonView.IsMine)
         {
-            if (collision.gameObject.GetComponent<PunchHitBox>() ||
-            collision.gameObject.GetComponent<Bullet>())
+            if (other.gameObject.tag == "PlayerPunch" ||
+                other.gameObject.GetComponent<Bullet>())
             {
                 photonView.RPC("DestroyGameObject", RpcTarget.All);
             }
         }
     }
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider other)
     {
         if (photonView.IsMine)
         {
-            if (collision.gameObject.GetComponent<PunchHitBox>() ||
-                collision.gameObject.GetComponent<Bullet>())
+            if (other.gameObject.tag == "PlayerPunch" ||
+                other.gameObject.GetComponent<Bullet>())
             {
                 photonView.RPC("DestroyGameObject", RpcTarget.All);
             }
