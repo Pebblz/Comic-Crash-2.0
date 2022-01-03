@@ -108,7 +108,7 @@ public class PeaShooter : MonoBehaviour
         camera.ShootingMode = true;
         camera.transform.SetParent(gameObject.transform);
         camera.transform.position = camera.transform.position +
-    (camera.transform.right * 1.1f);
+    (camera.transform.right * 1.07f);
         movement.PlayAnimation("Aiming");
     }
     void UnSetCamera()
