@@ -83,5 +83,7 @@ public class PunchHitBox : MonoBehaviour
             Enemy enemy = (Enemy)col.gameObject.GetComponent(typeof(Enemy));
             enemy.damage(damage);
         }
+        if (GroundPound && col.gameObject.GetComponent<SandPiles>())
+            col.gameObject.GetComponent<SandPiles>().DestroyPile();
     }
 }

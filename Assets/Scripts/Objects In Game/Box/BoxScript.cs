@@ -24,7 +24,7 @@ public class BoxScript : MonoBehaviour
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "BrokenBox"), transform.position, transform.rotation);
         PhotonNetwork.Destroy(photonView);
     }
-    void InstanciateBox()
+    void InstantiateBox()
     {
         if (wasPunched)
         {
@@ -45,7 +45,7 @@ public class BoxScript : MonoBehaviour
                     //this will check if the thing that hit it is a bullet
                     if (col.gameObject.GetComponent<Bullet>() != null)
                     {
-                        InstanciateBox();
+                        InstantiateBox();
                         photonView.RPC("DestroyBox", RpcTarget.All);
                     }
 
@@ -57,7 +57,7 @@ public class BoxScript : MonoBehaviour
                 {
                     if (col.gameObject.tag == "PlayerPunch")
                     {
-                        InstanciateBox();
+                        InstantiateBox();
                         photonView.RPC("DestroyBox", RpcTarget.All);
                     }
                 }
@@ -69,7 +69,7 @@ public class BoxScript : MonoBehaviour
                             col.gameObject.transform.position.y > gameObject.transform.position.y)
                         {
                             col.gameObject.GetComponent<PlayerMovement>().jumpOnEnemy();
-                            InstanciateBox();
+                            InstantiateBox();
                             photonView.RPC("DestroyBox", RpcTarget.All);
                         }
                     }
@@ -79,7 +79,7 @@ public class BoxScript : MonoBehaviour
                     if (!col.gameObject.GetComponent<PlayerMovement>().OnGround &&
                         col.gameObject.transform.position.y < gameObject.transform.position.y)
                     {
-                        InstanciateBox();
+                        InstantiateBox();
                         photonView.RPC("DestroyBox", RpcTarget.All);
                     }
                 }
@@ -89,7 +89,7 @@ public class BoxScript : MonoBehaviour
                     {
                         if (col.gameObject.GetComponent<Animator>().GetBool("GroundPound"))
                         {
-                            InstanciateBox();
+                            InstantiateBox();
                             photonView.RPC("DestroyBox", RpcTarget.All);
                         }
                     }
