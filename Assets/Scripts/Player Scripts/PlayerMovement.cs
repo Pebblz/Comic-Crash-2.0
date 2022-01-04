@@ -317,7 +317,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
                 playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-                if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor)
+                if (!isCrouching || InWater || Climbing || !OnGround || inWaterAndFloor || InputManager.GetButton("Jump"))
                 {
                     StopAnimation("Crouching");
                     isCrouching = false;
@@ -546,7 +546,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else
                     {
-                        if (OnGround)
+                        if (OnGround && !InputManager.GetButton("Jump"))
                             isCrouching = InputManager.GetButton("Crouch");
 
                         if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButton("Crouch"))
@@ -559,7 +559,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (LongJumpTimer <= 0)
                     {
-                        if (OnGround)
+                        if (OnGround && !InputManager.GetButton("Jump"))
                             isCrouching = InputManager.GetButton("Crouch");
 
                         if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButton("Crouch"))
