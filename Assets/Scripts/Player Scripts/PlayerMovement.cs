@@ -549,7 +549,7 @@ public class PlayerMovement : MonoBehaviour
                         if (OnGround && !InputManager.GetButton("Jump"))
                             isCrouching = InputManager.GetButton("Crouch");
 
-                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButton("Crouch"))
+                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButtonDown("Crouch"))
                             desiredJump |= InputManager.GetButtonDown("Jump");
                         else
                             desiredJump = false;
@@ -562,7 +562,7 @@ public class PlayerMovement : MonoBehaviour
                         if (OnGround && !InputManager.GetButton("Jump"))
                             isCrouching = InputManager.GetButton("Crouch");
 
-                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButton("Crouch"))
+                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButtonDown("Crouch"))
                             desiredJump |= InputManager.GetButtonDown("Jump");
                         else
                             desiredJump = false;
