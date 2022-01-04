@@ -246,7 +246,7 @@ public class MainCamera : MonoBehaviour
                     //{
                     //    x += 180;
                     //}
-                    if (InputManager.GetButton("reset Camera"))
+                    if (InputManager.GetButtonDown("reset Camera"))
                     {
                         x = target.eulerAngles.y;
                         y = startingPos.y;
