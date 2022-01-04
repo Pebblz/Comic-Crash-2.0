@@ -117,7 +117,7 @@ public class MainCamera : MonoBehaviour
         toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (target != null)
         {
