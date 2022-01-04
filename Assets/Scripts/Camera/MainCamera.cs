@@ -145,6 +145,10 @@ public class MainCamera : MonoBehaviour
             isShaking = false;
         }
     }
+    private void FixedUpdate()
+    {
+        
+    }
     #endregion
     GameObject PhotonFindCurrentClient()
     {
