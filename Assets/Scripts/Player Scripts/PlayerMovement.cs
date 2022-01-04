@@ -537,7 +537,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 &&
                         !isCrouching && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump") &&
-                        !anim.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+                        !InputManager.GetButton("Jump"))
                     {
                         PlayAnimation("LongJump");
                         desiredLongJump = true;
@@ -549,7 +549,7 @@ public class PlayerMovement : MonoBehaviour
                         if (OnGround)
                             isCrouching = InputManager.GetButton("Crouch");
 
-                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump"))
+                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButton("Crouch"))
                             desiredJump |= InputManager.GetButtonDown("Jump");
                         else
                             desiredJump = false;
@@ -562,7 +562,7 @@ public class PlayerMovement : MonoBehaviour
                         if (OnGround)
                             isCrouching = InputManager.GetButton("Crouch");
 
-                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump"))
+                        if (!IsWallSliding && JustWallJumpedTimer <= 0 && !InputManager.GetButton("Crouch"))
                             desiredJump |= InputManager.GetButtonDown("Jump");
                         else
                             desiredJump = false;
