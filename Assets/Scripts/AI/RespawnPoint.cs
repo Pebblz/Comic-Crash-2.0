@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class RespawnPoint : MonoBehaviour
 {
-    [SerializeField]
-    [Tooltip("Gameobject to repsawn")]
-    GameObject target;
 
-    [SerializeField]
+    [Tooltip("Gameobject to repsawn")]
+    public GameObject target;
+
     [Tooltip("Distance a player has to be away for an entity to respawn")]
     [Range(5, 20)]
-    float respawn_distance = 10f;
+    public float respawn_distance = 10f;
 
-    [SerializeField]
     [Tooltip("Amount of time a player has to be away for an entity to respawn")]
     [Range(10, 100)]
-    float respawn_timeout = 10f;
+    public float respawn_timeout = 10f;
     float init_respawn_timeout;
     // Start is called before the first frame update
     private bool respawning = false;
-    private void Awake()
+    private void Start()
     {
         init_respawn_timeout = respawn_timeout;
         this.transform.position = target.transform.position;

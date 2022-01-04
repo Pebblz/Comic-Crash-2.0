@@ -16,7 +16,6 @@ public abstract class Enemy : MonoBehaviour
         STUN
 
     }
-
     protected Transform target;
     public STATE current_state = STATE.IDLE;
     public float attack_range = 2f;
@@ -29,6 +28,9 @@ public abstract class Enemy : MonoBehaviour
     public float iframes = 1f;
     private float init_iframes;
     public bool hit = false;
+    public bool respawnable = true;
+    public float respawn_distance = 10f;
+    public float repspawn_time = 10f;
 
     protected virtual void Awake()
     {
