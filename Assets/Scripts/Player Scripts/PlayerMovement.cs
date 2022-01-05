@@ -143,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
     public float submergence;
     bool InSlowDownField;
     [HideInInspector]
-    public bool Gliding, Sliding;
+    public bool Gliding, Sliding,Rolling;
 
     Collider water;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
@@ -310,7 +310,7 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("IsLanded");
                 }
                 minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-                if (LongJumpTimer <= 0 && !Sliding)
+                if (LongJumpTimer <= 0 )
                 {
                     playerInput.x = InputManager.GetAxis("Horizontal");
                     playerInput.y = InputManager.GetAxis("Vertical");
@@ -362,7 +362,8 @@ public class PlayerMovement : MonoBehaviour
                     if (!toggle.m_gamepadOn)
                     {
                         SetAnimatorFloat("WalkMultiplier", 1);
-                        Isrunning = InputManager.GetButton("Sprint");
+                        if(!Rolling)
+                            Isrunning = InputManager.GetButton("Sprint");
                     }
                     else
                     {
@@ -773,7 +774,7 @@ public class PlayerMovement : MonoBehaviour
         groundContactCount = 1;
         contactNormal = hit.normal;
         float dot = Vector3.Dot(velocity, hit.normal);
-        if (dot > 0f)
+        if (dot > 0f && !Rolling && !Sliding)
         {
             velocity = (velocity - hit.normal * dot).normalized * speed;
         }
@@ -1160,7 +1161,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpPhase = 5;
             }
 
-            if (canJump && !IsWallSliding)
+            if (canJump && !IsWallSliding && !Rolling)
             {
                 StopAnimation("Dive");
                 StopAnimation("Wall Jump");
@@ -1344,6 +1345,18 @@ public class PlayerMovement : MonoBehaviour
         {
             Sliding = true;
             Vector3 Slide = new Vector3(velocity.x * SlideSpeed, -6, velocity.z * SlideSpeed);
+
+            body.velocity = new Vector3(Slide.x, Slide.y, Slide.z);
+        }
+    }
+    public void Roll(float RollSpeed)
+    {
+        if (!Swimming || !InWater)
+        {
+            Sliding = true;
+            //Mathf.Clamp(velocity.x, -5, 5);
+            //Mathf.Clamp(velocity.z, -5, 5);
+            Vector3 Slide = new Vector3(velocity.x * RollSpeed, -6, velocity.z * RollSpeed);
 
             body.velocity = new Vector3(Slide.x, Slide.y, Slide.z);
         }

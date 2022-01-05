@@ -4,25 +4,44 @@ using UnityEngine;
 using Luminosity.IO;
 public class Jeff : MonoBehaviour
 {
-
+    [SerializeField]
+    float RollSpeed = 5;
+    float originalSpeed;
+    PlayerMovement movement;
+    bool holdingSprint;
+    bool CheckOncePerRoll;
+    private void Start()
+    {
+        originalSpeed = RollSpeed;
+        movement = GetComponent<PlayerMovement>();
+    }
     void Update()
     {
-        if (InputManager.GetButtonDown("Right Mouse"))
+        if (InputManager.GetButton("Right Mouse") && movement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") &&
+            !movement.InWater && !movement.IsWallSliding && movement.playerInput.x != 0 
+            ||
+            InputManager.GetButton("Right Mouse") && movement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") &&
+            !movement.InWater && !movement.IsWallSliding && movement.playerInput.y != 0)
         {
             Roll();
+            movement.PlayAnimation("GroundPound");
+            movement.Rolling = true;
         }
-        if (InputManager.GetButtonDown("Right Mouse"))
+        if(InputManager.GetButtonUp("Right Mouse") || 
+            movement.InWater || movement.IsWallSliding
+            || movement.playerInput.y == 0 && movement.playerInput.x == 0)
         {
-            BackToNormal();
-        }
+            movement.Rolling = false;
+            holdingSprint = false;
+            CheckOncePerRoll = false;
+            RollSpeed = originalSpeed;
+            movement.StopAnimation("GroundPound");
+        }    
     }
 
     void Roll()
     {
-       // GetComponent<PlayerMovement>().Roll = true;
+            movement.Roll(RollSpeed);
     }
-    void BackToNormal()
-    {
-        //GetComponent<PlayerMovement>().Roll = false;
-    }
+
 }

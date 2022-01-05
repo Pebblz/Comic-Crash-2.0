@@ -1764,6 +1764,7 @@ GameObject:
   - component: {fileID: 7093078686324562492}
   - component: {fileID: 7093078686324562494}
   - component: {fileID: 3795085074013386029}
+  - component: {fileID: -5733606013979747113}
   - component: {fileID: 2844136882551048526}
   - component: {fileID: -2360383561209079985}
   - component: {fileID: 561296504702199882}
@@ -2033,6 +2034,7 @@ MonoBehaviour:
   submergence: 0
   Gliding: 0
   Sliding: 0
+  Rolling: 0
   OnFloor: 0
   isCrouching: 0
   LongJumpTimer: 0
@@ -2071,6 +2073,19 @@ MonoBehaviour:
   TimeTillnextAttack: 0
   CanAttack: 0
   AirAttacked: 0
+--- !u!114 &-5733606013979747113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7093078686324562486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c0c3148588b9d34db02b2a30e689ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RollSpeed: 3
 --- !u!114 &2844136882551048526
 MonoBehaviour:
   m_ObjectHideFlags: 0
