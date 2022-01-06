@@ -143,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
     public float submergence;
     bool InSlowDownField;
     [HideInInspector]
-    public bool Gliding, Sliding,Rolling;
+    public bool Gliding, Sliding, Rolling;
 
     Collider water;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
@@ -296,9 +296,9 @@ public class PlayerMovement : MonoBehaviour
                     PlayFallingAnimation();
                 }
                 if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && !OnGround ||
-                    anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround|| 
-                    anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && !OnGround || 
-                    anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") && !OnGround || 
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !OnGround ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && !OnGround ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Walk") && !OnGround ||
                     anim.GetCurrentAnimatorStateInfo(0).IsName("Crouch_Idle") && !OnGround ||
                     anim.GetCurrentAnimatorStateInfo(0).IsName("SlideAttack") && !OnGround)
                 {
@@ -320,7 +320,7 @@ public class PlayerMovement : MonoBehaviour
                     else
                     {
                         playerInput.x = InputManager.GetAxis("Horizontal") / 2;
-                        playerInput.y = InputManager.GetAxis("Vertical")/ 2;
+                        playerInput.y = InputManager.GetAxis("Vertical") / 2;
                     }
                 }
                 playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
@@ -370,7 +370,7 @@ public class PlayerMovement : MonoBehaviour
                     if (!toggle.m_gamepadOn)
                     {
                         SetAnimatorFloat("WalkMultiplier", 1);
-                        if(!Rolling)
+                        if (!Rolling)
                             Isrunning = InputManager.GetButton("Sprint");
                     }
                     else
@@ -461,15 +461,45 @@ public class PlayerMovement : MonoBehaviour
                 {
                     body.velocity = new Vector3(0, body.velocity.y, 0);
                 }
-                RaycastHit ray;
+
+                if (Rolling)
+                {
+                    for (float x = -.5f; x <= .5f; x += .5f)
+                    {
+
+                        Vector3 dir = new Vector3(velocity.x, .4f, velocity.z);
+                        RaycastHit ray;
+                        if (Physics.Raycast(transform.position + new Vector3(x,0,0), dir, out ray, .7f))
+                        {
+
+                            if (ray.collider.gameObject.layer != 10)
+                            {
+                                print("Collision");
+                                GetComponent<Jeff>().StopRolling = true;
+                                Isrunning = false;
+                                body.velocity = new Vector3(-velocity.x * 3f, 7, -velocity.z * 3f);
+
+                            }
+                        }
+                    }
+                }
+
+
 
                 //this makes you wall slide
                 if (!OnGround)
                 {
+                    RaycastHit ray;
                     timerBeforeWallSlide -= Time.deltaTime;
                     Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
                     {
+                        if (Rolling)
+                        {
+                            body.velocity = new Vector3(-body.velocity.x, 5, -body.velocity.z);
+                            GetComponent<Jeff>().StopRolling = true;
+                        }
+
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject &&
                             ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0 && !InWater &&
                             ray.collider.gameObject.layer != 17)
@@ -1205,7 +1235,7 @@ public class PlayerMovement : MonoBehaviour
                 if (jumpPhase == 1 && !handman)
                 {
                     PlayAnimation("DoubleJump");
-                    if(!CanDive)
+                    if (!CanDive)
                         canJump = false;
                 }
                 if (jumpPhase == 1 && handman)
@@ -1443,7 +1473,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
         {
-            if(WalkSpeed - SlowDownBy > 0)
+            if (WalkSpeed - SlowDownBy > 0)
                 CurrentSpeed = WalkSpeed - SlowDownBy;
             else
                 CurrentSpeed = 1;
