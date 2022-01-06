@@ -8,8 +8,7 @@ public class Jeff : MonoBehaviour
     float RollSpeed = 5;
     float originalSpeed;
     PlayerMovement movement;
-    bool holdingSprint;
-    bool CheckOncePerRoll;
+    public bool StopRolling;
     private void Start()
     {
         originalSpeed = RollSpeed;
@@ -18,10 +17,10 @@ public class Jeff : MonoBehaviour
     void Update()
     {
         if (InputManager.GetButton("Right Mouse") && movement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") &&
-            !movement.InWater && !movement.IsWallSliding && movement.playerInput.x != 0 
+            !movement.InWater && !movement.IsWallSliding && movement.playerInput.x != 0 && !StopRolling
             ||
             InputManager.GetButton("Right Mouse") && movement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") &&
-            !movement.InWater && !movement.IsWallSliding && movement.playerInput.y != 0)
+            !movement.InWater && !movement.IsWallSliding && movement.playerInput.y != 0 && !StopRolling)
         {
             Roll();
             movement.PlayAnimation("GroundPound");
@@ -29,13 +28,13 @@ public class Jeff : MonoBehaviour
         }
         if(InputManager.GetButtonUp("Right Mouse") || 
             movement.InWater || movement.IsWallSliding
-            || movement.playerInput.y == 0 && movement.playerInput.x == 0)
+            || movement.playerInput.y == 0 && movement.playerInput.x == 0 
+            || StopRolling)
         {
             movement.Rolling = false;
-            holdingSprint = false;
-            CheckOncePerRoll = false;
             RollSpeed = originalSpeed;
             movement.StopAnimation("GroundPound");
+            StopRolling = false;
         }    
     }
 
