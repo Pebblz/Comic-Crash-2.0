@@ -310,10 +310,18 @@ public class PlayerMovement : MonoBehaviour
                     StopAnimation("IsLanded");
                 }
                 minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-                if (LongJumpTimer <= 0 )
+                if (LongJumpTimer <= 0)
                 {
-                    playerInput.x = InputManager.GetAxis("Horizontal");
-                    playerInput.y = InputManager.GetAxis("Vertical");
+                    if (!Rolling)
+                    {
+                        playerInput.x = InputManager.GetAxis("Horizontal");
+                        playerInput.y = InputManager.GetAxis("Vertical");
+                    }
+                    else
+                    {
+                        playerInput.x = InputManager.GetAxis("Horizontal") / 2;
+                        playerInput.y = InputManager.GetAxis("Vertical")/ 2;
+                    }
                 }
                 playerInput.z = Swimming ? InputManager.GetAxis("UpDown") : 0f;
                 playerInput = Vector3.ClampMagnitude(playerInput, 1f);
@@ -395,15 +403,22 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (!inWaterAndFloor)
                     {
-                        if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+                        if (!Rolling)
                         {
-                            CurrentSpeed = RunSpeed;
-                            SetAnimatorFloat("RunMultiplier", 1);
+                            if (Isrunning && !isCrouching && !InWater && !Climbing && !CheckSteepContacts())
+                            {
+                                CurrentSpeed = RunSpeed;
+                                SetAnimatorFloat("RunMultiplier", 1);
+                            }
+                            if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+                            {
+                                CurrentSpeed = WalkSpeed;
+                                //SetAnimatorFloat("WalkMultiplier", 1);
+                            }
                         }
-                        if (!Isrunning && !isCrouching || InWater || Climbing || CheckSteepContacts())
+                        else
                         {
-                            CurrentSpeed = WalkSpeed;
-                            //SetAnimatorFloat("WalkMultiplier", 1);
+                            CurrentSpeed = (RunSpeed * 2);
                         }
                     }
                     else
@@ -538,7 +553,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 &&
                         !isCrouching && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump") &&
-                        !InputManager.GetButton("Jump"))
+                        !InputManager.GetButton("Jump") && !Rolling)
                     {
                         PlayAnimation("LongJump");
                         desiredLongJump = true;
