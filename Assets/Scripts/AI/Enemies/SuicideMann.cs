@@ -56,7 +56,8 @@ public class SuicideMann : Enemy, IRespawnable
     Rigidbody body;
     bool exploding = false;
     bool zoomed = false;
-    
+    [SerializeField]
+    Animator animator;
     public void reset_data()
     {
         exploding = false;
@@ -127,6 +128,7 @@ public class SuicideMann : Enemy, IRespawnable
         if (look_timeout > 0f)
         {
             this.transform.LookAt(target);
+            animator.SetBool("anticipation",true);
         }
         else if (pause_timeout >= 0f)
         {
@@ -142,6 +144,7 @@ public class SuicideMann : Enemy, IRespawnable
             {
                 if (!zoomed)
                 {
+                    animator.SetBool("zoom", true);
                     body.AddForce(this.transform.forward * zoom_speed, ForceMode.Impulse);
                     zoomed = true;
                 }
