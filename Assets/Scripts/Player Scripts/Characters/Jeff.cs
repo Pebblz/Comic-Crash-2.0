@@ -26,9 +26,9 @@ public class Jeff : MonoBehaviour
             movement.PlayAnimation("GroundPound");
             movement.Rolling = true;
         }
-        if(InputManager.GetButtonUp("Right Mouse") || 
+        if(InputManager.GetButtonUp("Right Mouse") && movement.OnGround|| 
             movement.InWater || movement.IsWallSliding
-            || movement.playerInput.y == 0 && movement.playerInput.x == 0 
+            || movement.playerInput.y == 0 && movement.playerInput.x == 0 && movement.OnGround
             || StopRolling)
         {
             movement.Rolling = false;

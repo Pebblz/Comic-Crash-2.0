@@ -474,7 +474,6 @@ public class PlayerMovement : MonoBehaviour
 
                             if (ray.collider.gameObject.layer != 10)
                             {
-                                print("Collision");
                                 GetComponent<Jeff>().StopRolling = true;
                                 Isrunning = false;
                                 body.velocity = new Vector3(-velocity.x * 3f, 7, -velocity.z * 3f);
