@@ -16,10 +16,13 @@ public class HeavyObjAudio : PlayByState
     }
     public override bool determine_if_play()
     {
-        if (body.velocity.x >  0.01  || body.velocity.x < -0.01 ||
-            body.velocity.z > 0.01 || body.velocity.z < -0.01)
+        if (body != null)
         {
-            return true;
+            if (body.velocity.x > 0.01 || body.velocity.x < -0.01 ||
+                body.velocity.z > 0.01 || body.velocity.z < -0.01)
+            {
+                return true;
+            }
         }
         return false;   
         

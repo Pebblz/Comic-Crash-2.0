@@ -13,75 +13,63 @@ public class Collectible : MonoBehaviour
 
     [SerializeField, Range(0, 100)] float RotationSpeed;
 
-    GameObject player;
     SoundManager sound;
     PhotonView photonView;
 
     private void Start()
     {
-            sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
+        sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
     void Update()
     {
-        if (player == null)
-            player = PhotonFindCurrentClient();
+
         // Rotate the object around its local y axis at 1 degree per second
         transform.Rotate(Vector3.up * RotationSpeed * Time.deltaTime);
-        photonView = GetComponent<PhotonView>();
+
     }
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.TryGetComponent<PlayerMovement>(out var player))
         {
-            GameObject gm = FindObjectOfType<GameManager>().gameObject;
 
             if (collect == collectible.Coin)
             {
+                GameObject gm = FindObjectOfType<GameManager>().gameObject;
+                photonView = GetComponent<PhotonView>();
                 sound.playCoin(this.transform.position);
                 gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
                 photonView.RPC("DestroyThis", RpcTarget.All);
             }
             else if (collect == collectible.MainCollectible)
             {
+                GameObject gm = FindObjectOfType<GameManager>().gameObject;
+                photonView = GetComponent<PhotonView>();
                 gm.GetComponent<GameManager>().CollectibleCount += numberGivenToPlayer;
-                if (col.gameObject == player)
-                {
-                    FindObjectOfType<PlayerMovement>().CollectibleGotten = true;
-                    photonView.RPC("DestroyThis", RpcTarget.All);
-                }
+                player.CollectibleGotten = true;
+                photonView.RPC("DestroyThis", RpcTarget.All);
             }
             else if (collect == collectible.HeartOne)
             {
-                if (col.gameObject == player)
-                {
-                    if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
-                    {
-                        col.gameObject.GetComponent<PlayerHealth>().currentHealth += 1;
-                        photonView.RPC("DestroyThis", RpcTarget.All);
-                    }
-                }
+                photonView = GetComponent<PhotonView>();
+                col.gameObject.GetComponent<PlayerHealth>().currentHealth += 1;
+                photonView.RPC("DestroyThis", RpcTarget.All);
+
             }
             else if (collect == collectible.maxHealthUp)
             {
-                if (col.gameObject == player)
-                {
-                    col.gameObject.GetComponent<PlayerHealth>().maxHealth += 1;
-                    col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
-                    print("new health = " + col.gameObject.GetComponent<PlayerHealth>().maxHealth);
-                    photonView.RPC("DestroyThis", RpcTarget.All);
-                }
+                photonView = GetComponent<PhotonView>();
+                col.gameObject.GetComponent<PlayerHealth>().maxHealth += 1;
+                col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
+                photonView.RPC("DestroyThis", RpcTarget.All);
+
             }
             else if (collect == collectible.FullHeal)
             {
-                if (col.gameObject == player)
-                {
-                    if (col.gameObject.GetComponent<PlayerHealth>().currentHealth != col.gameObject.GetComponent<PlayerHealth>().maxHealth)
-                    {
-                        col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
-                        photonView.RPC("DestroyThis", RpcTarget.All);
-                    }
-                }
+                photonView = GetComponent<PhotonView>();
+                col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
+                photonView.RPC("DestroyThis", RpcTarget.All);
+
             }
 
         }
@@ -89,20 +77,10 @@ public class Collectible : MonoBehaviour
     [PunRPC]
     void DestroyThis()
     {
-        if(photonView.IsMine)
+        if (photonView.IsMine)
             PhotonNetwork.Destroy(this.gameObject);
     }
-    GameObject PhotonFindCurrentClient()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach (GameObject g in players)
-        {
-            if (g.GetComponent<PhotonView>().IsMine)
-                return g;
-        }
-        return null;
-    }
     enum collectible
     {
         Coin,
