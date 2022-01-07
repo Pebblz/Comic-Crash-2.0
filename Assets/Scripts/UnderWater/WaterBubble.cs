@@ -34,9 +34,9 @@ public class WaterBubble : MonoBehaviour
     //if player collects bubble, he gains air and destroys bubble
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.tag == "Player")
+        if(col.TryGetComponent<PlayerHealth>(out var player))
         {
-            col.GetComponent<PlayerHealth>().GainAir(AmountOfAirGained);
+            player.GainAir(AmountOfAirGained);
             photonView.RPC("DestroyGameObject", RpcTarget.All);
         }
     }

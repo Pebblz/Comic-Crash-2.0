@@ -19,10 +19,10 @@ public class CheckPoint : MonoBehaviour
     //}
     private void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.TryGetComponent<Player>(out var player))
         {
-           // anim.SetBool("Spin", true);
-            col.GetComponent<Player>().respawnPoint = transform.position + new Vector3(0,2,0);
+            // anim.SetBool("Spin", true);
+            player.respawnPoint = transform.position + new Vector3(0,.5f,0);
         }
     }
 }

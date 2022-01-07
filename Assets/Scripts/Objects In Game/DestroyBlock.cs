@@ -39,15 +39,4 @@ public class DestroyBlock : MonoBehaviour
             }
         }
     }
-    GameObject PhotonFindCurrentClient()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject g in players)
-        {
-            if (g.GetComponent<PhotonView>().IsMine)
-                return g;
-        }
-        return null;
-    }
 }
