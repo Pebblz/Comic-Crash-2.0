@@ -52,7 +52,7 @@ public class GearIsland : MonoBehaviour
         //{
 
         //}
-        progress = .0033f * Gear.eulerAngles.y;
+        progress = .0029f * Gear.eulerAngles.y;
         Mathf.Clamp(progress, 0, 1);
         //if (AtTop)
         //{
