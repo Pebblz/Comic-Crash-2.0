@@ -53,7 +53,7 @@ public class PlayerAttack : MonoBehaviour
         //the jump animation you can't attack
         if (photonView.IsMine)
         {
-            if (!anim.GetBool("Jump"))
+            if (!anim.GetBool("Jump") && !movement.Rolling)
             {
                 if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
@@ -111,7 +111,8 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") || !anim.GetCurrentAnimatorStateInfo(0).IsName("GPFalling"))
+                if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") && !movement.Rolling || 
+                    !anim.GetCurrentAnimatorStateInfo(0).IsName("GPFalling") && !movement.Rolling)
                 {
                     // Air Punch
                     if (handman == null)
