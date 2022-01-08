@@ -8,9 +8,14 @@ public class Jeff : MonoBehaviour
     float RollSpeed = 5;
     float originalSpeed;
     PlayerMovement movement;
+    [SerializeField] ParticleSystem RollingParticle;
     public bool StopRolling;
     private void Start()
     {
+        if (RollingParticle != null)
+        {
+            RollingParticle.Stop();
+        }
         originalSpeed = RollSpeed;
         movement = GetComponent<PlayerMovement>();
     }
@@ -23,7 +28,11 @@ public class Jeff : MonoBehaviour
             !movement.InWater && !movement.IsWallSliding && movement.playerInput.y != 0 && !StopRolling)
         {
             Roll();
-            movement.PlayAnimation("GroundPound");
+            if (RollingParticle != null)
+            {
+                RollingParticle.Play();
+            }
+            movement.PlayAnimation("Roll");
             movement.Rolling = true;
         }
         if(InputManager.GetButtonUp("Right Mouse") && movement.OnGround|| 
@@ -33,7 +42,11 @@ public class Jeff : MonoBehaviour
         {
             movement.Rolling = false;
             RollSpeed = originalSpeed;
-            movement.StopAnimation("GroundPound");
+            if (RollingParticle != null)
+            {
+                RollingParticle.Stop();
+            }
+            movement.StopAnimation("Roll");
             StopRolling = false;
         }    
     }

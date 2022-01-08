@@ -1979,7 +1979,7 @@ MonoBehaviour:
   maxSwimAcceleration: 5
   jumpHeight: 7
   maxAirJumps: 1
-  maxGroundAngle: 45
+  maxGroundAngle: 60
   maxStairsAngle: 50
   maxClimbAngle: 140
   maxSnapSpeed: 100
@@ -2087,6 +2087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RollSpeed: 2
+  RollingParticle: {fileID: 5817559741669624428}
   StopRolling: 0
 --- !u!114 &2844136882551048526
 MonoBehaviour:
@@ -2210,6 +2211,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: SlideAttack
+  - Type: 4
+    SynchronizeType: 0
+    Name: Roll
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -3284,6 +3288,12 @@ PrefabInstance:
 --- !u!4 &5817559741669624426 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2391989590128665951, guid: b00ed243d18da5445a9711ea22d6d8f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 8182497470620233525}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5817559741669624428 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2391989590128665945, guid: b00ed243d18da5445a9711ea22d6d8f3,
     type: 3}
   m_PrefabInstance: {fileID: 8182497470620233525}
   m_PrefabAsset: {fileID: 0}
