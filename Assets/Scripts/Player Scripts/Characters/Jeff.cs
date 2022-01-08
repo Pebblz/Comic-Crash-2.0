@@ -22,7 +22,7 @@ public class Jeff : MonoBehaviour
     void Update()
     {
         if (InputManager.GetButton("Right Mouse") && movement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") &&
-            !movement.InWater && !movement.IsWallSliding && movement.playerInput.x != 0 && !StopRolling
+            !movement.InWater && !movement.IsWallSliding && movement.playerInput.x != 0 && !StopRolling 
             ||
             InputManager.GetButton("Right Mouse") && movement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") &&
             !movement.InWater && !movement.IsWallSliding && movement.playerInput.y != 0 && !StopRolling)
