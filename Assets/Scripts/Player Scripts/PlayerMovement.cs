@@ -7,7 +7,7 @@ using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
-    #region serializedFields
+    #region Movement
     [Header("Speed / Pat varibles")]
     [SerializeField, Range(0f, 100f)]
     float WalkSpeed = 10f, RunSpeed = 15f, maxClimbSpeed = 2f, maxSwimSpeed = 5f, slowDownSpeed, CrouchSpeed = 6, maxJumpSpeed = 15, WalkUnderWaterSpeed = 5f, RunUnderWaterSpeed = 8f, WallJumpHeight;
@@ -48,16 +48,12 @@ public class PlayerMovement : MonoBehaviour
     float wallJumpSpeed;
     [SerializeField, Range(1.5f, 5f)]
     float WallJumpIntensifire = 2f;
-    [Header("Layers"), Space(2)]
-    [SerializeField]
-    LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
-
-    [Header("Camera"), Space(2)]
-    [SerializeField]
-    Transform playerInputSpace = default;
-
     [SerializeField, Range(0f, .5f)]
     float turnSmoothTime = .1f;
+    int consecutiveWallJump;
+    float CurrentSpeed;
+    #endregion
+    #region Swimming
 
     [Header("For Water"), Space(2)]
     [SerializeField]
@@ -72,18 +68,28 @@ public class PlayerMovement : MonoBehaviour
     float swimThreshold = 0.5f;
     [SerializeField, Range(.1f, 5f)]
     float AtTopOfWaterOffset = 1;
-    [SerializeField]
-    bool willWallJump;
+    [HideInInspector]
+    public float submergence;
 
-    [Header("Animator"), Space(5)]
-    [SerializeField]
-    public Animator anim;
-
-
-    [Header("Offsets")]
-    [SerializeField, Range(0, .5f)]
-    float CrouchOffsetY = .1f;
-
+    Collider water;
+    public bool InWater => submergence > 0f;
+    #endregion
+    #region Timers
+    [Header("Timers")]
+    [SerializeField, Tooltip("The length of time for collecting a collectible")]
+    float collectibleTimer;
+    [SerializeField] float MaxStunTimer;
+    [HideInInspector]
+    public float LongJumpTimer;
+    float longJumpCoolDown;
+    float wallJumpTimer;
+    float JustWallJumpedTimer, timerBeforeWallSlide;
+    float currentCollectibleTimer;
+    //this will be for judging if you should play fall animation
+    private float FallTimer = 2;
+    #endregion
+    #region Bools
+    [Header("Bools")]
     [HideInInspector]
     public bool onBelt;
     [HideInInspector]
@@ -107,81 +113,89 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 velocity;
     [HideInInspector]
     public bool AtTheTopOfWater;
-
+    bool blobert, handman;
+    [HideInInspector]
     public bool CollectibleGotten;
-
+    [HideInInspector]
+    public bool OnFloor;
+    public bool isCrouching;
+    bool Isrunning;
+    [HideInInspector]
+    public bool IsWallSliding;
+    [HideInInspector]
+    public bool OnDivingBoard;
+    bool desiredJump, desiresClimbing;
+    public bool OnGround => groundContactCount > 0;
+    public bool Swimming => submergence >= swimThreshold;
+    [HideInInspector]
+    public bool desiredLongJump;
+    bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
+    bool OnSteep => steepContactCount > 0;
+    bool InSlowDownField;
+    bool RollStunned;
+    [HideInInspector]
+    public bool Gliding, Sliding, Rolling;
     [SerializeField]
-    float SlidingGravity;
-    [SerializeField]
-    float SlidingMass;
-    [SerializeField, Tooltip("The length of time for collecting a collectible")]
-    float collectibleTimer;
-    float currentCollectibleTimer;
-    public bool InWater => submergence > 0f;
+    bool willWallJump;
+    #endregion
+    #region OtherThings
 
     [Header("Particles")]
     [SerializeField] ParticleSystem walkingPartical1;
     [SerializeField] ParticleSystem walkingPartical2;
     [SerializeField] ParticleSystem walkingPartical3;
     [SerializeField] ParticleSystem walkingPartical4;
-    #endregion
-    #region private fields
-    float CurrentSpeed;
-    bool Isrunning;
+
+    [Header("Layers"), Space(2)]
+    [SerializeField]
+    LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
+
+    [Header("Camera"), Space(2)]
+    [SerializeField]
+    Transform playerInputSpace = default;
+    [Header("Animator"), Space(5)]
+    [SerializeField]
+    public Animator anim;
+
+
+    [Header("Offsets")]
+    [SerializeField, Range(0, .5f)]
+    float CrouchOffsetY = .1f;
+
+    [SerializeField]
+    float SlidingGravity;
+    [SerializeField]
+    float SlidingMass;
+
     [HideInInspector]
     public float originalGravity;
     [HideInInspector]
     public Vector3 playerInput;
     Vector3 connectionVelocity;
     Rigidbody body, connectedBody, previousConnectedBody;
-    bool desiredJump, desiresClimbing;
-    [HideInInspector]
-    public bool desiredLongJump;
-    public bool OnGround => groundContactCount > 0;
-    public bool Swimming => submergence >= swimThreshold;
-    [HideInInspector]
-    public float submergence;
-    bool InSlowDownField;
-    [HideInInspector]
-    public bool Gliding, Sliding, Rolling;
 
-    Collider water;
+
+
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
     int groundContactCount, steepContactCount, climbContactCount;
-    bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
+
     int stepsSinceLastGrounded, stepsSinceLastJump;
-    bool OnSteep => steepContactCount > 0;
+
     Vector3 upAxis, rightAxis, forwardAxis;
     Vector3 connectionWorldPosition, connectionLocalPosition;
     float turnSmoothVelocity;
-    //this will be for judging if you should play fall animation
-    private float FallTimer = 2;
+
     //for crouching 
     private Vector3 ColliderScale;
     private Vector3 ColliderCenter;
-    [HideInInspector]
-    public bool OnFloor;
-    public bool isCrouching;
-    bool blobert, handman;
-    [HideInInspector]
-    public float LongJumpTimer;
-    float longJumpCoolDown;
-    //Wall Jump Helpers
-    float wallJumpTimer;
-    [HideInInspector]
-    public bool IsWallSliding;
-    [HideInInspector]
-    public bool OnDivingBoard;
+
     Luminosity.IO.Examples.GamepadToggle toggle;
 
     PhotonView photonView;
 
     GravityPlane gravityPlane;
 
-    float JustWallJumpedTimer, timerBeforeWallSlide;
-
-    int consecutiveWallJump;
     #endregion
     #region MonoBehaviors
     void OnValidate()
@@ -474,6 +488,8 @@ public class PlayerMovement : MonoBehaviour
                             if (ray.collider.gameObject.layer != 10)
                             {
                                 GetComponent<Jeff>().StopRolling = true;
+                                //PlayAnimation("RollStunned");
+                                //Stunned = true;
                                 Isrunning = false;
                                 unSetGravity();
                                 body.velocity = new Vector3(0, 10, 0);
