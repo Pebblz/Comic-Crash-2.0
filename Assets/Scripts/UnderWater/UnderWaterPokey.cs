@@ -18,7 +18,15 @@ public class UnderWaterPokey : MonoBehaviour
 
             _velocity = -_velocity.normalized;
 
-            _velocity.y = pushHeight;
+            //this is to detect if the player should be pushed up or down
+            if(col.gameObject.transform.position.y > transform.position.y)
+                _velocity.y = pushHeight;
+
+            if (col.gameObject.transform.position.y < transform.position.y)
+                _velocity.y = -pushHeight;
+
+            if (col.gameObject.transform.position.y == transform.position.y)
+                _velocity.y = 0;
 
             col.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(_velocity.x * pushDistince,
                 _velocity.y, _velocity.z * pushDistince);

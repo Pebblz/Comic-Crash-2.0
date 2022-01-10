@@ -114,6 +114,7 @@ public class PlayerGroundPound : MonoBehaviour
             }
             else
             {
+                transform.localScale = new Vector3(1, 1, 1);
                 pm.CantMove = false;
                 doingSquish = false;
                 GroundPounding = false;

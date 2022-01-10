@@ -462,26 +462,26 @@ public class PlayerMovement : MonoBehaviour
                     body.velocity = new Vector3(0, body.velocity.y, 0);
                 }
 
-                //if (Rolling)
-                //{
-                //    for (float x = -.5f; x <= .5f; x += .5f)
-                //    {
+                if (Rolling)
+                {
+                    for (float x = -.5f; x <= .5f; x += .5f)
+                    {
 
-                //        Vector3 dir = new Vector3(velocity.x, .4f, velocity.z);
-                //        RaycastHit ray;
-                //        if (Physics.Raycast(transform.position + new Vector3(x,0,0), dir, out ray, .4f))
-                //        {
+                        Vector3 dir = new Vector3(velocity.x, 2f, velocity.z);
+                        RaycastHit ray;
+                        if (Physics.Raycast(transform.position + new Vector3(x, 0, 0), dir, out ray, .4f))
+                        {
+                            if (ray.collider.gameObject.layer != 10)
+                            {
+                                GetComponent<Jeff>().StopRolling = true;
+                                Isrunning = false;
+                                unSetGravity();
+                                body.velocity = new Vector3(0, 10, 0);
 
-                //            if (ray.collider.gameObject.layer != 10)
-                //            {
-                //                GetComponent<Jeff>().StopRolling = true;
-                //                Isrunning = false;
-                //                body.velocity = new Vector3(body.velocity.x, 7, body.velocity.z);
-
-                //            }
-                //        }
-                //    }
-                //}
+                            }
+                        }
+                    }
+                }
 
 
 
