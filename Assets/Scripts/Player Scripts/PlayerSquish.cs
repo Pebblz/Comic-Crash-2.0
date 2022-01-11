@@ -93,7 +93,7 @@ public class PlayerSquish : MonoBehaviour
             }
             else
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = origanalScale;
                 DoingSquish = false;
                 doneSquishing = false;
                 squishTime = false;
