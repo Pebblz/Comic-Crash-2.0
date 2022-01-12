@@ -485,19 +485,6 @@ MonoBehaviour:
   probeDistance: 1
   wallJumpSpeed: 6
   WallJumpIntensifire: 1.5
-  probeMask:
-    serializedVersion: 2
-    m_Bits: 35
-  stairsMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  climbMask:
-    serializedVersion: 2
-    m_Bits: 4096
-  waterMask:
-    serializedVersion: 2
-    m_Bits: 16
-  playerInputSpace: {fileID: 0}
   turnSmoothTime: 0.103
   submergenceOffset: 0.8
   submergenceRange: 1
@@ -505,9 +492,10 @@ MonoBehaviour:
   buoyancy: 2
   swimThreshold: 0.8
   AtTopOfWaterOffset: 0.4
-  willWallJump: 1
-  anim: {fileID: 375778916001974254}
-  CrouchOffsetY: 0.1
+  submergence: 0
+  collectibleTimer: 2
+  MaxStunTimer: 0
+  LongJumpTimer: 0
   onBelt: 0
   CanWallJump: 0
   CantMove: 0
@@ -521,25 +509,38 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   AtTheTopOfWater: 0
   CollectibleGotten: 0
-  SlidingGravity: 4
-  SlidingMass: 3
-  collectibleTimer: 2
+  OnFloor: 0
+  isCrouching: 0
+  IsWallSliding: 0
+  OnDivingBoard: 0
+  desiredLongJump: 0
+  Gliding: 0
+  Sliding: 0
+  Rolling: 0
+  willWallJump: 1
   walkingPartical1: {fileID: 6044490633680549245}
   walkingPartical2: {fileID: 6044490633389514723}
   walkingPartical3: {fileID: 6044490633491547198}
   walkingPartical4: {fileID: 6044490633214130655}
+  probeMask:
+    serializedVersion: 2
+    m_Bits: 35
+  stairsMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  climbMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  waterMask:
+    serializedVersion: 2
+    m_Bits: 16
+  playerInputSpace: {fileID: 0}
+  anim: {fileID: 375778916001974254}
+  CrouchOffsetY: 0.1
+  SlidingGravity: 4
+  SlidingMass: 3
   originalGravity: 0
   playerInput: {x: 0, y: 0, z: 0}
-  desiredLongJump: 0
-  submergence: 0
-  Gliding: 0
-  Sliding: 0
-  Rolling: 0
-  OnFloor: 0
-  isCrouching: 0
-  LongJumpTimer: 0
-  IsWallSliding: 0
-  OnDivingBoard: 0
 --- !u!54 &375778916001974160
 Rigidbody:
   m_ObjectHideFlags: 0
