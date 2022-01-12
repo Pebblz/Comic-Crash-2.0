@@ -67,6 +67,7 @@ public class PlayerHealth : MonoBehaviour
                 }
                 else
                 {
+                    WaterUI.ReFillAirBar = false;
                     if (!pause.isPaused)
                     {
                         if (!WaterUI.airBar.enabled)

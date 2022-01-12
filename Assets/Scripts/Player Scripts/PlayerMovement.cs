@@ -737,14 +737,17 @@ public class PlayerMovement : MonoBehaviour
                                 velocity -= gravity * ((-SwimmingDownSpeed - buoyancy * submergence) * Time.deltaTime);
                             }
                         }
-                        //If your holding space 
-                        if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y) > transform.position.y)
+                        if (water.GetComponent<Transform>().childCount != 0)
                         {
-                            PlayAnimation("SwimmingUp");
-                            StopAnimation("Sinking");
-                            StopAnimation("SwimmingDown");
-                            StopAnimation("SwimLeftOrRight");
-                            velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                            //If your holding space 
+                            if (playerInput.z > 0 && (water.GetComponent<Transform>().GetChild(0).transform.position.y) > transform.position.y)
+                            {
+                                PlayAnimation("SwimmingUp");
+                                StopAnimation("Sinking");
+                                StopAnimation("SwimmingDown");
+                                StopAnimation("SwimLeftOrRight");
+                                velocity -= gravity * ((SwimUpSpeed - buoyancy * submergence) * Time.deltaTime);
+                            }
                         }
                         //If your moving left or right
                         if (playerInput.x != 0 && playerInput.z == 0 || playerInput.y != 0 && playerInput.z == 0)
@@ -779,13 +782,16 @@ public class PlayerMovement : MonoBehaviour
                 //this is used to determine if the player should air bar should be refilled when at top of water
                 if (water != null)
                 {
-                    if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - .8f < transform.position.y)
+                    if (water.GetComponent<Transform>().childCount != 0)
                     {
-                        AtTheTopOfWater = true;
-                    }
-                    else
-                    {
-                        AtTheTopOfWater = false;
+                        if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - .8f < transform.position.y)
+                        {
+                            AtTheTopOfWater = true;
+                        }
+                        else
+                        {
+                            AtTheTopOfWater = false;
+                        }
                     }
                 }
 
