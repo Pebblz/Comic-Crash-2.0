@@ -481,9 +481,9 @@ public class PlayerMovement : MonoBehaviour
                     for (float x = -.5f; x <= .5f; x += .5f)
                     {
 
-                        Vector3 dir = new Vector3(velocity.x, 2f, velocity.z);
+                        Vector3 dir = new Vector3(velocity.x, 1f, velocity.z);
                         RaycastHit ray;
-                        if (Physics.Raycast(transform.position + new Vector3(x, 0, 0), dir, out ray, .4f))
+                        if (Physics.Raycast(transform.position + new Vector3(x, 0, 0), dir, out ray, .5f))
                         {
                             if (ray.collider.gameObject.layer != 10)
                             {
@@ -509,11 +509,11 @@ public class PlayerMovement : MonoBehaviour
                     Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
                     {
-                        if (Rolling)
-                        {
-                            body.velocity = new Vector3(-body.velocity.x, 5, -body.velocity.z);
-                            GetComponent<Jeff>().StopRolling = true;
-                        }
+                        //if (Rolling)
+                        //{
+                        //    body.velocity = new Vector3(-body.velocity.x, 5, -body.velocity.z);
+                        //    GetComponent<Jeff>().StopRolling = true;
+                        //}
 
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject &&
                             ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0 && !InWater &&
