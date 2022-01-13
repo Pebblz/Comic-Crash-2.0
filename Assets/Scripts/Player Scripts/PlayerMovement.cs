@@ -111,7 +111,6 @@ public class PlayerMovement : MonoBehaviour
     public bool inWaterAndFloor;
     [HideInInspector]
     public Vector3 velocity;
-    [HideInInspector]
     public bool AtTheTopOfWater;
     bool blobert, handman;
     [HideInInspector]
@@ -281,6 +280,11 @@ public class PlayerMovement : MonoBehaviour
                         walkingPartical3.Stop();
                     if (walkingPartical4 != null && walkingPartical4.isPlaying)
                         walkingPartical4.Stop();
+                }
+                if(!canJump && InWater)
+                {
+                    canJump = true;
+                    CanWallJump = true;
                 }
                 if (OnGround && !Bounce)
                 {
@@ -784,7 +788,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (water.GetComponent<Transform>().childCount != 0)
                     {
-                        if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - .8f < transform.position.y)
+                        if ((water.GetComponent<Transform>().GetChild(0).transform.position.y) - 1f < transform.position.y)
                         {
                             AtTheTopOfWater = true;
                         }
@@ -1211,7 +1215,7 @@ public class PlayerMovement : MonoBehaviour
     #region LongJump and Jump
     void Jump(Vector3 gravity)
     {
-        if (!Swimming && !InWater)
+        if (!Swimming && !InWater || AtTheTopOfWater)
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
             {
