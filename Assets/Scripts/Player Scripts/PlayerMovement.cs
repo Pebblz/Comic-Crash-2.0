@@ -602,7 +602,8 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (InputManager.GetButtonDown("Crouch") && longJumpCoolDown <= 0 &&
                         !isCrouching && !anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump") &&
-                        !InputManager.GetButton("Jump") && !Rolling)
+                        !InputManager.GetButton("Jump") && !Rolling &&
+                        anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                     {
                         PlayAnimation("LongJump");
                         desiredLongJump = true;
