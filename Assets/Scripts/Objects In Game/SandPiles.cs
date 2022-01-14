@@ -18,7 +18,9 @@ public class SandPiles : MonoBehaviour
     [PunRPC]
     void DestroyBox()
     {
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", Coin.name), transform.position + new Vector3(0,.5f,0), transform.rotation);
+        if(Coin != null)
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", Coin.name), transform.position + new Vector3(0,.5f,0), transform.rotation);
+        
         PhotonNetwork.Destroy(photonView);
     }
 }
