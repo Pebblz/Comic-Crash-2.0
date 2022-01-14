@@ -703,7 +703,7 @@ public class PlayerMovement : MonoBehaviour
                 else if (InWater)
                 {
                     #region Swimming
-                    jumpPhase = 0;
+
                     StopAnimation("Falling");
                     if (!blobert)
                     {
@@ -902,6 +902,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if ((waterMask & (1 << other.gameObject.layer)) != 0 && !OnFloor)
             {
+                jumpPhase = 0;
                 EvaluateSubmergence(other);
                 water = other;
             }

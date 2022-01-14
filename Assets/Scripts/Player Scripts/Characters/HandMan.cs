@@ -50,6 +50,7 @@ public class HandMan : MonoBehaviour
                                 //this checks if any of the rays hit an object with pickupables script
                                 if (hit.collider.gameObject.GetComponent<PickUpables>() != null)
                                 {
+                                    movement.PlayAnimation("Carry");
                                     isHoldingOBJ = true;
                                     hit.collider.gameObject.GetComponent<PickUpables>().PickedUp(transform);
                                     PickUp = hit.collider.gameObject;
@@ -81,6 +82,7 @@ public class HandMan : MonoBehaviour
                 {
                     if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
                     {
+                        movement.StopAnimation("Carry");
                         PickUp.GetComponent<PickUpables>().DropInFront();
                         PickUp = null;
                         isHoldingOBJ = false;
@@ -90,6 +92,7 @@ public class HandMan : MonoBehaviour
                 {
                     if (GetComponent<Rigidbody>().velocity.x == 0 && GetComponent<Rigidbody>().velocity.z == 0)
                     {
+                        movement.StopAnimation("Carry");
                         ThrowGameObject();
                     }
                 }
