@@ -117,6 +117,11 @@ public class SuicideMann : Enemy, IRespawnable
         else
         {
             Vector3 new_pos = Vector3.Lerp(this.transform.position, target_pos, Time.deltaTime);
+            Quaternion look_rot = Quaternion.LookRotation(target_pos - transform.position);
+            Quaternion new_rot = Quaternion.Lerp(new Quaternion(0, look_rot.y, 0, look_rot.w),
+                                                          this.transform.rotation,
+                                                          Time.deltaTime * 2);
+            this.transform.rotation = new_rot;
             this.transform.position = new_pos;
         }
     }
