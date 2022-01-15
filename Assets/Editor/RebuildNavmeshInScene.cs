@@ -28,6 +28,11 @@ public class RebuildNavmeshInScene : EditorWindow
     private static void NewMenuOption()
     {
         var surfaces = get_surfaces_in_scene();
+        if(surfaces.Length <= 0)
+        {
+            Debug.Log("No Meshs Found");
+            return;
+        }
         Debug.Log("Rebuilding NavMesh");
         rebake_navmesh(surfaces);
         Debug.Log("NavMesh Rebuilt");
