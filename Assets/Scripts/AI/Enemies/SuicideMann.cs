@@ -85,7 +85,7 @@ public class SuicideMann : Enemy, IRespawnable
         this.init_det_timeout = detonation_time;
         this.init_health = this.health;
         start_pos = this.transform.position;
-        this.attack_range = this.GetComponent<SphereCollider>().radius;
+        //this.attack_range = this.GetComponent<SphereCollider>().radius;
         body = this.GetComponent<Rigidbody>();
     }
 
