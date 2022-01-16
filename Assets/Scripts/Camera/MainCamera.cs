@@ -190,12 +190,12 @@ public class MainCamera : MonoBehaviour
                 {
                     if (ShootingMode && toggle.m_gamepadOn)
                     {
-                        x += InputManager.GetAxis("Horizontal") * xSpeed * distance * 0.02f;
+                        x += InputManager.GetAxis("Horizontal") * xSpeed  * 0.02f;
                         y -= InputManager.GetAxis("Vertical") * ySpeed * 0.02f;
                     }
                     else
                     {
-                        x += InputManager.GetAxis("LookHorizontal") * xSpeed * distance * 0.02f;
+                        x += InputManager.GetAxis("LookHorizontal") * xSpeed  * 0.02f;
                         y -= InputManager.GetAxis("LookVertical") * ySpeed * 0.02f;
                     }
                 }
