@@ -5,10 +5,11 @@ using UnityEngine;
 using Luminosity.IO;
 using Photon.Realtime;
 using Photon.Pun;
+using Cinemachine;
 public class PeaShooter : MonoBehaviour
 {
 
-    private MainCamera camera;
+    private GameObject camera;
 
     private float NextAttack;
 
@@ -47,9 +48,9 @@ public class PeaShooter : MonoBehaviour
     void Start()
     {
         pause = FindObjectOfType<Pause>();
-        camera = FindObjectOfType<MainCamera>();
-        originalMouseSensitivityY = camera.ySpeed;
-        originalMouseSensitivityX = camera.xSpeed;
+        camera = GameObject.FindGameObjectWithTag("MainCamera");
+        //originalMouseSensitivityY = camera.ySpeed;
+        //originalMouseSensitivityX = camera.xSpeed;
         photonView = GetComponent<PhotonView>();
         movement = GetComponent<PlayerMovement>();
 
@@ -73,12 +74,12 @@ public class PeaShooter : MonoBehaviour
 
                     GunTip.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, 0 , camera.transform.localEulerAngles.z);
                     spine.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, spine.transform.localEulerAngles.y,spine.transform.localEulerAngles.z);
-                    SetCamera();
+                    //SetCamera();
                 }
                 if (InputManager.GetButtonUp("Right Mouse") || !movement.OnGround)
                 {
                     GetComponent<PlayerMovement>().CantMove = false;
-                    UnSetCamera();
+                    //UnSetCamera();
                 }
 
                 if (InputManager.GetButton("Left Mouse") && NextAttack <= 0)
@@ -91,39 +92,39 @@ public class PeaShooter : MonoBehaviour
     }
     #endregion
 
-    void SetCamera()
-    {
-        if(originalDistance == 0)
-            originalDistance = camera.distance;
-        if (!toggle.m_gamepadOn)
-        {
-            camera.ySpeed = MouseSensitivityY;
-            camera.xSpeed = MouseSensitivityX;
-        }
-        else
-        {
-            camera.ySpeed = ControllerSensitivityY;
-            camera.xSpeed = ControllerSensitivityX;
-        }
-        camera.ShootingMode = true;
-        camera.transform.SetParent(gameObject.transform);
-        camera.transform.position = camera.transform.position +
-    (camera.transform.right * 1.07f);
-        movement.PlayAnimation("Aiming");
-    }
-    void UnSetCamera()
-    {
-        camera.ySpeed = originalMouseSensitivityY;
-        camera.xSpeed = originalMouseSensitivityX;
-        camera.ShootingMode = false;
+    //void SetCamera()
+    //{
+    //    if(originalDistance == 0)
+    //        originalDistance = camera.distance;
+    //    if (!toggle.m_gamepadOn)
+    //    {
+    //        camera.ySpeed = MouseSensitivityY;
+    //        camera.xSpeed = MouseSensitivityX;
+    //    }
+    //    else
+    //    {
+    //        camera.ySpeed = ControllerSensitivityY;
+    //        camera.xSpeed = ControllerSensitivityX;
+    //    }
+    //    camera.ShootingMode = true;
+    //    camera.transform.SetParent(gameObject.transform);
+    //    camera.transform.position = camera.transform.position +
+    //(camera.transform.right * 1.07f);
+    //    movement.PlayAnimation("Aiming");
+    //}
+    //void UnSetCamera()
+    //{
+    //    camera.ySpeed = originalMouseSensitivityY;
+    //    camera.xSpeed = originalMouseSensitivityX;
+    //    camera.ShootingMode = false;
 
-        if(originalDistance != 0)
-            camera.distance = originalDistance;
-        camera.transform.SetParent(null);
+    //    if(originalDistance != 0)
+    //        camera.distance = originalDistance;
+    //    camera.transform.SetParent(null);
 
-        originalDistance = 0;
-        movement.StopAnimation("Aiming");
-    }
+    //    originalDistance = 0;
+    //    movement.StopAnimation("Aiming");
+    //}
     Quaternion lookAtSlowly(Transform t, Vector3 target, float speed)
     {
         Vector3 relativePos = target - t.position;
@@ -136,7 +137,7 @@ public class PeaShooter : MonoBehaviour
     }
     private void OnDestroy()
     {
-        UnSetCamera();
+        //UnSetCamera();
     }
     void Attack()
     {
