@@ -4,7 +4,7 @@ using UnityEngine;
 using Luminosity.IO;
 using Photon.Realtime;
 using Photon.Pun;
-
+using Cinemachine;
 public class PlayerMovement : MonoBehaviour
 {
     #region Movement
@@ -213,6 +213,13 @@ public class PlayerMovement : MonoBehaviour
             anim = GetComponent<Animator>();
 
         playerInputSpace = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        var temp = GameObject.Find("FreeLookCamera").GetComponent<CinemachineFreeLook>();
+        temp.Follow = gameObject.transform;
+        temp.LookAt = gameObject.transform;
+        temp.GetRig(0).LookAt = gameObject.transform;
+        temp.GetRig(1).LookAt = gameObject.transform;
+        temp.GetRig(2).LookAt = gameObject.transform;
+
         if (GetComponent<BoxCollider>() != null)
         {
             ColliderScale = GetComponent<BoxCollider>().size;
@@ -1201,7 +1208,7 @@ public class PlayerMovement : MonoBehaviour
     public void GotCollectible()
     {
         CantMove = true;
-        playerInputSpace.GetComponent<MainCamera>().collectibleCamera = true;
+        //playerInputSpace.GetComponent<MainCamera>().collectibleCamera = true;
         PlayAnimation("Collected");
         StopAnimation("Run");
         StopAnimation("Walk");
@@ -1210,7 +1217,7 @@ public class PlayerMovement : MonoBehaviour
     public void DoneWithCollectible()
     {
         CantMove = false;
-        playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
+        //playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
         StopAnimation("Collected");
     }
     #endregion

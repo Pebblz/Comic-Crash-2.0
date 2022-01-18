@@ -196,6 +196,7 @@ public class MainCamera : MonoBehaviour
                     else
                     {
                         x += InputManager.GetAxis("LookHorizontal") * xSpeed  * 0.02f;
+                        x += InputManager.GetAxis("LookHorizontal") * xSpeed  * 0.02f;
                         y -= InputManager.GetAxis("LookVertical") * ySpeed * 0.02f;
                     }
                 }

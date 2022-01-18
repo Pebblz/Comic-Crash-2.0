@@ -460,7 +460,7 @@ MonoBehaviour:
   maxSwimSpeed: 5
   slowDownSpeed: 0.2
   CrouchSpeed: 2
-  maxJumpSpeed: 15
+  maxJumpSpeed: 15.7
   WalkUnderWaterSpeed: 1.8
   RunUnderWaterSpeed: 3.8
   WallJumpHeight: 12
@@ -792,6 +792,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: SlideAttack
+  - Type: 4
+    SynchronizeType: 0
+    Name: Carry
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

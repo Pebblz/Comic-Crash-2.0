@@ -5,6 +5,7 @@ using Luminosity.IO;
 using Photon.Realtime;
 using Photon.Pun;
 using System.IO;
+using Cinemachine;
 public class PlayerSwitcher : MonoBehaviourPun
 {
     [Tooltip("This is for the other characters that the player can switch to")]
@@ -164,8 +165,14 @@ public class PlayerSwitcher : MonoBehaviourPun
                     TempPlayerMovement.CanWallJump = false;
                     PlayerTransform = Temp.transform;
                     Camera.transform.parent = null;
-                    Camera.GetComponent<MainCamera>().thirdPersonCamera = true;
-                    Camera.GetComponent<MainCamera>().target = Temp.transform;
+
+                    var temp = GameObject.Find("FreeLookCamera").GetComponent<CinemachineFreeLook>();
+                    temp.Follow = gameObject.transform;
+                    temp.LookAt = gameObject.transform;
+                    temp.GetRig(0).LookAt = gameObject.transform;
+                    temp.GetRig(1).LookAt = gameObject.transform;
+                    temp.GetRig(2).LookAt = gameObject.transform;
+
                     PhotonNetwork.Destroy(CurrentPlayer);
                     CurrentPlayer = Temp;
                     sound.attach_sounds_to_player(CurrentPlayer);

@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public Vector3 respawnPoint;
 
     Quaternion rotation;
-    GameObject Camera;
+    //GameObject Camera;
     Rigidbody rigidbody;
     [SerializeField] float PushBotForce;
 
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
         rotation = transform.rotation;
         if (respawnPoint == new Vector3(0, 0, 0))
             respawnPoint = gameObject.transform.position;
-        Camera = GameObject.FindGameObjectWithTag("MainCamera");
+        //Camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
     private void Awake()
     {
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     public void RepoPlayer()
     {
-        Camera.GetComponent<MainCamera>().ResetCamera();
+        //Camera.GetComponent<MainCamera>().ResetCamera();
         transform.position = respawnPoint;
     }
     public void PushPlayer(Vector3 direction, float power)
