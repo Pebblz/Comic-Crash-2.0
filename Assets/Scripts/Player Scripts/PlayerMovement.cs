@@ -1208,7 +1208,7 @@ public class PlayerMovement : MonoBehaviour
     public void GotCollectible()
     {
         CantMove = true;
-        playerInputSpace.GetComponent<MainCamera>().collectibleCamera = true;
+        //playerInputSpace.GetComponent<MainCamera>().collectibleCamera = true;
         PlayAnimation("Collected");
         StopAnimation("Run");
         StopAnimation("Walk");
@@ -1217,7 +1217,7 @@ public class PlayerMovement : MonoBehaviour
     public void DoneWithCollectible()
     {
         CantMove = false;
-        playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
+        //playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
         StopAnimation("Collected");
     }
     #endregion

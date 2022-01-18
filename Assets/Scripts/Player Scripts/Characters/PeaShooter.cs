@@ -74,11 +74,13 @@ public class PeaShooter : MonoBehaviour
 
                     GunTip.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, 0 , camera.transform.localEulerAngles.z);
                     spine.transform.localEulerAngles = new Vector3(camera.transform.localEulerAngles.x, spine.transform.localEulerAngles.y,spine.transform.localEulerAngles.z);
+                    movement.PlayAnimation("Aiming");
                     //SetCamera();
                 }
                 if (InputManager.GetButtonUp("Right Mouse") || !movement.OnGround)
                 {
                     GetComponent<PlayerMovement>().CantMove = false;
+                    movement.StopAnimation("Aiming");
                     //UnSetCamera();
                 }
 
