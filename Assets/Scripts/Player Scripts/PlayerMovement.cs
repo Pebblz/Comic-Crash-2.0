@@ -1212,12 +1212,14 @@ public class PlayerMovement : MonoBehaviour
         PlayAnimation("Collected");
         StopAnimation("Run");
         StopAnimation("Walk");
+        FindObjectOfType<CollectibleUI>().GotCollectible();
         transform.LookAt(new Vector3(playerInputSpace.position.x, transform.position.y, playerInputSpace.position.z));
     }
     public void DoneWithCollectible()
     {
         CantMove = false;
         //playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
+        FindObjectOfType<CollectibleUI>().ResetUI();
         StopAnimation("Collected");
     }
     #endregion
