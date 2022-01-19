@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4845217413360018432}
   - component: {fileID: 8399899424877407141}
   - component: {fileID: 6014143114275692399}
-  - component: {fileID: 2504168804388374317}
+  - component: {fileID: 6145036586643901590}
+  - component: {fileID: 3615213041957657056}
   m_Layer: 9
   m_Name: spikey coral clump
   m_TagString: Untagged
@@ -80,8 +81,23 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2504168804388374317
-BoxCollider:
+--- !u!114 &6145036586643901590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5221496317295738554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91c7e53ad555fab4e9ddaac08205e0e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushHeight: 3
+  pushDistince: 3
+  DamageToPlayer: 1
+--- !u!135 &3615213041957657056
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -91,5 +107,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 96.23485, y: 65.31921, z: 80.59009}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 41.17302
+  m_Center: {x: -1.906687, y: -8.851088, z: 0}

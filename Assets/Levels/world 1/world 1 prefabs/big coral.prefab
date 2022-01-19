@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8996016622803207683}
   - component: {fileID: 5437989767998261670}
   - component: {fileID: 7823713148882271596}
-  - component: {fileID: 1289920840123933936}
+  - component: {fileID: 4227526957466115537}
   m_Layer: 0
   m_Name: big coral
   m_TagString: Untagged
@@ -80,8 +80,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &1289920840123933936
-BoxCollider:
+--- !u!135 &4227526957466115537
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -91,5 +91,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 120.51456, y: 118.697174, z: 110.04321}
+  m_Radius: 60.25728
   m_Center: {x: 0, y: -0.0000019073486, z: 0}
