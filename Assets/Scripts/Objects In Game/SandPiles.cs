@@ -47,5 +47,6 @@ public class SandPiles : MonoBehaviour
     void Squish()
     {
         transform.localScale -= new Vector3(0, HowFastToSquish, 0) * Time.deltaTime;
+        transform.position -= new Vector3(0, HowFastToSquish, 0) * Time.deltaTime;
     }
 }
