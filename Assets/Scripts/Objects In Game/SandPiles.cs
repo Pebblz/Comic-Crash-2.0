@@ -7,7 +7,7 @@ public class SandPiles : MonoBehaviour
 {
     [SerializeField]
     GameObject Coin;
-    [SerializeField, Range(.1f, 6f)]
+    [SerializeField, Range(.01f, 6f)]
     float HowFastToSquish = 3f;
     [SerializeField]
     float TimerToDelete = .2f;
