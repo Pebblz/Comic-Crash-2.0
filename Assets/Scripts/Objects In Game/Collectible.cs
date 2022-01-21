@@ -16,6 +16,7 @@ public class Collectible : MonoBehaviour
     SoundManager sound;
     PhotonView photonView;
 
+    public string MainCollectibleText;
     private void Start()
     {
         sound = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
