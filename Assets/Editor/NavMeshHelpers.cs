@@ -44,10 +44,27 @@ public class NavMeshHelpers : EditorWindow
             Debug.Log("No Meshs Found");
             return;
         }
+
+        var paths = GameObject.FindGameObjectsWithTag("PatrolPath");
+        foreach( var path in paths)
+        {
+            path.SetActive(false);
+        }
+
         Debug.Log("Rebuilding NavMesh");
+
+
+
         rebake_navmesh(surfaces);
         Debug.Log("NavMesh Rebuilt");
+        foreach (var path in paths)
+        {
+            path.SetActive(true);
+        }
+
     }
+
+
 
 
     private static void toggle_navmesh_barrier()
