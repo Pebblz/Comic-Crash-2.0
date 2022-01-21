@@ -14,7 +14,7 @@ public class ChangeCinemachineInput : MonoBehaviour
     CinemachineFreeLook FreeLook;
     Pause pause;
     private SoundManager soundManager;
-    bool MouseInvertX, MouseInvertY, ControllerInvertX, ControllerInvertY;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,25 +29,14 @@ public class ChangeCinemachineInput : MonoBehaviour
     {
         if (!pause.isPaused)
         {
+            
             if (!toggle.m_gamepadOn)
             {
-                //ControllerInvertX = FreeLook.m_XAxis.m_InvertInput;
-                //ControllerInvertY = FreeLook.m_YAxis.m_InvertInput;
-
-                //FreeLook.m_YAxis.m_InvertInput = MouseInvertY;
-                //FreeLook.m_XAxis.m_InvertInput = MouseInvertX;
-
                 FreeLook.m_YAxis.m_InputAxisName = YInputMouse;
                 FreeLook.m_XAxis.m_InputAxisName = XInputMouse;
             }
-            else
+            if(toggle.m_gamepadOn)
             {
-                //MouseInvertX = FreeLook.m_XAxis.m_InvertInput;
-                //MouseInvertY = FreeLook.m_YAxis.m_InvertInput;
-
-                //FreeLook.m_YAxis.m_InvertInput = ControllerInvertY;
-                //FreeLook.m_XAxis.m_InvertInput = ControllerInvertX;
-
                 FreeLook.m_YAxis.m_InputAxisName = YInputController;
                 FreeLook.m_XAxis.m_InputAxisName = XInputController;
             }

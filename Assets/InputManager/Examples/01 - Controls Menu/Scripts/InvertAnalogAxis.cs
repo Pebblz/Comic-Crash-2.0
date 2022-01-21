@@ -38,13 +38,10 @@ namespace Luminosity.IO.Examples
 
 		private InputAction m_inputAction;
 
-		CinemachineFreeLook camera;
-
 		private void Awake()
 		{
 			InitializeInputAction();
 			InputManager.Loaded += InitializeInputAction;
-			camera = GameObject.Find("FreeLookCamera").GetComponent<CinemachineFreeLook>();
 		}
 
 		private void OnDestroy()
@@ -72,7 +69,6 @@ namespace Luminosity.IO.Examples
 			{
 				m_inputAction.Bindings[m_bindingIndex].Invert = !m_inputAction.Bindings[m_bindingIndex].Invert;
 				m_status.text = m_inputAction.Bindings[m_bindingIndex].Invert ? "On" : "Off";
-				camera.m_XAxis.m_InvertInput = !camera.m_XAxis.m_InvertInput;
 			}
 		}
 	}
