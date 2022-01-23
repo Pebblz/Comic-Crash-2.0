@@ -9,10 +9,13 @@ public class Jeff : MonoBehaviour
     float maxRollSpeed;
     [SerializeField]
     float acceleration;
+    [SerializeField]
+    float rollingSmoothTime = .2f;
     float originalSpeed;
     PlayerMovement movement;
     [SerializeField] ParticleSystem RollingParticle;
     public bool StopRolling;
+    float OrgTurnSmoothTime;
     private void Start()
     {
         if (RollingParticle != null)
@@ -21,6 +24,7 @@ public class Jeff : MonoBehaviour
         }
         originalSpeed = RollSpeed;
         movement = GetComponent<PlayerMovement>();
+        OrgTurnSmoothTime = movement.turnSmoothTime;
     }
     void Update()
     {
@@ -34,6 +38,7 @@ public class Jeff : MonoBehaviour
             {
                 RollingParticle.Play();
             }
+            movement.turnSmoothTime = rollingSmoothTime;
             movement.PlayAnimation("Roll");
             movement.Rolling = true;
         }
@@ -48,6 +53,7 @@ public class Jeff : MonoBehaviour
             {
                 RollingParticle.Stop();
             }
+            movement.turnSmoothTime = OrgTurnSmoothTime;
             RollSpeed = 1;
             movement.StopAnimation("Roll");
             StopRolling = false;

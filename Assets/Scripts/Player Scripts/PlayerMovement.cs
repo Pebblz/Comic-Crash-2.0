@@ -48,8 +48,8 @@ public class PlayerMovement : MonoBehaviour
     float wallJumpSpeed;
     [SerializeField, Range(1.5f, 5f)]
     float WallJumpIntensifire = 2f;
-    [SerializeField, Range(0f, .5f)]
-    float turnSmoothTime = .1f;
+    [Range(0f, .5f)]
+    public float turnSmoothTime = .1f;
     int consecutiveWallJump;
     float CurrentSpeed;
     #endregion
