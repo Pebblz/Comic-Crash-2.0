@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyRespawnManager : MonoBehaviour
 {
-
+    //singleton
     public GameObject respawn_point;
     private List<Enemy> enemies;
 

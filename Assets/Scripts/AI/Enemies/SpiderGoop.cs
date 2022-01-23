@@ -12,6 +12,7 @@ public class SpiderGoop : Enemy
     PatrolPath path;
     private NavMeshAgent agent;
     Transform patrol_point;
+
     private void Awake()
     {
         agent = this.GetComponent<NavMeshAgent>();

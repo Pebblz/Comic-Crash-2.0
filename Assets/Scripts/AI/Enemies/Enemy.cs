@@ -14,8 +14,8 @@ public abstract class Enemy : MonoBehaviour
         FLEE,
         DEAD, 
         STUN
-
     }
+
     protected Transform target;
     public STATE current_state = STATE.IDLE;
     public float attack_range = 2f;
@@ -44,14 +44,10 @@ public abstract class Enemy : MonoBehaviour
     {
         this.current_state = STATE.DEAD;
         //photonView.RPC("DestroyGameObject", RpcTarget.All);
-
     }
 
     protected virtual void Update()
     {
-
-
-
         if(this.current_state == STATE.STUN)
         {
             this.current_state = STATE.STUN;
@@ -80,7 +76,6 @@ public abstract class Enemy : MonoBehaviour
 
         if(this.current_state == STATE.DEAD)
         {
-
             this.gameObject.SetActive(false);
         }
     }
