@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,15 +27,13 @@ public class Plopmann : Enemy, IRespawnable
     float verticle_bias = 5f;
     bool attached_to_moving = false;
 
-
-
     [SerializeField]
     Transform explosion_point;
 
-    [Tooltip("allows the toggling of gravity to happen")]
-    public bool use_gravity = true;
-
-    private bool init_gravity = true;
+    //[Tooltip("allows the toggling of gravity to happen")]
+    //public bool use_gravity = true;
+    //
+    //private bool init_gravity = true;
     bool launching = false;
 
     int starting_health;
@@ -44,6 +43,16 @@ public class Plopmann : Enemy, IRespawnable
     Rigidbody body;
     bool touched_surface;
 
+    string attachedTo = "";
+
+    bool Attached
+    {
+        get
+        {
+            return attachedTo != "";
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -51,7 +60,7 @@ public class Plopmann : Enemy, IRespawnable
         this.starting_pos = this.transform.position;
         this.init_charge_up = charge_up;
         init_attack_cooldown = attack_cooldown;
-        this.body.useGravity = init_gravity;
+        //this.body.useGravity = init_gravity;
         attached_to_moving = false;
         starting_health = this.health;
         touched_surface = true;
@@ -61,23 +70,24 @@ public class Plopmann : Enemy, IRespawnable
     {
         base.Update();
 
-        if (this.current_state == STATE.IDLE)
-        {
-            idle();
+        switch (current_state){
+            case STATE.IDLE:
+                idle();
+                break;
+            case STATE.ATTACK:
+                aggro();
+                break;
+            case STATE.STUN:
+                target = null;
+                break;
         }
-
-        if (this.current_state == STATE.ATTACK)
-        {
-            aggro();
-        }
-       
     }
 
     public void reset_data()
     {
         this.health = starting_health;
         this.transform.position = starting_pos;
-        this.body.useGravity = true;
+        //this.body.useGravity = true;
         this.current_state = STATE.IDLE;
         this.body.velocity = Vector3.zero;
         this.body.angularVelocity = Vector3.zero;
@@ -91,16 +101,17 @@ public class Plopmann : Enemy, IRespawnable
 
     // empty for now  but he'll have an animation eventually
     void idle()
-    { }
+    {
+    }
 
     void aggro()
     {
         if (target == null)
             return;
-        if (Vector3.Distance(target.transform.position, this.transform.position) <= this.attack_range)
+
+        if (Attached)
         {
             attack();
-            launch();
         }
         else
         {
@@ -122,8 +133,12 @@ public class Plopmann : Enemy, IRespawnable
     {
         if (launching)
             return;
+
         if (!on_the_ground())
+        {
             return;
+        }
+
         charge_up -= Time.deltaTime;
         Quaternion look_rot = Quaternion.LookRotation(target.position - transform.position);
         Quaternion new_rot = Quaternion.LerpUnclamped(new Quaternion(0, look_rot.y, 0, look_rot.w), 
@@ -134,7 +149,7 @@ public class Plopmann : Enemy, IRespawnable
             return;
 
         charge_up = init_charge_up;
-        body.useGravity = true;
+        //body.useGravity = true;
         this.body.AddExplosionForce(launch_speed, explosion_point.transform.position, 3, verticle_bias);
         launching = true;
         touched_surface = false;
@@ -145,24 +160,24 @@ public class Plopmann : Enemy, IRespawnable
     void stick_to_surface()
     {
         //this is for you pat naatz
+        //thanks josh :)
+
         if (touched_surface)
             return;
 
         launching = false;
         touched_surface = true;
-        if (!this.use_gravity)
-        {
-            this.body.useGravity = false;
-            this.body.velocity = Vector3.zero;
-        }
-
+        //if (!this.use_gravity)
+        //{
+        //    this.body.useGravity = false;
+        //    this.body.velocity = Vector3.zero;
+        //}
     }
 
     bool on_the_ground()
     {
-        RaycastHit hit;
-        //Debug.DrawRay(this.transform.position, Vector3.down * 0.4f, Color.green, 4f);
-        return Physics.Raycast(this.transform.position, Vector3.down, out hit, 0.4f, ~LayerMask.GetMask("Enemy"));
+        //we use the length of the scale so we can have big plopmann's in the future
+        return Physics.Raycast(transform.position, Vector3.down, transform.localScale.y + .1f);
     }
 
 
@@ -181,25 +196,59 @@ public class Plopmann : Enemy, IRespawnable
 
     protected override void OnCollisionEnter(Collision collision)
     {
-
         base.OnCollisionEnter(collision);
 
         if (collision.gameObject.tag != "Shot")
         {
-            stick_to_surface();
+            if (collision.gameObject.tag == "Player")
+            {
+                if (Attached)
+                {
+                    Debug.Log("detatching from " + attachedTo + "because of " + collision.gameObject.name);
+                    detatch();
+                }
+                else
+                {
+                    attachTo(collision.transform);
+                }
+            }
+            else
+            {
+                stick_to_surface();
+            }
         }
-
     }
+
+    #region attachment
+    private void attachTo(Transform player)
+    {
+        attachedTo = player.name;
+        transform.parent = player;
+
+        Debug.Log("now attached to " + attachedTo);
+    }
+
+    private void detatch()
+    {
+        attachedTo = "";
+        transform.parent = null;
+
+        current_state = STATE.STUN;
+
+        this.body.AddExplosionForce(launch_speed * 5, explosion_point.transform.position, 3, verticle_bias);
+    }
+    #endregion
 
     protected override void OnTriggerEnter(Collider other)
     {
-        if (this.current_state == STATE.STUN)
+        if (this.current_state == STATE.STUN || target != null)
         {
             return;
         }
 
         if (other.gameObject.tag == "Player")
         {
+            //Debug.Log("Player entered");
             if (!launching)
             {
                 target = other.gameObject.transform;
@@ -211,12 +260,15 @@ public class Plopmann : Enemy, IRespawnable
 
     protected override void OnTriggerStay(Collider other)
     {
-        if (this.current_state == STATE.STUN)
+        if (this.current_state == STATE.STUN || target != null)
         {
             return;
         }
+
         if (other.gameObject.tag == "Player")
         {
+            Debug.Log("player stayed");
+
             if (!launching)
             {
                 target = other.gameObject.transform;

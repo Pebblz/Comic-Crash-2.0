@@ -16,7 +16,7 @@ public abstract class Enemy : MonoBehaviour
         STUN
 
     }
-    protected Transform target;
+    protected Transform target = null;
     public STATE current_state = STATE.IDLE;
     public float attack_range = 2f;
     [Tooltip("The amount of health an enemy has")]
@@ -161,11 +161,12 @@ public abstract class Enemy : MonoBehaviour
         {
             return;
         }
+
         if (other.gameObject.tag == "Player")
         {
             this.current_state = STATE.IDLE;
+            target = null;
         }
-        target = null;
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
