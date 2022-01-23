@@ -289,7 +289,7 @@ public class PlayerMovement : MonoBehaviour
                     if (walkingPartical4 != null && walkingPartical4.isPlaying)
                         walkingPartical4.Stop();
                 }
-                if(!canJump && InWater)
+                if (!canJump && InWater)
                 {
                     canJump = true;
                     CanWallJump = true;
@@ -513,7 +513,7 @@ public class PlayerMovement : MonoBehaviour
                         }
                     }
                 }
-                
+
 
 
                 //this makes you wall slide
@@ -648,7 +648,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if(RollStunned)
+                if (RollStunned)
                 {
                     StunTimer -= Time.deltaTime;
                     if (StunTimer <= 0)
@@ -1445,12 +1445,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!Swimming || !InWater)
         {
-            Sliding = true;
+            //Sliding = true;
             //Mathf.Clamp(velocity.x, -5, 5);
             //Mathf.Clamp(velocity.z, -5, 5);
-            Vector3 Slide = new Vector3(velocity.x * RollSpeed, -6, velocity.z * RollSpeed);
+            if (velocity.x < RunSpeed + 5 && velocity.z < RunSpeed + 5 && 
+                velocity.x > -RunSpeed - 5 && velocity.z > -RunSpeed - 5)
+            {
+                Vector3 roll = new Vector3(velocity.x *RollSpeed, -6, velocity.z * RollSpeed);
 
-            body.velocity = new Vector3(Slide.x, Slide.y, Slide.z);
+                body.velocity = new Vector3(roll.x, roll.y, roll.z);
+            }
         }
     }
     #endregion

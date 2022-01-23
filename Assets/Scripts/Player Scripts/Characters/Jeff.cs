@@ -4,8 +4,11 @@ using UnityEngine;
 using Luminosity.IO;
 public class Jeff : MonoBehaviour
 {
+    float RollSpeed =1f;
     [SerializeField]
-    float RollSpeed = 5;
+    float maxRollSpeed;
+    [SerializeField]
+    float acceleration;
     float originalSpeed;
     PlayerMovement movement;
     [SerializeField] ParticleSystem RollingParticle;
@@ -27,7 +30,6 @@ public class Jeff : MonoBehaviour
             InputManager.GetButton("Right Mouse") && movement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") &&
             !movement.InWater && !movement.IsWallSliding && movement.playerInput.y != 0 && !StopRolling)
         {
-            Roll();
             if (RollingParticle != null)
             {
                 RollingParticle.Play();
@@ -46,9 +48,16 @@ public class Jeff : MonoBehaviour
             {
                 RollingParticle.Stop();
             }
+            RollSpeed = 1;
             movement.StopAnimation("Roll");
             StopRolling = false;
-        }    
+        }
+        if (movement.Rolling)
+        {
+            if (RollSpeed < maxRollSpeed)
+                RollSpeed += (acceleration * Time.deltaTime);
+            Roll();
+        }
     }
 
     void Roll()
