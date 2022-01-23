@@ -81,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float MaxStunTimer;
     [HideInInspector]
     public float LongJumpTimer;
+    float StunTimer;
     float longJumpCoolDown;
     float wallJumpTimer;
     float JustWallJumpedTimer, timerBeforeWallSlide;
@@ -253,7 +254,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove && !RollStunned)
             {
                 wallJumpTimer -= Time.deltaTime;
                 if (OnGround || InWater)
@@ -486,7 +487,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     body.velocity = new Vector3(0, body.velocity.y, 0);
                 }
-
+                //if collision with object
                 if (Rolling)
                 {
                     for (float x = -.5f; x <= .5f; x += .5f)
@@ -500,7 +501,10 @@ public class PlayerMovement : MonoBehaviour
                             {
                                 GetComponent<Jeff>().StopRolling = true;
                                 //PlayAnimation("RollStunned");
-                                //Stunned = true;
+                                StopAnimation("Roll");
+                                StopAllAnimations();
+                                StunTimer = MaxStunTimer;
+                                RollStunned = true;
                                 Isrunning = false;
                                 unSetGravity();
                                 body.velocity = new Vector3(0, 10, 0);
@@ -509,7 +513,7 @@ public class PlayerMovement : MonoBehaviour
                         }
                     }
                 }
-
+                
 
 
                 //this makes you wall slide
@@ -644,6 +648,13 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
+                if(RollStunned)
+                {
+                    StunTimer -= Time.deltaTime;
+                    if (StunTimer <= 0)
+                        RollStunned = false;
+                }
+
                 if (!CantMove)
                     body.velocity = Vector3.zero;
                 else
@@ -678,7 +689,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove)
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Death") && !CantMove && !RollStunned)
             {
                 Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
                 UpdateState();
