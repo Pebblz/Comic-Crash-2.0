@@ -9,6 +9,7 @@ public class SandPiles : MonoBehaviour
     GameObject Coin;
     [SerializeField, Range(.01f, 6f)]
     float HowFastToSquish = 3f;
+    float SquishOffSet = 1f;
     [SerializeField]
     float TimerToDelete = .2f;
     PhotonView photonView;
@@ -47,6 +48,6 @@ public class SandPiles : MonoBehaviour
     void Squish()
     {
         transform.localScale -= new Vector3(0, HowFastToSquish, 0) * Time.deltaTime;
-        transform.position -= new Vector3(0, HowFastToSquish, 0) * Time.deltaTime;
+        transform.position -= new Vector3(0, SquishOffSet, 0) * Time.deltaTime;
     }
 }

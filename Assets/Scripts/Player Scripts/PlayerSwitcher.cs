@@ -42,11 +42,12 @@ public class PlayerSwitcher : MonoBehaviourPun
     {
         if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
         {
+            CurrentPlayer = PhotonFindCurrentClient();
             //arrays start at zero so i have to make it one less 
             if (!pause.isPaused &&
-                !PhotonFindCurrentClient().GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Death") &&
-                !PhotonFindCurrentClient().GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible")
-                && inAirSwitches < 2)
+                !CurrentPlayer.GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Death") &&
+                !CurrentPlayer.GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible")&&
+                !CurrentPlayer.GetComponent<PlayerMovement>().RollStunned && inAirSwitches < 2)
             {
                 if (InputManager.GetButtonDown("1"))
                 {
@@ -102,7 +103,6 @@ public class PlayerSwitcher : MonoBehaviourPun
         {
             if (CharactersToSwitchTo[i] != null && CanSwitch)
             {
-                CurrentPlayer = PhotonFindCurrentClient();
                 if (!CurrentPlayer.GetComponent<PlayerMovement>().anim.GetCurrentAnimatorStateInfo(0).IsName("Got Collectible"))
                 {
                     PlayerTransform = CurrentPlayer.transform;
@@ -135,21 +135,7 @@ public class PlayerSwitcher : MonoBehaviourPun
                     TempPlayerMovement.jumpPhase = 5;
 
                     Temp.GetComponent<Rigidbody>().velocity = CurrentPlayer.GetComponent<Rigidbody>().velocity;
-                    //if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Dive") && currentPlayerMovement.OnGround)
-                    //{
-                    //    TempPlayerMovement.PlayAnimation("idle");
-                    //}
-                    //if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && InputManager.GetAxis("Horizontal") != 0 ||
-                    //    currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Run") && InputManager.GetAxis("Vertical") != 0)
-                    //{
-                    //    TempPlayerMovement.PlayAnimation("Run");
-                    //}
 
-                    //if (currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && InputManager.GetAxis("Horizontal") != 0 ||
-                    //    currentPlayerMovement.anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && InputManager.GetAxis("Vertical") != 0)
-                    //{
-                    //    TempPlayerMovement.PlayAnimation("Walk");
-                    //}
                     if (!currentPlayerMovement.OnGround && !currentPlayerMovement.InWater)
                     {
                         TempPlayerMovement.PlayFallingAnimation();

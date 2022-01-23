@@ -132,7 +132,8 @@ public class PlayerMovement : MonoBehaviour
     bool Climbing => climbContactCount > 0 && stepsSinceLastJump > 2;
     bool OnSteep => steepContactCount > 0;
     bool InSlowDownField;
-    bool RollStunned;
+    [HideInInspector]
+    public bool RollStunned;
     [HideInInspector]
     public bool Gliding, Sliding, Rolling;
     [SerializeField]
@@ -524,11 +525,6 @@ public class PlayerMovement : MonoBehaviour
                     Vector3 dir = new Vector3(velocity.x, 0, velocity.z);
                     if (Physics.Raycast(transform.position, dir, out ray, .7f))
                     {
-                        //if (Rolling)
-                        //{
-                        //    body.velocity = new Vector3(-body.velocity.x, 5, -body.velocity.z);
-                        //    GetComponent<Jeff>().StopRolling = true;
-                        //}
 
                         if (ray.collider.gameObject.tag != "Floor" && LastWallJumpedOn != ray.collider.gameObject &&
                             ray.collider.gameObject.layer != 9 && timerBeforeWallSlide <= 0 && !InWater &&
@@ -1207,19 +1203,11 @@ public class PlayerMovement : MonoBehaviour
             StopAnimation("Run");
             StopAnimation("Walk");
         }
-        //if (Swimming)
-        //{
-
-        //    float currentY = Vector3.Dot(relativeVelocity, upAxis);
-        //    float newY = Mathf.MoveTowards(currentY, playerInput.z * speed, maxSpeedChange);
-        //    velocity += upAxis * (newY - currentY);
-        //}
     }
     #region Collectibles
     public void GotCollectible()
     {
         CantMove = true;
-        //playerInputSpace.GetComponent<MainCamera>().collectibleCamera = true;
         PlayAnimation("Collected");
         StopAnimation("Run");
         StopAnimation("Walk");
@@ -1229,7 +1217,6 @@ public class PlayerMovement : MonoBehaviour
     public void DoneWithCollectible()
     {
         CantMove = false;
-        //playerInputSpace.GetComponent<MainCamera>().collectibleCamera = false;
         FindObjectOfType<CollectibleUI>().ResetUI();
         StopAnimation("Collected");
     }
@@ -1265,14 +1252,9 @@ public class PlayerMovement : MonoBehaviour
                 else if (OnSteep)
                 {
                     jumpDirection = steepNormal;
-                    //jumpPhase = 1;
                 }
                 else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
                 {
-                    //if (jumpPhase == 0)
-                    //{
-                    //    jumpPhase = 1;
-                    //}
                     jumpDirection = contactNormal;
                 }
                 else
@@ -1445,9 +1427,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!Swimming || !InWater)
         {
-            //Sliding = true;
-            //Mathf.Clamp(velocity.x, -5, 5);
-            //Mathf.Clamp(velocity.z, -5, 5);
             if (velocity.x < RunSpeed + 5 && velocity.z < RunSpeed + 5 && 
                 velocity.x > -RunSpeed - 5 && velocity.z > -RunSpeed - 5)
             {
