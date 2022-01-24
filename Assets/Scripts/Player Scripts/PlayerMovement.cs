@@ -491,12 +491,12 @@ public class PlayerMovement : MonoBehaviour
                 //if collision with object
                 if (Rolling)
                 {
-                    for (float x = -.5f; x <= .5f; x += .5f)
+                    for (float x = -.4f; x <= .4f; x += .4f)
                     {
 
-                        Vector3 dir = new Vector3(velocity.x, 1f, velocity.z);
+                        Vector3 dir = new Vector3(velocity.x, 1.5f, velocity.z);
                         RaycastHit ray;
-                        if (Physics.Raycast(transform.position + new Vector3(x, 0, 0), dir, out ray, .5f))
+                        if (Physics.Raycast(transform.position + new Vector3(x, 0, 0), dir, out ray, .24f))
                         {
                             if (ray.collider.gameObject.layer != 10)
                             {
