@@ -501,7 +501,7 @@ public class PlayerMovement : MonoBehaviour
                             if (ray.collider.gameObject.layer != 10)
                             {
                                 GetComponent<Jeff>().StopRolling = true;
-                                //PlayAnimation("RollStunned");
+                                PlayAnimation("RollStunned");
                                 StopAnimation("Roll");
                                 StopAllAnimations();
                                 StunTimer = MaxStunTimer;
@@ -648,7 +648,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     StunTimer -= Time.deltaTime;
                     if (StunTimer <= 0)
+                    {
                         RollStunned = false;
+                        StopAnimation("RollStunned");
+                    }
                 }
 
                 if (!CantMove)
