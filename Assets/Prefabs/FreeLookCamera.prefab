@@ -621,6 +621,7 @@ GameObject:
   - component: {fileID: 2100884908218098555}
   - component: {fileID: 2100884908218098548}
   - component: {fileID: 2100884908218098554}
+  - component: {fileID: -1901032988661795729}
   m_Layer: 0
   m_Name: FreeLookCamera
   m_TagString: Untagged
@@ -795,3 +796,23 @@ MonoBehaviour:
   m_Damping: 0.5
   m_DampingWhenOccluded: 0
   m_OptimalTargetDistance: 0
+--- !u!114 &-1901032988661795729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100884908218098551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9252d638ad36b6b4492bd3b6fb282670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderScale: 1
+  reflectionLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  reflectSkybox: 0
+  reflectionTarget: {fileID: 0}
+  reflectionPlaneOffset: 0
+  hideReflectionCamera: 0
