@@ -46,6 +46,22 @@ public class Plopmann : Enemy, IRespawnable
 
     string attachedTo = "";
 
+    #region Properties
+    bool Gravity
+    {
+        get
+        {
+            return body.useGravity;
+        }
+
+        set
+        {
+            body.useGravity = value;
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+        }
+    }
+
     bool Attached
     {
         get
@@ -53,6 +69,7 @@ public class Plopmann : Enemy, IRespawnable
             return attachedTo != "";
         }
     }
+    #endregion
 
     protected override void Awake()
     {
@@ -112,11 +129,24 @@ public class Plopmann : Enemy, IRespawnable
         if (Attached)
         {
             attack();
+
+            //checks to see if player is dead
+            if (target.GetComponent<PlayerDeath>().isdead)
+            {
+                playerDied();
+            }
         }
         else
         {
             launch();
         }
+    }
+
+    private void playerDied()
+    {
+        target = null;
+        transform.parent = null;
+        Gravity = true;
     }
 
     void attack()
@@ -131,7 +161,6 @@ public class Plopmann : Enemy, IRespawnable
     #endregion
 
     #region Movement
-
     void launch()
     {
         if (launching)
@@ -156,7 +185,6 @@ public class Plopmann : Enemy, IRespawnable
         this.body.AddExplosionForce(launch_speed, explosion_point.transform.position, 3, verticle_bias);
         launching = true;
         touched_surface = false;
-
     }
 
     void stick_to_surface()
@@ -169,11 +197,7 @@ public class Plopmann : Enemy, IRespawnable
 
         launching = false;
         touched_surface = true;
-        //if (!this.use_gravity)
-        //{
-        //    this.body.useGravity = false;
-        //    this.body.velocity = Vector3.zero;
-        //}
+        
     }
 
     bool on_the_ground()
@@ -202,7 +226,7 @@ public class Plopmann : Enemy, IRespawnable
             Vector3 pointOfDetatch = Player.GetContact(Player.contactCount - 1).point;
             detatch(pointOfDetatch);
         }
-        else
+        else if (!Attached)
         {
             attachTo(Player.transform);
         }
@@ -211,9 +235,12 @@ public class Plopmann : Enemy, IRespawnable
     #region attachment
     private void attachTo(Transform player)
     {
+        target = player; //have to reassign the target incase another player runs into the plopmann first
         attachedTo = player.name;// + player.GetComponent<PhotonView>().ViewID.ToString();
         transform.parent = player;
-
+        Gravity = false;
+        Physics.IgnoreCollision(GetComponent<BoxCollider>(), player.GetComponent<BoxCollider>()); //Note because we destroy the character when we switch we do not need to unignore the box collider
+        
         Debug.Log("now attached to " + attachedTo);
     }
 
@@ -227,6 +254,7 @@ public class Plopmann : Enemy, IRespawnable
 
         current_state = STATE.STUN;
 
+        Gravity = true;
         body.AddExplosionForce(launch_speed * 2, pointOfDetach, 3, verticle_bias);
     }
     #endregion
@@ -240,6 +268,8 @@ public class Plopmann : Enemy, IRespawnable
         {
             return;
         }
+
+        Debug.Log("The staying tag is " + collision.gameObject.tag);
 
         switch (collision.gameObject.tag)
         {
@@ -261,6 +291,8 @@ public class Plopmann : Enemy, IRespawnable
             return;
         }
 
+        Debug.Log("The entering tag is " + collision.gameObject.tag);
+
         switch (collision.gameObject.tag)
         {
             case "Shot":
@@ -268,7 +300,7 @@ public class Plopmann : Enemy, IRespawnable
                 break;
             case "Player":
                 CollideWithPlayer(collision);
-                break;
+                goto default;
             default:
                 stick_to_surface();
                 break;
@@ -277,6 +309,8 @@ public class Plopmann : Enemy, IRespawnable
 
     protected void OnCollisionExit(Collider collider)
     {//NOTE This collision is different because it returns a collider instead of a collision
+
+        Debug.Log("The exiting tag is " + collider.tag);
         if(Attached && collider.gameObject.tag == "Player" && collider.name == attachedTo)
         {
             Vector3 pointOfDetach = collider.transform.position;
@@ -290,7 +324,7 @@ public class Plopmann : Enemy, IRespawnable
     #region Aggro
     protected override void OnTriggerEnter(Collider other)
     {
-        if (this.current_state == STATE.STUN || target != null)
+        if (this.current_state == STATE.STUN || target != null || Attached)
         {
             return;
         }
@@ -308,7 +342,7 @@ public class Plopmann : Enemy, IRespawnable
 
     protected override void OnTriggerStay(Collider other)
     {
-        if (this.current_state == STATE.STUN || target != null)
+        if (this.current_state == STATE.STUN || target != null || Attached)
         {
             return;
         }
