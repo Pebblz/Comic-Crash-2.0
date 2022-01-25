@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -200,12 +201,14 @@ public class Plopmann : Enemy, IRespawnable
 
         if (collision.gameObject.tag != "Shot")
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.tag == "Player" && collision.gameObject.name != attachedTo)
             {
                 if (Attached)
                 {
                     Debug.Log("detatching from " + attachedTo + "because of " + collision.gameObject.name);
-                    detatch();
+                    Debug.Log("collision count " + collision.contactCount.ToString());
+                    Vector3 pointOfDetatch = collision.GetContact(collision.contactCount-1).point;
+                    detatch(pointOfDetatch);
                 }
                 else
                 {
@@ -222,20 +225,20 @@ public class Plopmann : Enemy, IRespawnable
     #region attachment
     private void attachTo(Transform player)
     {
-        attachedTo = player.name;
+        attachedTo = player.name;// + player.GetComponent<PhotonView>().ViewID.ToString();
         transform.parent = player;
 
         Debug.Log("now attached to " + attachedTo);
     }
 
-    private void detatch()
+    private void detatch(Vector3 pointOfDetach)
     {
         attachedTo = "";
         transform.parent = null;
 
         current_state = STATE.STUN;
 
-        this.body.AddExplosionForce(launch_speed * 5, explosion_point.transform.position, 3, verticle_bias);
+        this.body.AddExplosionForce(launch_speed * 2, pointOfDetach, 3, verticle_bias);
     }
     #endregion
 
