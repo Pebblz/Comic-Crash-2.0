@@ -649,8 +649,8 @@ public class PlayerMovement : MonoBehaviour
                     StunTimer -= Time.deltaTime;
                     if (StunTimer <= 0)
                     {
-                        RollStunned = false;
                         StopAnimation("RollStunned");
+                        RollStunned = false;
                     }
                 }
 
