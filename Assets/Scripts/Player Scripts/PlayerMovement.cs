@@ -1229,9 +1229,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!Swimming && !InWater || AtTheTopOfWater)
         {
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("DoubleJump") || jumpPhase > maxAirJumps ||
+                anim.GetCurrentAnimatorStateInfo(0).IsName("AirAttack"))
             {
-                canJump = false;
+                canJump = false; 
             }
             if (jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.x != 0f ||
                 jumpPhase == maxAirJumps + 1 && CanDive && body.velocity.z != 0f)
