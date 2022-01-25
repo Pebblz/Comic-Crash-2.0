@@ -96,10 +96,9 @@ public class Plopmann : Enemy, IRespawnable
         body.constraints = RigidbodyConstraints.FreezeRotationX & RigidbodyConstraints.FreezeRotationZ;
         attack_cooldown = init_attack_cooldown;
         launching = false;
-
-
     }
 
+    #region Behaviors
     // empty for now  but he'll have an animation eventually
     void idle()
     {
@@ -129,6 +128,9 @@ public class Plopmann : Enemy, IRespawnable
             target.gameObject.GetComponent<PlayerHealth>().HurtPlayer(this.enemy_damage);
         }
     }
+    #endregion
+
+    #region Movement
 
     void launch()
     {
@@ -157,7 +159,6 @@ public class Plopmann : Enemy, IRespawnable
 
     }
 
-
     void stick_to_surface()
     {
         //this is for you pat naatz
@@ -180,45 +181,30 @@ public class Plopmann : Enemy, IRespawnable
         //we use the length of the scale so we can have big plopmann's in the future
         return Physics.Raycast(transform.position, Vector3.down, transform.localScale.y + .1f);
     }
+    #endregion
 
+    #region Attach and Detatch Logic
 
-    private void OnCollisionStay(Collision collision)
+    #region Collision Events
+    private void GetShot(Collision shot)
     {
-        if (this.current_state == STATE.STUN)
+        if (Attached)
         {
-            return;
+            Vector3 pointOfDetatch = shot.GetContact(shot.contactCount - 1).point;
+            detatch(pointOfDetatch);
         }
-        if (collision.gameObject.tag != "Shot")
-        {
-            stick_to_surface();
-        }
-
     }
 
-    protected override void OnCollisionEnter(Collision collision)
+    private void CollideWithPlayer(Collision Player)
     {
-        base.OnCollisionEnter(collision);
-
-        if (collision.gameObject.tag != "Shot")
+        if (Attached && Player.gameObject.name != attachedTo)
         {
-            if (collision.gameObject.tag == "Player" && collision.gameObject.name != attachedTo)
-            {
-                if (Attached)
-                {
-                    Debug.Log("detatching from " + attachedTo + "because of " + collision.gameObject.name);
-                    Debug.Log("collision count " + collision.contactCount.ToString());
-                    Vector3 pointOfDetatch = collision.GetContact(collision.contactCount-1).point;
-                    detatch(pointOfDetatch);
-                }
-                else
-                {
-                    attachTo(collision.transform);
-                }
-            }
-            else
-            {
-                stick_to_surface();
-            }
+            Vector3 pointOfDetatch = Player.GetContact(Player.contactCount - 1).point;
+            detatch(pointOfDetatch);
+        }
+        else
+        {
+            attachTo(Player.transform);
         }
     }
 
@@ -233,15 +219,75 @@ public class Plopmann : Enemy, IRespawnable
 
     private void detatch(Vector3 pointOfDetach)
     {
+        if (Attached == false)
+            return;
+
         attachedTo = "";
         transform.parent = null;
 
         current_state = STATE.STUN;
 
-        this.body.AddExplosionForce(launch_speed * 2, pointOfDetach, 3, verticle_bias);
+        body.AddExplosionForce(launch_speed * 2, pointOfDetach, 3, verticle_bias);
     }
     #endregion
 
+    #endregion
+
+    #region Collisions
+    private void OnCollisionStay(Collision collision)
+    {
+        if (this.current_state == STATE.STUN)
+        {
+            return;
+        }
+
+        switch (collision.gameObject.tag)
+        {
+            case "Shot":
+                GetShot(collision);
+                break;
+            case "Player":
+                CollideWithPlayer(collision);
+                break;
+        }
+    }
+
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        base.OnCollisionEnter(collision);
+
+        if (this.current_state == STATE.STUN)
+        {
+            return;
+        }
+
+        switch (collision.gameObject.tag)
+        {
+            case "Shot":
+                GetShot(collision);
+                break;
+            case "Player":
+                CollideWithPlayer(collision);
+                break;
+            default:
+                stick_to_surface();
+                break;
+        }
+    }
+
+    protected void OnCollisionExit(Collider collider)
+    {//NOTE This collision is different because it returns a collider instead of a collision
+        if(Attached && collider.gameObject.tag == "Player" && collider.name == attachedTo)
+        {
+            Vector3 pointOfDetach = collider.transform.position;
+            detatch(pointOfDetach);
+        }
+    }
+    #endregion
+
+    #endregion
+
+    #region Aggro
     protected override void OnTriggerEnter(Collider other)
     {
         if (this.current_state == STATE.STUN || target != null)
@@ -251,7 +297,6 @@ public class Plopmann : Enemy, IRespawnable
 
         if (other.gameObject.tag == "Player")
         {
-            //Debug.Log("Player entered");
             if (!launching)
             {
                 target = other.gameObject.transform;
@@ -279,4 +324,5 @@ public class Plopmann : Enemy, IRespawnable
             }
         }
     }
+    #endregion
 }
