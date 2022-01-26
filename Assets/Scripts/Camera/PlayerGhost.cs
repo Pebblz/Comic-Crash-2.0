@@ -10,6 +10,10 @@ public class PlayerGhost : MonoBehaviour
     PlayerMovement player;
     Camera cam;
 
+    [SerializeField]
+    float maxSpeed = 5;
+    [SerializeField]
+    float SmoothTime = .5f;
     Vector3 vel;
     void Start()
     {
@@ -53,7 +57,7 @@ public class PlayerGhost : MonoBehaviour
             {
                 ghostPositionY = player.transform.position.y;
             }    // behavior 5
-            var desiredPosition = new Vector3(player.transform.position.x, ghostPositionY, player.transform.position.z); transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref vel, .1f, 5);
+            var desiredPosition = new Vector3(player.transform.position.x, ghostPositionY, player.transform.position.z); transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref vel, SmoothTime, maxSpeed);
         }
         else
         {
