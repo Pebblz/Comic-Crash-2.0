@@ -70,8 +70,8 @@ public class ChangeCinemachineInput : MonoBehaviour
     void OnLeaveGround()
     {
         // update Y for behavior 3
-        ghostPositionY = player.transform.position.y
-}
+        ghostPositionY = player.transform.position.y;
+    }
     void LateUpdate()
     {
         if (player != null)
