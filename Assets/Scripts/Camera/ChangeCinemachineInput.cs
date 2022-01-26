@@ -58,7 +58,20 @@ public class ChangeCinemachineInput : MonoBehaviour
             FreeLook.m_XAxis.Reset();
             FreeLook.m_YAxis.Reset();
         }
+        if (player != null)
+        {
+            OnLeaveGround();
+        }
+        else
+        {
+            player = PhotonFindCurrentClient().GetComponent<PlayerMovement>();
+        }
     }
+    void OnLeaveGround()
+    {
+        // update Y for behavior 3
+        ghostPositionY = player.transform.position.y
+}
     void LateUpdate()
     {
         if (player != null)
