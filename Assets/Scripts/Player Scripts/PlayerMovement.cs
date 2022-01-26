@@ -491,7 +491,7 @@ public class PlayerMovement : MonoBehaviour
                 //if collision with object
                 if (Rolling)
                 {
-                    for (float x = -.35f; x <= .35f; x += .35f)
+                    for (float x = -.30f; x <= .30f; x += .10f)
                     {
 
                         Vector3 dir = new Vector3(velocity.x, 1.2f, velocity.z);
@@ -500,10 +500,10 @@ public class PlayerMovement : MonoBehaviour
                         if (x > 0)
                             temp = .05f;
                         if (x == 0)
-                            temp = .1f;
+                            temp = .06f;
                         if (x < 0)
                             temp = .05f;
-                        if (Physics.Raycast(transform.position + (transform.forward/ 2 )+ new Vector3(x, 0, 0), dir + (transform.up + transform.forward), out ray,temp ))
+                        if (Physics.Raycast(transform.position + (transform.forward/ 2 )+ new Vector3(x, 0, 0), dir + (transform.up + transform.forward + transform.up), out ray,temp ))
                         {
                             if (ray.collider.gameObject.layer != 10)
                             {
