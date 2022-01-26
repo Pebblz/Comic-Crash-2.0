@@ -215,12 +215,6 @@ public class PlayerMovement : MonoBehaviour
             anim = GetComponent<Animator>();
 
         playerInputSpace = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        var temp = GameObject.Find("FreeLookCamera").GetComponent<CinemachineFreeLook>();
-        temp.Follow = gameObject.transform;
-        temp.LookAt = gameObject.transform;
-        temp.GetRig(0).LookAt = gameObject.transform;
-        temp.GetRig(1).LookAt = gameObject.transform;
-        temp.GetRig(2).LookAt = gameObject.transform;
 
         if (GetComponent<BoxCollider>() != null)
         {
