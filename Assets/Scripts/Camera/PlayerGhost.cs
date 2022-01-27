@@ -15,6 +15,7 @@ public class PlayerGhost : MonoBehaviour
     [SerializeField]
     float SmoothTime = .5f;
     Vector3 vel;
+    bool once;
     void Start()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -29,7 +30,18 @@ public class PlayerGhost : MonoBehaviour
     {
         if (player != null)
         {
-            OnLeaveGround();
+            if (!player.OnGround)
+            {
+                if (!once)
+                {
+                    OnLeaveGround();
+                    once = true;
+                }
+            }
+            else
+            {
+                once = false;
+            }
         }
         else
         {
@@ -45,10 +57,10 @@ public class PlayerGhost : MonoBehaviour
     {
         if (player != null)
         {
-            Vector3 characterViewPos = cam.WorldToViewportPoint(player.transform.position + player.velocity * Time.deltaTime);
+            Vector3 ViewPos = cam.WorldToViewportPoint(player.transform.position + player.velocity * Time.deltaTime);
 
             // behavior 2
-            if (cam.transform.position.y > 0.85f || cam.transform.position.y < 0.3f)
+            if (ViewPos.y > 0.85f || ViewPos.y < 0.3f)
             {
                 ghostPositionY = player.transform.position.y;
             }
@@ -57,7 +69,10 @@ public class PlayerGhost : MonoBehaviour
             {
                 ghostPositionY = player.transform.position.y;
             }    // behavior 5
-            var desiredPosition = new Vector3(player.transform.position.x, ghostPositionY, player.transform.position.z); transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref vel, SmoothTime, maxSpeed);
+
+            var desiredPosition = new Vector3(player.transform.position.x, ghostPositionY, player.transform.position.z); 
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref vel, SmoothTime, maxSpeed);
+            
         }
         else
         {

@@ -119,6 +119,14 @@ public class PlayerHealth : MonoBehaviour
             IFrameTimer = 1;
         }
     }
+    public bool AtMaxHealth()
+    {
+
+        if (currentHealth == maxHealth)
+            return true;
+        else
+            return false;
+    }
     //public void HurtPlayer(int amount, Vector3 knockBackDir)
     //{
     //    if (IFrameTimer <= 0)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 public class ShopSections : MonoBehaviour
 {
     GameManager Gm;
@@ -10,6 +11,8 @@ public class ShopSections : MonoBehaviour
     [SerializeField]int cost;
     [SerializeField] WhatToGive GivenItem;
     [SerializeField, Range(1, 3)] int amountGiven;
+    [SerializeField] int BuyCount = 1;
+    int TimesBought;
     void Start()
     {
         text = GetComponentInChildren<Text>();
@@ -32,11 +35,24 @@ public class ShopSections : MonoBehaviour
         {
             Gm.coinCount -= cost;
             if (GivenItem == WhatToGive.collectible)
+            {
                 Gm.CollectibleCount += amountGiven;
+                IsBought = true;
+            }
+            if(GivenItem == WhatToGive.Health)
+            {
+                PlayerHealth player = PhotonFindCurrentClient().GetComponent<PlayerHealth>();
+                if(!player.AtMaxHealth())
+                {
+                    player.currentHealth++;
+                    IsBought = true;
+                }
+                else
+                {
+                    print(player.gameObject.name + " At full Health");
+                }
+            }
 
-            print(Gm.CollectibleCount);
-
-            IsBought = true;
         }
         else
         {
@@ -49,15 +65,33 @@ public class ShopSections : MonoBehaviour
     }
     void Bought()
     {
-        if(IsBought)
+        if (TimesBought >= BuyCount)
         {
-            text.text = "Bought";
+            if (IsBought)
+            {
+                text.text = "Bought";
+            }
+            GetComponent<Button>().enabled = false;
         }
-        GetComponent<Button>().enabled = false;
+        else
+        {
+            TimesBought++;
+        }
     }
-    //we will add more to here later
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
+    }
     enum WhatToGive
     {
-        collectible
+        collectible,
+        Health
     }
 }

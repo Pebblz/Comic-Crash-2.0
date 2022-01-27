@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Luminosity.IO;
 public class Shop : MonoBehaviour
 {
     [SerializeField] GameObject ShopPage;
@@ -10,6 +10,9 @@ public class Shop : MonoBehaviour
     bool active;
     GameManager Gm;
     [SerializeField]
+    float ShopButtonCooldown = .2f;
+    [SerializeField]
+    float distanceAwayToTrigger = 4f;
     private void Start()
     {
         Gm = FindObjectOfType<GameManager>();
@@ -20,15 +23,15 @@ public class Shop : MonoBehaviour
         if (player == null)
             player = FindObjectOfType<Player>().gameObject;
 
-        if(Vector3.Distance(transform.position, player.transform.position)< 4)
+        if(Vector3.Distance(transform.position, player.transform.position) < distanceAwayToTrigger)
         {
-            if(Input.GetKeyDown(KeyCode.Q) && timer <= 0)
+            if(InputManager.GetKeyDown(KeyCode.Q) && timer <= 0)
             {
                 active = !active;
                 IsShopOpen(active);
-                timer = .3f;
+                timer = ShopButtonCooldown;
             }
-            if(active && Input.GetKeyDown(KeyCode.Escape))
+            if(active && InputManager.GetKeyDown(KeyCode.Escape))
             {
                 IsShopOpen(false);
                 active = false;
@@ -36,11 +39,11 @@ public class Shop : MonoBehaviour
         }
         timer -= Time.deltaTime;
     }
-    public void IsShopOpen(bool maybe)
+    public void IsShopOpen(bool Open)
     {
-        ShopPage.SetActive(maybe);
-        player.GetComponent<PlayerMovement>().enabled = !maybe;
-        if (maybe)
+        ShopPage.SetActive(Open);
+        player.GetComponent<PlayerMovement>().enabled = !Open;
+        if (Open)
         {
             Gm.unlockCursor();
         }
