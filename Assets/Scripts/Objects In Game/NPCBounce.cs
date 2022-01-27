@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Trampoline : MonoBehaviour
+public class NPCBounce : MonoBehaviour
 {
     [SerializeField, Min(0f)]
     float acceleration = 10f, speed = 10f;
@@ -11,6 +11,8 @@ public class Trampoline : MonoBehaviour
     private bool doneSquishing;
     private bool HoldingSpace;
     private SoundManager soundManager;
+    public bool Triggered;
+    public GameObject collision;
     private void Start()
     {
         origanalScale = transform.localScale;
@@ -30,33 +32,23 @@ public class Trampoline : MonoBehaviour
         {
             Squish();
         }
-    }
-    private void OnCollisionEnter(Collision col)
-    {
-        //blobBert shouldn't be able to jump on the slimeoline
-        if (col.gameObject.tag == "Player" && !col.gameObject.GetComponent<BlobBert>()
-            && col.gameObject.transform.position.y > gameObject.transform.position.y)
+        if(Triggered)
         {
-            Rigidbody body = col.gameObject.GetComponent<Rigidbody>();
-            if (body )
+            if (collision.tag == "Player" && !collision.GetComponent<BlobBert>() 
+                && collision.transform.position.y > gameObject.transform.position.y)
             {
-                col.gameObject.GetComponent<PlayerMovement>().Bounce = true;
-                col.gameObject.GetComponent<PlayerMovement>().PlayJumpAnimation();
-                Accelerate(body);
+                Rigidbody body = collision.GetComponent<Rigidbody>();
+                if (body)
+                {
+                    collision.GetComponent<PlayerMovement>().Bounce = true;
+                    collision.GetComponent<PlayerMovement>().PlayJumpAnimation();
+                    Accelerate(body);
+                }
+                squishTime = true;
             }
-            squishTime = true;
         }
+        Triggered = false;
     }
-    //void OnTriggerStay(Collider other)
-    //{
-    //    Rigidbody body = other.attachedRigidbody;
-    //    if (body && !other.gameObject.GetComponent<BlobBert>())
-    //    {
-    //        Accelerate(body);
-    //        other.gameObject.GetComponent<PlayerMovement>().PlayJumpAnimation();
-    //    }
-    //}
-
     void Accelerate(Rigidbody body)
     {
         Vector3 velocity = transform.InverseTransformDirection(body.velocity);
