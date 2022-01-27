@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Luminosity.IO;
+using Photon.Pun;
 public class NPCTalkable : MonoBehaviour
 {
     public Dialogue dialogue;
@@ -40,7 +41,7 @@ public class NPCTalkable : MonoBehaviour
             if (player == null)
             {
                 //this needs to be here because the player can switch characters
-                player = GameObject.FindGameObjectWithTag("Player");
+                player = PhotonFindCurrentClient();
             }
             else
             {
@@ -115,6 +116,17 @@ public class NPCTalkable : MonoBehaviour
             }
             GavePlayerAlready = true;
         }
+    }
+    GameObject PhotonFindCurrentClient()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
+        {
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
+        }
+        return null;
     }
     //these are the different ways that the player can talk to the npc
     enum WaysToStartConversation
