@@ -506,6 +506,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4774714131854138083}
   - component: {fileID: 6305019949229377337}
+  - component: {fileID: 459862637483100512}
+  - component: {fileID: 7035442770205720901}
   m_Layer: 0
   m_Name: pCube14
   m_TagString: Untagged
@@ -523,7 +525,8 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.07747323, y: -37.083405, z: -5.460026}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
-  m_Children: []
+  m_Children:
+  - {fileID: 7616653309798238321}
   m_Father: {fileID: 6774508584464204275}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -597,6 +600,36 @@ SkinnedMeshRenderer:
     m_Center: {x: -2.5104961, y: -1.6664371, z: -0.7382231}
     m_Extent: {x: 25.740852, y: 41.384644, z: 22.38744}
   m_DirtyAABB: 0
+--- !u!114 &459862637483100512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924955139436765491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16149fd1a966d9d47b41b2363d1b0277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 250
+  speed: 250
+  timeToSquish: 0.1
+  Triggered: 0
+  collision: {fileID: 0}
+--- !u!65 &7035442770205720901
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924955139436765491}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 41.341686, y: 73.94671, z: 42.06715}
+  m_Center: {x: 10.423293, y: 3745.983, z: 543.9101}
 --- !u!1 &5187467217800342282
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,7 +733,7 @@ GameObject:
   - component: {fileID: 6774508584464204275}
   - component: {fileID: 6451787822099572250}
   m_Layer: 0
-  m_Name: ocean npc 2 idle (1)
+  m_Name: ocean npc 2 idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -742,6 +775,63 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &6180833605347045432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7616653309798238321}
+  - component: {fileID: 8876081989854630631}
+  - component: {fileID: 2669961723558516890}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7616653309798238321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6180833605347045432}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.747323, y: 3708.3403, z: 546.00256}
+  m_LocalScale: {x: 50, y: 10, z: 50}
+  m_Children: []
+  m_Father: {fileID: 4774714131854138083}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8876081989854630631
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6180833605347045432}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000001, y: 2.62, z: 1.0000001}
+  m_Center: {x: 0.000015258789, y: 8.55, z: -0.000007629396}
+--- !u!114 &2669961723558516890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6180833605347045432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94389a0dc53cf145b3312cdf6a0eeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6358976758185606991
 GameObject:
   m_ObjectHideFlags: 0
