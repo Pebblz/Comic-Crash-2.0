@@ -104,6 +104,7 @@ public class NPCBounce : MonoBehaviour
             {
                 doneSquishing = false;
                 squishTime = false;
+                transform.localScale = origanalScale;
             }
         }
     }
