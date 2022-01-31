@@ -985,6 +985,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!blobert)
         {
+            if(anim.GetCurrentAnimatorStateInfo(0).IsName("LongJump"))
+            {
+                body.velocity = Vector3.zero;
+                velocity = Vector3.zero;
+            }
             if (collision.gameObject.GetComponent<CollideWithHeavyBlock>())
             {
                 Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), collision.collider);
