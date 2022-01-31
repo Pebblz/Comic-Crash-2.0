@@ -39,7 +39,7 @@ public class Collectible : MonoBehaviour
                 GameObject gm = FindObjectOfType<GameManager>().gameObject;
                 photonView = GetComponent<PhotonView>();
                 sound.playCoin(this.transform.position);
-                gm.GetComponent<GameManager>().coinCount += numberGivenToPlayer;
+                gm.GetComponent<GameManager>().UpdateCoinCount(numberGivenToPlayer);
                 photonView.RPC("DestroyThis", RpcTarget.All);
             }
             else if (collect == collectible.MainCollectible)

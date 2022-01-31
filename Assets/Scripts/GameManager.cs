@@ -15,10 +15,13 @@ public class GameManager : MonoBehaviour
     public int CollectibleCount;
     [Tooltip("The Position that the players will spawn at when starting")]
     public Vector3 photonStartPosition;
+
+    CoinPopUp CoinUI;
     #region MonoBehaviours
     void Start()
     {
         lockCursor();
+        CoinUI = GetComponent<CoinPopUp>();
         //this is how you'd load prev game data 
 
         //string Filepath = GetCurDir() + "/" + Gamedata;
@@ -35,7 +38,11 @@ public class GameManager : MonoBehaviour
         //SaveGame();
     }
     #endregion
-
+    public void UpdateCoinCount(int Amount)
+    {
+        coinCount += Amount;
+        CoinUI.UpdateCoinCount(coinCount);
+    }
     #region Cursor methods
     public void lockCursor()
     {

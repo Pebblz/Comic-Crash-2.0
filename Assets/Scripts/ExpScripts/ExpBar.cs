@@ -8,11 +8,11 @@ public class ExpBar : MonoBehaviour
     [SerializeField] Slider slider;
     [SerializeField] CanvasGroup cg;
     float fadeTimer = 3;
-
+    GameObject player;
     void Update()
     {
         fadeTimer -= Time.fixedDeltaTime;
-        if (PhotonFindCurrentClient().GetComponent<PhotonView>().IsMine)
+        if (player != null)
         {
             if (fadeTimer < 0)
             {
@@ -22,6 +22,10 @@ public class ExpBar : MonoBehaviour
             {
                 slider.gameObject.SetActive(false);
             }
+        }
+        else
+        {
+            player = PhotonFindCurrentClient();
         }
     }
     GameObject PhotonFindCurrentClient()

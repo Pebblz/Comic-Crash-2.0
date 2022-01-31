@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 4099671002370278369}
   - component: {fileID: 4099671002370278392}
   - component: {fileID: 4099671002370278394}
+  - component: {fileID: 5642862424528916030}
   - component: {fileID: 1599967950071600409}
   m_Layer: 0
-  m_Name: GameManagerWithoutLight (1)
+  m_Name: GameManager
   m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,9 +114,7 @@ MonoBehaviour:
   - {fileID: 4937292684294454743, guid: d47f42fb64fb4fd42a4bc3cb86ac51bf, type: 3}
   PlayerTransform: {fileID: 0}
   CurrentPlayer: {fileID: 0}
-  maxSwitchTimer: 0.7
   CanSwitch: 0
-  AllCharactersInGame: []
 --- !u!114 &4099671002370278394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +128,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+--- !u!114 &5642862424528916030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4099671002370278375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef87a91c30fee1642a68aa4531bbec39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeToFade: 2
 --- !u!114 &1599967950071600409
 MonoBehaviour:
   m_ObjectHideFlags: 0
