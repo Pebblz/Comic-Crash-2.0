@@ -11,12 +11,13 @@ public class ShopSections : MonoBehaviour
     [SerializeField]int cost;
     [SerializeField] WhatToGive GivenItem;
     [SerializeField, Range(1, 3)] int amountGiven;
-    [SerializeField] int BuyCount = 1;
+    [SerializeField] int BuyCount = 0;
     int TimesBought;
     void Start()
     {
         text = GetComponentInChildren<Text>();
         Gm = FindObjectOfType<GameManager>();
+        GetComponent<Button>().onClick.AddListener(delegate { BuySection(); });
     }
 
     void Update()
@@ -24,18 +25,19 @@ public class ShopSections : MonoBehaviour
         if(IsBought)
         {
             Bought();
-        } else
-        {
-            NotBought();
         }
+        //else
+        //{
+        //    NotBought();
+        //}
     }
     public void BuySection()
     {
         if(Gm.coinCount >= cost)
         {
-            Gm.coinCount -= cost;
             if (GivenItem == WhatToGive.collectible)
             {
+                Gm.UpdateCoinCount(-cost);
                 Gm.CollectibleCount += amountGiven;
                 IsBought = true;
             }
@@ -44,6 +46,7 @@ public class ShopSections : MonoBehaviour
                 PlayerHealth player = PhotonFindCurrentClient().GetComponent<PlayerHealth>();
                 if(!player.AtMaxHealth())
                 {
+                    Gm.UpdateCoinCount(-cost);
                     player.currentHealth++;
                     IsBought = true;
                 }
@@ -59,10 +62,10 @@ public class ShopSections : MonoBehaviour
             print("Not Enough Money");
         }
     }
-    void NotBought()
-    {
-        text.text = "Cost : " + cost;
-    }
+    //void NotBought()
+    //{
+    //    text.text = "Cost : " + cost;
+    //}
     void Bought()
     {
         if (TimesBought >= BuyCount)

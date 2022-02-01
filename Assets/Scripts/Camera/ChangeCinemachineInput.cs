@@ -14,7 +14,7 @@ public class ChangeCinemachineInput : MonoBehaviour
     CinemachineFreeLook FreeLook;
     Pause pause;
     private SoundManager soundManager;
-
+    Shop shop;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +23,13 @@ public class ChangeCinemachineInput : MonoBehaviour
         toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
         FreeLook = GetComponent<CinemachineFreeLook>();
         pause = FindObjectOfType<Pause>();
+        shop = FindObjectOfType<Shop>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!pause.isPaused)
+        if (!pause.isPaused && !shop.active)
         {
 
             if (!toggle.m_gamepadOn)
