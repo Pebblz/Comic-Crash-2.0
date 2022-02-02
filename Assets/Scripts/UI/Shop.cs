@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Luminosity.IO;
+using UnityEngine.EventSystems;
 public class Shop : MonoBehaviour
 {
     GameObject ShopPage;
@@ -14,11 +15,13 @@ public class Shop : MonoBehaviour
     float ShopButtonCooldown = .2f;
     [SerializeField]
     float distanceAwayToTrigger = 4f;
+    GameObject FirstButton;
     private void Start()
     {
         Gm = FindObjectOfType<GameManager>();
         ShopPage = GameObject.Find("ShopPage");
         ShopPage.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(delegate { CloseShop(); });
+        FirstButton = ShopPage.transform.GetChild(1).gameObject;
         ShopPage.SetActive(false);
     }
     void Update()
@@ -56,6 +59,11 @@ public class Shop : MonoBehaviour
         if (Open)
         {
             Gm.unlockCursor();
+            if (EventSystem.current != FirstButton)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(FirstButton);
+            }
         }
         else
         {
