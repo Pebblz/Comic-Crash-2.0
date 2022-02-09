@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Luminosity.IO;
 using UnityEngine.EventSystems;
+
 public class Shop : MonoBehaviour
 {
     GameObject ShopPage;
@@ -16,9 +17,11 @@ public class Shop : MonoBehaviour
     [SerializeField]
     float distanceAwayToTrigger = 4f;
     GameObject FirstButton;
+    Luminosity.IO.Examples.GamepadToggle toggle;
     private void Start()
     {
         Gm = FindObjectOfType<GameManager>();
+        toggle = FindObjectOfType<Luminosity.IO.Examples.GamepadToggle>();
         ShopPage = GameObject.Find("ShopPage");
         ShopPage.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(delegate { CloseShop(); });
         FirstButton = ShopPage.transform.GetChild(1).gameObject;
@@ -42,6 +45,7 @@ public class Shop : MonoBehaviour
                 IsShopOpen(false);
                 active = false;
             }
+
         }
         timer -= Time.deltaTime;
     }
@@ -58,7 +62,15 @@ public class Shop : MonoBehaviour
         player.GetComponent<PlayerMovement>().CantMove  = !player.GetComponent<PlayerMovement>().CantMove;
         if (Open)
         {
-            Gm.unlockCursor();
+            if (active && toggle.m_gamepadOn)
+            {
+                Gm.lockCursor();
+            }
+            if (active && !toggle.m_gamepadOn)
+            {
+                Gm.unlockCursor();
+            }
+
             if (EventSystem.current != FirstButton)
             {
                 EventSystem.current.SetSelectedGameObject(null);
