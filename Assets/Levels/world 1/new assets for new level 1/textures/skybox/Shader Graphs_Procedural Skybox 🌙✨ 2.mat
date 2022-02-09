@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: "Shader Graphs_Procedural Skybox \U0001F319\u2728 2"
+  m_Shader: {fileID: -6465566751694194690, guid: 7bc8db98e210e7f48844df9015f1621b,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Texture2DAsset_D5AAB987_Out_0:
+        m_Texture: {fileID: 2800000, guid: f577539a385c54a4ab8d9127d5aa8ef0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_5006A6DB: 0
+    - Vector1_6E1A052F: 0
+    - Vector1_9A47BD85: 0.1
+    - Vector1_D530AAF: 54.05
+    - Vector1_D956D67B: 0
+    - _CloudHeight: 0.12
+    - _WindSpeed: 0.5
+    m_Colors:
+    - Color_44CAA63E: {r: 1, g: 0.6999334, b: 0.41037738, a: 0}
+    - Color_9EC51457: {r: 0.3928239, g: 1.0617001, b: 1.4610293, a: 1}
+    - _HorizonColor: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0}
+    - _SkyColor: {r: 0.4811321, g: 0.28560218, b: 0.23829655, a: 0}
+    - _SunDirection: {r: 0.85, g: 0.53, b: -0.01, a: 0}
