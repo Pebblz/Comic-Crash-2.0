@@ -77,6 +77,12 @@ public class HandMan : MonoBehaviour
                 squish.enabled = false;
                 pAttack.CanAttack = false;
                 movement.CanWallJump = false;
+                if(movement.InWater)
+                {
+                    PickUp.GetComponent<PickUpables>().DropInFront();
+                    PickUp = null;
+                    isHoldingOBJ = false;
+                }
                 //this is for the throwing / droping logic
                 if (InputManager.GetButtonDown("Left Mouse") && pickUpTimer < 0)
                 {
