@@ -24,7 +24,7 @@ public class EnemyDetection : MonoBehaviour
                 Vector3 targetDirection = movement.transform.position - transform.position;
                 float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-                if(viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle)
+                if(viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle && !IsPlayerDead(movement.gameObject))
                 {
                     return true;
                 }
@@ -47,7 +47,7 @@ public class EnemyDetection : MonoBehaviour
                 Vector3 targetDirection = movement.transform.position - transform.position;
                 float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-                if (viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle)
+                if (viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle && !IsPlayerDead(movement.gameObject))
                 {
                     return movement.gameObject;
                 }
@@ -70,7 +70,7 @@ public class EnemyDetection : MonoBehaviour
                 Vector3 targetDirection = movement.transform.position - transform.position;
                 float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-                if (viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle)
+                if (viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle && !IsPlayerDead(movement.gameObject))
                 {
                     ReturnedList.Add(movement.gameObject);
                 }
@@ -87,14 +87,14 @@ public class EnemyDetection : MonoBehaviour
         GameObject closePlayer = null;
         foreach (GameObject g in detectedPlayers)
         {
-            if (closeDist == 0)
+            if (closeDist == 0 && !IsPlayerDead(g))
             {
                 closeDist = Vector3.Distance(transform.position, g.transform.position);
                 closePlayer = g;
             }
             else
             {
-                if (closeDist > Vector3.Distance(transform.position, g.transform.position))
+                if (closeDist > Vector3.Distance(transform.position, g.transform.position) && !IsPlayerDead(g))
                 {
                     closeDist = Vector3.Distance(transform.position, g.transform.position);
                     closePlayer = g;
@@ -102,5 +102,12 @@ public class EnemyDetection : MonoBehaviour
             }
         }
         return closePlayer;
+    }
+    bool IsPlayerDead(GameObject player)
+    {
+        if (player.GetComponent<PlayerDeath>().isdead)
+            return true;
+        else
+            return false;
     }
 }

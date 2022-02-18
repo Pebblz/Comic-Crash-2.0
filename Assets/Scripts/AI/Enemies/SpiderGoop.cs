@@ -53,6 +53,7 @@ public class SpiderGoop : MonoBehaviour
         startingPoint = transform.position;
         startingRot = transform.rotation;
         rb = GetComponent<Rigidbody>();
+        chargeDurationTimer = chargeDuration;
     }
 
     private void Update()
@@ -181,7 +182,10 @@ public class SpiderGoop : MonoBehaviour
                     transform.rotation = Quaternion.Slerp(transform.rotation,
                                                       Quaternion.LookRotation(ChasedPlayersPos - transform.position),
                                                       rotSpeed * Time.deltaTime);
-
+                    //the direction of the last seen pos 
+                    Vector3 dir = (ChasedPlayersPos - transform.position).normalized;
+                    //this sees if the enemies looking at the last seen pos
+                    float dot = Vector3.Dot(dir, transform.forward);
                     if (!ShouldJump(chasedPlayer.transform.position))
                     {
 
@@ -190,6 +194,9 @@ public class SpiderGoop : MonoBehaviour
                             rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
                         //charges at player
                         if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToCharge && !jumping && chargeCooldownTimer <= 0)
+                            charging = true;
+                        //if he's on top of the player i just want him to ignore the cooldown timer and attack
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && !jumping && dot > .95f)
                             charging = true;
                     }
                     else if (!jumping)
@@ -270,8 +277,14 @@ public class SpiderGoop : MonoBehaviour
         PlayerHealth Player = AttackedPlayer.GetComponent<PlayerHealth>();
         if (Player != null)
         {
+            //makes sure spider doesn't chase player when he respawns
             Player.HurtPlayer(damage);
+            if (AttackedPlayer.GetComponent<PlayerDeath>().isdead)
+            {
+                chasedPlayer = null;
+            }
         }
+        
     }
 
     void ResetCharge()
@@ -336,7 +349,7 @@ public class SpiderGoop : MonoBehaviour
         return temp;
     }
 
-    private void OnTriggerEnter(Collider col)
+    private void OnTriggerStay(Collider col)
     {
         if(charging && col.gameObject.tag == "Player")
         {
@@ -347,6 +360,7 @@ public class SpiderGoop : MonoBehaviour
         {
             //make here for stunning the enemy when hitting a wall
             chargeDurationTimer = 0;
+            detectedPlayers = Detection.GetPlayersInSight();
         }
 
     }
