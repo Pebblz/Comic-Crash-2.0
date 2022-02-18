@@ -90,11 +90,13 @@ public class SpiderGoop : MonoBehaviour
                     if (timerTillIdle > 0)
                     {
                         anim.SetBool("Idle", true);
+                        anim.SetBool("Walking", false);
                         timerTillIdle -= Time.deltaTime;
                     }
                     else
                     {
                         anim.SetBool("Idle", false);
+                        anim.SetBool("Walking", true);
                         WaypointMovement();
                     }
                 }
