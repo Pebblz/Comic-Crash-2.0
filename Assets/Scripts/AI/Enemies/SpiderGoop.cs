@@ -6,8 +6,8 @@ public class SpiderGoop : MonoBehaviour
 {
     #region Vars
     [SerializeField]
-    private float rotSpeed, idleMoveSpeed, chaseSpeed,
-        timeTillIdle, playerSeenRange, maxAttackCoolDown;
+    private float rotSpeed, idleMoveSpeed, chaseSpeed, chargeSpeed,
+        timeTillIdle, playerSeenRange, chargeCooldown, chargeDuration, distAwayToCharge = 8;
 
     [SerializeField]
     private int damage = 1;
@@ -41,9 +41,9 @@ public class SpiderGoop : MonoBehaviour
 
     int currentWaypointIndex;
 
-    float attackCoolDownTimer;
+    float chargeCooldownTimer, chargeDurationTimer;
 
-    bool jumping;
+    bool jumping, charging;
     #endregion
 
     private void Start()
@@ -57,15 +57,35 @@ public class SpiderGoop : MonoBehaviour
 
     private void Update()
     {
-        if (Detection.IsPlayerInSight()
-            || detectedPlayers.Count > 0
-            || lastSeenPlayerPos != Vector3.zero)
-            ChasePlayer();
-        else
+        if (!charging)
         {
-            if (idleWays == WaysToIdle.StandAtPoint)
+            if (Detection.IsPlayerInSight()
+                || detectedPlayers.Count > 0
+                || lastSeenPlayerPos != Vector3.zero)
+                ChasePlayer();
+            else
             {
-                if (Vector3.Distance(transform.position, startingPoint) > 1.5f)
+                if (idleWays == WaysToIdle.StandAtPoint)
+                {
+                    if (Vector3.Distance(transform.position, startingPoint) > 1.5f)
+                    {
+                        if (timerTillIdle > 0)
+                        {
+                            anim.SetBool("Idle", true);
+                            timerTillIdle -= Time.deltaTime;
+                        }
+                        else
+                        {
+                            anim.SetBool("Idle", false);
+                            ReturnToStartingPoint();
+                        }
+                    }
+                    else
+                    {
+                        transform.rotation = Quaternion.Slerp(transform.rotation, startingRot, 3 * Time.deltaTime);
+                    }
+                }
+                if (idleWays == WaysToIdle.WayPoint)
                 {
                     if (timerTillIdle > 0)
                     {
@@ -75,26 +95,19 @@ public class SpiderGoop : MonoBehaviour
                     else
                     {
                         anim.SetBool("Idle", false);
-                        ReturnToStartingPoint();
+                        WaypointMovement();
                     }
                 }
-                else
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, startingRot, 3 * Time.deltaTime);
-                }
             }
-            if (idleWays == WaysToIdle.WayPoint)
+            chargeCooldownTimer -= Time.deltaTime;
+        }
+        else
+        {
+            ChargeAtPlayer();
+            chargeDurationTimer -= Time.deltaTime;
+            if (chargeDurationTimer <= 0)
             {
-                if (timerTillIdle > 0)
-                {
-                    anim.SetBool("Idle", true);
-                    timerTillIdle -= Time.deltaTime;
-                }
-                else
-                {
-                    anim.SetBool("Idle", false);
-                    WaypointMovement();
-                }
+                ResetCharge();
             }
         }
     }
@@ -169,9 +182,13 @@ public class SpiderGoop : MonoBehaviour
 
                     if (!ShouldJump(chasedPlayer.transform.position))
                     {
+
                         //Moves enemy towards player
-                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > 2.2f && !jumping)
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > 2.5f && !jumping && !charging)
                             rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
+                        //charges at player
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToCharge && !jumping && chargeCooldownTimer <= 0)
+                            charging = true;
                     }
                     else if (!jumping)
                     {
@@ -240,14 +257,27 @@ public class SpiderGoop : MonoBehaviour
         }
     }
 
+    void ChargeAtPlayer()
+    {
+        anim.SetBool("Charge", true);
+        rb.velocity = (transform.forward + new Vector3(0, rb.velocity.y, 0)) * chargeSpeed;
+    }
+    
     void DamagePlayer(GameObject AttackedPlayer)
     {
         PlayerHealth Player = AttackedPlayer.GetComponent<PlayerHealth>();
         if (Player != null)
         {
             Player.HurtPlayer(damage);
-            attackCoolDownTimer = maxAttackCoolDown;
         }
+    }
+
+    void ResetCharge()
+    {
+        anim.SetBool("Charge", false);
+        chargeCooldownTimer = chargeCooldown;
+        chargeDurationTimer = chargeDuration;
+        charging = false;
     }
 
     bool ShouldJump(Vector3 HuntedTarget)
@@ -262,7 +292,7 @@ public class SpiderGoop : MonoBehaviour
                 //if the bottom one hits then that means he's colliding with a object
                 if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
                 {
-                    if (hit.collider.gameObject.tag != "Player")
+                    if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger)
                     {
                         for (float top = -1; top <= 1; top += .2f)
                         {
@@ -304,11 +334,27 @@ public class SpiderGoop : MonoBehaviour
         return temp;
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        if(charging && col.gameObject.tag == "Player")
+        {
+            //also knockback player
+            DamagePlayer(col.gameObject);
+        }
+        if (charging && col.gameObject.tag != "Player")
+        {
+            //make here for stunning the enemy when hitting a wall
+            chargeDurationTimer = 0;
+        }
+
+    }
+
     enum WaysToIdle
     {
         StandAtPoint,
         WayPoint
     }
+
     #region Joshes Old code
     //[SerializeField]
     //[Tooltip("Distance Enemy has to be from a point to start targeting the next")]
