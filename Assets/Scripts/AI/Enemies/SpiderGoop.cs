@@ -136,13 +136,13 @@ public class SpiderGoop : MonoBehaviour
                 if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 1 -> Stun 2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Stun 2"))
                 {
                     stunTimer -= Time.deltaTime;
-                    if(stunTimer <= 0)
+                    if (stunTimer <= 0)
                     {
                         anim.SetBool("Stunned", false);
                         anim.SetBool("UnStunned", true);
-                    }    
+                    }
                 }
-                if(anim.GetAnimatorTransitionInfo(0).IsName("Stun 3 -> Idle"))
+                if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 3 -> Idle"))
                 {
                     print("Unstunned");
                     ResetCharge();
@@ -287,9 +287,22 @@ public class SpiderGoop : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                                                       Quaternion.LookRotation(currentWaypointPos - transform.position),
                                                       rotSpeed * Time.deltaTime);
-                //Moves enemy towards waypoint
-                rb.velocity = (transform.forward + new Vector3(0, rb.velocity.y, 0)) * idleMoveSpeed;
 
+                //if (!ShouldJump(waypoints[currentWaypointIndex].transform.position))
+                //{
+                    //Moves enemy towards waypoint
+                    rb.velocity = (transform.forward + new Vector3(0, rb.velocity.y, 0)) * idleMoveSpeed;
+                //}
+                //else if (!jumping)
+                //{
+                //    anim.SetBool("Jump", true);
+                //    anim.SetBool("OnGround", false);
+                //}
+                //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Jump") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Walk") && !jumping)
+                //{
+                //    jumping = true;
+                //    rb.velocity = (transform.forward) + new Vector3(0, GetJumpHeight(waypoints[currentWaypointIndex].transform.position.y));
+                //}
             }
             else
             {
