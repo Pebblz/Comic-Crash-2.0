@@ -1493,7 +1493,10 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = new Vector3(body.velocity.x, jumpHeight + distance, body.velocity.z);
         jumpPhase = 0;
     }
-
+    public void Knockback(Vector3 dir, float HitForce, float knockUpDistance)
+    {
+        body.velocity += new Vector3( dir.x * HitForce, jumpHeight + knockUpDistance,  dir.z * HitForce);
+    }
     public void GroundPound()
     {
         body.velocity = new Vector3(0, -40, 0);

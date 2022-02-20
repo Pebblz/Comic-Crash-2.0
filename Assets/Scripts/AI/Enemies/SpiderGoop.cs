@@ -7,7 +7,8 @@ public class SpiderGoop : MonoBehaviour
     #region Vars
     [SerializeField]
     private float rotSpeed, idleMoveSpeed, chaseSpeed, chargeSpeed,
-        timeTillIdle, playerSeenRange, chargeCooldown, chargeDuration, distAwayToCharge = 8;
+        timeTillIdle, playerSeenRange, chargeCooldown, chargeDuration,
+        firstSeenPlayer, distAwayToCharge = 8, stunDuration;
 
     [SerializeField]
     private int damage = 1;
@@ -41,9 +42,9 @@ public class SpiderGoop : MonoBehaviour
 
     int currentWaypointIndex;
 
-    float chargeCooldownTimer, chargeDurationTimer;
+    float chargeCooldownTimer, chargeDurationTimer, firstSeenPlayerTimer, stunTimer;
 
-    bool jumping, charging;
+    bool jumping, charging, stunned;
     #endregion
 
     private void Start()
@@ -54,16 +55,21 @@ public class SpiderGoop : MonoBehaviour
         startingRot = transform.rotation;
         rb = GetComponent<Rigidbody>();
         chargeDurationTimer = chargeDuration;
+        firstSeenPlayerTimer = firstSeenPlayer;
+        anim.SetBool("Walking", true);
     }
 
     private void Update()
     {
-        if (!charging)
+        if (!charging && !stunned)
         {
             if (Detection.IsPlayerInSight()
                 || detectedPlayers.Count > 0
                 || lastSeenPlayerPos != Vector3.zero)
+            {
                 ChasePlayer();
+                firstSeenPlayerTimer -= Time.deltaTime;
+            }
             else
             {
                 if (idleWays == WaysToIdle.StandAtPoint)
@@ -73,17 +79,21 @@ public class SpiderGoop : MonoBehaviour
                         if (timerTillIdle > 0)
                         {
                             anim.SetBool("Idle", true);
+                            anim.SetBool("Walking", false);
                             timerTillIdle -= Time.deltaTime;
                         }
                         else
                         {
                             anim.SetBool("Idle", false);
+                            anim.SetBool("Walking", true);
                             ReturnToStartingPoint();
                         }
                     }
                     else
                     {
                         transform.rotation = Quaternion.Slerp(transform.rotation, startingRot, 3 * Time.deltaTime);
+                        anim.SetBool("Idle", true);
+                        anim.SetBool("Walking", false);
                     }
                 }
                 if (idleWays == WaysToIdle.WayPoint)
@@ -106,11 +116,40 @@ public class SpiderGoop : MonoBehaviour
         }
         else
         {
-            ChargeAtPlayer();
-            chargeDurationTimer -= Time.deltaTime;
-            if (chargeDurationTimer <= 0)
+            if (charging)
             {
-                ResetCharge();
+                anim.SetBool("Charge", true);
+                if (anim.GetAnimatorTransitionInfo(0).IsName("Start_Charge -> Charging") || anim.GetCurrentAnimatorStateInfo(0).IsName("Charging"))
+                {
+                    ChargeAtPlayer();
+                    chargeDurationTimer -= Time.deltaTime;
+                    if (chargeDurationTimer <= 0)
+                    {
+                        ResetCharge();
+                    }
+                }
+            }
+            if (stunned)
+            {
+                anim.SetBool("Charge", false);
+                anim.SetBool("Stunned", true);
+                if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 1 -> Stun 2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Stun 2"))
+                {
+                    stunTimer -= Time.deltaTime;
+                    if(stunTimer <= 0)
+                    {
+                        anim.SetBool("Stunned", false);
+                        anim.SetBool("UnStunned", true);
+                    }    
+                }
+                if(anim.GetAnimatorTransitionInfo(0).IsName("Stun 3 -> Idle"))
+                {
+                    print("Unstunned");
+                    ResetCharge();
+                    anim.SetBool("UnStunned", false);
+                    anim.SetBool("Idle", true);
+                    stunned = false;
+                }
             }
         }
     }
@@ -120,7 +159,7 @@ public class SpiderGoop : MonoBehaviour
         if (detectedPlayers.Count == 0)
         {
             detectedPlayers = Detection.GetPlayersInSight();
-            if (lastSeenPlayerPos != Vector3.zero)
+            if (lastSeenPlayerPos != Vector3.zero && !charging)
             {
                 //this is here so the enemy wont have a point to go to that's in the air
                 Vector3 ChasedPlayerpos = new Vector3(lastSeenPlayerPos.x, transform.position.y, lastSeenPlayerPos.z);
@@ -150,7 +189,7 @@ public class SpiderGoop : MonoBehaviour
                 if (anim.GetCurrentAnimatorStateInfo(0).IsName("Jump") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Walk") && !jumping)
                 {
                     jumping = true;
-                    rb.velocity += (transform.forward * 6) + new Vector3(0, GetJumpHeight(lastSeenPlayerPos.y));
+                    rb.velocity = (transform.forward) + new Vector3(0, GetJumpHeight(lastSeenPlayerPos.y));
                 }
                 //if the enemies at the last seen pos
                 if (Vector3.Distance(transform.position, ChasedPlayerpos) < .3f || lastSeenPlayerPos.y > transform.position.y + 8)
@@ -172,6 +211,8 @@ public class SpiderGoop : MonoBehaviour
                     lastSeenPlayerPos = chasedPlayer.transform.position;
                     //move to last seen player pos then have a countdown till going back to idle
                     timerTillIdle = timeTillIdle;
+
+                    firstSeenPlayerTimer = firstSeenPlayer;
                     //then do this
                     detectedPlayers.Clear();
                     chasedPlayer = null;
@@ -188,12 +229,12 @@ public class SpiderGoop : MonoBehaviour
                     float dot = Vector3.Dot(dir, transform.forward);
                     if (!ShouldJump(chasedPlayer.transform.position))
                     {
-
                         //Moves enemy towards player
                         if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > 2.5f && !jumping && !charging)
                             rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
                         //charges at player
-                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToCharge && !jumping && chargeCooldownTimer <= 0)
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToCharge && !jumping && chargeCooldownTimer <= 0 &&
+                            firstSeenPlayerTimer <= 0)
                             charging = true;
                         //if he's on top of the player i just want him to ignore the cooldown timer and attack
                         if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && !jumping && dot > .95f)
@@ -207,7 +248,7 @@ public class SpiderGoop : MonoBehaviour
                     if (anim.GetCurrentAnimatorStateInfo(0).IsName("Jump") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Walk") && !jumping)
                     {
                         jumping = true;
-                        rb.velocity += (transform.forward * 6) + new Vector3(0, GetJumpHeight(chasedPlayer.transform.position.y));
+                        rb.velocity = (transform.forward) + new Vector3(0, GetJumpHeight(chasedPlayer.transform.position.y));
                     }
                 }
             }
@@ -268,15 +309,17 @@ public class SpiderGoop : MonoBehaviour
 
     void ChargeAtPlayer()
     {
-        anim.SetBool("Charge", true);
+        anim.SetBool("Idle", false);
         rb.velocity = (transform.forward + new Vector3(0, rb.velocity.y, 0)) * chargeSpeed;
     }
-    
+
     void DamagePlayer(GameObject AttackedPlayer)
     {
         PlayerHealth Player = AttackedPlayer.GetComponent<PlayerHealth>();
         if (Player != null)
         {
+            Vector3 dir = AttackedPlayer.transform.position - transform.position;
+            //AttackedPlayer.GetComponent<PlayerMovement>().Knockback(dir,-200,2);
             //makes sure spider doesn't chase player when he respawns
             Player.HurtPlayer(damage);
             if (AttackedPlayer.GetComponent<PlayerDeath>().isdead)
@@ -284,7 +327,7 @@ public class SpiderGoop : MonoBehaviour
                 chasedPlayer = null;
             }
         }
-        
+
     }
 
     void ResetCharge()
@@ -305,14 +348,14 @@ public class SpiderGoop : MonoBehaviour
             for (float bottom = -1; bottom <= 1; bottom += .2f)
             {
                 //if the bottom one hits then that means he's colliding with a object
-                if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
+                if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 5f))
                 {
                     if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger)
                     {
                         for (float top = -1; top <= 1; top += .2f)
                         {
                             //if he collides with an object up top then that means he shouldn't jump 
-                            if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
+                            if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 5f))
                             {
                                 TopHit = true;
                             }
@@ -351,16 +394,18 @@ public class SpiderGoop : MonoBehaviour
 
     private void OnTriggerStay(Collider col)
     {
-        if(charging && col.gameObject.tag == "Player")
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag == "Player")
         {
             //also knockback player
             DamagePlayer(col.gameObject);
         }
-        if (charging && col.gameObject.tag != "Player")
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player"
+            && !stunned)
         {
             //make here for stunning the enemy when hitting a wall
-            chargeDurationTimer = 0;
+            stunTimer = stunDuration;
             detectedPlayers = Detection.GetPlayersInSight();
+            stunned = true;
         }
 
     }

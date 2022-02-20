@@ -544,7 +544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimunDetectionAngle: -50
   maximumDetectionAngle: 50
-  detectionRadius: 20
+  detectionRadius: 10
   detectionLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -568,7 +568,9 @@ MonoBehaviour:
   playerSeenRange: 10
   chargeCooldown: 4
   chargeDuration: 2
+  firstSeenPlayer: 1
   distAwayToCharge: 8
+  stunDuration: 2
   damage: 1
   idleWays: 1
   realignWithStartingRot: 0
