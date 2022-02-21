@@ -545,6 +545,8 @@ GameObject:
   - component: {fileID: 7407924528936675830}
   - component: {fileID: 3760776534339218427}
   - component: {fileID: 1264136485100606925}
+  - component: {fileID: 3430665317557129749}
+  - component: {fileID: 5950943120415029454}
   m_Layer: 17
   m_Name: SpiderGOOO
   m_TagString: Untagged
@@ -630,7 +632,7 @@ MonoBehaviour:
   firstSeenPlayer: 1
   distAwayToCharge: 8
   stunDuration: 2
-  maxIFrameTime: 0
+  maxIFrameTime: 0.5
   damage: 1
   health: 3
   idleWays: 1
@@ -681,6 +683,8 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4103236128099063470}
+  - {fileID: 3430665317557129749}
+  - {fileID: 5950943120415029454}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -744,6 +748,61 @@ MonoBehaviour:
   timeToSquish: 3
   Triggered: 0
   collision: {fileID: 0}
+--- !u!114 &3430665317557129749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760776534339218424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &5950943120415029454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760776534339218424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: Walking
+  - Type: 4
+    SynchronizeType: 2
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 2
+    Name: OnGround
+  - Type: 4
+    SynchronizeType: 2
+    Name: Idle
+  - Type: 4
+    SynchronizeType: 2
+    Name: Charge
+  - Type: 4
+    SynchronizeType: 2
+    Name: Stunned
+  - Type: 4
+    SynchronizeType: 2
+    Name: UnStunned
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!1 &4297356580475308828
 GameObject:
   m_ObjectHideFlags: 0

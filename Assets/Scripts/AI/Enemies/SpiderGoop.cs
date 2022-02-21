@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+using Photon.Realtime;
 using Photon.Pun;
 public class SpiderGoop : MonoBehaviour
 {
@@ -48,6 +48,7 @@ public class SpiderGoop : MonoBehaviour
 
     bool jumping, charging, stunned;
     PhotonView photonView;
+    GameObject currentClient;
     #endregion
 
     private void Start()
@@ -65,21 +66,47 @@ public class SpiderGoop : MonoBehaviour
 
     private void Update()
     {
-        if (!charging && !stunned)
+        if (currentClient == null)
+            currentClient = PhotonFindCurrentClient();
+        if (currentClient.GetComponent<PhotonView>().IsMine)
         {
-            if (Detection.IsPlayerInSight()
-                || detectedPlayers.Count > 0
-                || lastSeenPlayerPos != Vector3.zero)
+            if (!charging && !stunned)
             {
-                anim.SetBool("Idle", false);
-                ChasePlayer();
-                firstSeenPlayerTimer -= Time.deltaTime;
-            }
-            else
-            {
-                if (idleWays == WaysToIdle.StandAtPoint)
+                if (Detection.IsPlayerInSight()
+                    || detectedPlayers.Count > 0
+                    || lastSeenPlayerPos != Vector3.zero)
                 {
-                    if (Vector3.Distance(transform.position, startingPoint) > 1.5f)
+                    anim.SetBool("Idle", false);
+                    ChasePlayer();
+                    firstSeenPlayerTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    if (idleWays == WaysToIdle.StandAtPoint)
+                    {
+                        if (Vector3.Distance(transform.position, startingPoint) > 1.5f)
+                        {
+                            if (timerTillIdle > 0)
+                            {
+                                anim.SetBool("Idle", true);
+                                anim.SetBool("Walking", false);
+                                timerTillIdle -= Time.deltaTime;
+                            }
+                            else
+                            {
+                                anim.SetBool("Idle", false);
+                                anim.SetBool("Walking", true);
+                                ReturnToStartingPoint();
+                            }
+                        }
+                        else
+                        {
+                            transform.rotation = Quaternion.Slerp(transform.rotation, startingRot, 3 * Time.deltaTime);
+                            anim.SetBool("Idle", true);
+                            anim.SetBool("Walking", false);
+                        }
+                    }
+                    if (idleWays == WaysToIdle.WayPoint)
                     {
                         if (timerTillIdle > 0)
                         {
@@ -91,74 +118,52 @@ public class SpiderGoop : MonoBehaviour
                         {
                             anim.SetBool("Idle", false);
                             anim.SetBool("Walking", true);
-                            ReturnToStartingPoint();
+                            WaypointMovement();
                         }
                     }
-                    else
-                    {
-                        transform.rotation = Quaternion.Slerp(transform.rotation, startingRot, 3 * Time.deltaTime);
-                        anim.SetBool("Idle", true);
-                        anim.SetBool("Walking", false);
-                    }
                 }
-                if (idleWays == WaysToIdle.WayPoint)
-                {
-                    if (timerTillIdle > 0)
-                    {
-                        anim.SetBool("Idle", true);
-                        anim.SetBool("Walking", false);
-                        timerTillIdle -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        anim.SetBool("Idle", false);
-                        anim.SetBool("Walking", true);
-                        WaypointMovement();
-                    }
-                }
+                chargeCooldownTimer -= Time.deltaTime;
             }
-            chargeCooldownTimer -= Time.deltaTime;
-        }
-        else
-        {
-            if (charging)
+            else
             {
-                anim.SetBool("Charge", true);
-                if (anim.GetAnimatorTransitionInfo(0).IsName("Start_Charge -> Charging") || anim.GetCurrentAnimatorStateInfo(0).IsName("Charging"))
+                if (charging)
                 {
-                    ChargeAtPlayer();
-                    chargeDurationTimer -= Time.deltaTime;
-                    if (chargeDurationTimer <= 0)
+                    anim.SetBool("Charge", true);
+                    if (anim.GetAnimatorTransitionInfo(0).IsName("Start_Charge -> Charging") || anim.GetCurrentAnimatorStateInfo(0).IsName("Charging"))
+                    {
+                        ChargeAtPlayer();
+                        chargeDurationTimer -= Time.deltaTime;
+                        if (chargeDurationTimer <= 0)
+                        {
+                            ResetCharge();
+                        }
+                    }
+                }
+                if (stunned)
+                {
+                    anim.SetBool("Charge", false);
+                    anim.SetBool("Stunned", true);
+                    if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 1 -> Stun 2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Stun 2"))
+                    {
+                        stunTimer -= Time.deltaTime;
+                        if (stunTimer <= 0)
+                        {
+                            anim.SetBool("Stunned", false);
+                            anim.SetBool("UnStunned", true);
+                        }
+                    }
+                    if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 3 -> Idle"))
                     {
                         ResetCharge();
-                    }
-                }
-            }
-            if (stunned)
-            {
-                anim.SetBool("Charge", false);
-                anim.SetBool("Stunned", true);
-                if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 1 -> Stun 2") || anim.GetCurrentAnimatorStateInfo(0).IsName("Stun 2"))
-                {
-                    stunTimer -= Time.deltaTime;
-                    if (stunTimer <= 0)
-                    {
+                        anim.SetBool("UnStunned", false);
                         anim.SetBool("Stunned", false);
-                        anim.SetBool("UnStunned", true);
+                        anim.SetBool("Idle", true);
+                        stunned = false;
                     }
                 }
-                if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 3 -> Idle"))
-                {
-                    ResetCharge();
-                    anim.SetBool("UnStunned", false);
-                    anim.SetBool("Stunned", false);
-                    anim.SetBool("Idle", true);
-                    stunned = false;
-                }
             }
-        }
-        if (IFrameTimer > -.1f)
             IFrameTimer -= Time.deltaTime;
+        }
     }
 
     private void ChasePlayer()
@@ -297,8 +302,8 @@ public class SpiderGoop : MonoBehaviour
 
                 //if (!ShouldJump(waypoints[currentWaypointIndex].transform.position))
                 //{
-                    //Moves enemy towards waypoint
-                    rb.velocity = (transform.forward + new Vector3(0, rb.velocity.y, 0)) * idleMoveSpeed;
+                //Moves enemy towards waypoint
+                rb.velocity = (transform.forward + new Vector3(0, rb.velocity.y, 0)) * idleMoveSpeed;
                 //}
                 //else if (!jumping)
                 //{
@@ -420,7 +425,7 @@ public class SpiderGoop : MonoBehaviour
             DamagePlayer(col.gameObject);
         }
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player"
-            && !stunned)
+            && !stunned && col.gameObject.tag == "PlayerPunch" && col.gameObject.tag == "Shot")
         {
             if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
             {
@@ -430,19 +435,27 @@ public class SpiderGoop : MonoBehaviour
                 stunned = true;
             }
         }
-
+        if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
+            col.gameObject.GetComponent<PunchHitBox>() && IFrameTimer <= 0)
+        {
+            print("hit");
+            health -= 1;
+            if (health <= 0)
+                photonView.RPC("DestroyGameObject", RpcTarget.All);
+            IFrameTimer = maxIFrameTime;
+        }
     }
 
-    private void OnCollisionEnter(Collision col)
+    GameObject PhotonFindCurrentClient()
     {
-        if(col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0 ||
-            col.gameObject.tag == "Shot" && IFrameTimer <= 0)
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in players)
         {
-            health -= 1;
-            IFrameTimer = maxIFrameTime;
-            if(health <=0)
-                photonView.RPC("DestroyGameObject", RpcTarget.All);
+            if (g.GetComponent<PhotonView>().IsMine)
+                return g;
         }
+        return null;
     }
 
     [PunRPC]
