@@ -20,6 +20,9 @@ public class SpiderGoop : Enemy, IRespawnable
     [SerializeField, Tooltip("Should the enemy go back to starttign rotation when going back to idle")]
     bool realignWithStartingRot;
 
+    [SerializeField]
+    Material startingMat, damagedMat;
+
     GameObject chasedPlayer;
 
     Vector3 lastSeenPlayerPos;
@@ -46,7 +49,7 @@ public class SpiderGoop : Enemy, IRespawnable
     float chargeCooldownTimer, chargeDurationTimer, firstSeenPlayerTimer, stunTimer,
         IFrameTimer;
 
-    bool jumping, charging, stunned;
+    bool jumping, charging, stunned, dead;
 
     PhotonView photonView;
 
@@ -65,11 +68,11 @@ public class SpiderGoop : Enemy, IRespawnable
         photonView = GetComponent<PhotonView>();
     }
 
-     void Update()
+    void Update()
     {
         if (photonView.IsMine)
         {
-            if (!charging && !stunned)
+            if (!charging && !stunned && !dead)
             {
                 if (Detection.IsPlayerInSight()
                     || detectedPlayers.Count > 0
@@ -161,8 +164,16 @@ public class SpiderGoop : Enemy, IRespawnable
                     }
                 }
             }
-            if (health <= 0)
+            //plays the dead anim
+            if (health <= 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
             {
+                anim.SetBool("Dead", true);
+                dead = true;
+            }
+            //turns off the enemy when dead's over
+            if (anim.GetAnimatorTransitionInfo(0).IsName("Dead -> Walk"))
+            {
+                anim.SetBool("Dead", false);
                 //do this after death anim
                 gameObject.SetActive(false);
             }
@@ -467,6 +478,7 @@ public class SpiderGoop : Enemy, IRespawnable
         jumping = false;
         stunned = false;
         charging = false;
+        dead = false;
     }
 
     enum WaysToIdle
