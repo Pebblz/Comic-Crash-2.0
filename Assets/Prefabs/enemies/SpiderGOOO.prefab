@@ -621,7 +621,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43d55ed9e8afdfa4b9e4fbc471cac568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotSpeed: 5
+  current_state: 0
+  attack_range: 2.2
+  health: 3
+  enemy_damage: 1
+  stun_timer: 2
+  iframes: 1
+  hit: 0
+  respawnable: 1
+  respawn_distance: 10
+  repspawn_time: 10
+  walkRotSpeed: 2
+  chaseRotSpeed: 3
   idleMoveSpeed: 4
   chaseSpeed: 6
   chargeSpeed: 15

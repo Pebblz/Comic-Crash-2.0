@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
 using Photon.Pun;
-public class SpiderGoop : MonoBehaviour
+public class SpiderGoop : Enemy, IRespawnable
 {
     #region Vars
     [SerializeField]
@@ -47,8 +47,9 @@ public class SpiderGoop : MonoBehaviour
         IFrameTimer;
 
     bool jumping, charging, stunned;
+
     PhotonView photonView;
-    GameObject currentClient;
+
     #endregion
 
     private void Start()
@@ -64,11 +65,9 @@ public class SpiderGoop : MonoBehaviour
         photonView = GetComponent<PhotonView>();
     }
 
-    private void Update()
+     void Update()
     {
-        if (currentClient == null)
-            currentClient = PhotonFindCurrentClient();
-        if (currentClient.GetComponent<PhotonView>().IsMine)
+        if (photonView.IsMine)
         {
             if (!charging && !stunned)
             {
@@ -161,6 +160,11 @@ public class SpiderGoop : MonoBehaviour
                         stunned = false;
                     }
                 }
+            }
+            if (health <= 0)
+            {
+                //do this after death anim
+                gameObject.SetActive(false);
             }
             IFrameTimer -= Time.deltaTime;
         }
@@ -349,6 +353,10 @@ public class SpiderGoop : MonoBehaviour
             Player.HurtPlayer(damage);
             if (AttackedPlayer.GetComponent<PlayerDeath>().isdead)
             {
+                if (detectedPlayers.Contains(AttackedPlayer))
+                {
+                    detectedPlayers.Remove(AttackedPlayer);
+                }
                 chasedPlayer = null;
             }
         }
@@ -425,7 +433,7 @@ public class SpiderGoop : MonoBehaviour
             DamagePlayer(col.gameObject);
         }
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player"
-            && !stunned && col.gameObject.tag == "PlayerPunch" && col.gameObject.tag == "Shot")
+            && !stunned && col.gameObject.tag != "PlayerPunch" && col.gameObject.tag != "Shot")
         {
             if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
             {
@@ -435,36 +443,30 @@ public class SpiderGoop : MonoBehaviour
                 stunned = true;
             }
         }
-        if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
-            col.gameObject.GetComponent<PunchHitBox>() && IFrameTimer <= 0)
-        {
-            print("hit");
-            health -= 1;
-            if (health <= 0)
-                photonView.RPC("DestroyGameObject", RpcTarget.All);
-            IFrameTimer = maxIFrameTime;
-        }
-    }
-
-    GameObject PhotonFindCurrentClient()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject g in players)
-        {
-            if (g.GetComponent<PhotonView>().IsMine)
-                return g;
-        }
-        return null;
-    }
-
-    [PunRPC]
-    void DestroyGameObject()
-    {
         if (photonView.IsMine)
         {
-            PhotonNetwork.Destroy(gameObject);
+            if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
+            col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0)
+            {
+                health -= 1;
+                IFrameTimer = maxIFrameTime;
+            }
         }
+    }
+
+    public void reset_data()
+    {
+        health = 3;
+        detectedPlayers.Clear();
+        chasedPlayer = null;
+        transform.position = startingPoint;
+        transform.rotation = startingRot;
+        lastSeenPlayerPos = Vector3.zero;
+        chargeDurationTimer = chargeDuration;
+        currentWaypointIndex = 0;
+        jumping = false;
+        stunned = false;
+        charging = false;
     }
 
     enum WaysToIdle
