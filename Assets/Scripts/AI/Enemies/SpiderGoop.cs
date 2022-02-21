@@ -7,7 +7,7 @@ public class SpiderGoop : MonoBehaviour
 {
     #region Vars
     [SerializeField]
-    private float rotSpeed, idleMoveSpeed, chaseSpeed, chargeSpeed,
+    private float walkRotSpeed = 2, chaseRotSpeed = 3, idleMoveSpeed, chaseSpeed, chargeSpeed,
         timeTillIdle, playerSeenRange, chargeCooldown, chargeDuration,
         firstSeenPlayer, distAwayToCharge = 8, stunDuration, maxIFrameTime;
 
@@ -179,7 +179,7 @@ public class SpiderGoop : MonoBehaviour
                 //rotation
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                                   Quaternion.LookRotation(ChasedPlayerpos - transform.position),
-                                  rotSpeed * Time.deltaTime);
+                                  chaseRotSpeed * Time.deltaTime);
                 //the direction of the last seen pos 
                 Vector3 dir = (ChasedPlayerpos - transform.position).normalized;
                 //this sees if the enemies looking at the last seen pos
@@ -234,7 +234,7 @@ public class SpiderGoop : MonoBehaviour
                     //Rotates slowly towards player
                     transform.rotation = Quaternion.Slerp(transform.rotation,
                                                       Quaternion.LookRotation(ChasedPlayersPos - transform.position),
-                                                      rotSpeed * Time.deltaTime);
+                                                      chaseRotSpeed * Time.deltaTime);
                     //the direction of the last seen pos 
                     Vector3 dir = (ChasedPlayersPos - transform.position).normalized;
                     //this sees if the enemies looking at the last seen pos
@@ -280,7 +280,7 @@ public class SpiderGoop : MonoBehaviour
         //Rotates slowly towards startPos
         transform.rotation = Quaternion.Slerp(transform.rotation,
                                               Quaternion.LookRotation(goToPos - transform.position),
-                                              rotSpeed * Time.deltaTime);
+                                              walkRotSpeed * Time.deltaTime);
         //Moves enemy towards startPos
         rb.velocity = transform.forward * idleMoveSpeed;
     }
@@ -292,13 +292,13 @@ public class SpiderGoop : MonoBehaviour
             //this is here just so we don't have the enemy fly
             Vector3 currentWaypointPos = new Vector3(waypoints[currentWaypointIndex].transform.position.x, transform.position.y, waypoints[currentWaypointIndex].transform.position.z);
 
-            if (Vector3.Distance(transform.position, currentWaypointPos) > .2f)
+            if (Vector3.Distance(transform.position, currentWaypointPos) > .4f)
             {
 
                 //Rotates slowly towards waypoint
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                                                       Quaternion.LookRotation(currentWaypointPos - transform.position),
-                                                      rotSpeed * Time.deltaTime);
+                                                      walkRotSpeed * Time.deltaTime);
 
                 //if (!ShouldJump(waypoints[currentWaypointIndex].transform.position))
                 //{
