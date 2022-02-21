@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 public class SpiderGoop : MonoBehaviour
 {
     #region Vars
     [SerializeField]
     private float rotSpeed, idleMoveSpeed, chaseSpeed, chargeSpeed,
         timeTillIdle, playerSeenRange, chargeCooldown, chargeDuration,
-        firstSeenPlayer, distAwayToCharge = 8, stunDuration;
+        firstSeenPlayer, distAwayToCharge = 8, stunDuration, maxIFrameTime;
 
     [SerializeField]
-    private int damage = 1;
+    private int damage = 1, health = 3;
 
     [SerializeField, Tooltip("The different idle states")]
     WaysToIdle idleWays = WaysToIdle.StandAtPoint;
@@ -42,9 +43,11 @@ public class SpiderGoop : MonoBehaviour
 
     int currentWaypointIndex;
 
-    float chargeCooldownTimer, chargeDurationTimer, firstSeenPlayerTimer, stunTimer;
+    float chargeCooldownTimer, chargeDurationTimer, firstSeenPlayerTimer, stunTimer,
+        IFrameTimer;
 
     bool jumping, charging, stunned;
+    PhotonView photonView;
     #endregion
 
     private void Start()
@@ -57,6 +60,7 @@ public class SpiderGoop : MonoBehaviour
         chargeDurationTimer = chargeDuration;
         firstSeenPlayerTimer = firstSeenPlayer;
         anim.SetBool("Walking", true);
+        photonView = GetComponent<PhotonView>();
     }
 
     private void Update()
@@ -152,6 +156,8 @@ public class SpiderGoop : MonoBehaviour
                 }
             }
         }
+        if (IFrameTimer > -.1f)
+            IFrameTimer -= Time.deltaTime;
     }
 
     private void ChasePlayer()
@@ -421,6 +427,27 @@ public class SpiderGoop : MonoBehaviour
             stunned = true;
         }
 
+    }
+
+    private void OnCollisionEnter(Collision col)
+    {
+        if(col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0 ||
+            col.gameObject.tag == "Shot" && IFrameTimer <= 0)
+        {
+            health -= 1;
+            IFrameTimer = maxIFrameTime;
+            if(health <=0)
+                photonView.RPC("DestroyGameObject", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    void DestroyGameObject()
+    {
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
     enum WaysToIdle
