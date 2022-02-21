@@ -71,6 +71,7 @@ public class SpiderGoop : MonoBehaviour
                 || detectedPlayers.Count > 0
                 || lastSeenPlayerPos != Vector3.zero)
             {
+                anim.SetBool("Idle", false);
                 ChasePlayer();
                 firstSeenPlayerTimer -= Time.deltaTime;
             }
@@ -148,9 +149,9 @@ public class SpiderGoop : MonoBehaviour
                 }
                 if (anim.GetAnimatorTransitionInfo(0).IsName("Stun 3 -> Idle"))
                 {
-                    print("Unstunned");
                     ResetCharge();
                     anim.SetBool("UnStunned", false);
+                    anim.SetBool("Stunned", false);
                     anim.SetBool("Idle", true);
                     stunned = false;
                 }
@@ -421,10 +422,13 @@ public class SpiderGoop : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player"
             && !stunned)
         {
-            //make here for stunning the enemy when hitting a wall
-            stunTimer = stunDuration;
-            detectedPlayers = Detection.GetPlayersInSight();
-            stunned = true;
+            if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
+            {
+                //make here for stunning the enemy when hitting a wall
+                stunTimer = stunDuration;
+                detectedPlayers = Detection.GetPlayersInSight();
+                stunned = true;
+            }
         }
 
     }

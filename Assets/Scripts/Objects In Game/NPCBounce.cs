@@ -4,6 +4,8 @@ public class NPCBounce : MonoBehaviour
 {
     [SerializeField, Min(0f)]
     float acceleration = 10f, speed = 10f;
+    [SerializeField, Min(.1f)]
+    float SquishAmount = 2f;
     [SerializeField, Range(.1f, 6f)]
     float timeToSquish;
     private Vector3 origanalScale;
@@ -84,7 +86,7 @@ public class NPCBounce : MonoBehaviour
     {
         if(!doneSquishing)
         {
-            if(transform.localScale.y > origanalScale.y / 2)
+            if(transform.localScale.y > origanalScale.y / SquishAmount)
             {
                 transform.localScale -= new Vector3(0, timeToSquish, 0) * Time.deltaTime;
                 transform.position -= new Vector3(0, timeToSquish, 0) * Time.deltaTime;
@@ -102,9 +104,9 @@ public class NPCBounce : MonoBehaviour
             }
             else
             {
+                transform.localScale = origanalScale;
                 doneSquishing = false;
                 squishTime = false;
-                transform.localScale = origanalScale;
             }
         }
     }

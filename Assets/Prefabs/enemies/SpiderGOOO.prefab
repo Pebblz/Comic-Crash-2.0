@@ -214,6 +214,63 @@ Transform:
   m_Father: {fileID: 2627541276752394556}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2368954344391609581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123000434377264044}
+  - component: {fileID: 3101772677784011854}
+  - component: {fileID: 4648193483901336550}
+  m_Layer: 17
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123000434377264044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2368954344391609581}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.05, y: 0, z: 0.567}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4574292700540023106}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3101772677784011854
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2368954344391609581}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.4396935, y: 0.20319568, z: 1.4758615}
+  m_Center: {x: 0.027235528, y: 1.0313143, z: -0.63039154}
+--- !u!114 &4648193483901336550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2368954344391609581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94389a0dc53cf145b3312cdf6a0eeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2512680005778980173
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +330,7 @@ Transform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 4574292700540023106}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5405566003733227568
 SkinnedMeshRenderer:
@@ -487,6 +544,7 @@ GameObject:
   - component: {fileID: 5727197682293943497}
   - component: {fileID: 7407924528936675830}
   - component: {fileID: 3760776534339218427}
+  - component: {fileID: 1264136485100606925}
   m_Layer: 17
   m_Name: SpiderGOOO
   m_TagString: Untagged
@@ -505,6 +563,7 @@ Transform:
   m_LocalPosition: {x: 10.982582, y: 34.53, z: 124.76082}
   m_LocalScale: {x: 1.6462486, y: 1.6462485, z: 1.6462486}
   m_Children:
+  - {fileID: 1123000434377264044}
   - {fileID: 7676360342373865233}
   - {fileID: 7957561100085881989}
   - {fileID: 5003990464667638194}
@@ -571,7 +630,9 @@ MonoBehaviour:
   firstSeenPlayer: 1
   distAwayToCharge: 8
   stunDuration: 2
+  maxIFrameTime: 0
   damage: 1
+  health: 3
   idleWays: 1
   realignWithStartingRot: 0
   waypoints:
@@ -665,6 +726,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.4701288, y: 0.789354, z: 0.55}
   m_Center: {x: -0.00009594412, y: 0.51, z: 0.72}
+--- !u!114 &1264136485100606925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760776534339218424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16149fd1a966d9d47b41b2363d1b0277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 250
+  speed: 250
+  SquishAmount: 1.5
+  timeToSquish: 3
+  Triggered: 0
+  collision: {fileID: 0}
 --- !u!1 &4297356580475308828
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +777,7 @@ Transform:
   - {fileID: 3105037407654578078}
   - {fileID: 4288930993097862422}
   m_Father: {fileID: 4574292700540023106}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4338874844021445365
 GameObject:
@@ -945,7 +1024,7 @@ Transform:
   - {fileID: 6347159154851236552}
   - {fileID: 4781860535966093886}
   m_Father: {fileID: 4574292700540023106}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7506182439880181995
 GameObject:
