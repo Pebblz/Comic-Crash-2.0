@@ -20,9 +20,6 @@ public class SpiderGoop : Enemy, IRespawnable
     [SerializeField, Tooltip("Should the enemy go back to starttign rotation when going back to idle")]
     bool realignWithStartingRot;
 
-    [SerializeField]
-    Material startingMat, damagedMat;
-
     GameObject chasedPlayer;
 
     Vector3 lastSeenPlayerPos;
