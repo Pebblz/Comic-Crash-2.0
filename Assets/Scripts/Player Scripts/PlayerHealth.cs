@@ -26,6 +26,13 @@ public class PlayerHealth : MonoBehaviour
 
     PhotonView photonView;
 
+    [SerializeField] SkinnedMeshRenderer render;
+
+    [SerializeField] float turnOffTime = .05f;
+
+    float turnOffTimer;
+
+    PlayerDeath death;
 
     private void Start()
     {
@@ -44,6 +51,7 @@ public class PlayerHealth : MonoBehaviour
         {
             WaterUI.MaxAir = MaxAirTimer;
         }
+        death = GetComponent<PlayerDeath>();
         pause = FindObjectOfType<Pause>();
         movement = GetComponent<PlayerMovement>();
     }
@@ -78,7 +86,7 @@ public class PlayerHealth : MonoBehaviour
                 }
                 if (WaterUI.airLeft <= 0)
                 {
-                    GetComponent<PlayerDeath>().isdead = true;
+                    death.isdead = true;
                 }
             }
             else
@@ -93,10 +101,22 @@ public class PlayerHealth : MonoBehaviour
             }
             if (currentHealth <= 0)
             {
-                GetComponent<PlayerDeath>().isdead = true;
+                death.isdead = true;
             }
         }
-
+        if(IFrameTimer > 0 && !death.isdead)
+        {
+            turnOffTimer -= Time.deltaTime;
+            if (turnOffTimer <= 0)
+            {
+                render.enabled = !render.enabled;
+                turnOffTimer = turnOffTime;
+            }
+        }
+        else
+        {
+            render.enabled = true;
+        }
         currentAir = WaterUI.airLeft;
     }
     public void GainAir(int amount)
@@ -114,8 +134,9 @@ public class PlayerHealth : MonoBehaviour
             FindObjectOfType<HealthBar>().FindNewHealthBar();
             if (currentHealth <= 0)
             {
-                GetComponent<PlayerDeath>().isdead = true;
+                death.isdead = true;
             }
+            turnOffTimer = turnOffTime;
             IFrameTimer = 1;
         }
     }

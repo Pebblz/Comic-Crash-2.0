@@ -11,8 +11,7 @@ public class SpiderGoop : Enemy, IRespawnable
         timeTillIdle, playerSeenRange, chargeCooldown, chargeDuration,
         firstSeenPlayer, distAwayToCharge = 8, stunDuration, maxIFrameTime;
 
-    [SerializeField]
-    private int damage = 1, health = 3;
+    int damage = 1, health = 3;
 
     [SerializeField, Tooltip("The different idle states")]
     WaysToIdle idleWays = WaysToIdle.StandAtPoint;

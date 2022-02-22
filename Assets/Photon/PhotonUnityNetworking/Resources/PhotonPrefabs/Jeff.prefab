@@ -1944,10 +1944,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 4
   currentHealth: 4
-  IFrameTimer: 1
+  IFrameTimer: 0
   MaxAirTimer: 40
   WaterUI: {fileID: 0}
   currentAir: 0
+  render: {fileID: 975619710362483093}
+  turnOffTime: 0.03
 --- !u!114 &7093078686324562493
 MonoBehaviour:
   m_ObjectHideFlags: 0

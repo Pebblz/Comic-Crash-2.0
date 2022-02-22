@@ -1504,16 +1504,16 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Collected
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: LongJump
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Wall Slide
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Wall Jump
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: SlideAttack
   m_SynchronizeLayers:
   - SynchronizeType: 2
@@ -1767,10 +1767,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 4
   currentHealth: 4
-  IFrameTimer: 1
+  IFrameTimer: 0
   MaxAirTimer: 40
   WaterUI: {fileID: 0}
   currentAir: 0
+  render: {fileID: 5258142121250863300}
+  turnOffTime: 0.04
 --- !u!114 &4595979783101676555
 MonoBehaviour:
   m_ObjectHideFlags: 0
