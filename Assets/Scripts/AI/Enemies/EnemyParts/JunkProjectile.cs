@@ -61,7 +61,7 @@ public class JunkProjectile : MonoBehaviour
             col.gameObject.GetComponent<PlayerHealth>().HurtPlayer(1);
             photonView.RPC("DestroyGameObject", RpcTarget.All);
         }
-        else if (col.gameObject.tag != "Enemy")
+        else if (col.gameObject.tag != "Enemy" && col.gameObject.tag != "PlayerPunch" && col.gameObject.tag != "Shot")
         {
             photonView.RPC("DestroyGameObject", RpcTarget.All);
         }
