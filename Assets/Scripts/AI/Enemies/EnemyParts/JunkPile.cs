@@ -4,15 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 public class JunkPile : MonoBehaviour
 {
-    PhotonView photonView;
-    private void Start()
-    {
-        photonView = GetComponent<PhotonView>();
-    }
-
+    public PhotonView photonView;
     public void BreakJunkPile()
     {
-        print("Destroying Pile");
         photonView.RPC("DestroyGameObject", RpcTarget.All);
     }
 

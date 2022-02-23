@@ -12,7 +12,6 @@ public class JunkProjectile : MonoBehaviour
     private Quaternion initialRotation;
     private void Start()
     {
-
         initialRotation = transform.rotation;
     }
     private void Update()

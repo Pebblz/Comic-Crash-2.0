@@ -60,7 +60,6 @@ public class SpiderGoop : Enemy, IRespawnable
         rb = GetComponent<Rigidbody>();
         chargeDurationTimer = chargeDuration;
         firstSeenPlayerTimer = firstSeenPlayer;
-        anim.SetBool("Walking", true);
         photonView = GetComponent<PhotonView>();
     }
 
@@ -196,7 +195,7 @@ public class SpiderGoop : Enemy, IRespawnable
                 if (!ShouldJump(lastSeenPlayerPos))
                 {
                     //if dot's 1 then the enemies looking at the vector3 pos if -1 enemies looking the wrong way
-                    if (Dot(.9f, ChasedPlayerpos,false) && !jumping)
+                    if (Dot(.9f, ChasedPlayerpos, false) && !jumping)
                     {
                         rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
                     }
@@ -255,7 +254,7 @@ public class SpiderGoop : Enemy, IRespawnable
                             firstSeenPlayerTimer <= 0)
                             charging = true;
                         //if he's on top of the player i just want him to ignore the cooldown timer and attack
-                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && !jumping && Dot(.95f, ChasedPlayersPos,false))
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && !jumping && Dot(.95f, ChasedPlayersPos, false))
                             charging = true;
                     }
                     else if (!jumping)
@@ -396,7 +395,7 @@ public class SpiderGoop : Enemy, IRespawnable
             Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
             RaycastHit hit;
             bool TopHit = false;
-            if (Dot(.9f, HuntedTarget,true))
+            if (Dot(.9f, HuntedTarget, true))
             {
                 for (float bottom = -1; bottom <= 1; bottom += .2f)
                 {
@@ -410,7 +409,7 @@ public class SpiderGoop : Enemy, IRespawnable
                                 //if he collides with an object up top then that means he shouldn't jump 
                                 if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
                                 {
-                                    if(hit.collider.gameObject.tag != "Player")
+                                    if (hit.collider.gameObject.tag != "Player")
                                         TopHit = true;
                                 }
                             }

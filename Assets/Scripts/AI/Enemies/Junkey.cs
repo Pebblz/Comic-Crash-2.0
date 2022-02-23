@@ -54,7 +54,7 @@ public class Junkey : MonoBehaviour
                 targetedEnemy = col.gameObject;
             }
         }
-        if(junk != null)
+        if (junk != null)
             targetedEnemy = null;
     }
 }
