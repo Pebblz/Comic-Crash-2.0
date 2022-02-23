@@ -23,7 +23,7 @@ public class Junkey : MonoBehaviour
         {
             if (attackResetTimer <= 0)
             {
-                if (!targetedEnemy.GetComponent<PlayerDeath>().isdead)
+                if (!targetedEnemy.GetComponent<PlayerDeath>().isdead && junk != null)
                     SpawnProjectile();
                 else
                 {
@@ -54,6 +54,8 @@ public class Junkey : MonoBehaviour
                 targetedEnemy = col.gameObject;
             }
         }
+        if(junk != null)
+            targetedEnemy = null;
     }
 }
 

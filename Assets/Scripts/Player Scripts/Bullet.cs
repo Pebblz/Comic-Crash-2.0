@@ -26,6 +26,13 @@ public class Bullet : MonoBehaviourPunCallbacks
             }
         }
     }
+    private void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.GetComponent<JunkPile>())
+        {
+            col.gameObject.GetComponent<JunkPile>().BreakJunkPile();
+        }
+    }
     [PunRPC]
     void DestroyGameObject()
     {

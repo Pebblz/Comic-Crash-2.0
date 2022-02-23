@@ -25,6 +25,7 @@ public class JunkProjectile : MonoBehaviour
     // launches the object towards the TargetObject with a given LaunchAngle
     void Launch()
     {
+        photonView = GetComponent<PhotonView>();
         launching = true;
         // think of it as top-down view of vectors: 
         //   we don't care about the y-component(height) of the initial and target position.
