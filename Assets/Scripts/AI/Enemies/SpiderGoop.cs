@@ -75,6 +75,7 @@ public class SpiderGoop : Enemy, IRespawnable
                     || lastSeenPlayerPos != Vector3.zero)
                 {
                     anim.SetBool("Idle", false);
+                    anim.SetBool("Walking", true);
                     ChasePlayer();
                     firstSeenPlayerTimer -= Time.deltaTime;
                 }
@@ -191,14 +192,11 @@ public class SpiderGoop : Enemy, IRespawnable
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                                   Quaternion.LookRotation(ChasedPlayerpos - transform.position),
                                   chaseRotSpeed * Time.deltaTime);
-                //the direction of the last seen pos 
-                Vector3 dir = (ChasedPlayerpos - transform.position).normalized;
-                //this sees if the enemies looking at the last seen pos
-                float dot = Vector3.Dot(dir, transform.forward);
+
                 if (!ShouldJump(lastSeenPlayerPos))
                 {
                     //if dot's 1 then the enemies looking at the vector3 pos if -1 enemies looking the wrong way
-                    if (dot > .9f && !jumping)
+                    if (Dot(.9f, ChasedPlayerpos,false) && !jumping)
                     {
                         rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
                     }
@@ -246,10 +244,7 @@ public class SpiderGoop : Enemy, IRespawnable
                     transform.rotation = Quaternion.Slerp(transform.rotation,
                                                       Quaternion.LookRotation(ChasedPlayersPos - transform.position),
                                                       chaseRotSpeed * Time.deltaTime);
-                    //the direction of the last seen pos 
-                    Vector3 dir = (ChasedPlayersPos - transform.position).normalized;
-                    //this sees if the enemies looking at the last seen pos
-                    float dot = Vector3.Dot(dir, transform.forward);
+
                     if (!ShouldJump(chasedPlayer.transform.position))
                     {
                         //Moves enemy towards player
@@ -260,7 +255,7 @@ public class SpiderGoop : Enemy, IRespawnable
                             firstSeenPlayerTimer <= 0)
                             charging = true;
                         //if he's on top of the player i just want him to ignore the cooldown timer and attack
-                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && !jumping && dot > .95f)
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && !jumping && Dot(.95f, ChasedPlayersPos,false))
                             charging = true;
                     }
                     else if (!jumping)
@@ -278,6 +273,7 @@ public class SpiderGoop : Enemy, IRespawnable
         }
         if (rb.velocity.y > -.2f && rb.velocity.y < .2f && jumping)
         {
+            print("OnGround");
             jumping = false;
             anim.SetBool("Jump", false);
             anim.SetBool("OnGround", true);
@@ -378,6 +374,21 @@ public class SpiderGoop : Enemy, IRespawnable
         charging = false;
     }
 
+    bool Dot(float distAway, Vector3 OtherPos, bool ChangePosY)
+    {
+        if (ChangePosY)
+            OtherPos = new Vector3(OtherPos.x, transform.position.y, OtherPos.z);
+        //the direction of the last seen pos 
+        Vector3 dir = (OtherPos - transform.position).normalized;
+        //this sees if the enemies looking at the last seen pos
+        float dot = Vector3.Dot(dir, transform.forward);
+
+        if (dot > distAway)
+            return true;
+        else
+            return false;
+    }
+
     bool ShouldJump(Vector3 HuntedTarget)
     {
         if (HuntedTarget.y > transform.position.y)
@@ -385,31 +396,39 @@ public class SpiderGoop : Enemy, IRespawnable
             Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
             RaycastHit hit;
             bool TopHit = false;
-            for (float bottom = -1; bottom <= 1; bottom += .2f)
+            if (Dot(.9f, HuntedTarget,true))
             {
-                //if the bottom one hits then that means he's colliding with a object
-                if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 5f))
+                for (float bottom = -1; bottom <= 1; bottom += .2f)
                 {
-                    if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger)
+                    //if the bottom one hits then that means he's colliding with a object
+                    if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
                     {
-                        for (float top = -1; top <= 1; top += .2f)
+                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger)
                         {
-                            //if he collides with an object up top then that means he shouldn't jump 
-                            if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 5f))
+                            for (float top = -1; top <= 1; top += .2f)
                             {
-                                TopHit = true;
+                                //if he collides with an object up top then that means he shouldn't jump 
+                                if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
+                                {
+                                    if(hit.collider.gameObject.tag != "Player")
+                                        TopHit = true;
+                                }
+                            }
+                            //if the top hit he shouldn't jump
+                            if (TopHit)
+                                return false;
+                            else
+                            {
+                                return true;
                             }
                         }
-                        //if the top hit he shouldn't jump
-                        if (TopHit)
-                            return false;
-                        else
-                        {
-                            return true;
-                        }
-                    }
 
+                    }
                 }
+            }
+            else
+            {
+                return false;
             }
         }
         else
@@ -483,38 +502,4 @@ public class SpiderGoop : Enemy, IRespawnable
         WayPoint
     }
 
-    #region Joshes Old code
-    //[SerializeField]
-    //[Tooltip("Distance Enemy has to be from a point to start targeting the next")]
-    //float point_dist = 0.3f;
-    //[SerializeField]
-    //PatrolPath path;
-    //private NavMeshAgent agent;
-    //Transform patrol_point;
-    //private void Awake()
-    //{
-    //    agent = this.GetComponent<NavMeshAgent>();
-    //    patrol_point = path.getNextPoint();
-    //}
-
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    idle();
-    //}
-
-    //void idle()
-    //{
-    //    if (patrol_point == null)
-    //        patrol_point = path.getNextPoint();
-    //    if (Vector3.Distance(this.transform.position, patrol_point.position) <= point_dist)
-    //        patrol_point = path.getNextPoint();
-
-    //    Quaternion lookRot = Quaternion.LookRotation(patrol_point.position - transform.position);
-    //    Quaternion rot = Quaternion.Lerp(this.transform.rotation, lookRot, Time.deltaTime);
-    //    this.transform.rotation = rot;
-    //    agent.SetDestination(patrol_point.position);
-    //}
-    #endregion
 }
