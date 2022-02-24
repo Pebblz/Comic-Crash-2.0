@@ -47,6 +47,7 @@ public class MeleeEnemy : MonoBehaviour
     PhotonView photonView;
 
     #endregion
+
     void Start()
     {
         anim = GetComponent<Animator>();

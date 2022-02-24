@@ -194,8 +194,9 @@ public class SpiderGoop : Enemy, IRespawnable
 
                 if (!ShouldJump(lastSeenPlayerPos))
                 {
+                    //Dot(.9f, ChasedPlayerpos, false) &&
                     //if dot's 1 then the enemies looking at the vector3 pos if -1 enemies looking the wrong way
-                    if (Dot(.9f, ChasedPlayerpos, false) && !jumping)
+                    if ( !jumping)
                     {
                         rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
                     }
@@ -206,13 +207,13 @@ public class SpiderGoop : Enemy, IRespawnable
                     anim.SetBool("Jump", true);
                     anim.SetBool("OnGround", false);
                 }
-                if (anim.GetCurrentAnimatorStateInfo(0).IsName("Jump") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Walk") && !jumping)
-                {
-                    jumping = true;
-                    rb.velocity = (transform.forward) + new Vector3(0, GetJumpHeight(lastSeenPlayerPos.y));
-                }
+                //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Jump") && !anim.GetAnimatorTransitionInfo(0).IsName("Jump -> Walk") && !jumping)
+                //{
+                //    jumping = true;
+                //    rb.velocity = (transform.forward) + new Vector3(0, GetJumpHeight(lastSeenPlayerPos.y));
+                //}
                 //if the enemies at the last seen pos
-                if (Vector3.Distance(transform.position, ChasedPlayerpos) < .3f || lastSeenPlayerPos.y > transform.position.y + 8)
+                if (Vector3.Distance(transform.position, ChasedPlayerpos) < .3f || lastSeenPlayerPos.y > transform.position.y)
                     lastSeenPlayerPos = Vector3.zero;
             }
         }
@@ -400,14 +401,14 @@ public class SpiderGoop : Enemy, IRespawnable
                 for (float bottom = -1; bottom <= 1; bottom += .2f)
                 {
                     //if the bottom one hits then that means he's colliding with a object
-                    if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
+                    if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
                     {
                         if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger)
                         {
                             for (float top = -1; top <= 1; top += .2f)
                             {
                                 //if he collides with an object up top then that means he shouldn't jump 
-                                if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
+                                if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
                                 {
                                     if (hit.collider.gameObject.tag != "Player")
                                         TopHit = true;

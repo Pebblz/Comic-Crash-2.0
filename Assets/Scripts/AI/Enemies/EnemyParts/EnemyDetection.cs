@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class EnemyDetection : MonoBehaviour
 {
     [SerializeField]
@@ -81,6 +81,19 @@ public class EnemyDetection : MonoBehaviour
         return ReturnedList;
     }
 
+    public List<GameObject> FindAllPlayersInLevel()
+    {
+        List<GameObject> ReturnedList = new List<GameObject>();
+
+        PlayerMovement[] temp = FindObjectsOfType<PlayerMovement>();
+
+        foreach(PlayerMovement p in temp)
+        {
+            ReturnedList.Add(p.gameObject);
+        }
+        return ReturnedList;
+    }
+
     public GameObject FindClosestPlayer(List<GameObject> detectedPlayers)
     {
         float closeDist = 0;
@@ -103,6 +116,7 @@ public class EnemyDetection : MonoBehaviour
         }
         return closePlayer;
     }
+
     bool IsPlayerDead(GameObject player)
     {
         if (player.GetComponent<PlayerDeath>().isdead)
