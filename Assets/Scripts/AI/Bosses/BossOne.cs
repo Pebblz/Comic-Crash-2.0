@@ -21,11 +21,7 @@ public class BossOne : MonoBehaviour
 
     EnemyDetection Detection;
 
-    Vector3 startingPoint;
-
     Rigidbody rb;
-
-    Quaternion startingRot;
 
     float chargeCooldownTimer, chargeDurationTimer, firstSeenPlayerTimer, stunTimer;
 
@@ -39,8 +35,6 @@ public class BossOne : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         Detection = GetComponent<EnemyDetection>();
-        startingPoint = transform.position;
-        startingRot = transform.rotation;
         rb = GetComponent<Rigidbody>();
         chargeDurationTimer = chargeDuration;
         firstSeenPlayerTimer = firstSeenPlayer;
@@ -216,12 +210,11 @@ public class BossOne : MonoBehaviour
         }
         if (photonView.IsMine)
         {
-            //if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
-            //col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0)
-            //{
-            //    health -= 1;
-            //    IFrameTimer = maxIFrameTime;
-            //}
+            if (col.gameObject.TryGetComponent<BossOnePillers>(out var piller))
+            {
+                piller.SpawnRocks();
+                //health -= 1;
+            }
         }
     }
 }
