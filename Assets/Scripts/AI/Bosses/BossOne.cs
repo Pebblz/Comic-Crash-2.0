@@ -7,21 +7,13 @@ public class BossOne : MonoBehaviour
 {
     #region Vars
     [SerializeField]
-    private float walkRotSpeed = 2, chaseRotSpeed = 3, idleMoveSpeed, chaseSpeed, chargeSpeed,
-        timeTillIdle, playerSeenRange, chargeCooldown, chargeDuration,
-        firstSeenPlayer, distAwayToCharge = 8, stunDuration, maxIFrameTime;
+    private float  chaseRotSpeed = 3, chaseSpeed, chargeSpeed,
+         playerSeenRange, chargeCooldown, chargeDuration,
+         firstSeenPlayer, distAwayToCharge = 8, stunDuration;
 
     int damage = 1, health = 3;
 
-    [SerializeField, Tooltip("The different idle states")]
-    WaysToIdle idleWays = WaysToIdle.StandAtPoint;
-
-    [SerializeField, Tooltip("Should the enemy go back to starttign rotation when going back to idle")]
-    bool realignWithStartingRot;
-
     GameObject chasedPlayer;
-
-    Vector3 lastSeenPlayerPos;
 
     Animator anim;
 
@@ -33,13 +25,9 @@ public class BossOne : MonoBehaviour
 
     Rigidbody rb;
 
-    [SerializeField]
-    List<GameObject> waypoints = new List<GameObject>();
-
     Quaternion startingRot;
 
-    float chargeCooldownTimer, chargeDurationTimer, firstSeenPlayerTimer, stunTimer,
-        IFrameTimer;
+    float chargeCooldownTimer, chargeDurationTimer, firstSeenPlayerTimer, stunTimer;
 
     bool charging, stunned, dead;
 
@@ -128,29 +116,35 @@ public class BossOne : MonoBehaviour
                 //do this after death anim
                 gameObject.SetActive(false);
             }
-            IFrameTimer -= Time.deltaTime;
         }
     }
 
     private void ChasePlayer()
     {
-        Vector3 ChasedPlayersPos = new Vector3(chasedPlayer.transform.position.x, transform.position.y, chasedPlayer.transform.position.z);
+        if (chasedPlayer != null)
+        {
+            Vector3 ChasedPlayersPos = new Vector3(chasedPlayer.transform.position.x, transform.position.y, chasedPlayer.transform.position.z);
 
-        //Rotates slowly towards player
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-                                          Quaternion.LookRotation(ChasedPlayersPos - transform.position),
-                                          chaseRotSpeed * Time.deltaTime);
+            //Rotates slowly towards player
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                              Quaternion.LookRotation(ChasedPlayersPos - transform.position),
+                                              chaseRotSpeed * Time.deltaTime);
 
-        //Moves enemy towards player
-        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > 2.5f && !charging)
-            rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
-        //charges at player
-        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToCharge && chargeCooldownTimer <= 0 &&
-            firstSeenPlayerTimer <= 0)
-            charging = true;
-        //if he's on top of the player i just want him to ignore the cooldown timer and attack
-        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && Dot(.95f, ChasedPlayersPos))
-            charging = true;
+            //Moves enemy towards player
+            if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > 2.5f && !charging)
+                rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
+            //charges at player
+            if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToCharge && chargeCooldownTimer <= 0 &&
+                firstSeenPlayerTimer <= 0)
+                charging = true;
+            //if he's on top of the player i just want him to ignore the cooldown timer and attack
+            if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= 2.5f && Dot(.95f, ChasedPlayersPos))
+                charging = true;
+        }
+        else
+        {
+            chasedPlayer = Detection.FindClosestPlayer(detectedPlayers);
+        }
     }
 
     void ChargeAtPlayer()
@@ -229,25 +223,5 @@ public class BossOne : MonoBehaviour
             //    IFrameTimer = maxIFrameTime;
             //}
         }
-    }
-
-    public void reset_data()
-    {
-        health = 3;
-        detectedPlayers.Clear();
-        chasedPlayer = null;
-        transform.position = startingPoint;
-        transform.rotation = startingRot;
-        lastSeenPlayerPos = Vector3.zero;
-        chargeDurationTimer = chargeDuration;
-        stunned = false;
-        charging = false;
-        dead = false;
-    }
-
-    enum WaysToIdle
-    {
-        StandAtPoint,
-        WayPoint
     }
 }

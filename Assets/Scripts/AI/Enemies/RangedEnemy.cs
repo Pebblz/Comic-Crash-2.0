@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class RangedEnemy : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] GameObject targetedEnemy;
+
+    [SerializeField] GameObject Projectile;
+
+    [SerializeField] Transform junkSpawnPosition;
+
+    [SerializeField] float attackResetTime = 1.5f, projectileSpeed = 20f;
+
+    float attackResetTimer;
     void Start()
     {
         
