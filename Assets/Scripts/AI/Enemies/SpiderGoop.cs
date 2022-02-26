@@ -458,16 +458,15 @@ public class SpiderGoop : Enemy, IRespawnable
             //also knockback player
             DamagePlayer(col.gameObject);
         }
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player"
-            && !stunned && col.gameObject.tag != "PlayerPunch" && col.gameObject.tag != "Shot")
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player" && !col.isTrigger)
         {
-            if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
-            {
-                //make here for stunning the enemy when hitting a wall
-                stunTimer = stunDuration;
-                detectedPlayers = Detection.GetPlayersInSight();
-                stunned = true;
-            }
+                if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
+                {
+                    //make here for stunning the enemy when hitting a wall
+                    stunTimer = stunDuration;
+                    detectedPlayers = Detection.GetPlayersInSight();
+                    stunned = true;
+                }
         }
         if (photonView.IsMine)
         {
