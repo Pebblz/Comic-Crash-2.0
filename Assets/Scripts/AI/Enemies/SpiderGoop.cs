@@ -458,7 +458,8 @@ public class SpiderGoop : Enemy, IRespawnable
             //also knockback player
             DamagePlayer(col.gameObject);
         }
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player" && !col.isTrigger)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player" 
+            && !col.isTrigger && col.gameObject.tag != "Shot")
         {
                 if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
                 {
