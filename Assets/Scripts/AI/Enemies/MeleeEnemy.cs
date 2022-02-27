@@ -6,7 +6,7 @@ public class MeleeEnemy : MonoBehaviour
 {
     #region Vars
     [SerializeField]
-    private float walkRotSpeed = 2, chaseRotSpeed = 3, idleMoveSpeed, chaseSpeed, chargeSpeed,
+    private float walkRotSpeed = 2, chaseRotSpeed = 3, idleMoveSpeed, chaseSpeed,
         timeTillIdle, playerSeenRange, attackCooldown, distAwayToAttack = .5f, stunDuration, maxIFrameTime;
 
     int damage = 1, health = 3;
@@ -62,7 +62,8 @@ public class MeleeEnemy : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (!dead && !attacking)
+            //&& !attacking
+            if (!dead )
             {
                 if (Detection.IsPlayerInSight()
                     || detectedPlayers.Count > 0
@@ -238,7 +239,6 @@ public class MeleeEnemy : MonoBehaviour
         }
         if (rb.velocity.y > -.2f && rb.velocity.y < .2f && jumping)
         {
-            print("OnGround");
             jumping = false;
             anim.SetBool("Jump", false);
             anim.SetBool("OnGround", true);
@@ -324,24 +324,25 @@ public class MeleeEnemy : MonoBehaviour
         if (HuntedTarget.y > transform.position.y)
         {
             Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
-            RaycastHit hit;
+            RaycastHit hit, hit2;
             bool TopHit = false;
             if (Dot(.9f, HuntedTarget, true))
             {
                 for (float bottom = -1; bottom <= 1; bottom += .2f)
                 {
                     //if the bottom one hits then that means he's colliding with a object
-                    if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
+                    if (Physics.Raycast(start + new Vector3(bottom, .2f, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
                     {
-                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger)
+                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject != this.gameObject)
                         {
                             for (float top = -1; top <= 1; top += .2f)
                             {
                                 //if he collides with an object up top then that means he shouldn't jump 
-                                if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
+                                if (Physics.Raycast(start + new Vector3(top, 2f, 0), transform.TransformDirection(Vector3.forward), out hit2, 3f))
                                 {
-                                    if (hit.collider.gameObject.tag != "Player")
+                                    if (hit2.collider.gameObject.tag != "Player")
                                         TopHit = true;
+
                                 }
                             }
                             //if the top hit he shouldn't jump
@@ -349,6 +350,7 @@ public class MeleeEnemy : MonoBehaviour
                                 return false;
                             else
                             {
+
                                 return true;
                             }
                         }
@@ -402,23 +404,23 @@ public class MeleeEnemy : MonoBehaviour
 
     }
 
-    private void OnTriggerStay(Collider col)
-    {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attacking") && col.gameObject.tag == "Player")
-        {
-            //also knockback player
-            DamagePlayer(col.gameObject);
-        }
-        if (photonView.IsMine)
-        {
-            if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
-            col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0)
-            {
-                health -= 1;
-                IFrameTimer = maxIFrameTime;
-            }
-        }
-    }
+    //private void OnTriggerStay(Collider col)
+    //{
+    //    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attacking") && col.gameObject.tag == "Player")
+    //    {
+    //        //also knockback player
+    //        DamagePlayer(col.gameObject);
+    //    }
+    //    if (photonView.IsMine)
+    //    {
+    //        if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
+    //        col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0)
+    //        {
+    //            health -= 1;
+    //            IFrameTimer = maxIFrameTime;
+    //        }
+    //    }
+    //}
 
     enum WaysToIdle
     {
