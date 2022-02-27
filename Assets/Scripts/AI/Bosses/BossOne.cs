@@ -7,7 +7,7 @@ public class BossOne : MonoBehaviour
 {
     #region Vars
     [SerializeField]
-    private float  chaseRotSpeed = 3, chaseSpeed, chargeSpeed,
+    private float chaseRotSpeed = 3, chaseSpeed, chargeSpeed,
          playerSeenRange, chargeCooldown, chargeDuration,
          firstSeenPlayer, distAwayToCharge = 8, stunDuration;
 
@@ -197,16 +197,13 @@ public class BossOne : MonoBehaviour
             //also knockback player
             DamagePlayer(col.gameObject);
         }
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player" 
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player"
             && !col.isTrigger && col.gameObject.tag != "Shot")
         {
-            if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
-            {
-                //make here for stunning the enemy when hitting a wall
-                stunTimer = stunDuration;
-                detectedPlayers = Detection.GetPlayersInSight();
-                stunned = true;
-            }
+            //make here for stunning the enemy when hitting a wall
+            stunTimer = stunDuration;
+            detectedPlayers = Detection.GetPlayersInSight();
+            stunned = true;
         }
         if (photonView.IsMine)
         {
