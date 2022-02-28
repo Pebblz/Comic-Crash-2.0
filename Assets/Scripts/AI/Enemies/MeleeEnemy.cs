@@ -333,7 +333,8 @@ public class MeleeEnemy : MonoBehaviour
                     //if the bottom one hits then that means he's colliding with a object
                     if (Physics.Raycast(start + new Vector3(bottom, .2f, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
                     {
-                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject != this.gameObject)
+                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject != this.gameObject 
+                            && hit.collider.gameObject.tag != "Enemy")
                         {
                             for (float top = -1; top <= 1; top += .2f)
                             {
@@ -342,7 +343,6 @@ public class MeleeEnemy : MonoBehaviour
                                 {
                                     if (hit2.collider.gameObject.tag != "Player")
                                         TopHit = true;
-
                                 }
                             }
                             //if the top hit he shouldn't jump
