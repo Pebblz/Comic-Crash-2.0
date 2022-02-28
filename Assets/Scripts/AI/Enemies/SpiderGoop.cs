@@ -196,7 +196,7 @@ public class SpiderGoop : Enemy, IRespawnable
                 {
                     //Dot(.9f, ChasedPlayerpos, false) &&
                     //if dot's 1 then the enemies looking at the vector3 pos if -1 enemies looking the wrong way
-                    if ( !jumping)
+                    if (!jumping)
                     {
                         rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
                     }
@@ -394,7 +394,7 @@ public class SpiderGoop : Enemy, IRespawnable
         if (HuntedTarget.y > transform.position.y)
         {
             Vector3 start = this.gameObject.transform.position + new Vector3(0, .5f, 0);
-            RaycastHit hit;
+            RaycastHit hit, hit2;
             bool TopHit = false;
             if (Dot(.9f, HuntedTarget, true))
             {
@@ -403,14 +403,14 @@ public class SpiderGoop : Enemy, IRespawnable
                     //if the bottom one hits then that means he's colliding with a object
                     if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
                     {
-                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger)
+                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject != this.gameObject)
                         {
                             for (float top = -1; top <= 1; top += .2f)
                             {
                                 //if he collides with an object up top then that means he shouldn't jump 
-                                if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
+                                if (Physics.Raycast(start + new Vector3(top, 4f, 0), transform.TransformDirection(Vector3.forward), out hit2, 4f))
                                 {
-                                    if (hit.collider.gameObject.tag != "Player")
+                                    if (hit2.collider.gameObject.tag != "Player")
                                         TopHit = true;
                                 }
                             }
@@ -458,16 +458,13 @@ public class SpiderGoop : Enemy, IRespawnable
             //also knockback player
             DamagePlayer(col.gameObject);
         }
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player" 
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Charging") && col.gameObject.tag != "Player"
             && !col.isTrigger && col.gameObject.tag != "Shot")
         {
-                if (gameObject.transform.parent == null || gameObject.transform.parent != this.gameObject)
-                {
-                    //make here for stunning the enemy when hitting a wall
-                    stunTimer = stunDuration;
-                    detectedPlayers = Detection.GetPlayersInSight();
-                    stunned = true;
-                }
+            //make here for stunning the enemy when hitting a wall
+            stunTimer = stunDuration;
+            detectedPlayers = Detection.GetPlayersInSight();
+            stunned = true;
         }
         if (photonView.IsMine)
         {
