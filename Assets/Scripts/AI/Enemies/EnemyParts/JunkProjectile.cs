@@ -37,7 +37,7 @@ public class JunkProjectile : MonoBehaviour
         // shorthands for the formula
         float R = Vector3.Distance(projectileXZPos, targetXZPos);
         float G = Physics.gravity.y;
-        float randomAngle = Random.Range(55, 65);
+        float randomAngle = Random.Range(57, 63);
         float tanAlpha = Mathf.Tan(randomAngle * Mathf.Deg2Rad);
         float H = TargetObject.position.y - transform.position.y;
 

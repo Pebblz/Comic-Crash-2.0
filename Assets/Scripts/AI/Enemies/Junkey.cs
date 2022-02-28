@@ -14,26 +14,28 @@ public class Junkey : MonoBehaviour
 
     [SerializeField] Transform junkSpawnPosition;
 
-    [SerializeField] float attackResetTime = 1.5f;
+    [SerializeField] Animator anim;
 
-    float attackResetTimer;
     private void Update()
     {
         if (targetedEnemy != null)
         {
-            if (attackResetTimer <= 0)
+            if (!targetedEnemy.GetComponent<PlayerDeath>().isdead && junk != null)
             {
-                if (!targetedEnemy.GetComponent<PlayerDeath>().isdead && junk != null)
+                anim.SetBool("Attacking", true);
+                if (anim.GetAnimatorTransitionInfo(0).IsName("Attack -> CoolDown"))
                     SpawnProjectile();
-                else
-                {
-                    targetedEnemy = null;
-                }
+            }
+            else
+            {
+                anim.SetBool("Idle", true);
+                anim.SetBool("Attacking", false);
+                targetedEnemy = null;
             }
         }
-        if (attackResetTimer > -.1f)
+        if (junk == null)
         {
-            attackResetTimer -= Time.deltaTime;
+            anim.SetBool("Dead", true);
         }
     }
 
@@ -42,11 +44,11 @@ public class Junkey : MonoBehaviour
         string name = Path.Combine("PhotonPrefabs", junkProjectile.name);
         var obj = PhotonNetwork.Instantiate(name, junkSpawnPosition.position, new Quaternion());
         obj.GetComponent<JunkProjectile>().TargetObject = targetedEnemy.transform;
-        attackResetTimer = attackResetTime;
     }
 
     private void OnTriggerStay(Collider col)
     {
+
         if (col.gameObject.tag == "Player" && junk != null)
         {
             if (targetedEnemy == null)
@@ -54,8 +56,16 @@ public class Junkey : MonoBehaviour
                 targetedEnemy = col.gameObject;
             }
         }
-        if (junk != null)
+        if (junk == null)
+        {
             targetedEnemy = null;
+        }
+    }
+    private void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject == targetedEnemy)
+        {
+            targetedEnemy = null;
+        }
     }
 }
-
