@@ -16,6 +16,7 @@ public class Junkey : MonoBehaviour
 
     [SerializeField] Animator anim;
 
+    float spawnCooldown;
     private void Update()
     {
         if (targetedEnemy != null)
@@ -23,8 +24,11 @@ public class Junkey : MonoBehaviour
             if (!targetedEnemy.GetComponent<PlayerDeath>().isdead && junk != null)
             {
                 anim.SetBool("Attacking", true);
-                if (anim.GetAnimatorTransitionInfo(0).IsName("Attack -> CoolDown"))
+                if (anim.GetAnimatorTransitionInfo(0).IsName("Attack -> CoolDown") && spawnCooldown <= 0)
+                {
                     SpawnProjectile();
+                    spawnCooldown = .12f;
+                }
             }
             else
             {
@@ -32,6 +36,12 @@ public class Junkey : MonoBehaviour
                 anim.SetBool("Attacking", false);
                 targetedEnemy = null;
             }
+            spawnCooldown -= Time.deltaTime;
+        }
+        else
+        {
+            anim.SetBool("Idle", true);
+            anim.SetBool("Attacking", false);
         }
         if (junk == null)
         {

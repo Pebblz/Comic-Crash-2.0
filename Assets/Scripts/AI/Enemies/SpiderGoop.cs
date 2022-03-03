@@ -16,6 +16,8 @@ public class SpiderGoop : Enemy, IRespawnable
     [SerializeField, Tooltip("The different idle states")]
     WaysToIdle idleWays = WaysToIdle.StandAtPoint;
 
+    [SerializeField] LayerMask mask;
+
     [SerializeField, Tooltip("Should the enemy go back to starttign rotation when going back to idle")]
     bool realignWithStartingRot;
 
@@ -273,7 +275,6 @@ public class SpiderGoop : Enemy, IRespawnable
         }
         if (rb.velocity.y > -.2f && rb.velocity.y < .2f && jumping)
         {
-            print("OnGround");
             jumping = false;
             anim.SetBool("Jump", false);
             anim.SetBool("OnGround", true);
@@ -401,10 +402,9 @@ public class SpiderGoop : Enemy, IRespawnable
                 for (float bottom = -1; bottom <= 1; bottom += .2f)
                 {
                     //if the bottom one hits then that means he's colliding with a object
-                    if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 4f))
+                    if (Physics.Raycast(start + new Vector3(bottom, 0, 0), transform.TransformDirection(Vector3.forward), out hit, 4f,~mask))
                     {
-                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject != this.gameObject 
-                            && hit.collider.gameObject.tag != "Enemy")
+                        if (!hit.collider.isTrigger)
                         {
                             for (float top = -1; top <= 1; top += .2f)
                             {

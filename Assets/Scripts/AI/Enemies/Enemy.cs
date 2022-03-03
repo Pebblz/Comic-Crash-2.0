@@ -89,7 +89,7 @@ public abstract class Enemy : MonoBehaviour
 
     public void damage(int amount)
     {
-        if(hit == true)
+        if(hit)
         {
             return;
         }

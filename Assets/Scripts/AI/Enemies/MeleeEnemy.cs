@@ -4,12 +4,13 @@ using UnityEngine;
 using Photon.Pun;
 public class MeleeEnemy : MonoBehaviour
 {
+
     #region Vars
     [SerializeField]
     private float walkRotSpeed = 2, chaseRotSpeed = 3, idleMoveSpeed, chaseSpeed,
         timeTillIdle, playerSeenRange, attackCooldown, distAwayToAttack = .5f, stunDuration, maxIFrameTime;
 
-    int damage = 1, health = 3;
+    int damage = 1, health = 3, hitCount;
 
     [SerializeField, Tooltip("The different idle states")]
     WaysToIdle idleWays = WaysToIdle.StandAtPoint;
@@ -63,7 +64,7 @@ public class MeleeEnemy : MonoBehaviour
         if (photonView.IsMine)
         {
             //&& !attacking
-            if (!dead )
+            if (!dead && !stunned)
             {
                 if (Detection.IsPlayerInSight()
                     || detectedPlayers.Count > 0
@@ -119,7 +120,11 @@ public class MeleeEnemy : MonoBehaviour
             }
             else
             {
-                if(!attacking)
+                if (stunned)
+                {
+                    stunTimer -= Time.deltaTime;
+                }
+                if (!attacking)
                 {
                     if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > distAwayToAttack)
                     {
@@ -333,7 +338,7 @@ public class MeleeEnemy : MonoBehaviour
                     //if the bottom one hits then that means he's colliding with a object
                     if (Physics.Raycast(start + new Vector3(bottom, .2f, 0), transform.TransformDirection(Vector3.forward), out hit, 3f))
                     {
-                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject != this.gameObject 
+                        if (hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject != this.gameObject
                             && hit.collider.gameObject.tag != "Enemy")
                         {
                             for (float top = -1; top <= 1; top += .2f)
@@ -404,23 +409,41 @@ public class MeleeEnemy : MonoBehaviour
 
     }
 
-    //private void OnTriggerStay(Collider col)
-    //{
-    //    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attacking") && col.gameObject.tag == "Player")
-    //    {
-    //        //also knockback player
-    //        DamagePlayer(col.gameObject);
-    //    }
-    //    if (photonView.IsMine)
-    //    {
-    //        if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
-    //        col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0)
-    //        {
-    //            health -= 1;
-    //            IFrameTimer = maxIFrameTime;
-    //        }
-    //    }
-    //}
+    private void OnTriggerStay(Collider col)
+    {
+        //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attacking") && col.gameObject.tag == "Player")
+        //{
+        //also knockback player
+        //DamagePlayer(col.gameObject);
+        //}
+        if (photonView.IsMine)
+        {
+            if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
+            col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0)
+            {
+                hitCount += 1;
+                stunTimer = stunDuration;
+                if (hitCount == 1)
+                {
+                    anim.SetInteger("Hit", 1);
+                }
+                if (hitCount == 2)
+                {
+                    anim.SetInteger("Hit", 2);
+                }
+                if (hitCount == 3)
+                {
+                    anim.SetInteger("Hit", 3);
+                }
+                if (hitCount > 4)
+                {
+                    stunTimer = 0;
+                }
+                health -= 1;
+                IFrameTimer = maxIFrameTime;
+            }
+        }
+    }
 
     enum WaysToIdle
     {

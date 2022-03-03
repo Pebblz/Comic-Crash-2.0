@@ -10,7 +10,6 @@ public class EnemyDetection : MonoBehaviour
     [SerializeField]
     private LayerMask detectionLayer;
 
-
     public bool IsPlayerInSight()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, detectionLayer);
