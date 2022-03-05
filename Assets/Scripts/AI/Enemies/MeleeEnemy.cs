@@ -10,7 +10,7 @@ public class MeleeEnemy : MonoBehaviour
     private float walkRotSpeed = 2, chaseRotSpeed = 3, idleMoveSpeed, chaseSpeed,
         timeTillIdle, playerSeenRange, attackCooldown, distAwayToAttack = .5f, stunDuration, maxIFrameTime;
 
-    int damage = 1, health = 3, hitCount;
+    int damage = 1, health = 2, hitCount;
 
     [SerializeField, Tooltip("The different idle states")]
     WaysToIdle idleWays = WaysToIdle.StandAtPoint;
@@ -41,7 +41,7 @@ public class MeleeEnemy : MonoBehaviour
 
     int currentWaypointIndex;
 
-    float attackCooldownTimer, stunTimer, IFrameTimer;
+    float attackCooldownTimer, stunTimer, IFrameTimer, oneFrameTimer;
 
     bool jumping, attacking, stunned, dead;
 
@@ -57,13 +57,14 @@ public class MeleeEnemy : MonoBehaviour
         startingRot = transform.rotation;
         rb = GetComponent<Rigidbody>();
         photonView = GetComponent<PhotonView>();
+        oneFrameTimer = .2f;
     }
 
     void Update()
     {
         if (photonView.IsMine)
         {
-            if (!dead && !stunned && !attacking)
+            if (!dead && !stunned && !attacking && hitCount == 0)
             {
                 if (Detection.IsPlayerInSight()
                     || detectedPlayers.Count > 0
@@ -146,7 +147,19 @@ public class MeleeEnemy : MonoBehaviour
                 }
 
             }
-
+            if(IFrameTimer < 0 && anim.GetInteger("Hit") > 0 && anim.GetInteger("Hit") < 4)
+            {
+                anim.SetBool("Idle", true);
+                hitCount = 0;
+                anim.SetInteger("Hit", 0);
+            }
+            if(anim.GetInteger("Hit") == 4)
+            {
+                health--;
+                anim.SetBool("Idle", true);
+                hitCount = 0;
+                anim.SetInteger("Hit", 0);
+            }
             //plays the dead anim
             if (health <= 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
             {
@@ -161,6 +174,7 @@ public class MeleeEnemy : MonoBehaviour
                 gameObject.SetActive(false);
             }
             IFrameTimer -= Time.deltaTime;
+            oneFrameTimer -= Time.deltaTime;
         }
     }
 
@@ -430,9 +444,10 @@ public class MeleeEnemy : MonoBehaviour
         //}
         if (photonView.IsMine)
         {
-            if (col.gameObject.GetComponent<Bullet>() && IFrameTimer <= 0 ||
-            col.gameObject.tag == "PlayerPunch" && IFrameTimer <= 0)
+            if (col.gameObject.GetComponent<Bullet>() && oneFrameTimer < 0 ||
+            col.gameObject.tag == "PlayerPunch" && oneFrameTimer < 0)
             {
+                anim.SetBool("Idle", false);
                 hitCount += 1;
                 stunTimer = stunDuration;
                 if (hitCount == 1)
@@ -452,7 +467,10 @@ public class MeleeEnemy : MonoBehaviour
                     stunTimer = 0;
                 }
                 health -= 1;
+                oneFrameTimer = .2f;
                 IFrameTimer = maxIFrameTime;
+                if (photonView.IsMine)
+                    Destroy(col.gameObject);
             }
         }
     }

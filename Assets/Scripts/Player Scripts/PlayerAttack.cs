@@ -9,6 +9,7 @@ public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] int AmountOfAttacks;
     [SerializeField] GameObject[] PunchHitBoxes;
+    [SerializeField] float[] PunchDelayTimers;
     [SerializeField] float[] AttackTimers = new float[3];
     [SerializeField] float AirAttackTimer;
     [SerializeField] float SlideAttackTimer;
@@ -27,8 +28,9 @@ public class PlayerAttack : MonoBehaviour
     HandMan handman;
     Rigidbody body;
     PlayerMovement movement;
-
-
+    int delayedPunchIndex;
+    float delayTimer;
+    bool spawnPunch;
     PhotonView photonView;
     // Start is called before the first frame update
     void Start()
@@ -171,6 +173,15 @@ public class PlayerAttack : MonoBehaviour
                 AirAttacked = false;
                 movement.PlayFallingAnimation();
             }
+            if(delayTimer <= 0 && spawnPunch)
+            {
+                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[delayedPunchIndex].name),
+                    transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
+
+                if (!AttackAgian)
+                    spawnPunch = false;
+            }
+            delayTimer -= Time.deltaTime;
         }
        
         if (TimeTillSlideDone > 0)
@@ -240,13 +251,13 @@ public class PlayerAttack : MonoBehaviour
     }
     void punch(int attackNumber)
     {
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", PunchHitBoxes[attackNumber - 1].name),
-            transform.position + new Vector3(0, .6f, 0) + transform.forward * 1.1f, Quaternion.identity);
+        delayTimer = PunchDelayTimers[attackNumber - 1];
 
         PlayAnimation("Attack", attackNumber);
 
         AttackAgian = false;
 
+        spawnPunch = true;
         //this is here to fix the end lag for his attack animations
         //---------------
         if (AttacksPreformed == 1)
