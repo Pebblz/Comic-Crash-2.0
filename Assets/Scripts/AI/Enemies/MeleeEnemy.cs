@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.IO;
 public class MeleeEnemy : MonoBehaviour
 {
 
@@ -17,6 +18,10 @@ public class MeleeEnemy : MonoBehaviour
 
     [SerializeField, Tooltip("Should the enemy go back to starttign rotation when going back to idle")]
     bool realignWithStartingRot;
+
+    [SerializeField] GameObject deathOBJ;
+
+    [SerializeField] ParticleSystem system;
 
     GameObject chasedPlayer;
 
@@ -147,6 +152,30 @@ public class MeleeEnemy : MonoBehaviour
                 }
 
             }
+            if (health <= 0)
+            {
+                //dead = true;
+                if (deathOBJ == null)
+                {
+                    //plays the dead anim
+                    if (health <= 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
+                    {
+                        anim.SetBool("Dead", true);
+                        dead = true;
+                    }
+                    //turns off the enemy when dead's over
+                    if (anim.GetAnimatorTransitionInfo(0).IsName("Dead -> Walk"))
+                    {
+                        anim.SetBool("Dead", false);
+                        //do this after death anim
+                        gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    photonView.RPC("DestroyRobot", RpcTarget.All);
+                }
+            }
             if(IFrameTimer < 0 && anim.GetInteger("Hit") > 0 && anim.GetInteger("Hit") < 4)
             {
                 anim.SetBool("Idle", true);
@@ -160,19 +189,7 @@ public class MeleeEnemy : MonoBehaviour
                 hitCount = 0;
                 anim.SetInteger("Hit", 0);
             }
-            //plays the dead anim
-            if (health <= 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
-            {
-                anim.SetBool("Dead", true);
-                dead = true;
-            }
-            //turns off the enemy when dead's over
-            if (anim.GetAnimatorTransitionInfo(0).IsName("Dead -> Walk"))
-            {
-                anim.SetBool("Dead", false);
-                //do this after death anim
-                gameObject.SetActive(false);
-            }
+
             IFrameTimer -= Time.deltaTime;
             oneFrameTimer -= Time.deltaTime;
         }
@@ -434,14 +451,14 @@ public class MeleeEnemy : MonoBehaviour
         }
 
     }
-
+    [PunRPC]
+    void DestroyRobot()
+    {
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", deathOBJ.name), transform.position, transform.rotation);
+        PhotonNetwork.Destroy(photonView);
+    }
     private void OnTriggerStay(Collider col)
     {
-        //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attacking") && col.gameObject.tag == "Player")
-        //{
-        //    //also knockback player
-        //    DamagePlayer(col.gameObject);
-        //}
         if (photonView.IsMine)
         {
             if (col.gameObject.GetComponent<Bullet>() && oneFrameTimer < 0 ||
@@ -450,6 +467,7 @@ public class MeleeEnemy : MonoBehaviour
                 anim.SetBool("Idle", false);
                 hitCount += 1;
                 stunTimer = stunDuration;
+                system.Play();
                 if (hitCount == 1)
                 {
                     anim.SetInteger("Hit", 1);
@@ -460,13 +478,13 @@ public class MeleeEnemy : MonoBehaviour
                 }
                 if (hitCount == 3)
                 {
+                    health -= 1;
                     anim.SetInteger("Hit", 3);
                 }
                 if (hitCount > 4)
                 {
                     stunTimer = 0;
                 }
-                health -= 1;
                 oneFrameTimer = .2f;
                 IFrameTimer = maxIFrameTime;
                 if (photonView.IsMine)
