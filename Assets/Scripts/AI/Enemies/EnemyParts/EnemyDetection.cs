@@ -14,19 +14,36 @@ public class EnemyDetection : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, detectionLayer);
 
-        for(int i = 0; i < colliders.Length; i++)
+        for (int i = 0; i < colliders.Length; i++)
         {
             PlayerMovement movement = colliders[i].transform.GetComponent<PlayerMovement>();
 
-            if(movement != null)
+            if (movement != null)
             {
                 Vector3 targetDirection = movement.transform.position - transform.position;
                 float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-                if(viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle && !IsPlayerDead(movement.gameObject))
+                if (viewableAngle > minimunDetectionAngle && viewableAngle < maximumDetectionAngle && !IsPlayerDead(movement.gameObject))
                 {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    public bool IsPlayerInSphere()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, detectionLayer);
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            PlayerMovement movement = colliders[i].transform.GetComponent<PlayerMovement>();
+
+            if (movement != null)
+            {
+                if(!IsPlayerDead(movement.gameObject))
+                    return true;
             }
         }
         return false;
@@ -80,13 +97,35 @@ public class EnemyDetection : MonoBehaviour
         return ReturnedList;
     }
 
+    public List<GameObject> GetPlayersInSphere()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, detectionLayer);
+        List<GameObject> ReturnedList = new List<GameObject>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            PlayerMovement movement = colliders[i].transform.GetComponent<PlayerMovement>();
+
+            if (movement != null)
+            {
+
+                if (!IsPlayerDead(movement.gameObject))
+                {
+                    ReturnedList.Add(movement.gameObject);
+                }
+            }
+            if (i == colliders.Length)
+                return ReturnedList;
+        }
+        return ReturnedList;
+    }
+
     public List<GameObject> FindAllPlayersInLevel()
     {
         List<GameObject> ReturnedList = new List<GameObject>();
 
         PlayerMovement[] temp = FindObjectsOfType<PlayerMovement>();
 
-        foreach(PlayerMovement p in temp)
+        foreach (PlayerMovement p in temp)
         {
             ReturnedList.Add(p.gameObject);
         }
@@ -116,7 +155,7 @@ public class EnemyDetection : MonoBehaviour
         return closePlayer;
     }
 
-    bool IsPlayerDead(GameObject player)
+    public bool IsPlayerDead(GameObject player)
     {
         if (player.GetComponent<PlayerDeath>().isdead)
             return true;

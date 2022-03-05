@@ -63,8 +63,7 @@ public class MeleeEnemy : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            //&& !attacking
-            if (!dead && !stunned)
+            if (!dead && !stunned && !attacking)
             {
                 if (Detection.IsPlayerInSight()
                     || detectedPlayers.Count > 0
@@ -124,8 +123,9 @@ public class MeleeEnemy : MonoBehaviour
                 {
                     stunTimer -= Time.deltaTime;
                 }
-                if (!attacking)
+                if (attacking && chasedPlayer != null)
                 {
+
                     if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > distAwayToAttack)
                     {
                         attacking = false;
@@ -134,9 +134,19 @@ public class MeleeEnemy : MonoBehaviour
                     else
                     {
                         anim.SetBool("Attacking", true);
+
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToAttack && anim.GetAnimatorTransitionInfo(0).IsName("Attacking -> Attacking2") ||
+                           Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToAttack && anim.GetAnimatorTransitionInfo(0).IsName("Attacking2 -> Attacking"))
+                        {
+                            DamagePlayer(chasedPlayer);
+                        }
+
                     }
+
                 }
+
             }
+
             //plays the dead anim
             if (health <= 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
             {
@@ -404,6 +414,8 @@ public class MeleeEnemy : MonoBehaviour
                     detectedPlayers.Remove(AttackedPlayer);
                 }
                 chasedPlayer = null;
+                attacking = false;
+                anim.SetBool("Attacking", false);
             }
         }
 
@@ -413,8 +425,8 @@ public class MeleeEnemy : MonoBehaviour
     {
         //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attacking") && col.gameObject.tag == "Player")
         //{
-        //also knockback player
-        //DamagePlayer(col.gameObject);
+        //    //also knockback player
+        //    DamagePlayer(col.gameObject);
         //}
         if (photonView.IsMine)
         {
