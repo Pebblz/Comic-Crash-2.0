@@ -32,6 +32,7 @@ public class PlayerAttack : MonoBehaviour
     float delayTimer;
     bool spawnPunch;
     PhotonView photonView;
+    PlayerDeath death;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +46,7 @@ public class PlayerAttack : MonoBehaviour
         if (GetComponent<HandMan>())
             handman = GetComponent<HandMan>();
         photonView = GetComponent<PhotonView>();
+        death = GetComponent<PlayerDeath>();
     }
 
     // Update is called once per frame
@@ -53,9 +55,9 @@ public class PlayerAttack : MonoBehaviour
         #region Punch
         //this is so if the players in any of
         //the jump animation you can't attack
-        if (photonView.IsMine)
+        if (photonView.IsMine && !anim.GetBool("Dead"))
         {
-            if (!anim.GetBool("Jump") && !movement.Rolling)
+            if (!anim.GetBool("Jump") && !movement.Rolling )
             {
                 if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
                 {
