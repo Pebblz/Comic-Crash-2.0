@@ -155,6 +155,32 @@ public class EnemyDetection : MonoBehaviour
         return closePlayer;
     }
 
+    public GameObject FindClosestPlayer()
+    {
+        float closeDist = 0;
+        GameObject closePlayer = null;
+
+        GameObject[] detectedPlayers = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject g in detectedPlayers)
+        {
+            if (closeDist == 0 && !IsPlayerDead(g))
+            {
+                closeDist = Vector3.Distance(transform.position, g.transform.position);
+                closePlayer = g;
+            }
+            else
+            {
+                if (closeDist > Vector3.Distance(transform.position, g.transform.position) && !IsPlayerDead(g))
+                {
+                    closeDist = Vector3.Distance(transform.position, g.transform.position);
+                    closePlayer = g;
+                }
+            }
+        }
+        return closePlayer;
+    }
+
     public bool IsPlayerDead(GameObject player)
     {
         if (player.GetComponent<PlayerDeath>().isdead)

@@ -137,7 +137,7 @@ public class MeleeEnemy : MonoBehaviour
                         attacking = false;
                         anim.SetBool("Attacking", false);
                     }
-                    else
+                    else if (Dot(.9f, chasedPlayer.transform.position,true))
                     {
                         anim.SetBool("Attacking", true);
 
@@ -264,10 +264,10 @@ public class MeleeEnemy : MonoBehaviour
                     if (!ShouldJump(chasedPlayer.transform.position))
                     {
                         //Moves enemy towards player
-                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > 2.5f && !jumping && !attacking)
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) > 2.5f && !jumping && !attacking && Dot(.9f, chasedPlayer.transform.position, true))
                             rb.velocity = (transform.forward * chaseSpeed) + new Vector3(0, rb.velocity.y, 0);
                         //charges at player
-                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToAttack && !jumping && attackCooldownTimer <= 0)
+                        if (Vector3.Distance(transform.position, chasedPlayer.transform.position) <= distAwayToAttack && !jumping && attackCooldownTimer <= 0 && Dot(.9f, chasedPlayer.transform.position, true))
                             attacking = true;
                     }
                     else if (!jumping)
@@ -461,8 +461,8 @@ public class MeleeEnemy : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (col.gameObject.GetComponent<Bullet>() && oneFrameTimer < 0 ||
-            col.gameObject.tag == "PlayerPunch" && oneFrameTimer < 0)
+            if (col.gameObject.GetComponent<Bullet>() && oneFrameTimer < 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Getup") ||
+            col.gameObject.tag == "PlayerPunch" && oneFrameTimer < 0 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Getup"))
             {
                 anim.SetBool("Idle", false);
                 hitCount += 1;
@@ -485,6 +485,8 @@ public class MeleeEnemy : MonoBehaviour
                 {
                     stunTimer = 0;
                 }
+                chasedPlayer = Detection.FindClosestPlayer();
+                detectedPlayers.Add(chasedPlayer);
                 oneFrameTimer = .2f;
                 IFrameTimer = maxIFrameTime;
                 if (photonView.IsMine)
