@@ -46,7 +46,7 @@ public class MeleeEnemy : MonoBehaviour
 
     int currentWaypointIndex;
 
-    float attackCooldownTimer, stunTimer, IFrameTimer, oneFrameTimer;
+    float attackCooldownTimer, stunTimer, IFrameTimer, oneFrameTimer = .2f;
 
     bool jumping, attacking, stunned, dead;
 
@@ -62,7 +62,6 @@ public class MeleeEnemy : MonoBehaviour
         startingRot = transform.rotation;
         rb = GetComponent<Rigidbody>();
         photonView = GetComponent<PhotonView>();
-        oneFrameTimer = .2f;
     }
 
     void Update()

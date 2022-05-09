@@ -31,6 +31,9 @@ public class Collectible : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
+        if (col.tag != "Player")
+            return;
+
         if (col.TryGetComponent<PlayerMovement>(out var player))
         {
 
@@ -41,6 +44,7 @@ public class Collectible : MonoBehaviour
                 sound.playCoin(this.transform.position);
                 gm.GetComponent<GameManager>().UpdateCoinCount(numberGivenToPlayer);
                 photonView.RPC("DestroyThis", RpcTarget.All);
+                return;
             }
             else if (collect == collectible.MainCollectible)
             {
@@ -49,12 +53,14 @@ public class Collectible : MonoBehaviour
                 gm.GetComponent<GameManager>().CollectibleCount += numberGivenToPlayer;
                 player.CollectibleGotten = true;
                 photonView.RPC("DestroyThis", RpcTarget.All);
+                return;
             }
             else if (collect == collectible.HeartOne)
             {
                 photonView = GetComponent<PhotonView>();
                 col.gameObject.GetComponent<PlayerHealth>().currentHealth += 1;
                 photonView.RPC("DestroyThis", RpcTarget.All);
+                return;
 
             }
             else if (collect == collectible.maxHealthUp)
@@ -63,6 +69,7 @@ public class Collectible : MonoBehaviour
                 col.gameObject.GetComponent<PlayerHealth>().maxHealth += 1;
                 col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
                 photonView.RPC("DestroyThis", RpcTarget.All);
+                return;
 
             }
             else if (collect == collectible.FullHeal)
@@ -70,7 +77,7 @@ public class Collectible : MonoBehaviour
                 photonView = GetComponent<PhotonView>();
                 col.gameObject.GetComponent<PlayerHealth>().ResetHealth();
                 photonView.RPC("DestroyThis", RpcTarget.All);
-
+                return;
             }
 
         }

@@ -20,8 +20,9 @@ public class PlayerDeath : MonoBehaviour
     }
     void Update()
     {
-
-        if (isdead)
+        if (!isdead) 
+            return;
+        else
         {
             GetComponent<PlayerMovement>().anim.SetBool("Dead", true);
             GetComponent<PlayerHealth>().ResetHealth();

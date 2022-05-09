@@ -16,6 +16,7 @@ public class ChangeCinemachineInput : MonoBehaviour
     private SoundManager soundManager;
     Shop shop;
 
+    PhotonView photonView;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,62 +25,75 @@ public class ChangeCinemachineInput : MonoBehaviour
         FreeLook = GetComponent<CinemachineFreeLook>();
         pause = FindObjectOfType<Pause>();
         shop = FindObjectOfType<Shop>();
+        photonView = FindObjectOfType<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (shop != null)
+        if (photonView.IsMine)
         {
-            if (!pause.isPaused && !shop.active)
+            if (shop != null)
             {
+                if (!pause.isPaused && !shop.active)
+                {
 
-                if (!toggle.m_gamepadOn)
-                {
-                    FreeLook.m_YAxis.m_InputAxisName = YInputMouse;
-                    FreeLook.m_XAxis.m_InputAxisName = XInputMouse;
+                    if (!toggle.m_gamepadOn)
+                    {
+                        FreeLook.m_YAxis.m_InputAxisName = YInputMouse;
+                        FreeLook.m_XAxis.m_InputAxisName = XInputMouse;
+                    }
+                    if (toggle.m_gamepadOn)
+                    {
+                        FreeLook.m_YAxis.m_InputAxisName = YInputController;
+                        FreeLook.m_XAxis.m_InputAxisName = XInputController;
+                    }
                 }
-                if (toggle.m_gamepadOn)
+                else
                 {
-                    FreeLook.m_YAxis.m_InputAxisName = YInputController;
-                    FreeLook.m_XAxis.m_InputAxisName = XInputController;
+                    //stops camera movement when paused
+                    FreeLook.m_YAxis.m_InputAxisName = "";
+                    FreeLook.m_XAxis.m_InputAxisName = "";
+                    FreeLook.m_XAxis.Reset();
+                    FreeLook.m_YAxis.Reset();
                 }
             }
             else
             {
-                //stops camera movement when paused
-                FreeLook.m_YAxis.m_InputAxisName = "";
-                FreeLook.m_XAxis.m_InputAxisName = "";
-                FreeLook.m_XAxis.Reset();
-                FreeLook.m_YAxis.Reset();
+                if (!pause.isPaused)
+                {
+
+                    if (!toggle.m_gamepadOn)
+                    {
+                        FreeLook.m_YAxis.m_InputAxisName = YInputMouse;
+                        FreeLook.m_XAxis.m_InputAxisName = XInputMouse;
+                    }
+                    if (toggle.m_gamepadOn)
+                    {
+                        FreeLook.m_YAxis.m_InputAxisName = YInputController;
+                        FreeLook.m_XAxis.m_InputAxisName = XInputController;
+                    }
+                }
+                else
+                {
+                    //stops camera movement when paused
+                    FreeLook.m_YAxis.m_InputAxisName = "";
+                    FreeLook.m_XAxis.m_InputAxisName = "";
+                    FreeLook.m_XAxis.Reset();
+                    FreeLook.m_YAxis.Reset();
+                }
             }
         }
         else
         {
-            if (!pause.isPaused)
-            {
-
-                if (!toggle.m_gamepadOn)
-                {
-                    FreeLook.m_YAxis.m_InputAxisName = YInputMouse;
-                    FreeLook.m_XAxis.m_InputAxisName = XInputMouse;
-                }
-                if (toggle.m_gamepadOn)
-                {
-                    FreeLook.m_YAxis.m_InputAxisName = YInputController;
-                    FreeLook.m_XAxis.m_InputAxisName = XInputController;
-                }
-            }
-            else
-            {
-                //stops camera movement when paused
-                FreeLook.m_YAxis.m_InputAxisName = "";
-                FreeLook.m_XAxis.m_InputAxisName = "";
-                FreeLook.m_XAxis.Reset();
-                FreeLook.m_YAxis.Reset();
-            }
+            //stops camera movement when paused
+            FreeLook.LookAt = null;
+            FreeLook.Follow = null;
+            FreeLook.m_YAxis.m_InputAxisName = "";
+            FreeLook.m_XAxis.m_InputAxisName = "";
+            FreeLook.m_XAxis.Reset();
+            FreeLook.m_YAxis.Reset();
         }
-
     }
 
     public void Underwater()
